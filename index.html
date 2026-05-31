@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Less Prevention. More Fire. — U.S. Wildfire Data 2015-2026</title>
+  <title>An Ounce of Prevention — Our Forests on Fire</title>
   <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
@@ -16,7 +16,8 @@
       --ink-light: #6b6560;
       --rule: rgba(28,26,23,0.1);
       --fire: #c94a1a;
-      --prevention: #2a6b4a;
+      --fs: #2a6b4a;
+      --interior: #1a4a7a;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -38,13 +39,7 @@
       margin-bottom: 36px;
       border-bottom: 1px solid var(--rule);
       padding-bottom: 28px;
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 24px;
-      align-items: start;
     }
-
-    .header-text {}
 
     .kicker {
       font-family: 'DM Mono', monospace;
@@ -57,11 +52,20 @@
 
     h1 {
       font-family: 'Libre Baskerville', serif;
-      font-size: 28px;
+      font-size: 30px;
       font-weight: 700;
       line-height: 1.2;
       letter-spacing: -0.02em;
-      margin-bottom: 14px;
+      margin-bottom: 6px;
+    }
+
+    .h1-sub {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 18px;
+      font-weight: 400;
+      font-style: italic;
+      color: var(--ink-light);
+      margin-bottom: 18px;
     }
 
     .dek {
@@ -69,29 +73,10 @@
       color: var(--ink-light);
       line-height: 1.65;
       font-weight: 300;
-      max-width: 560px;
+      max-width: 680px;
     }
 
     .dek strong { color: var(--ink); font-weight: 500; }
-
-    .lorax-panel {
-      width: 130px;
-      flex-shrink: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .lorax-caption {
-      font-family: 'DM Mono', monospace;
-      font-size: 8px;
-      color: var(--ink-light);
-      text-align: center;
-      line-height: 1.5;
-      letter-spacing: 0.05em;
-      opacity: 0.6;
-    }
 
     .chart-container {
       background: white;
@@ -117,15 +102,9 @@
 
     .ls-bar { width: 12px; height: 12px; border-radius: 2px; }
     .ls-line { width: 18px; height: 2.5px; border-radius: 2px; }
-    .ls-dashed {
-      width: 18px;
-      height: 0;
-      border-top: 2px dashed #b8b2a9;
-    }
+    .ls-dashed { width: 18px; height: 0; border-top: 2px dashed #b8b2a9; }
     .ls-range {
-      width: 12px;
-      height: 12px;
-      border-radius: 2px;
+      width: 12px; height: 12px; border-radius: 2px;
       border: 1.5px dashed #e87c2a;
       background: rgba(232,124,42,0.1);
     }
@@ -152,8 +131,9 @@
     }
 
     .callout-num.fire { color: var(--fire); }
-    .callout-num.prevention { color: var(--prevention); }
+    .callout-num.fs { color: var(--fs); }
     .callout-num.forecast { color: #e87c2a; }
+    .callout-num.interior { color: var(--interior); }
 
     .callout-label {
       font-size: 10.5px;
@@ -163,10 +143,10 @@
     }
 
     .quote-block {
-      border-left: 3px solid var(--prevention);
+      border-left: 3px solid var(--fire);
       padding: 14px 18px;
       margin-bottom: 20px;
-      background: rgba(42,107,74,0.04);
+      background: rgba(201,74,26,0.04);
     }
 
     .quote-text {
@@ -181,7 +161,7 @@
       font-family: 'DM Mono', monospace;
       font-size: 9px;
       color: var(--ink-light);
-      margin-top: 6px;
+      margin-top: 8px;
       letter-spacing: 0.05em;
     }
 
@@ -232,60 +212,17 @@
 <div class="page">
 
   <header>
-    <div class="header-text">
-      <div class="kicker">U.S. Wildfire Data · 2015-2026 · Updated May 2026</div>
-      <h1>Less prevention. More fire.<br>The gap is widening.</h1>
-      <p class="dek">
-        In 2025, the Forest Service treated <strong>35% fewer acres</strong> for wildfire risk
-        than in 2024. The agency is run by a former lumber industry executive and his boss
-        built an illegal airstrip on protected federal land. So far in 2026, more than
-        <strong>2.3 million acres</strong> have burned. Peak fire season starts in summer.
-      </p>
-    </div>
-
-    <div class="lorax-panel">
-      <svg width="110" height="140" viewBox="0 0 110 140" xmlns="http://www.w3.org/2000/svg">
-        <!-- Ground -->
-        <ellipse cx="55" cy="128" rx="44" ry="8" fill="#c8b89a" opacity="0.4"/>
-
-        <!-- Tree stump -->
-        <rect x="38" y="88" width="34" height="36" rx="3" fill="#8B6340"/>
-        <rect x="38" y="88" width="34" height="7" rx="3" fill="#a07550"/>
-        <!-- Tree rings -->
-        <circle cx="55" cy="91" r="12" fill="none" stroke="#7a5530" stroke-width="1" opacity="0.4"/>
-        <circle cx="55" cy="91" r="8" fill="none" stroke="#7a5530" stroke-width="1" opacity="0.3"/>
-        <circle cx="55" cy="91" r="4" fill="none" stroke="#7a5530" stroke-width="1" opacity="0.3"/>
-
-        <!-- Axe handle -->
-        <line x1="72" y1="124" x2="88" y2="80" stroke="#8B6340" stroke-width="4" stroke-linecap="round"/>
-        <!-- Axe head -->
-        <path d="M84,76 L96,68 L98,82 L84,84 Z" fill="#9b9590"/>
-        <line x1="84" y1="76" x2="84" y2="84" stroke="#7a7570" stroke-width="1.5"/>
-
-        <!-- Small figure (Once-ler style, just a silhouette) -->
-        <circle cx="30" cy="74" r="7" fill="#2a6b4a"/>
-        <rect x="24" y="80" width="12" height="16" rx="2" fill="#2a6b4a"/>
-        <line x1="24" y1="83" x2="16" y2="92" stroke="#2a6b4a" stroke-width="3" stroke-linecap="round"/>
-        <line x1="36" y1="83" x2="40" y2="90" stroke="#2a6b4a" stroke-width="3" stroke-linecap="round"/>
-        <line x1="27" y1="96" x2="24" y2="110" stroke="#2a6b4a" stroke-width="3" stroke-linecap="round"/>
-        <line x1="33" y1="96" x2="36" y2="110" stroke="#2a6b4a" stroke-width="3" stroke-linecap="round"/>
-
-        <!-- Speech bubble -->
-        <rect x="36" y="52" width="68" height="24" rx="4" fill="white" stroke="#2a6b4a" stroke-width="1.5"/>
-        <polygon points="42,76 36,84 50,76" fill="white" stroke="#2a6b4a" stroke-width="1.5"/>
-        <polygon points="42,76 50,76 44,80" fill="white"/>
-        <text x="70" y="62" text-anchor="middle" font-family="DM Mono, monospace" font-size="7" fill="#2a6b4a" font-weight="500">I speak for</text>
-        <text x="70" y="72" text-anchor="middle" font-family="DM Mono, monospace" font-size="7" fill="#2a6b4a" font-weight="500">the trees.</text>
-
-        <!-- Dead leaves falling -->
-        <ellipse cx="76" cy="42" rx="5" ry="3" fill="#c94a1a" opacity="0.5" transform="rotate(-20 76 42)"/>
-        <ellipse cx="88" cy="55" rx="4" ry="2.5" fill="#e87c2a" opacity="0.4" transform="rotate(15 88 55)"/>
-        <ellipse cx="62" cy="35" rx="4" ry="2.5" fill="#c94a1a" opacity="0.3" transform="rotate(-35 62 35)"/>
-
-        <!-- Caption at bottom -->
-        <text x="55" y="145" text-anchor="middle" font-family="DM Mono, monospace" font-size="7" fill="#9b9590">Nobody listened.</text>
-      </svg>
-    </div>
+    <div class="kicker">U.S. Wildfire Data · 2015-2026 · Updated May 2026</div>
+    <h1>An Ounce of Prevention</h1>
+    <p class="h1-sub">Our forests on fire</p>
+    <p class="dek">
+      In 2025, the Forest Service treated <strong>35% fewer acres</strong> for wildfire risk
+      than in 2024. The agency is run by a former lumber industry executive whose boss
+      spent years fighting the Forest Service in court before the Senate confirmed him to oversee it.
+      As of May 29, 2026, more than <strong>2.3 million acres</strong> have already burned.
+      Peak fire season starts in summer. AccuWeather forecasts 5.5 to 8 million acres
+      burned by year end.
+    </p>
   </header>
 
   <div class="chart-container">
@@ -296,11 +233,15 @@
       </div>
       <div class="legend-item">
         <div class="ls-range"></div>
-        <span>2026 forecast range (AccuWeather)</span>
+        <span>2026 forecast (AccuWeather)</span>
       </div>
       <div class="legend-item">
         <div class="ls-line" style="background:#2a6b4a;"></div>
-        <span>Forest Service prevention treatment (millions of acres)</span>
+        <span>Forest Service prevention treatment</span>
+      </div>
+      <div class="legend-item">
+        <div class="ls-line" style="background:#1a4a7a;"></div>
+        <span>Interior Dept prevention treatment</span>
       </div>
       <div class="legend-item">
         <div class="ls-dashed"></div>
@@ -313,35 +254,39 @@
   <div class="callouts">
     <div class="callout">
       <div class="callout-num fire">35%</div>
-      <div class="callout-label">Drop in prevention acres treated, 2024 to 2025</div>
+      <div class="callout-label">Drop in Forest Service prevention acres treated, 2024 to 2025</div>
     </div>
     <div class="callout">
       <div class="callout-num fire">2.3M</div>
-      <div class="callout-label">Acres burned through May 29, 2026</div>
+      <div class="callout-label">Acres burned through May 29, 2026 — before peak season</div>
     </div>
     <div class="callout">
       <div class="callout-num forecast">5.5-8M</div>
-      <div class="callout-label">AccuWeather forecast for full year 2026</div>
+      <div class="callout-label">AccuWeather full year forecast for 2026</div>
     </div>
     <div class="callout">
-      <div class="callout-num prevention">57/77</div>
-      <div class="callout-label">Wildfire research stations announced for closure</div>
+      <div class="callout-num fs">57/77</div>
+      <div class="callout-label">Wildfire research stations announced for closure, March 2026</div>
     </div>
   </div>
 
   <div class="quote-block">
-    <p class="quote-text">"Unless someone like you cares a whole awful lot, nothing is going to get better. It's not."</p>
-    <p class="quote-attr">DR. SEUSS, THE LORAX (1971) — He was talking about trees. We chose to take it as a suggestion.</p>
+    <p class="quote-text">Benjamin Franklin wrote "an ounce of prevention is worth a pound of cure" in 1735 in a letter begging Philadelphia to take fire safety seriously. The federal government is going into the worst start to a fire season in recent memory having done half the prevention work it did the year before.</p>
+    <p class="quote-attr">The ounce was always going to be cheaper.</p>
   </div>
 
   <div class="annotation">
     <strong>On the data.</strong> Acres burned are total national figures across all land types,
-    sourced from NIFC annual statistics. Forest Service treatment data is available consistently
-    from 2023 onward via NPR's analysis of agency records. The 2026 bar shows acres burned
-    through May 29 and is a partial year. The forecast range of 5.5-8 million acres is
-    AccuWeather's published 2026 seasonal projection. The chart shows two trends in the same
-    period and does not assert direct causation between prevention acres in a given year and
-    fire acres in the same year.
+    sourced from NIFC annual statistics 2015-2025. The 2026 bar reflects acres burned through
+    May 29 and is a partial year not comparable to full-year figures. Forest Service hazardous
+    fuels treatment data is available consistently from 2023 onward via NPR's analysis of agency
+    records and the Center for Western Priorities. Interior Department treatment data covers BLM,
+    NPS, BIA, and FWS lands from 2018-2024, sourced from doi.gov. Prevention and fire outcomes
+    do not correlate perfectly year to year — drought, ignition patterns, and weather conditions
+    drive annual variation. The relationship between prevention investment and fire outcomes is
+    long-term, not annual. The forecast of 5.5-8 million acres is AccuWeather's published 2026
+    seasonal projection. This chart shows trends in the same period and does not assert direct
+    causation between prevention acres in a given year and fire acres in the same year.
   </div>
 
   <footer>
@@ -349,6 +294,7 @@
       NIFC Total Wildfires and Acres annual statistics (nifc.gov) ·
       NPR / Grassroots Wildland Firefighters analysis of Forest Service FACTS data, May 4 2026 ·<br>
       Center for Western Priorities, May 27 2026 ·
+      U.S. Department of the Interior fuels management program (doi.gov/wildlandfire/fuels) ·<br>
       NIFC National Fire News, May 29 2026 ·
       AccuWeather 2026 Wildfire Season Forecast ·
       Congress.gov CRS Report IF10244<br>
@@ -375,22 +321,41 @@
   ];
 
   const partial2026 = [{"year": "2026", "acres": 2.3}];
-
   const forecast2026 = [{"year": "2026", "low": 5.5, "high": 8.0}];
 
-  const treatmentData = [
-    {"year": "2023", "treatment": 3.7},
-    {"year": "2024", "treatment": 4.0},
-    {"year": "2025", "treatment": 2.6}
+  const fsData = [
+    {"year": "2023", "treatment": 3.7, "type": "Forest Service"},
+    {"year": "2024", "treatment": 4.0, "type": "Forest Service"},
+    {"year": "2025", "treatment": 2.6, "type": "Forest Service"}
   ];
 
-  const avgLine = ["2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025","2026"]
-    .map(y => ({"year": y, "avg": 7.2}));
+  const interiorData = [
+    {"year": "2018", "treatment": 1.27, "type": "Interior Dept"},
+    {"year": "2019", "treatment": 1.41, "type": "Interior Dept"},
+    {"year": "2020", "treatment": 1.53, "type": "Interior Dept"},
+    {"year": "2021", "treatment": 1.67, "type": "Interior Dept"},
+    {"year": "2022", "treatment": 1.97, "type": "Interior Dept"},
+    {"year": "2023", "treatment": 2.59, "type": "Interior Dept"},
+    {"year": "2024", "treatment": 2.36, "type": "Interior Dept"}
+  ];
+
+  const avgLine = ["2015","2016","2017","2018","2019","2020","2021","2022",
+                   "2023","2024","2025","2026"].map(y => ({"year": y, "avg": 7.2}));
+
+  const domainScale = {"domain": [0, 11]};
+  const yAxis = {
+    "title": "Million acres",
+    "titleFont": "DM Sans",
+    "titleFontSize": 10,
+    "titleColor": "#9b9590",
+    "titleAngle": -90,
+    "titleX": -36
+  };
 
   const spec = {
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
     "width": "container",
-    "height": 360,
+    "height": 380,
     "config": {
       "font": "DM Sans",
       "axis": {
@@ -402,7 +367,7 @@
         "gridColor": "#f0ece6",
         "gridDash": [3, 4]
       },
-      "view": { "stroke": "transparent" }
+      "view": {"stroke": "transparent"}
     },
     "layer": [
       {
@@ -410,90 +375,122 @@
         "mark": {"type": "line", "color": "#b8b2a9", "strokeDash": [4,4], "strokeWidth": 1.5},
         "encoding": {
           "x": {"field": "year", "type": "ordinal"},
-          "y": {"field": "avg", "type": "quantitative", "scale": {"domain": [0, 11]}}
+          "y": {"field": "avg", "type": "quantitative", "scale": domainScale}
         }
       },
       {
         "data": {"values": [{"year": "2025", "avg": 7.2, "label": "7.2M ten-year avg"}]},
-        "mark": {"type": "text", "align": "left", "dx": 4, "dy": -8, "font": "DM Mono, monospace", "fontSize": 8, "color": "#b8b2a9"},
+        "mark": {"type": "text", "align": "left", "dx": 4, "dy": -8,
+                 "font": "DM Mono, monospace", "fontSize": 8, "color": "#b8b2a9"},
         "encoding": {
           "x": {"field": "year", "type": "ordinal"},
-          "y": {"field": "avg", "type": "quantitative", "scale": {"domain": [0, 11]}},
+          "y": {"field": "avg", "type": "quantitative", "scale": domainScale},
           "text": {"field": "label"}
         }
       },
       {
         "data": {"values": burnData},
-        "mark": {"type": "bar", "color": "#c94a1a", "opacity": 0.75, "cornerRadiusTopLeft": 2, "cornerRadiusTopRight": 2},
+        "mark": {"type": "bar", "color": "#c94a1a", "opacity": 0.72,
+                 "cornerRadiusTopLeft": 2, "cornerRadiusTopRight": 2},
         "encoding": {
           "x": {"field": "year", "type": "ordinal", "axis": {"title": null, "labelAngle": 0}},
-          "y": {
-            "field": "acres",
-            "type": "quantitative",
-            "scale": {"domain": [0, 11]},
-            "axis": {"title": "Million acres", "titleFont": "DM Sans", "titleFontSize": 10, "titleColor": "#9b9590", "titleAngle": -90, "titleX": -36}
-          },
-          "tooltip": [{"field": "year", "title": "Year"}, {"field": "acres", "title": "Acres burned (M)", "format": ".1f"}]
+          "y": {"field": "acres", "type": "quantitative", "scale": domainScale, "axis": yAxis},
+          "tooltip": [
+            {"field": "year", "title": "Year"},
+            {"field": "acres", "title": "Acres burned (M)", "format": ".1f"}
+          ]
         }
       },
       {
         "data": {"values": partial2026},
-        "mark": {"type": "bar", "color": "#e87c2a", "opacity": 0.6, "cornerRadiusTopLeft": 2, "cornerRadiusTopRight": 2},
+        "mark": {"type": "bar", "color": "#e87c2a", "opacity": 0.55,
+                 "cornerRadiusTopLeft": 2, "cornerRadiusTopRight": 2},
         "encoding": {
           "x": {"field": "year", "type": "ordinal"},
-          "y": {"field": "acres", "type": "quantitative", "scale": {"domain": [0, 11]}},
-          "tooltip": [{"field": "year", "title": "Year"}, {"field": "acres", "title": "Acres burned Jan-May (M)", "format": ".1f"}]
+          "y": {"field": "acres", "type": "quantitative", "scale": domainScale},
+          "tooltip": [
+            {"field": "year", "title": "Year"},
+            {"field": "acres", "title": "Acres burned Jan-May (M)", "format": ".1f"}
+          ]
         }
       },
       {
         "data": {"values": forecast2026},
-        "mark": {"type": "bar", "color": "rgba(232,124,42,0.12)", "stroke": "#e87c2a", "strokeWidth": 1.5, "strokeDash": [3,2], "cornerRadiusTopLeft": 2, "cornerRadiusTopRight": 2},
+        "mark": {"type": "bar", "color": "rgba(232,124,42,0.1)",
+                 "stroke": "#e87c2a", "strokeWidth": 1.5, "strokeDash": [3,2],
+                 "cornerRadiusTopLeft": 2, "cornerRadiusTopRight": 2},
         "encoding": {
           "x": {"field": "year", "type": "ordinal"},
-          "y": {"field": "low", "type": "quantitative", "scale": {"domain": [0, 11]}},
+          "y": {"field": "low", "type": "quantitative", "scale": domainScale},
           "y2": {"field": "high"},
-          "tooltip": [{"field": "year", "title": "Year"}, {"field": "low", "title": "Forecast low (M)"}, {"field": "high", "title": "Forecast high (M)"}]
+          "tooltip": [
+            {"field": "year", "title": "2026 forecast"},
+            {"field": "low", "title": "Low estimate (M)"},
+            {"field": "high", "title": "High estimate (M)"}
+          ]
         }
       },
       {
-        "data": {"values": [{"year": "2026", "y": 8.3, "label": "2026 forecast"}]},
-        "mark": {"type": "text", "align": "center", "dy": -6, "font": "DM Mono, monospace", "fontSize": 8, "color": "#e87c2a"},
+        "data": {"values": [{"year": "2026", "y": 8.45, "label": "forecast range"}]},
+        "mark": {"type": "text", "align": "center", "dy": -6,
+                 "font": "DM Mono, monospace", "fontSize": 8, "color": "#e87c2a"},
         "encoding": {
           "x": {"field": "year", "type": "ordinal"},
-          "y": {"field": "y", "type": "quantitative", "scale": {"domain": [0, 11]}},
+          "y": {"field": "y", "type": "quantitative", "scale": domainScale},
           "text": {"field": "label"}
         }
       },
       {
-        "data": {"values": treatmentData},
+        "data": {"values": interiorData},
         "mark": {
-          "type": "line",
-          "color": "#2a6b4a",
-          "strokeWidth": 2.5,
-          "point": {"filled": true, "fill": "white", "stroke": "#2a6b4a", "strokeWidth": 2, "size": 70}
+          "type": "line", "color": "#1a4a7a", "strokeWidth": 2,
+          "strokeDash": [6, 2],
+          "point": {"filled": true, "fill": "white", "stroke": "#1a4a7a",
+                    "strokeWidth": 1.5, "size": 50}
         },
         "encoding": {
           "x": {"field": "year", "type": "ordinal"},
-          "y": {"field": "treatment", "type": "quantitative", "scale": {"domain": [0, 11]}},
-          "tooltip": [{"field": "year", "title": "Year"}, {"field": "treatment", "title": "FS treatment (M acres)", "format": ".1f"}]
+          "y": {"field": "treatment", "type": "quantitative", "scale": domainScale},
+          "tooltip": [
+            {"field": "year", "title": "Year"},
+            {"field": "treatment", "title": "Interior treatment (M acres)", "format": ".2f"}
+          ]
         }
       },
       {
-        "data": {"values": treatmentData},
-        "mark": {"type": "text", "dy": -14, "font": "DM Mono, monospace", "fontSize": 9, "color": "#2a6b4a", "fontWeight": "500"},
+        "data": {"values": fsData},
+        "mark": {
+          "type": "line", "color": "#2a6b4a", "strokeWidth": 2.5,
+          "point": {"filled": true, "fill": "white", "stroke": "#2a6b4a",
+                    "strokeWidth": 2, "size": 65}
+        },
         "encoding": {
           "x": {"field": "year", "type": "ordinal"},
-          "y": {"field": "treatment", "type": "quantitative", "scale": {"domain": [0, 11]}},
+          "y": {"field": "treatment", "type": "quantitative", "scale": domainScale},
+          "tooltip": [
+            {"field": "year", "title": "Year"},
+            {"field": "treatment", "title": "Forest Service treatment (M acres)", "format": ".1f"}
+          ]
+        }
+      },
+      {
+        "data": {"values": fsData},
+        "mark": {"type": "text", "dy": -14, "font": "DM Mono, monospace",
+                 "fontSize": 9, "color": "#2a6b4a", "fontWeight": "500"},
+        "encoding": {
+          "x": {"field": "year", "type": "ordinal"},
+          "y": {"field": "treatment", "type": "quantitative", "scale": domainScale},
           "text": {"field": "treatment", "format": ".1f"}
         }
       },
       {
-        "data": {"values": [{"year": "2025", "y": 5.2}]},
-        "mark": {"type": "text", "font": "DM Mono, monospace", "fontSize": 9, "fontWeight": "500", "color": "#c94a1a", "align": "center"},
+        "data": {"values": [{"year": "2025", "y": 5.3}]},
+        "mark": {"type": "text", "font": "DM Mono, monospace", "fontSize": 9,
+                 "fontWeight": "500", "color": "#c94a1a", "align": "center"},
         "encoding": {
           "x": {"field": "year", "type": "ordinal"},
-          "y": {"field": "y", "type": "quantitative", "scale": {"domain": [0, 11]}},
-          "text": {"value": "35% prevention drop"}
+          "y": {"field": "y", "type": "quantitative", "scale": domainScale},
+          "text": {"value": "35% FS prevention drop"}
         }
       }
     ]
