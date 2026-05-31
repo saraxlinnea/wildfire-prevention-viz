@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wildfire Prevention vs. Acres Burned — U.S. Forest Service 2015–2026</title>
+  <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap');
+
+    :root {
+      --bg: #f7f4ef;
+      --ink: #1c1a17;
+      --ink-light: #6b6560;
+      --rule: rgba(28,26,23,0.1);
+      --fire: #c94a1a;
+      --prevention: #2a6b4a;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      font-family: 'DM Sans', sans-serif;
+      color: var(--ink);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 48px 24px;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 800px;
+    }
+
+    header {
+      margin-bottom: 40px;
+      border-bottom: 1px solid var(--rule);
+      padding-bottom: 28px;
+    }
+
+    .kicker {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--fire);
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 28px;
+      font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      margin-bottom: 14px;
+    }
+
+    .dek {
+      font-size: 14px;
+      color: var(--ink-light);
+      line-height: 1.65;
+      font-weight: 300;
+      max-width: 640px;
+    }
+
+    .dek strong {
+      color: var(--ink);
+      font-weight: 500;
+    }
+
+    .chart-container {
+      background: white;
+      border: 1px solid var(--rule);
+      padding: 32px;
+      margin-bottom: 24px;
+    }
+
+    #chart { width: 100%; }
+
+    .callouts {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--rule);
+      border: 1px solid var(--rule);
+      margin-bottom: 24px;
+    }
+
+    .callout {
+      background: white;
+      padding: 20px 24px;
+    }
+
+    .callout-num {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 26px;
+      font-weight: 700;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .callout-num.fire { color: var(--fire); }
+    .callout-num.prevention { color: var(--prevention); }
+    .callout-num.neutral { color: var(--ink); }
+
+    .callout-label {
+      font-size: 11px;
+      color: var(--ink-light);
+      line-height: 1.5;
+      font-weight: 300;
+    }
+
+    .annotation {
+      background: #fdf8f2;
+      border-left: 3px solid var(--fire);
+      padding: 16px 20px;
+      margin-bottom: 24px;
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--ink-light);
+    }
+
+    .annotation strong {
+      color: var(--ink);
+      font-weight: 500;
+    }
+
+    footer {
+      border-top: 1px solid var(--rule);
+      padding-top: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .sources {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      color: var(--ink-light);
+      line-height: 1.8;
+      letter-spacing: 0.03em;
+      opacity: 0.7;
+    }
+
+    .sources a {
+      color: inherit;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    .byline {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      color: var(--fire);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <header>
+    <div class="kicker">U.S. Wildfire Data · 2015–2026 · Updated May 2026</div>
+    <h1>Less prevention. More fire.<br>The gap is widening.</h1>
+    <p class="dek">
+      In 2025, under the Trump administration, the Forest Service treated
+      <strong>35% fewer acres</strong> for wildfire risk than in 2024 —
+      the sharpest single-year decline in recent history.
+      So far in 2026, nearly <strong>1.9 million acres</strong> have already burned,
+      running at <strong>194% of the ten-year average</strong> before peak fire season begins in summer.
+    </p>
+  </header>
+
+  <div class="chart-container">
+    <div id="chart"></div>
+  </div>
+
+  <div class="callouts">
+    <div class="callout">
+      <div class="callout-num fire">35%</div>
+      <div class="callout-label">Drop in Forest Service prevention acres treated, 2024 to 2025</div>
+    </div>
+    <div class="callout">
+      <div class="callout-num fire">1.9M</div>
+      <div class="callout-label">Acres burned through April 2026 — before peak season</div>
+    </div>
+    <div class="callout">
+      <div class="callout-num prevention">57 / 77</div>
+      <div class="callout-label">Forest Service wildfire research stations announced for closure</div>
+    </div>
+  </div>
+
+  <div class="annotation">
+    <strong>Note on data availability.</strong> Forest Service hazardous fuels treatment figures
+    are available consistently from 2023 onward via NPR's analysis of agency records and the
+    Center for Western Priorities. Interior Department treatment data (BLM, NPS, BIA, FWS)
+    is available from 2018 onward via doi.gov. Total acres burned figures (all agencies, all lands)
+    are from NIFC annual statistics 2015–2025. The 2026 figure reflects January through April only
+    and is not comparable to full-year figures.
+  </div>
+
+  <footer>
+    <div class="sources">
+      Sources: National Interagency Fire Center (NIFC) annual statistics ·
+      NPR analysis of Forest Service FACTS database, May 4 2026 ·<br>
+      Center for Western Priorities analysis, May 27 2026 ·
+      U.S. Department of the Interior fuels management program ·
+      NIFC National Significant Wildland Fire Potential Outlook, May 1 2026<br>
+      <a href="data/wildfire-data.csv">Download data (CSV)</a>
+    </div>
+    <div class="byline">Sara Bower · San Francisco</div>
+  </footer>
+
+</div>
+
+<script>
+  const spec = {
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "width": "container",
+    "height": 340,
+    "config": {
+      "font": "DM Sans",
+      "axis": {
+        "labelFont": "DM Mono, monospace",
+        "labelFontSize": 9,
+        "labelColor": "#9b9590",
+        "tickColor": "transparent",
+        "domainColor": "#e8e4de",
+        "gridColor": "#f0ece6",
+        "gridDash": [3, 4]
+      },
+      "view": { "stroke": "transparent" },
+      "legend": {
+        "labelFont": "DM Sans",
+        "labelFontSize": 11,
+        "labelColor": "#6b6560",
+        "symbolSize": 60,
+        "padding": 8
+      }
+    },
+    "layer": [
+      {
+        "mark": {
+          "type": "rule",
+          "color": "#b8b2a9",
+          "strokeDash": [4, 4],
+          "strokeWidth": 1.5
+        },
+        "encoding": {
+          "y": { "datum": 7.2, "type": "quantitative" }
+        }
+      },
+      {
+        "mark": {
+          "type": "text",
+          "align": "right",
+          "dx": -4,
+          "dy": -8,
+          "font": "DM Mono, monospace",
+          "fontSize": 8,
+          "color": "#b8b2a9"
+        },
+        "encoding": {
+          "x": { "datum": 2026, "type": "quantitative" },
+          "y": { "datum": 7.2, "type": "quantitative" },
+          "text": { "value": "7.2M ten-year avg" }
+        }
+      },
+      {
+        "data": {
+          "values": [
+            {"year": 2015, "acres": 10.1},
+            {"year": 2016, "acres": 5.5},
+            {"year": 2017, "acres": 10.0},
+            {"year": 2018, "acres": 8.8},
+            {"year": 2019, "acres": 4.7},
+            {"year": 2020, "acres": 10.1},
+            {"year": 2021, "acres": 7.1},
+            {"year": 2022, "acres": 7.6},
+            {"year": 2023, "acres": 2.7},
+            {"year": 2024, "acres": 8.9},
+            {"year": 2025, "acres": 5.0}
+          ]
+        },
+        "mark": {
+          "type": "bar",
+          "color": "#c94a1a",
+          "opacity": 0.75,
+          "cornerRadiusTopLeft": 2,
+          "cornerRadiusTopRight": 2
+        },
+        "encoding": {
+          "x": {
+            "field": "year",
+            "type": "ordinal",
+            "axis": { "title": null, "labelAngle": 0 }
+          },
+          "y": {
+            "field": "acres",
+            "type": "quantitative",
+            "axis": { "title": "Million acres", "titleFont": "DM Sans", "titleFontSize": 10, "titleColor": "#9b9590" },
+            "scale": { "domain": [0, 11] }
+          },
+          "tooltip": [
+            { "field": "year", "title": "Year" },
+            { "field": "acres", "title": "Acres burned (M)", "format": ".1f" }
+          ]
+        }
+      },
+      {
+        "data": {
+          "values": [
+            {"year": 2026, "acres": 1.9, "label": "Jan–Apr only\n194% of avg"}
+          ]
+        },
+        "mark": {
+          "type": "bar",
+          "color": "#e87c2a",
+          "opacity": 0.5,
+          "cornerRadiusTopLeft": 2,
+          "cornerRadiusTopRight": 2
+        },
+        "encoding": {
+          "x": {
+            "field": "year",
+            "type": "ordinal"
+          },
+          "y": {
+            "field": "acres",
+            "type": "quantitative"
+          },
+          "tooltip": [
+            { "field": "year", "title": "Year" },
+            { "field": "acres", "title": "Acres burned (M) — partial year", "format": ".1f" },
+            { "field": "label", "title": "Note" }
+          ]
+        }
+      },
+      {
+        "data": {
+          "values": [
+            {"year": 2023, "treatment": 3.7},
+            {"year": 2024, "treatment": 4.0},
+            {"year": 2025, "treatment": 2.6}
+          ]
+        },
+        "layer": [
+          {
+            "mark": {
+              "type": "line",
+              "color": "#2a6b4a",
+              "strokeWidth": 2.5,
+              "point": {
+                "filled": true,
+                "fill": "white",
+                "stroke": "#2a6b4a",
+                "strokeWidth": 2,
+                "size": 60
+              }
+            },
+            "encoding": {
+              "x": { "field": "year", "type": "ordinal" },
+              "y": { "field": "treatment", "type": "quantitative" },
+              "tooltip": [
+                { "field": "year", "title": "Year" },
+                { "field": "treatment", "title": "FS treatment (M acres)", "format": ".1f" }
+              ]
+            }
+          },
+          {
+            "mark": {
+              "type": "text",
+              "dy": -14,
+              "font": "DM Mono, monospace",
+              "fontSize": 9,
+              "color": "#2a6b4a",
+              "fontWeight": "500"
+            },
+            "encoding": {
+              "x": { "field": "year", "type": "ordinal" },
+              "y": { "field": "treatment", "type": "quantitative" },
+              "text": { "field": "treatment", "format": ".1fM" }
+            }
+          }
+        ]
+      },
+      {
+        "data": {
+          "values": [{"year": 2024.5, "y": 5.8}]
+        },
+        "mark": {
+          "type": "text",
+          "font": "DM Mono, monospace",
+          "fontSize": 9,
+          "fontWeight": "500",
+          "color": "#c94a1a",
+          "align": "center"
+        },
+        "encoding": {
+          "x": { "datum": "2025", "type": "ordinal" },
+          "y": { "datum": 5.8, "type": "quantitative" },
+          "text": { "value": "▼ 35% prevention drop" }
+        }
+      }
+    ]
+  };
+
+  vegaEmbed('#chart', spec, {
+    actions: { export: true, source: false, compiled: false, editor: false },
+    renderer: 'svg'
+  });
+</script>
+</body>
+</html>
