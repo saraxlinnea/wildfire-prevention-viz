@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>An Ounce of Prevention — Our Forests on Fire</title>
+  <title>An Ounce of Prevention: Our Forests on Fire</title>
   <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
@@ -206,6 +206,25 @@
       white-space: nowrap;
       opacity: 0.7;
     }
+
+    @media (max-width: 600px) {
+      body { padding: 24px 16px; }
+      h1 { font-size: 22px; }
+      .h1-sub { font-size: 15px; }
+      .dek { font-size: 13px; }
+      .chart-container { padding: 16px 12px; }
+      .legend-row { gap: 10px; }
+      .legend-item { font-size: 9.5px; }
+      .callouts { grid-template-columns: repeat(2, 1fr); }
+      .callout { padding: 14px 14px; }
+      .callout-num { font-size: 18px; }
+      .callout-label { font-size: 9.5px; }
+      .quote-text { font-size: 12px; }
+      .annotation { font-size: 11px; }
+      footer { flex-direction: column; gap: 12px; }
+      .sources { font-size: 8px; }
+      .byline { white-space: normal; }
+    }
   </style>
 </head>
 <body>
@@ -216,12 +235,10 @@
     <h1>An Ounce of Prevention</h1>
     <p class="h1-sub">Our forests on fire</p>
     <p class="dek">
-      In 2025, the Forest Service treated <strong>35% fewer acres</strong> for wildfire risk
-      than in 2024. The agency is run by a former lumber industry executive whose boss
-      spent years fighting the Forest Service in court before the Senate confirmed him to oversee it.
-      As of May 29, 2026, more than <strong>2.3 million acres</strong> have already burned.
-      Peak fire season starts in summer. AccuWeather forecasts 5.5 to 8 million acres
-      burned by year end.
+      In 2025 the Forest Service treated <strong>35% fewer acres</strong> for wildfire risk
+      than the year before. As of May 29, 2026, more than <strong>2.3 million acres</strong>
+      have already burned nationally. Peak fire season starts in summer. AccuWeather
+      forecasts 5.5 to 8 million acres burned by year end.
     </p>
   </header>
 
@@ -237,11 +254,11 @@
       </div>
       <div class="legend-item">
         <div class="ls-line" style="background:#2a6b4a;"></div>
-        <span>Forest Service prevention treatment</span>
+        <span>Forest Service hazardous fuels treatment</span>
       </div>
       <div class="legend-item">
         <div class="ls-line" style="background:#1a4a7a;"></div>
-        <span>Interior Dept prevention treatment</span>
+        <span>Interior Dept hazardous fuels treatment</span>
       </div>
       <div class="legend-item">
         <div class="ls-dashed"></div>
@@ -258,7 +275,7 @@
     </div>
     <div class="callout">
       <div class="callout-num fire">2.3M</div>
-      <div class="callout-label">Acres burned through May 29, 2026 — before peak season</div>
+      <div class="callout-label">Acres burned through May 29, 2026, before peak season</div>
     </div>
     <div class="callout">
       <div class="callout-num forecast">5.5-8M</div>
@@ -271,33 +288,32 @@
   </div>
 
   <div class="quote-block">
-    <p class="quote-text">Benjamin Franklin wrote "an ounce of prevention is worth a pound of cure" in 1735 in a letter begging Philadelphia to take fire safety seriously. The federal government is going into the worst start to a fire season in recent memory having done half the prevention work it did the year before.</p>
+    <p class="quote-text">Benjamin Franklin wrote "an ounce of prevention is worth a pound of cure" in 1735 in a letter urging Philadelphia toward fire prevention. The federal government is going into the most active fire season start in fourteen years having treated 35% fewer acres for wildfire risk than the year before.</p>
     <p class="quote-attr">The ounce was always going to be cheaper.</p>
   </div>
 
   <div class="annotation">
-    <strong>On the data.</strong> Acres burned are total national figures across all land types,
-    sourced from NIFC annual statistics 2015-2025. The 2026 bar reflects acres burned through
-    May 29 and is a partial year not comparable to full-year figures. Forest Service hazardous
-    fuels treatment data is available consistently from 2023 onward via NPR's analysis of agency
-    records and the Center for Western Priorities. Interior Department treatment data covers BLM,
-    NPS, BIA, and FWS lands from 2018-2024, sourced from doi.gov. Prevention and fire outcomes
-    do not correlate perfectly year to year — drought, ignition patterns, and weather conditions
-    drive annual variation. The relationship between prevention investment and fire outcomes is
-    long-term, not annual. The forecast of 5.5-8 million acres is AccuWeather's published 2026
-    seasonal projection. This chart shows trends in the same period and does not assert direct
-    causation between prevention acres in a given year and fire acres in the same year.
+    <strong>On the data and sources.</strong> Acres burned are total U.S. figures across all land types,
+    from NIFC annual statistics. The 2026 bar covers January through May 29 only and is not
+    a full-year figure. Forest Service hazardous fuels treatment figures come from NPR's
+    analysis of the USFS FACTS database, cross-checked by the Center for Western Priorities.
+    Interior Department figures cover BLM, NPS, BIA, and FWS lands from 2018-2024, from
+    doi.gov, and run on a fiscal year starting October 1, not a calendar year.
+    Fire outcomes and prevention work do not track each other neatly year to year.
+    Drought, wind, and fuel load drive a lot of the variation. The 5.5-8 million acre
+    forecast is AccuWeather's published 2026 projection. This chart is not claiming
+    that cutting prevention in 2025 caused the 2026 fire season. It is showing two
+    things happening at the same time. You can draw your own conclusions.
   </div>
 
   <footer>
     <div class="sources">
-      NIFC Total Wildfires and Acres annual statistics (nifc.gov) ·
-      NPR / Grassroots Wildland Firefighters analysis of Forest Service FACTS data, May 4 2026 ·<br>
-      Center for Western Priorities, May 27 2026 ·
-      U.S. Department of the Interior fuels management program (doi.gov/wildlandfire/fuels) ·<br>
-      NIFC National Fire News, May 29 2026 ·
-      AccuWeather 2026 Wildfire Season Forecast ·
-      Congress.gov CRS Report IF10244<br>
+      Acres burned: NIFC Total Wildfires and Acres (nifc.gov/fire-information/statistics) ·
+      2026 YTD: NIFC National Fire News, May 29 2026 (nifc.gov/fire-information/nfn) ·<br>
+      Forest Service treatment: NPR analysis of USFS FACTS database, May 4 2026, cross-checked by Center for Western Priorities, May 27 2026 ·<br>
+      Interior treatment: U.S. Dept of the Interior fuels management program (doi.gov/wildlandfire/fuels) ·
+      Ten-year average: Congress.gov CRS Report IF10244 ·<br>
+      2026 forecast: AccuWeather 2026 Wildfire Season Forecast ·
       <a href="data/wildfire-data.csv">Download data (CSV)</a>
     </div>
     <div class="byline">Sara Bower · San Francisco · May 2026</div>
@@ -317,7 +333,7 @@
     {"year": "2022", "acres": 7.6},
     {"year": "2023", "acres": 2.7},
     {"year": "2024", "acres": 8.9},
-    {"year": "2025", "acres": 5.0}
+    {"year": "2025", "acres": 5.1}
   ];
 
   const partial2026 = [{"year": "2026", "acres": 2.3}];
@@ -325,7 +341,7 @@
 
   const fsData = [
     {"year": "2023", "treatment": 3.7, "type": "Forest Service"},
-    {"year": "2024", "treatment": 4.0, "type": "Forest Service"},
+    {"year": "2024", "treatment": 4.1, "type": "Forest Service"},
     {"year": "2025", "treatment": 2.6, "type": "Forest Service"}
   ];
 
