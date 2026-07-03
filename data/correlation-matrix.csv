@@ -1,0 +1,5 @@
+,acres_burned_m,dsci_national,dsci_west_nws,vpd_west_fireseason
+acres_burned_m,1.0,0.097,0.058,0.625
+dsci_national,0.097,1.0,0.734,0.56
+dsci_west_nws,0.058,0.734,1.0,0.185
+vpd_west_fireseason,0.625,0.56,0.185,1.0
