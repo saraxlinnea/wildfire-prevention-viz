@@ -87,6 +87,10 @@ See [`data/qa-audit-report.md`](data/qa-audit-report.md) for the latest audit ch
 
 ## For technical reviewers
 
+**Claim registry**
+
+Every statement on the live page is tracked in [`research/claims.md`](research/claims.md) (status, sources, confidence). Update before changing copy on `index.html`.
+
 **Reproducibility**
 
 - Chart data: [`data/wildfire-data.csv`](data/wildfire-data.csv) (row 2 = column metadata with source URLs)

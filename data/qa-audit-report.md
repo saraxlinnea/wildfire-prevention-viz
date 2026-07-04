@@ -1,7 +1,8 @@
 # QA audit report
 
-**Date:** June 2026  
-**Run:** `python scripts/audit_data.py`
+**Date:** June 2026 (updated 2026-07-04)  
+**Run:** `python scripts/audit_data.py`  
+**Claim-level fact-check:** [`research/fact-check-log.md`](../research/fact-check-log.md) (2026-07-04: 0 fail, 6 warn)
 
 ## Local QA
 
