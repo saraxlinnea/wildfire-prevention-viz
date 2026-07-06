@@ -38,3 +38,8 @@ credentials.json
 
 # Jupyter
 .ipynb_checkpoints/
+
+# Local agent / Cursor (not for GitHub)
+AGENTS.md
+.cursor/
+*.code-workspace
