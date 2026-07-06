@@ -196,7 +196,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 |---|---|
 | **Normalized statement** | U.S. Forest Service treated 2.6 million acres for wildfire risk in calendar year 2025 |
 | **Display text** | "treated 2.6 million acres for wildfire risk" (2025) |
-| **Page location** | Interpretation tab prose |
+| **Page location** | Interpretation tab policy context |
 | **Status** | Supported |
 | **Confidence** | High |
 | **Evidence strength** | Moderate (journalistic analysis of agency database) |
@@ -211,7 +211,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 |---|---|
 | **Normalized statement** | U.S. Forest Service treated 4.1 million acres for wildfire risk in calendar year 2024 |
 | **Display text** | "down from 4.1 million the year before" |
-| **Page location** | Interpretation tab prose |
+| **Page location** | Interpretation tab policy context |
 | **Status** | Supported |
 | **Confidence** | High |
 | **Evidence strength** | Moderate |
@@ -225,7 +225,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 |---|---|
 | **Normalized statement** | Forest Service wildfire-risk treatment acres decreased from 4.1M to 2.6M (2024→2025), a ~36.6% decline, displayed as 35% |
 | **Display text** | "**35% fewer acres**" / callout **35%** |
-| **Page location** | Header dek; Interpretation tab callouts, quote |
+| **Page location** | Header dek; Interpretation tab callouts |
 | **Status** | Supported |
 | **Confidence** | High |
 | **Evidence strength** | Moderate |
@@ -349,7 +349,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 | Field | Value |
 |---|---|
 | **Normalized statement** | The page does not assert that any chart series caused any other chart series |
-| **Display text** | "I am not claiming one line caused another" / methodology closing |
+| **Display text** | "This page does not claim one line caused another" / methodology closing |
 | **Page location** | Intro block; Interpretation tab methodology closing |
 | **Status** | Excluded (explicit non-claim) |
 | **Confidence** | High |
@@ -387,7 +387,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 | Field | Value |
 |---|---|
 | **Normalized statement** | Fire, atmosphere, policy, and interpretation use separate tabs because series differ in geography, calendar, and reporting period |
-| **Display text** | intro block |
+| **Display text** | intro block (four tabs) |
 | **Page location** | Intro block |
 | **Status** | Methodological |
 | **Confidence** | High |
@@ -400,7 +400,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 |---|---|
 | **Normalized statement** | Pairwise correlations between series exist in repo notebooks but are not presented as findings on the public page |
 | **Display text** | "Correlations are exploratory and do not appear on this page" |
-| **Page location** | Build note, footer |
+| **Page location** | Interpretation tab methodology (correlations); off-page notebook |
 | **Status** | Methodological |
 | **Sources** | `notebooks/correlation-analysis.ipynb`, `data/correlation-notes.md` |
 
@@ -414,7 +414,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 |---|---|
 | **Normalized statement** | USDA announced plans in March 2026 to close 57 of 77 Forest Service research stations |
 | **Display text** | prose block / methodology |
-| **Page location** | Interpretation tab prose, methodology |
+| **Page location** | Interpretation tab policy context, methodology |
 | **Status** | Supported |
 | **Confidence** | Medium |
 | **Evidence strength** | Moderate (news reporting of agency plan) |
@@ -429,7 +429,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 |---|---|
 | **Normalized statement** | Many affected Forest Service research stations conduct fire behavior or smoke forecasting research |
 | **Display text** | "Many of those sites study fire behavior and smoke forecasting" |
-| **Page location** | Interpretation tab prose |
+| **Page location** | Interpretation tab policy context |
 | **Status** | Partially supported |
 | **Confidence** | Medium |
 | **Sources** | Stateline reporting; general FS research station missions |
@@ -442,11 +442,25 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 | Field | Value |
 |---|---|
 | **Normalized statement** | Benjamin Franklin wrote "an ounce of prevention is worth a pound of cure" in 1735 urging Philadelphia fire prevention |
-| **Display text** | quote block |
-| **Page location** | Interpretation tab quote |
-| **Status** | Supported |
+| **Display text** | (removed from live page 2026-07-06) |
+| **Page location** | Off page |
+| **Status** | Supported (historical) |
 | **Confidence** | High |
 | **Sources** | Historical letter, widely cited |
+| **Notes** | Retired with editorial quote block; title retained |
+
+---
+
+### C-X06 — How to read this framing
+
+| Field | Value |
+|---|---|
+| **Normalized statement** | The page presents observed series on mismatched geographies and calendars; temporal overlap is not presented as causal evidence |
+| **Display text** | "What this is" / "What it is not" / "How to compare" (Interpretation tab) |
+| **Page location** | Interpretation tab, How to read this |
+| **Status** | Methodological |
+| **Confidence** | High |
+| **Related** | C-X01, C-X02, C-F09 vs C-F02 distinction in fire tab note |
 
 ---
 
@@ -457,11 +471,11 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 | Field | Value |
 |---|---|
 | **Statement** | The federal government enters peak fire season with high YTD acres burned and reduced FS treatment vs prior year |
-| **Display text** | quote block first sentence |
-| **Page location** | Interpretation tab quote |
+| **Display text** | (removed from live page 2026-07-06) |
+| **Page location** | Off page |
 | **Status** | Editorial |
 | **Depends on** | C-F02, C-P03 |
-| **Notes** | Factual components are supported; rhetorical juxtaposition is author interpretation, not causal claim |
+| **Notes** | Retired with Franklin quote block |
 
 ---
 
@@ -470,10 +484,10 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 | Field | Value |
 |---|---|
 | **Statement** | Prevention is cheaper than cure (normative economic framing) |
-| **Display text** | "The ounce was always going to be cheaper." |
-| **Page location** | Interpretation tab quote attribution |
+| **Display text** | (removed from live page 2026-07-06) |
+| **Page location** | Off page |
 | **Status** | Editorial |
-| **Notes** | Opinion / rhetorical capstone; not an empirical claim |
+| **Notes** | Retired with Franklin quote block |
 
 ---
 
@@ -483,18 +497,17 @@ Quick lookup: where each claim appears on `index.html`.
 
 | Location | Claim IDs |
 |---|---|
-| Header dek | C-P03, C-F01, C-F02, C-F11 |
+| Header dek | C-F01, C-F02, C-F11, C-P03 |
 | Intro block | C-X01, C-X04 |
 | Fire tab chart | C-F08, C-F09, C-F10 |
 | Atmosphere tab | C-D01, C-D03, C-V01, C-V02 |
 | Policy tab | C-P04, C-P05 |
-| Coupling tab | (stub, no claims) |
 | Interpretation tab callouts | C-P03, C-F01, C-F02, C-F08, C-F03 |
-| Interpretation tab prose | C-F01, C-F02, C-F04, C-P01, C-P02, C-F08, C-R01, C-R02 |
-| Interpretation tab quote | C-R03, C-E01, C-E02 |
-| Interpretation tab methodology | C-F05, C-F06, C-F01, C-F07, C-F09, C-P04, C-P05, C-P06, C-D02, C-V01, C-F08, C-R01, C-X01, C-X02 |
-| Build note | C-X05 |
-| Meta / OG tags | C-F01, C-P03 (twitter description) |
+| Interpretation tab prose | C-F04, C-F08, C-F11 |
+| Interpretation tab policy context | C-P01, C-P02, C-R01, C-R02 |
+| Interpretation tab how to read | C-X06 |
+| Interpretation tab methodology | C-F05, C-F06, C-F01, C-F07, C-F09, C-P04, C-P05, C-P06, C-D02, C-V01, C-F08, C-R01, C-X01, C-X02, C-X05 |
+| Meta / OG tags | C-F01, C-F02 (twitter description) |
 
 ---
 
@@ -514,6 +527,7 @@ Before updating the live page:
 
 | Date | Change |
 |---|---|
+| 2026-07-06 | Copy polish: remove Franklin quote, four tabs, neutral framing, deduped interpretation |
 | 2026-07-06 | v2 Phase 1: five-tab layout, rolling 10-yr fire band, % deviation toggle; claims C-F09, C-F10; C-F11 renumber; page locations synced |
 | 2026-07-04 | Copy fixes C-F04 (2022 ~3.1M), C-D02 (DSCI through June 16); tighter page margins |
 | 2026-07-04 | Structured fact-check pass; see [`fact-check-log.md`](fact-check-log.md) (0 fail, 4 warn) |

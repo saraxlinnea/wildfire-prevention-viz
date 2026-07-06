@@ -3,16 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>An Ounce of Prevention: Our Forests on Fire</title>
-  <meta name="description" content="U.S. wildfire data 1983-2026. National acres burned, federal hazardous fuels treatment, drought index, western VPD, and 2026 forecast. Sourced and reproducible.">
-  <meta property="og:title" content="An Ounce of Prevention: Our Forests on Fire">
-  <meta property="og:description" content="Federal wildfire prevention work, national acres burned, drought, and western fire-season climate. 1983 to 2026. Sourced data and reproducible notebooks.">
+  <title>An Ounce of Prevention: U.S. Wildfire Data</title>
+  <meta name="description" content="U.S. wildfire data 1983-2026. National acres burned with rolling baseline, atmospheric drivers, federal fuels treatment, and sourced methodology.">
+  <meta property="og:title" content="An Ounce of Prevention: U.S. Wildfire Data">
+  <meta property="og:description" content="National acres burned, drought, western fire-season VPD, and federal fuels treatment. 1983 to 2026. Sourced data and reproducible notebooks.">
   <meta property="og:url" content="https://saraxlinnea.github.io/wildfire-prevention-viz/">
   <meta property="og:type" content="website">
   <meta property="og:image" content="https://saraxlinnea.github.io/wildfire-prevention-viz/assets/og-card.svg">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="An Ounce of Prevention: Our Forests on Fire">
-  <meta name="twitter:description" content="2.6M acres burned YTD. 35% less federal prevention in 2025. Interactive sourced data, 1983-2026.">
+  <meta name="twitter:title" content="An Ounce of Prevention: U.S. Wildfire Data">
+  <meta name="twitter:description" content="2.6M acres burned YTD, 63% above the 10-year average to date. Sourced wildfire data, 1983-2026.">
   <meta name="twitter:image" content="https://saraxlinnea.github.io/wildfire-prevention-viz/assets/og-card.svg">
   <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
@@ -255,18 +255,6 @@
       background: rgba(201,74,26,0.15);
     }
 
-    .tab-stub {
-      background: white;
-      border: 1px solid var(--rule);
-      padding: 32px 24px;
-      text-align: center;
-      font-size: 13px;
-      color: var(--ink-light);
-      font-weight: 300;
-      line-height: 1.6;
-      margin-bottom: 12px;
-    }
-
     .interp-section {
       margin-bottom: 18px;
     }
@@ -324,29 +312,6 @@
       color: var(--ink);
       font-weight: 500;
       font-family: 'DM Sans', sans-serif;
-    }
-
-    .quote-block {
-      border-left: 3px solid var(--fire);
-      padding: 14px 18px;
-      margin-bottom: 14px;
-      background: rgba(201,74,26,0.04);
-    }
-
-    .quote-text {
-      font-family: 'Libre Baskerville', serif;
-      font-size: 13px;
-      font-style: italic;
-      color: var(--ink);
-      line-height: 1.6;
-    }
-
-    .quote-attr {
-      font-family: 'DM Mono', monospace;
-      font-size: 9px;
-      color: var(--ink-light);
-      margin-top: 8px;
-      letter-spacing: 0.05em;
     }
 
     .methodology-details {
@@ -440,7 +405,6 @@
       .callout { padding: 14px 14px; }
       .callout-num { font-size: 18px; }
       .callout-label { font-size: 9.5px; }
-      .quote-text { font-size: 12px; }
       .prose-block { font-size: 12px; }
       .methodology-details { font-size: 11px; }
       footer { flex-direction: column; gap: 12px; }
@@ -455,26 +419,24 @@
   <header>
     <div class="kicker">U.S. Wildfire Data · 1983-2026 · Updated June 2026</div>
     <h1>An Ounce of Prevention</h1>
-    <p class="h1-sub">Our forests on fire</p>
+    <p class="h1-sub">National wildfire activity, 1983-2026</p>
     <p class="dek">
-      In 2025 the Forest Service treated <strong>35% fewer acres</strong> for wildfire risk
-      than the year before. As of June 18, 2026, more than <strong>2.6 million acres</strong>
-      have already burned nationally, about <strong>63% above the 10-year average</strong> to date.
-      Peak fire season starts in summer.
+      As of June 18, 2026, more than <strong>2.6 million acres</strong> have burned nationally,
+      about <strong>63% above the 10-year average</strong> to date. Peak fire season starts in summer.
+      In 2025 the Forest Service treated <strong>35% fewer acres</strong> for wildfire risk than the year before.
     </p>
   </header>
 
   <p class="intro-block">
-    Five tabs: what is burning, what the atmosphere looks like, what federal agencies are treating,
-    how the series relate (coming soon), and how to read it all.
-    National acres burned start in 1983. I am not claiming one line caused another.
+    Four tabs cover fire outcomes, atmospheric drivers, federal treatment, and how to read the series.
+    Tier 1 marks primary observed outcomes; Tier 2 marks drivers and context.
+    National acres burned start in 1983. This page does not claim one line caused another.
   </p>
 
   <nav class="tab-bar" role="tablist" aria-label="Wildfire data views">
     <button class="tab-btn" role="tab" id="tab-btn-fire" aria-selected="true" aria-controls="tab-fire" data-tab="fire">Fire state</button>
     <button class="tab-btn" role="tab" id="tab-btn-atmosphere" aria-selected="false" aria-controls="tab-atmosphere" data-tab="atmosphere">Atmospheric drivers</button>
     <button class="tab-btn" role="tab" id="tab-btn-policy" aria-selected="false" aria-controls="tab-policy" data-tab="policy">Human intervention</button>
-    <button class="tab-btn" role="tab" id="tab-btn-coupling" aria-selected="false" aria-controls="tab-coupling" data-tab="coupling">Coupling</button>
     <button class="tab-btn" role="tab" id="tab-btn-interpret" aria-selected="false" aria-controls="tab-interpret" data-tab="interpret">Interpretation</button>
   </nav>
 
@@ -483,7 +445,7 @@
       <div class="chart-date-badge">Data through June 18, 2026 · NIFC National Fire News</div>
       <div class="signal-tier signal-tier-1">Tier 1 · National acres burned (observed)</div>
       <div class="panel-label">Wildfire activity</div>
-      <p class="panel-note">Shaded band shows the min-to-max range of the prior ten full calendar years. Band starts in 1993 when ten years of NIFC data exist.</p>
+      <p class="panel-note">Shaded band shows the min-to-max range of the prior ten full calendar years. Band starts in 1993 when ten years of NIFC data exist. Header and callout YTD figures use NIFC's same-date 10-year average; the chart band uses prior full calendar years only. AccuWeather forecast range appears in million acres view only.</p>
       <div class="chart-toggle" role="group" aria-label="Fire chart scale">
         <button type="button" class="toggle-btn active" data-fire-mode="acres">Million acres</button>
         <button type="button" class="toggle-btn" data-fire-mode="pct">% from 10-yr avg</button>
@@ -561,13 +523,6 @@
     </div>
   </section>
 
-  <section id="tab-coupling" class="tab-panel" role="tabpanel" aria-labelledby="tab-btn-coupling" hidden>
-    <div class="tab-stub">
-      Scatter plots and lag alignment charts are planned for the next release.<br>
-      Exploratory correlation notebooks are already in the <a href="https://github.com/saraxlinnea/wildfire-prevention-viz/blob/main/notebooks/correlation-analysis.ipynb">repository</a>.
-    </div>
-  </section>
-
   <section id="tab-interpret" class="tab-panel" role="tabpanel" aria-labelledby="tab-btn-interpret" hidden>
     <div class="interp-section">
       <div class="interp-heading">Observed facts</div>
@@ -591,12 +546,17 @@
       </div>
       <div class="prose-block">
         <strong>June 2026 snapshot.</strong>
-        As of June 18, more than 2.6 million acres have burned nationally, per NIFC.
-        That is about 63% above the 10-year average to date. Same date in 2022 saw about 3.1 million acres,
-        the highest in NIFC's year-to-date table. 2026 ranks second, not a record, but well above normal.
-        Peak season is still ahead. In 2025 the Forest Service treated 2.6 million acres for wildfire risk,
-        down from 4.1 million the year before. AccuWeather projects 5.5 to 8 million acres burned by year end
-        if conditions hold. In March 2026 USDA announced plans to close 57 of 77 Forest Service research stations.
+        Same date in 2022 saw about 3.1 million acres burned, the highest in NIFC's year-to-date table.
+        2026 ranks second, not a record, but well above normal. Peak season is still ahead.
+        AccuWeather projects 5.5 to 8 million acres burned by year end if conditions hold.
+      </div>
+    </div>
+
+    <div class="interp-section">
+      <div class="interp-heading">Policy context</div>
+      <div class="prose-block">
+        In 2025 the Forest Service treated 2.6 million acres for wildfire risk, down from 4.1 million in 2024.
+        In March 2026 USDA announced plans to close 57 of 77 Forest Service research stations.
         Many of those sites study fire behavior and smoke forecasting.
       </div>
     </div>
@@ -622,9 +582,10 @@
 
     <div class="interp-section">
       <div class="interp-heading">How to read this</div>
-      <div class="quote-block">
-        <p class="quote-text">Benjamin Franklin wrote "an ounce of prevention is worth a pound of cure" in 1735 in a letter urging Philadelphia toward fire prevention. The federal government is going into peak fire season with 2026 acres burned to date well above the 10-year average, having treated 35% fewer acres for wildfire risk than the year before.</p>
-        <p class="quote-attr">The ounce was always going to be cheaper.</p>
+      <div class="prose-block">
+        <strong>What this is.</strong> Observed time series on different geographies and reporting calendars.<br><br>
+        <strong>What it is not.</strong> A model of fire causes. Overlap in time is not evidence that one series drove another.<br><br>
+        <strong>How to compare.</strong> Use callouts and the header for year-to-date burn figures. Use the fire chart band for full-calendar-year context.
       </div>
     </div>
 
@@ -641,20 +602,13 @@
           <li>VPD: western U.S. fire-season mean from gridMET via OPeNDAP (<a href="https://doi.org/10.1002/joc.3413">Abatzoglou 2013</a>). May through September, west of 100°W, 1979-2025.</li>
           <li>2026 forecast: AccuWeather published 2026 wildfire season projection, 5.5 to 8 million acres.</li>
           <li>Research stations: USDA Forest Service reorganization announced March 31, 2026.</li>
+          <li>Correlations: exploratory pairwise analysis in repository notebooks; not shown on this page. See <a href="https://github.com/saraxlinnea/wildfire-prevention-viz/blob/main/notebooks/correlation-analysis.ipynb">correlation notebook</a> and <a href="data/correlation-matrix.csv">matrix CSV</a>.</li>
+          <li>Data processing: drought from U.S. Drought Monitor API; western fire-season VPD from gridMET (<a href="https://doi.org/10.1002/joc.3413">Abatzoglou 2013</a>). CSVs and notebooks in the <a href="https://github.com/saraxlinnea/wildfire-prevention-viz">GitHub repository</a>.</li>
         </ul>
-        <p class="closing">This page is not claiming that cutting prevention in 2025 caused the 2026 fire season. It shows two things happening at the same time and leaves the conclusion to you.</p>
+        <p class="closing">This page is not claiming that cutting prevention in 2025 caused the 2026 fire season. It shows two things happening at the same time and leaves the conclusion to the reader.</p>
       </div>
     </details>
   </section>
-
-  <div class="prose-block">
-    <strong>How this was built.</strong>
-    I pulled drought figures from the U.S. Drought Monitor API and western fire-season VPD from gridMET (Abatzoglou 2013).
-    CSVs, notebooks, and an off-page
-    <a href="https://github.com/saraxlinnea/wildfire-prevention-viz/blob/main/notebooks/correlation-analysis.ipynb">correlation study</a>
-    are in the <a href="https://github.com/saraxlinnea/wildfire-prevention-viz">GitHub repository</a>.
-    Correlations are exploratory and do not appear on this page.
-  </div>
 
   <footer>
     <div class="sources">

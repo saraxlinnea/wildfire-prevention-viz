@@ -1,6 +1,6 @@
 # An Ounce of Prevention: Our Forests on Fire
 
-U.S. wildfire data visualization, 1983-2026. Five tabs: fire state, atmospheric drivers, federal treatment, coupling (planned), and interpretation.
+U.S. wildfire data visualization, 1983-2026. Four tabs: fire state, atmospheric drivers, federal treatment, and interpretation.
 
 **[View live](https://saraxlinnea.github.io/wildfire-prevention-viz)**
 
@@ -8,15 +8,14 @@ U.S. wildfire data visualization, 1983-2026. Five tabs: fire state, atmospheric 
 
 ## What This Shows
 
-The page uses five tabs because fire, atmosphere, policy, and interpretation sit on different years and geographies:
+The page uses four tabs because fire, atmosphere, policy, and interpretation sit on different years and geographies:
 
-- **Fire state** (1983-2026): national acres burned with a rolling 10-year baseline band; toggle for % from 10-yr avg; 2026 YTD point and AccuWeather forecast range
+- **Fire state** (1983-2026): national acres burned with rolling 10-year baseline band; toggle for % from 10-yr avg; 2026 YTD point and AccuWeather forecast range
 - **Atmospheric drivers**: national and western DSCI (2000-2026) and western fire-season VPD (1979-2025)
 - **Human intervention** (2018-2025): Forest Service (2023-2025) and Interior Dept (2018-2024, fiscal year)
-- **Coupling**: stub for exploratory scatter and lag charts (notebook in repo)
-- **Interpretation**: callouts, snapshot prose, and methodology
+- **Interpretation**: callouts, context, methodology, and how to read the series
 
-In 2025 the Forest Service treated 35% fewer acres for wildfire risk than the year before. As of June 18, 2026, more than 2.6 million acres have already burned, about 63% above the 10-year average to date. Peak fire season starts in summer.
+As of June 18, 2026, more than 2.6 million acres have already burned, about 63% above the 10-year average to date. Peak fire season starts in summer. In 2025 the Forest Service treated 35% fewer acres for wildfire risk than the year before.
 
 This page does not claim that cutting prevention in 2025 directly caused the 2026 fire season. It shows two things happening at the same time and leaves the conclusion to you.
 

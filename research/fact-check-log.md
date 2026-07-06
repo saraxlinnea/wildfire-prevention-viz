@@ -1,10 +1,10 @@
 # Fact-check log
 
-**Run date:** 2026-07-06 (v2 Phase 1 partial)  
+**Run date:** 2026-07-06 (v2 Phase 1 + copy polish)  
 **Prior run:** 2026-07-04 (32 claims)  
 **Tier A audit:** WARN: `scripts/audit_data.py` failed (pandas/numpy binary incompatibility in local conda env). Manual stdlib CSV audit 2026-07-04: **PASS** (0 errors).  
-**Claims checked:** 34  
-**Summary:** 28 PASS · 2 PASS (copy) · 2 PASS (derived) · 2 N/A · 4 WARN · 0 FAIL
+**Claims checked:** 35  
+**Summary:** 28 PASS · 3 PASS (copy) · 2 PASS (derived) · 5 N/A · 4 WARN · 0 FAIL
 
 ---
 
@@ -33,8 +33,8 @@
 | C-F09 | PASS | derived + repo | Rolling band from NIFC full-year acres in CSV | See v2 delta above |
 | C-F10 | PASS | derived | % toggle from same window as C-F09 | See v2 delta above |
 | C-F11 | WARN | copy | Summer peak stated; not inline-sourced on page | Directionally correct; regional variation omitted |
-| C-P01 | PASS | CSV + external | CSV 2025 `fs_treatment=2.6`; CWP May 27 2026 confirms FS treatment decline | |
-| C-P02 | PASS | CSV | CSV 2024 `fs_treatment=4.1` | |
+| C-P01 | PASS | CSV + external | CSV 2025 `fs_treatment=2.6`; CWP May 27 2026 confirms FS treatment decline | Policy context section |
+| C-P02 | PASS | CSV | CSV 2024 `fs_treatment=4.1` | Policy context section |
 | C-P03 | PASS (derived) | CSV + external | Exact decline 36.6%; page and CWP use **35%** | Source convention matches page rounding |
 | C-P04 | PASS (copy) | copy + external | Policy tab note; methodology; NPR methodology (2023+ comparable series) | |
 | C-P05 | PASS (copy) | external | DOI fuels page: fiscal-year program, Oct 1 basis | |
@@ -44,16 +44,17 @@
 | C-D03 | WARN | copy | Atmosphere tab note qualitative ("much of the fire season hits the West") | Not a quantitative claim |
 | C-V01 | PASS | repo + script | `vpd-annual.csv` 1979-2025; `scripts/extend_vpd.py` defines May-Sep, west of 100°W | |
 | C-V02 | PASS (copy) | copy | Atmosphere tab VPD geographic mismatch disclaimer present | |
-| C-X01 | PASS (copy) | copy | "I am not claiming one line caused another" in intro | |
+| C-X01 | PASS (copy) | copy | "This page does not claim one line caused another" in intro | |
 | C-X02 | PASS (copy) | copy | Methodology closing excludes prevention to 2026 causation | |
 | C-X03 | N/A | copy | Causal claim absent from page (by design) | Rejected hypothesis tracked in registry only |
-| C-X04 | PASS (copy) | copy | Intro states five tabs / mismatched timelines | |
-| C-X05 | PASS (copy) | copy + repo | "Correlations are exploratory…" + notebook/CSV exist off-page | |
+| C-X04 | PASS (copy) | copy | Intro states four tabs / mismatched timelines | |
+| C-X05 | PASS (copy) | copy + repo | Correlations in methodology + notebook/CSV exist off-page | |
+| C-X06 | PASS (copy) | copy | How to read this framing in Interpretation tab | |
 | C-R01 | WARN | copy + partial external | Page cites Stateline Apr 17 2026; live fetch returned truncated page | 57 of 77 stations not re-extracted live; retained from prior sourcing |
 | C-R02 | WARN | copy | "Many of those sites study fire behavior and smoke forecasting" | Qualitative; not independently counted |
-| C-R03 | PASS | external | Franklin 1735 letter attribution; widely documented | |
-| C-E01 | PASS (derived) | derived | Quote juxtaposition depends on C-F02 + C-P03 (both PASS) | Editorial; factual deps verified |
-| C-E02 | N/A | copy | "The ounce was always going to be cheaper" | Opinion; no empirical fact-check |
+| C-R03 | N/A | copy | Franklin quote removed from live page | Retained in registry; title only |
+| C-E01 | N/A | copy | Editorial juxtaposition removed with quote block | |
+| C-E02 | N/A | copy | Closing line removed with quote block | |
 
 ---
 

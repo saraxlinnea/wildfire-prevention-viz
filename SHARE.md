@@ -8,7 +8,7 @@ Ready-to-use text for LinkedIn and email. Link: https://saraxlinnea.github.io/wi
 
 An Ounce of Prevention: Our Forests on Fire
 
-I put together a sourced look at U.S. wildfire acres burned (1983-2026), federal fuels treatment, drought, and western fire-season dryness. Five tabs: fire with a rolling 10-year baseline, atmospheric drivers, policy, and how to read it.
+I put together a sourced look at U.S. wildfire acres burned (1983-2026), federal fuels treatment, drought, and western fire-season dryness. Four tabs: fire with a rolling 10-year baseline, atmospheric drivers, policy, and interpretation.
 
 As of June 18, 2026:
 - 2.6 million acres burned nationally, about 63% above the 10-year average to date
