@@ -1,6 +1,6 @@
 # An Ounce of Prevention: Our Forests on Fire
 
-U.S. wildfire data visualization, 1983-2026. Four panels: national fire outcomes, federal prevention work, drought (national + western), and western fire-season VPD.
+U.S. wildfire data visualization, 1983-2026. Five tabs: fire state, atmospheric drivers, federal treatment, coupling (planned), and interpretation.
 
 **[View live](https://saraxlinnea.github.io/wildfire-prevention-viz)**
 
@@ -8,12 +8,13 @@ U.S. wildfire data visualization, 1983-2026. Four panels: national fire outcomes
 
 ## What This Shows
 
-The page splits fire, prevention, drought, and western dryness because they do not share the same years or geography:
+The page uses five tabs because fire, atmosphere, policy, and interpretation sit on different years and geographies:
 
-- **Fire outcomes** (1983-2026): total U.S. acres burned, NIFC standardized reporting
-- **Federal prevention** (2018-2025): Forest Service (2023-2025) and Interior Dept (2018-2024, fiscal year)
-- **Drought severity** (2000-2026): national and NWS Western Region DSCI
-- **Western VPD** (1979-2025): gridMET fire-season dryness, west of 100°W
+- **Fire state** (1983-2026): national acres burned with a rolling 10-year baseline band; toggle for % from 10-yr avg; 2026 YTD point and AccuWeather forecast range
+- **Atmospheric drivers**: national and western DSCI (2000-2026) and western fire-season VPD (1979-2025)
+- **Human intervention** (2018-2025): Forest Service (2023-2025) and Interior Dept (2018-2024, fiscal year)
+- **Coupling**: stub for exploratory scatter and lag charts (notebook in repo)
+- **Interpretation**: callouts, snapshot prose, and methodology
 
 In 2025 the Forest Service treated 35% fewer acres for wildfire risk than the year before. As of June 18, 2026, more than 2.6 million acres have already burned, about 63% above the 10-year average to date. Peak fire season starts in summer.
 
@@ -32,7 +33,7 @@ This page does not claim that cutting prevention in 2025 directly caused the 202
 | Drought severity (national) | [U.S. Drought Monitor API](https://usdmdataservices.unl.edu/api/USStatistics/GetDSCI?aoi=conus) | 2000-2026 | See `data/dsci-annual-averages.csv` |
 | Drought severity (western) | [USDM NWS Western Region API](https://usdmdataservices.unl.edu/api/NWSRegionStatistics/GetDSCI?aoi=WR) | 2000-2026 | See `data/dsci-western-annual.csv` |
 | Western fire season VPD | [gridMET via OPeNDAP](http://thredds.northwestknowledge.net/thredds/dodsC/MET/vpd/) | 1979-2025 | Western US, May-Sep; see `data/vpd-annual.csv` |
-| Ten-year average | [CRS Report IF10244 (PDF)](https://crsreports.congress.gov/product/pdf/IF/IF10244), [Congress.gov](https://www.congress.gov/crs-product/IF10244) | 2013-2022 | 7.2M acres reference line |
+| Ten-year average (CRS) | [CRS Report IF10244 (PDF)](https://crsreports.congress.gov/product/pdf/IF/IF10244), [Congress.gov](https://www.congress.gov/crs-product/IF10244) | 2013-2022 | 7.2M acres; reference in CSV only; chart uses rolling 10-yr band from NIFC data |
 | 2026 forecast | [AccuWeather 2026 Wildfire Season Forecast](https://www.accuweather.com/en/press/larger-wildfires-fueled-by-drought-and-heat-expected-across-the-u-s-in-2026/1884295) | 2026 | 5.5-8M acres projected |
 | Research station closures | [Stateline, USDA reorganization March 2026](https://stateline.org/2026/04/17/forest-service-plan-to-close-research-stations-stokes-fear-as-wildfire-season-approaches/) | 2026 | 57 of 77 stations |
 

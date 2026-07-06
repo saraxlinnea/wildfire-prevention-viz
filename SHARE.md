@@ -8,7 +8,7 @@ Ready-to-use text for LinkedIn and email. Link: https://saraxlinnea.github.io/wi
 
 An Ounce of Prevention: Our Forests on Fire
 
-I put together a sourced look at U.S. wildfire acres burned (1983-2026), federal fuels treatment, drought, and western fire-season dryness.
+I put together a sourced look at U.S. wildfire acres burned (1983-2026), federal fuels treatment, drought, and western fire-season dryness. Five tabs: fire with a rolling 10-year baseline, atmospheric drivers, policy, and how to read it.
 
 As of June 18, 2026:
 - 2.6 million acres burned nationally, about 63% above the 10-year average to date
@@ -34,9 +34,9 @@ Subject: U.S. wildfire data page (sourced, reproducible)
 
 Hi [name],
 
-I published a data page on U.S. wildfire outcomes and federal hazardous fuels treatment, with drought and western fire-season VPD.
+I published a data page on U.S. wildfire outcomes and federal hazardous fuels treatment, with drought and western fire-season VPD. The fire tab shows national acres burned with a rolling 10-year baseline band (not a flat CRS reference line).
 
-- Fire outcomes: NIFC annual statistics, 1983-2026
+- Fire state: NIFC annual statistics, 1983-2026; rolling 10-yr band from chart data
 - Prevention: NPR/USFS FACTS (2023-2025), DOI fuels program (2018-2024, fiscal year)
 - Drought: U.S. Drought Monitor API (national + NWS Western Region), verified against raw weekly downloads
 - VPD: gridMET OPeNDAP, western U.S., May-Sep, 1979-2025

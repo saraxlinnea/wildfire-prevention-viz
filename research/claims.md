@@ -4,7 +4,7 @@ Tracks every empirical and editorial statement on the public visualization.
 Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/main/CORE/CLAIM_TRACKING_LAYER.md) and [Evidence Standard](https://github.com/saraxlinnea/AI-OS/blob/main/CORE/EVIDENCE_STANDARD.md).
 
 **Live page:** [saraxlinnea.github.io/wildfire-prevention-viz](https://saraxlinnea.github.io/wildfire-prevention-viz)  
-**Last audited against:** 2026-07-04 fact-check pass ([`fact-check-log.md`](fact-check-log.md))  
+**Last audited against:** 2026-07-06 fact-check pass ([`fact-check-log.md`](fact-check-log.md))  
 **Update rule:** Any new copy on `index.html` must get a claim ID here before publish.
 
 ---
@@ -32,7 +32,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 |---|---|
 | **Normalized statement** | U.S. national acres burned from Jan 1 through June 18, 2026 equals 2,627,549 acres |
 | **Display text** | "more than **2.6 million acres**" / callout **2.6M** |
-| **Page location** | Header dek, callouts, prose block, methodology |
+| **Page location** | Header dek; Interpretation tab callouts, prose, methodology |
 | **Status** | Supported |
 | **Confidence** | High |
 | **Evidence strength** | Strong (agency operational reporting) |
@@ -47,7 +47,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 |---|---|
 | **Normalized statement** | 2026 YTD acres burned through June 18 is approximately 63% above the 10-year YTD average for the same date |
 | **Display text** | "**63% above the 10-year average** to date" |
-| **Page location** | Header dek, callout, prose block |
+| **Page location** | Header dek; Interpretation tab callout, prose |
 | **Status** | Supported |
 | **Confidence** | High |
 | **Evidence strength** | Strong (NIFC published comparison) |
@@ -62,7 +62,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 |---|---|
 | **Normalized statement** | 2026 YTD acres burned is 163% of the 10-year average YTD acres burned (same date) |
 | **Display text** | callout **163%** |
-| **Page location** | Callouts |
+| **Page location** | Interpretation tab callouts |
 | **Status** | Supported |
 | **Confidence** | High |
 | **Evidence strength** | Strong |
@@ -77,7 +77,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 |---|---|
 | **Normalized statement** | 2026 YTD acres burned through June 18 ranks second highest in NIFC's YTD comparison table; 2022 same-date YTD was about 3.1 million acres (highest) |
 | **Display text** | "2026 ranks second, not a record" / "Same date in 2022 saw about 3.1 million acres" |
-| **Page location** | Prose block |
+| **Page location** | Interpretation tab prose |
 | **Status** | Supported |
 | **Confidence** | High |
 | **Evidence strength** | Strong |
@@ -90,8 +90,8 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 | Field | Value |
 |---|---|
 | **Normalized statement** | NIFC national acres-burned statistics are comparable from calendar year 1983 onward |
-| **Display text** | "National acres burned run from 1983 (NIFC)" / "Standardized reporting from 1983" |
-| **Page location** | Intro block, methodology |
+| **Display text** | "National acres burned start in 1983" / "Standardized reporting from 1983" |
+| **Page location** | Intro block; Interpretation tab methodology |
 | **Status** | Supported |
 | **Confidence** | High |
 | **Evidence strength** | Strong (documented NIFC methodology) |
@@ -105,7 +105,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 |---|---|
 | **Normalized statement** | NIFC acres-burned figures before 1983 use non-comparable reporting methods |
 | **Display text** | "pre-1983 figures are not comparable" |
-| **Page location** | Methodology |
+| **Page location** | Interpretation tab methodology |
 | **Status** | Supported |
 | **Confidence** | High |
 | **Evidence strength** | Strong |
@@ -113,18 +113,48 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 
 ---
 
-### C-F07 — Ten-year average reference line
+### C-F07 — CRS ten-year average (reference only)
 
 | Field | Value |
 |---|---|
 | **Normalized statement** | Mean U.S. acres burned for calendar years 2013–2022 was 7.2 million acres per year |
-| **Display text** | "Ten-year average burned (7.2M, 2013-2022)" |
-| **Page location** | Fire chart legend |
+| **Display text** | (no longer on fire chart; retained in `wildfire-data.csv` column `ten_year_avg_millions`) |
+| **Page location** | Data file and footer; superseded on chart by C-F09 rolling band |
 | **Status** | Supported |
 | **Confidence** | High |
 | **Evidence strength** | Moderate (CRS summary of NIFC data) |
 | **Sources** | [CRS IF10244](https://crsreports.congress.gov/product/pdf/IF/IF10244) |
-| **Limitations** | Flat reference line; not a rolling average; ends 2022 |
+| **Limitations** | Flat figure; not a rolling average; ends 2022 |
+
+---
+
+### C-F09 — Rolling ten-year baseline band
+
+| Field | Value |
+|---|---|
+| **Normalized statement** | For each calendar year with ten prior full years of NIFC data, the fire chart shows the min-to-max range of acres burned in those ten prior years; band begins in 1993 |
+| **Display text** | "Prior 10-year range" / "Shaded band shows the min-to-max range of the prior ten full calendar years" |
+| **Page location** | Fire tab legend, panel note; Interpretation tab methodology |
+| **Status** | Methodological |
+| **Confidence** | High |
+| **Evidence strength** | Computed from NIFC annual statistics in `data/wildfire-data.csv` |
+| **Sources** | [NIFC Total Wildfires and Acres](https://www.nifc.gov/fire-information/statistics); chart JavaScript |
+| **Limitations** | Trailing window only; not YTD-comparable; distinct from NIFC's YTD 10-year average in C-F02 |
+
+---
+
+### C-F10 — Percent deviation from rolling ten-year average
+
+| Field | Value |
+|---|---|
+| **Normalized statement** | Chart toggle shows each year's acres burned as percent above or below the mean of the ten prior full calendar years |
+| **Display text** | "% from 10-yr avg" toggle |
+| **Page location** | Fire tab chart toggle |
+| **Status** | Methodological |
+| **Confidence** | High |
+| **Evidence strength** | Derived from same rolling window as C-F09 |
+| **Sources** | Chart JavaScript |
+| **Limitations** | Full-year acres only; 2026 YTD point uses 2016–2025 window for comparison |
 
 ---
 
@@ -134,7 +164,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 |---|---|
 | **Normalized statement** | AccuWeather projects 5.5 to 8.0 million U.S. acres burned in calendar year 2026 if current conditions hold |
 | **Display text** | "**5.5-8M**" / "AccuWeather projects 5.5 to 8 million acres" |
-| **Page location** | Fire chart legend, callouts, prose, methodology |
+| **Page location** | Fire tab legend; Interpretation tab callouts, prose, methodology |
 | **Status** | Speculative |
 | **Confidence** | Low |
 | **Evidence strength** | Speculative (commercial forecast, conditional language) |
@@ -143,13 +173,13 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 
 ---
 
-### C-F09 — Peak fire season timing
+### C-F11 — Peak fire season timing
 
 | Field | Value |
 |---|---|
 | **Normalized statement** | U.S. wildfire activity typically peaks in summer months |
 | **Display text** | "Peak fire season starts in summer" / "Peak season is still ahead" |
-| **Page location** | Header dek, prose block |
+| **Page location** | Header dek; Interpretation tab prose |
 | **Status** | Partially supported |
 | **Confidence** | Medium |
 | **Evidence strength** | Moderate (general climatology; not sourced inline on page) |
@@ -166,7 +196,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 |---|---|
 | **Normalized statement** | U.S. Forest Service treated 2.6 million acres for wildfire risk in calendar year 2025 |
 | **Display text** | "treated 2.6 million acres for wildfire risk" (2025) |
-| **Page location** | Prose block |
+| **Page location** | Interpretation tab prose |
 | **Status** | Supported |
 | **Confidence** | High |
 | **Evidence strength** | Moderate (journalistic analysis of agency database) |
@@ -181,7 +211,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 |---|---|
 | **Normalized statement** | U.S. Forest Service treated 4.1 million acres for wildfire risk in calendar year 2024 |
 | **Display text** | "down from 4.1 million the year before" |
-| **Page location** | Prose block |
+| **Page location** | Interpretation tab prose |
 | **Status** | Supported |
 | **Confidence** | High |
 | **Evidence strength** | Moderate |
@@ -195,7 +225,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 |---|---|
 | **Normalized statement** | Forest Service wildfire-risk treatment acres decreased from 4.1M to 2.6M (2024→2025), a ~36.6% decline, displayed as 35% |
 | **Display text** | "**35% fewer acres**" / callout **35%** |
-| **Page location** | Header dek, callouts, quote block |
+| **Page location** | Header dek; Interpretation tab callouts, quote |
 | **Status** | Supported |
 | **Confidence** | High |
 | **Evidence strength** | Moderate |
@@ -210,7 +240,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 |---|---|
 | **Normalized statement** | Forest Service treatment figures on this page are consistently reported only from calendar year 2023 |
 | **Display text** | "Forest Service figures from 2023" / "Consistent figures from 2023 onward only" |
-| **Page location** | Intro block, prevention panel note, methodology |
+| **Page location** | Policy tab panel note; Interpretation tab methodology |
 | **Status** | Methodological |
 | **Confidence** | High |
 | **Sources** | NPR methodology note; page author decision |
@@ -223,7 +253,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 |---|---|
 | **Normalized statement** | Interior Department hazardous fuels treatment is reported on a federal fiscal year basis (Oct 1 start), not calendar year |
 | **Display text** | "Interior fuels work is reported from 2018 (fiscal year)" / panel note |
-| **Page location** | Intro block, prevention panel, methodology |
+| **Page location** | Policy tab panel note; Interpretation tab methodology |
 | **Status** | Methodological |
 | **Confidence** | High |
 | **Sources** | [DOI fuels management program](https://www.doi.gov/wildlandfire/fuels) |
@@ -236,7 +266,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 |---|---|
 | **Normalized statement** | Interior treatment figures cover BLM, NPS, BIA, and FWS lands, fiscal years 2018–2024 |
 | **Display text** | methodology bullet |
-| **Page location** | Methodology |
+| **Page location** | Interpretation tab methodology |
 | **Status** | Supported |
 | **Confidence** | High |
 | **Sources** | DOI fuels program |
@@ -250,8 +280,8 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 | Field | Value |
 |---|---|
 | **Normalized statement** | U.S. Drought Monitor DSCI weekly statistics used for annual averages begin in calendar year 2000 |
-| **Display text** | "Drought index readings start in 2000" |
-| **Page location** | Intro block |
+| **Display text** | "2000 onward" (atmosphere tab drought panel note) |
+| **Page location** | Atmosphere tab drought panel note |
 | **Status** | Supported |
 | **Confidence** | High |
 | **Sources** | [U.S. Drought Monitor API](https://usdmdataservices.unl.edu/api/USStatistics/GetDSCI?aoi=conus) |
@@ -264,7 +294,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 |---|---|
 | **Normalized statement** | 2026 DSCI values are 24-week averages through June 16, 2026 (national and western) |
 | **Display text** | methodology bullet |
-| **Page location** | Methodology |
+| **Page location** | Interpretation tab methodology |
 | **Status** | Supported |
 | **Confidence** | High |
 | **Sources** | `data/dsci-annual-averages.csv`, `data/dsci-western-annual.csv`; USDM API pulls |
@@ -277,7 +307,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 |---|---|
 | **Normalized statement** | National (conus) and NWS Western Region DSCI are displayed together; western region covers much of U.S. fire-season geography |
 | **Display text** | panel note: "much of the fire season hits the West" |
-| **Page location** | Drought panel |
+| **Page location** | Atmosphere tab |
 | **Status** | Partially supported |
 | **Confidence** | Medium |
 | **Notes** | Geographic overlap statement is directionally true; not a quantitative claim |
@@ -292,7 +322,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 |---|---|
 | **Normalized statement** | Western U.S. mean fire-season VPD is computed for May–September, west of 100°W, from gridMET, years 1979–2025 |
 | **Display text** | VPD panel note and methodology |
-| **Page location** | VPD panel, methodology |
+| **Page location** | Atmosphere tab; Interpretation tab methodology |
 | **Status** | Supported |
 | **Confidence** | High |
 | **Evidence strength** | Strong (published dataset + peer-reviewed gridMET paper) |
@@ -306,7 +336,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 |---|---|
 | **Normalized statement** | Western VPD is not geographically comparable to national acres-burned totals |
 | **Display text** | "National acres burned count the whole country. Western dryness, not a national match." |
-| **Page location** | VPD panel note |
+| **Page location** | Atmosphere tab panel note |
 | **Status** | Methodological |
 | **Confidence** | High |
 
@@ -320,7 +350,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 |---|---|
 | **Normalized statement** | The page does not assert that any chart series caused any other chart series |
 | **Display text** | "I am not claiming one line caused another" / methodology closing |
-| **Page location** | Intro block, methodology closing |
+| **Page location** | Intro block; Interpretation tab methodology closing |
 | **Status** | Excluded (explicit non-claim) |
 | **Confidence** | High |
 | **AI-OS note** | Prevents upgrade of temporal co-occurrence to causation per Evidence Standard §7 |
@@ -333,7 +363,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 |---|---|
 | **Normalized statement** | The page does not assert that reduced 2025 Forest Service treatment caused 2026 fire outcomes |
 | **Display text** | "not claiming that cutting prevention in 2025 caused the 2026 fire season" |
-| **Page location** | Methodology closing |
+| **Page location** | Interpretation tab methodology closing |
 | **Status** | Excluded (explicit non-claim) |
 | **Related rejected claim** | See C-X03 |
 
@@ -356,7 +386,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 
 | Field | Value |
 |---|---|
-| **Normalized statement** | Fire, prevention, drought, and VPD panels use different year ranges and geographic scopes by design |
+| **Normalized statement** | Fire, atmosphere, policy, and interpretation use separate tabs because series differ in geography, calendar, and reporting period |
 | **Display text** | intro block |
 | **Page location** | Intro block |
 | **Status** | Methodological |
@@ -384,7 +414,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 |---|---|
 | **Normalized statement** | USDA announced plans in March 2026 to close 57 of 77 Forest Service research stations |
 | **Display text** | prose block / methodology |
-| **Page location** | Prose block, methodology |
+| **Page location** | Interpretation tab prose, methodology |
 | **Status** | Supported |
 | **Confidence** | Medium |
 | **Evidence strength** | Moderate (news reporting of agency plan) |
@@ -399,7 +429,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 |---|---|
 | **Normalized statement** | Many affected Forest Service research stations conduct fire behavior or smoke forecasting research |
 | **Display text** | "Many of those sites study fire behavior and smoke forecasting" |
-| **Page location** | Prose block |
+| **Page location** | Interpretation tab prose |
 | **Status** | Partially supported |
 | **Confidence** | Medium |
 | **Sources** | Stateline reporting; general FS research station missions |
@@ -413,7 +443,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 |---|---|
 | **Normalized statement** | Benjamin Franklin wrote "an ounce of prevention is worth a pound of cure" in 1735 urging Philadelphia fire prevention |
 | **Display text** | quote block |
-| **Page location** | Quote block |
+| **Page location** | Interpretation tab quote |
 | **Status** | Supported |
 | **Confidence** | High |
 | **Sources** | Historical letter, widely cited |
@@ -428,7 +458,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 |---|---|
 | **Statement** | The federal government enters peak fire season with high YTD acres burned and reduced FS treatment vs prior year |
 | **Display text** | quote block first sentence |
-| **Page location** | Quote block |
+| **Page location** | Interpretation tab quote |
 | **Status** | Editorial |
 | **Depends on** | C-F02, C-P03 |
 | **Notes** | Factual components are supported; rhetorical juxtaposition is author interpretation, not causal claim |
@@ -441,7 +471,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 |---|---|
 | **Statement** | Prevention is cheaper than cure (normative economic framing) |
 | **Display text** | "The ounce was always going to be cheaper." |
-| **Page location** | Quote attribution line |
+| **Page location** | Interpretation tab quote attribution |
 | **Status** | Editorial |
 | **Notes** | Opinion / rhetorical capstone; not an empirical claim |
 
@@ -453,16 +483,16 @@ Quick lookup: where each claim appears on `index.html`.
 
 | Location | Claim IDs |
 |---|---|
-| Header dek | C-P03, C-F01, C-F02, C-F09 |
-| Intro block | C-F05, C-P04, C-P05, C-D01, C-V01, C-X01, C-X04 |
-| Fire chart | C-F07, C-F08 |
-| Prevention chart | C-P04, C-P05 |
-| Drought chart | C-D01, C-D03 |
-| VPD chart | C-V01, C-V02 |
-| Callouts | C-P03, C-F01, C-F02, C-F08, C-F03 |
-| Prose block | C-F01, C-F02, C-F04, C-P01, C-P02, C-F08, C-R01, C-R02 |
-| Quote block | C-R03, C-E01, C-E02 |
-| Methodology | C-F05, C-F06, C-F01, C-P04, C-P06, C-D02, C-V01, C-F08, C-R01, C-X01, C-X02 |
+| Header dek | C-P03, C-F01, C-F02, C-F11 |
+| Intro block | C-X01, C-X04 |
+| Fire tab chart | C-F08, C-F09, C-F10 |
+| Atmosphere tab | C-D01, C-D03, C-V01, C-V02 |
+| Policy tab | C-P04, C-P05 |
+| Coupling tab | (stub, no claims) |
+| Interpretation tab callouts | C-P03, C-F01, C-F02, C-F08, C-F03 |
+| Interpretation tab prose | C-F01, C-F02, C-F04, C-P01, C-P02, C-F08, C-R01, C-R02 |
+| Interpretation tab quote | C-R03, C-E01, C-E02 |
+| Interpretation tab methodology | C-F05, C-F06, C-F01, C-F07, C-F09, C-P04, C-P05, C-P06, C-D02, C-V01, C-F08, C-R01, C-X01, C-X02 |
 | Build note | C-X05 |
 | Meta / OG tags | C-F01, C-P03 (twitter description) |
 
@@ -484,6 +514,7 @@ Before updating the live page:
 
 | Date | Change |
 |---|---|
+| 2026-07-06 | v2 Phase 1: five-tab layout, rolling 10-yr fire band, % deviation toggle; claims C-F09, C-F10; C-F11 renumber; page locations synced |
 | 2026-07-04 | Copy fixes C-F04 (2022 ~3.1M), C-D02 (DSCI through June 16); tighter page margins |
 | 2026-07-04 | Structured fact-check pass; see [`fact-check-log.md`](fact-check-log.md) (0 fail, 4 warn) |
 | 2026-07-03 | Initial registry from live page (four panels, June 18 YTD) |
