@@ -1,10 +1,37 @@
 # Fact-check log
 
-**Run date:** 2026-07-06 (v2 Phase 1 + copy polish)  
-**Prior run:** 2026-07-04 (32 claims)  
+**Run date:** 2026-07-06 (Phase A: scientific copy pass)  
+**Prior run:** 2026-07-06 (v2 Phase 2-3: merged charts, Relationships tab)  
 **Tier A audit:** WARN: `scripts/audit_data.py` failed (pandas/numpy binary incompatibility in local conda env). Manual stdlib CSV audit 2026-07-04: **PASS** (0 errors).  
-**Claims checked:** 35  
-**Summary:** 28 PASS · 3 PASS (copy) · 2 PASS (derived) · 5 N/A · 4 WARN · 0 FAIL
+**Claims checked:** 47  
+**Summary:** 31 PASS · 11 PASS (copy/method) · 3 PASS (derived) · 5 N/A · 2 WARN (partial) · 0 FAIL
+
+---
+
+## Phase A copy delta (2026-07-06)
+
+| Claim ID | Result | Method | Source / evidence | Notes |
+|---|---|---|---|---|
+| C-M01 | PASS (copy) | copy | YTD vs full-year framing; consistent with C-F04 | Methodological |
+| C-M02 | PASS (derived) | math | r=0.625 → r²≈0.39; page rounds to 40% | From C-C01 |
+| C-M03 | PASS (derived) | repo | 2010-2025 inclusive = 16 years | `correlation-matrix.csv` |
+| C-M04 | PASS (copy) | copy + C-V01/C-D03 | VPD vs DSCI process distinction | No new numeric claim |
+| C-M05 | PASS (copy) | copy | Treatment ≠ outcomes; aligns C-X01/C-X02 | Methodological |
+| C-M06 | PASS (derived) | repo | r=0.10 vs 0.63 from correlation matrix | Geographic reasoning |
+| C-M07 | WARN (partial) | external | NIFC/CRS western fire dominance; not quantified on page | Directionally standard; cite if challenged |
+
+---
+
+## v2 Phase 2-3 delta (2026-07-06)
+
+| Claim ID | Result | Method | Source / evidence | Notes |
+|---|---|---|---|---|
+| C-X05 | PASS (copy) | copy + repo | Relationships tab + methodology; exploratory framing | Revised from off-page to on-page coupling |
+| C-C01 | PASS (derived) | repo | `correlation-matrix.csv` r=0.625; page rounds to 0.63 | Scatter excludes partial years 2010-2025 |
+| C-C02 | PASS (copy) | copy | Lag panel note states annual resolution limit | |
+| C-C03 | PASS (copy) | copy + CSV | Three FS years in CSV; panel + chart n=3 warning | 2026 outcome partial flagged |
+| C-A01 | PASS (derived) | repo + JS | Z-scores from 2000-2025 overlap; 2026 DSCI excluded | |
+| C-P07 | PASS (copy) | copy | Policy tab combined total + fiscal/calendar note | |
 
 ---
 
@@ -43,12 +70,17 @@
 | C-D02 | PASS | repo + copy | CSV/raw: 24 weeks, last week `20260616`; page says "through June 16" | Fixed 2026-07-04 |
 | C-D03 | WARN | copy | Atmosphere tab note qualitative ("much of the fire season hits the West") | Not a quantitative claim |
 | C-V01 | PASS | repo + script | `vpd-annual.csv` 1979-2025; `scripts/extend_vpd.py` defines May-Sep, west of 100°W | |
-| C-V02 | PASS (copy) | copy | Atmosphere tab VPD geographic mismatch disclaimer present | |
+| C-V02 | PASS (copy) | copy | Atmosphere and Relationships tabs geographic mismatch disclaimers | |
+| C-C01 | PASS (derived) | repo | `correlation-matrix.csv` r=0.625; page 0.63 | 2010-2025 full years |
+| C-C02 | PASS (copy) | copy | Lag panel annual resolution note | |
+| C-C03 | PASS (copy) | copy + CSV | Three FS treatment years; n=3 warning on chart | |
+| C-A01 | PASS (derived) | JS + repo | Z-score overlay 2000-2025; 2026 DSCI excluded | |
+| C-P07 | PASS (copy) | copy | Combined federal total + calendar/fiscal caveat | |
 | C-X01 | PASS (copy) | copy | "This page does not claim one line caused another" in intro | |
 | C-X02 | PASS (copy) | copy | Methodology closing excludes prevention to 2026 causation | |
 | C-X03 | N/A | copy | Causal claim absent from page (by design) | Rejected hypothesis tracked in registry only |
-| C-X04 | PASS (copy) | copy | Intro states four tabs / mismatched timelines | |
-| C-X05 | PASS (copy) | copy + repo | Correlations in methodology + notebook/CSV exist off-page | |
+| C-X04 | PASS (copy) | copy | Intro states five tabs / mismatched timelines | |
+| C-X05 | PASS (copy) | copy + repo | Relationships tab exploratory coupling; not causal | Revised 2026-07-06 Phase 2-3 |
 | C-X06 | PASS (copy) | copy | How to read this framing in Interpretation tab | |
 | C-R01 | WARN | copy + partial external | Page cites Stateline Apr 17 2026; live fetch returned truncated page | 57 of 77 stations not re-extracted live; retained from prior sourcing |
 | C-R02 | WARN | copy | "Many of those sites study fire behavior and smoke forecasting" | Qualitative; not independently counted |

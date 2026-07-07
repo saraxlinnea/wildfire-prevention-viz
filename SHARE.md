@@ -6,9 +6,9 @@ Ready-to-use text for LinkedIn and email. Link: https://saraxlinnea.github.io/wi
 
 ## Short (LinkedIn post)
 
-An Ounce of Prevention: Our Forests on Fire
+An Ounce of Prevention: U.S. Wildfire Data
 
-I put together a sourced look at U.S. wildfire acres burned (1983-2026), federal fuels treatment, drought, and western fire-season dryness. Four tabs: fire with a rolling 10-year baseline, atmospheric drivers, policy, and interpretation.
+I put together a sourced look at U.S. wildfire data (1983-2026). Four tabs: outcomes with YTD callouts, drivers and federal context, exploratory coupling (r ≈ 0.63 for western VPD vs national acres), and how to read.
 
 As of June 18, 2026:
 - 2.6 million acres burned nationally, about 63% above the 10-year average to date
@@ -24,7 +24,7 @@ Charts, CSVs, and notebooks: https://saraxlinnea.github.io/wildfire-prevention-v
 
 ## One-liner (bio / email signature)
 
-Wildfire data: federal prevention vs. acres burned, 1983-2026 → saraxlinnea.github.io/wildfire-prevention-viz
+U.S. wildfire data, 1983-2026: outcomes, drivers, coupling (exploratory) → saraxlinnea.github.io/wildfire-prevention-viz
 
 ---
 
@@ -34,14 +34,14 @@ Subject: U.S. wildfire data page (sourced, reproducible)
 
 Hi [name],
 
-I published a data page on U.S. wildfire outcomes and federal hazardous fuels treatment, with drought and western fire-season VPD. The fire tab shows national acres burned with a rolling 10-year baseline band (not a flat CRS reference line).
+I published a data page on U.S. wildfire outcomes and federal hazardous fuels treatment, with western fire-season dryness (VPD and DSCI). The Outcomes tab shows national acres burned with a rolling 10-year baseline band (not a flat CRS reference line).
 
-- Fire state: NIFC annual statistics, 1983-2026; rolling 10-yr band from chart data
-- Prevention: NPR/USFS FACTS (2023-2025), DOI fuels program (2018-2024, fiscal year)
-- Drought: U.S. Drought Monitor API (national + NWS Western Region), verified against raw weekly downloads
-- VPD: gridMET OPeNDAP, western U.S., May-Sep, 1979-2025
+- **Outcomes:** NIFC annual statistics, 1983-2026; rolling 10-yr band; 2026 YTD through June 18
+- **Drivers & context:** western VPD + western DSCI z-score overlay; national vs western DSCI in collapsible view; combined federal treatment (FS + Interior)
+- **Coupling** (exploratory): Pearson r ≈ 0.63 (western VPD vs national acres, 2010-2025, n=16); annual lag proxy; FS treatment vs next-year fire (n=3, illustrative)
+- **How to read:** framing, scientific limits, methodology and sources
 
-CSVs, notebooks, and an off-page correlation study are in the repo. Correlation results are documented but not on the public page.
+CSVs, notebooks, and correlation analysis are in the repo. The Coupling tab shows exploratory overlap only; correlation is not presented as causation.
 
 Live: https://saraxlinnea.github.io/wildfire-prevention-viz/
 Repo: https://github.com/saraxlinnea/wildfire-prevention-viz

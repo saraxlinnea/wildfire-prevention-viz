@@ -77,7 +77,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 |---|---|
 | **Normalized statement** | 2026 YTD acres burned through June 18 ranks second highest in NIFC's YTD comparison table; 2022 same-date YTD was about 3.1 million acres (highest) |
 | **Display text** | "2026 ranks second, not a record" / "Same date in 2022 saw about 3.1 million acres" |
-| **Page location** | Interpretation tab prose |
+| **Page location** | How to read tab policy context; Outcomes tab fire chart caption (In context) |
 | **Status** | Supported |
 | **Confidence** | High |
 | **Evidence strength** | Strong |
@@ -225,7 +225,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 |---|---|
 | **Normalized statement** | Forest Service wildfire-risk treatment acres decreased from 4.1M to 2.6M (2024→2025), a ~36.6% decline, displayed as 35% |
 | **Display text** | "**35% fewer acres**" / callout **35%** |
-| **Page location** | Header dek; Interpretation tab callouts |
+| **Page location** | Header dek; Outcomes tab callout (policy context label) |
 | **Status** | Supported |
 | **Confidence** | High |
 | **Evidence strength** | Moderate |
@@ -306,8 +306,8 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 | Field | Value |
 |---|---|
 | **Normalized statement** | National (conus) and NWS Western Region DSCI are displayed together; western region covers much of U.S. fire-season geography |
-| **Display text** | panel note: "much of the fire season hits the West" |
-| **Page location** | Atmosphere tab |
+| **Display text** | "National vs western DSCI (raw index)" secondary view |
+| **Page location** | Atmosphere tab collapsible secondary chart |
 | **Status** | Partially supported |
 | **Confidence** | Medium |
 | **Notes** | Geographic overlap statement is directionally true; not a quantitative claim |
@@ -394,15 +394,95 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 
 ---
 
-### C-X05 — Correlations are exploratory and off-page
+### C-X05 — Correlations on page as exploratory coupling
 
 | Field | Value |
 |---|---|
-| **Normalized statement** | Pairwise correlations between series exist in repo notebooks but are not presented as findings on the public page |
-| **Display text** | "Correlations are exploratory and do not appear on this page" |
-| **Page location** | Interpretation tab methodology (correlations); off-page notebook |
+| **Normalized statement** | Pairwise correlation and lag-aligned views appear on the Coupling tab as exploratory coupling; they are not presented as causal findings |
+| **Display text** | "Exploratory coupling views. Correlation is not causation." / methodology correlations bullet |
+| **Page location** | Coupling tab intro; scatter, lag, and policy scatter charts; How to read methodology |
 | **Status** | Methodological |
-| **Sources** | `notebooks/correlation-analysis.ipynb`, `data/correlation-notes.md` |
+| **Sources** | `notebooks/correlation-analysis.ipynb`, `data/correlation-matrix.csv`, `data/correlation-notes.md` |
+| **Related** | C-C01, C-C02, C-C03 |
+
+---
+
+### C-C01 — Western VPD vs national acres burned correlation (2010-2025)
+
+| Field | Value |
+|---|---|
+| **Normalized statement** | Pearson correlation between western fire-season VPD and national acres burned for full calendar years 2010-2025 is approximately 0.63 (repository value 0.625) |
+| **Display text** | "Pearson r ≈ 0.63" / chart annotation "Pearson r ≈ 0.63 (exploratory)" |
+| **Page location** | Coupling tab correlation table and scatter panel note |
+| **Status** | Supported (derived) |
+| **Confidence** | High |
+| **Sources** | `data/correlation-matrix.csv`; `scripts/compute_correlations.py` |
+| **Limitations** | National acres vs western VPD geography mismatch; exploratory only; partial years excluded |
+
+---
+
+### C-C04 — Correlation table (2010-2025)
+
+| Field | Value |
+|---|---|
+| **Normalized statement** | Pearson r for key pairs in 2010-2025 window: acres vs western VPD 0.63 (0.625 in CSV); acres vs national DSCI 0.10 (0.097); western VPD vs national DSCI 0.56 (0.560); national vs western DSCI 0.73 (0.734) |
+| **Display text** | Coupling tab correlation table |
+| **Page location** | Coupling tab |
+| **Status** | Supported (derived) |
+| **Confidence** | High |
+| **Sources** | `data/correlation-matrix.csv` |
+| **Limitations** | Rounded for display; exploratory only |
+
+---
+
+### C-C02 — Annual lag proxy limitation
+
+| Field | Value |
+|---|---|
+| **Normalized statement** | Lag view aligns western VPD in year t with national acres burned in year t+1; annual resolution cannot resolve sub-seasonal lag |
+| **Display text** | "Annual data cannot resolve sub-seasonal lag." |
+| **Page location** | Coupling tab lag chart panel note |
+| **Status** | Methodological |
+| **Confidence** | High |
+
+---
+
+### C-C03 — FS treatment vs fire scatter sample size
+
+| Field | Value |
+|---|---|
+| **Normalized statement** | Forest Service treatment vs following-year acres burned scatter has at most three year pairs (2023-2025 treatment years); 2026 outcome may be partial |
+| **Display text** | "FS figures comparable from 2023 only (three pairs)" / "n = 3 FS year pairs (2023-2025)" |
+| **Page location** | Coupling tab collapsible policy scatter |
+| **Status** | Methodological |
+| **Confidence** | High |
+| **Related** | C-P04, C-X01 |
+
+---
+
+### C-A01 — Atmospheric z-score overlay
+
+| Field | Value |
+|---|---|
+| **Normalized statement** | Western VPD and western DSCI are shown on a common z-score axis for overlapping years 2000-2025; 2026 partial DSCI excluded from z-scores |
+| **Display text** | Atmosphere tab panel note |
+| **Page location** | Drivers tab primary chart |
+| **Status** | Methodological |
+| **Confidence** | High |
+| **Related** | C-V01, C-D01 |
+
+---
+
+### C-P07 — Combined federal treatment total
+
+| Field | Value |
+|---|---|
+| **Normalized statement** | Policy chart default view sums Forest Service (calendar) and Interior (fiscal) reported treatment acres where both exist; sum is approximate because calendars differ |
+| **Display text** | Policy tab panel note; "Combined total" toggle |
+| **Page location** | Policy tab |
+| **Status** | Methodological |
+| **Confidence** | High |
+| **Related** | C-P04, C-P05 |
 
 ---
 
@@ -456,11 +536,109 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 | Field | Value |
 |---|---|
 | **Normalized statement** | The page presents observed series on mismatched geographies and calendars; temporal overlap is not presented as causal evidence |
-| **Display text** | "What this is" / "What it is not" / "How to compare" (Interpretation tab) |
-| **Page location** | Interpretation tab, How to read this |
+| **Display text** | "What this is" / "What it is not" / "How to compare" (How to read tab) |
+| **Page location** | How to read tab, How to read this |
 | **Status** | Methodological |
 | **Confidence** | High |
 | **Related** | C-X01, C-X02, C-F09 vs C-F02 distinction in fire tab note |
+
+---
+
+## Methodological / interpretive (Phase A copy)
+
+### C-M01 — YTD acres do not predict full-year total
+
+| Field | Value |
+|---|---|
+| **Normalized statement** | Early-season (YTD) acres burned are not a reliable predictor of the full calendar-year total |
+| **Display text** | "Early-season acres do not predict the full-year total" |
+| **Page location** | Outcomes tab fire chart caption (In context) |
+| **Status** | Methodological |
+| **Confidence** | High |
+| **Related** | C-F04 (2022 YTD highest, not necessarily full-year record) |
+
+---
+
+### C-M02 — Pearson r² interpretation (VPD vs acres)
+
+| Field | Value |
+|---|---|
+| **Normalized statement** | Pearson r ≈ 0.63 between western VPD and national acres burned implies roughly 39–40% of variance explained (r² ≈ 0.39); remainder reflects other factors |
+| **Display text** | "r ≈ 0.63 explains roughly 40% of year-to-year variance (r² ≈ 0.39)" |
+| **Page location** | Coupling tab correlation table caption (In context) |
+| **Status** | Methodological |
+| **Confidence** | High |
+| **Evidence strength** | Mathematical derivation from C-C01 |
+| **Related** | C-C01, C-X05 |
+
+---
+
+### C-M03 — Correlation window sample size
+
+| Field | Value |
+|---|---|
+| **Normalized statement** | Pairwise Pearson correlations on the Coupling tab use n = 16 full calendar years (2010–2025); partial 2026 excluded |
+| **Display text** | "n = 16 full calendar years" / "Sixteen full calendar years (2010-2025)" |
+| **Page location** | Coupling tab dek, correlation panel note |
+| **Status** | Methodological |
+| **Confidence** | High |
+| **Sources** | `data/correlation-matrix.csv`, `scripts/compute_correlations.py` |
+| **Related** | C-C04 |
+
+---
+
+### C-M04 — VPD vs DSCI measure different processes
+
+| Field | Value |
+|---|---|
+| **Normalized statement** | VPD measures physical atmospheric dryness; DSCI measures modeled drought stress from USDM categories; they can diverge (e.g., wet spring, dry soils) |
+| **Display text** | Drivers intro block; atmosphere chart caption (In context) |
+| **Page location** | Drivers tab intro; atmosphere chart |
+| **Status** | Methodological |
+| **Confidence** | High |
+| **Related** | C-A01, C-V01, C-D03 |
+
+---
+
+### C-M05 — Treatment acres ≠ hazard reduction
+
+| Field | Value |
+|---|---|
+| **Normalized statement** | Federal hazardous-fuels acres treated are a measure of reported work, not proven reduction in fire risk or outcomes; effects can lag and depend on location and treatment type |
+| **Display text** | "Acres treated are not the same as risk reduced" / policy chart In context |
+| **Page location** | Drivers tab intro; policy chart caption |
+| **Status** | Methodological |
+| **Confidence** | High |
+| **Related** | C-P07, C-X01, C-X02 |
+
+---
+
+### C-M06 — National DSCI dilutes western fire signal
+
+| Field | Value |
+|---|---|
+| **Normalized statement** | Contiguous-U.S. DSCI averages drought nationally, which can dilute western fire-season extremes; weaker correlation with national acres (r ≈ 0.10) vs western VPD (r ≈ 0.63) is consistent with western concentration of fire activity |
+| **Display text** | National DSCI details panel note; caption In context |
+| **Page location** | Drivers tab national DSCI details; Coupling tab |
+| **Status** | Partially supported |
+| **Confidence** | Medium |
+| **Evidence strength** | Moderate (correlation pattern + geographic reasoning) |
+| **Related** | C-C04, C-D03, C-V02 |
+
+---
+
+### C-M07 — Western concentration of U.S. fire acres
+
+| Field | Value |
+|---|---|
+| **Normalized statement** | In most years, the majority of U.S. acres burned occur in western states |
+| **Display text** | "In most years, most U.S. acres burned occur in western states" |
+| **Page location** | Outcomes tab fire panel note; Coupling tab captions |
+| **Status** | Partially supported |
+| **Confidence** | Medium |
+| **Evidence strength** | Moderate (NIFC regional patterns; widely cited in CRS/NIFC summaries) |
+| **Sources** | [NIFC statistics](https://www.nifc.gov/fire-information/statistics); [CRS IF10244](https://crsreports.congress.gov/product/pdf/IF/IF10244) |
+| **Limitations** | Not quantified inline on page; national line still used throughout |
 
 ---
 
@@ -499,14 +677,11 @@ Quick lookup: where each claim appears on `index.html`.
 |---|---|
 | Header dek | C-F01, C-F02, C-F11, C-P03 |
 | Intro block | C-X01, C-X04 |
-| Fire tab chart | C-F08, C-F09, C-F10 |
-| Atmosphere tab | C-D01, C-D03, C-V01, C-V02 |
-| Policy tab | C-P04, C-P05 |
-| Interpretation tab callouts | C-P03, C-F01, C-F02, C-F08, C-F03 |
-| Interpretation tab prose | C-F04, C-F08, C-F11 |
-| Interpretation tab policy context | C-P01, C-P02, C-R01, C-R02 |
-| Interpretation tab how to read | C-X06 |
-| Interpretation tab methodology | C-F05, C-F06, C-F01, C-F07, C-F09, C-P04, C-P05, C-P06, C-D02, C-V01, C-F08, C-R01, C-X01, C-X02, C-X05 |
+| Outcomes tab | C-F01, C-F02, C-F03, C-F04, C-F08, C-F09, C-F10, C-P03, C-M01, C-M07 |
+| Drivers tab | C-A01, C-D01, C-D02, C-D03, C-M04, C-M05, C-M06, C-P04, C-P05, C-P07, C-V01, C-V02 |
+| Coupling tab | C-X05, C-C01, C-C02, C-C03, C-C04, C-M02, C-M03, C-M06, C-M07, C-V02 |
+| How to read tab | C-X06, C-F04, C-F09, C-F11, C-P01, C-P02, C-F08, C-R01, C-R02, C-X01, C-X02, C-M03, C-M04, C-M05, C-M07 |
+| How to read methodology | C-F05, C-F06, C-F07, C-P06, C-F08, C-R01, C-X05 |
 | Meta / OG tags | C-F01, C-F02 (twitter description) |
 
 ---
@@ -527,7 +702,9 @@ Before updating the live page:
 
 | Date | Change |
 |---|---|
+| 2026-07-06 | Phase A copy: richer captions, drivers intro, scientific limits, claims C-M01–C-M07 |
 | 2026-07-06 | Copy polish: remove Franklin quote, four tabs, neutral framing, deduped interpretation |
+| 2026-07-06 | v2 Phase 2-3: merge atmosphere/policy charts, Relationships tab, JS modules, C-X05 revised |
 | 2026-07-06 | v2 Phase 1: five-tab layout, rolling 10-yr fire band, % deviation toggle; claims C-F09, C-F10; C-F11 renumber; page locations synced |
 | 2026-07-04 | Copy fixes C-F04 (2022 ~3.1M), C-D02 (DSCI through June 16); tighter page margins |
 | 2026-07-04 | Structured fact-check pass; see [`fact-check-log.md`](fact-check-log.md) (0 fail, 4 warn) |

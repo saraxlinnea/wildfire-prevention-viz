@@ -47,10 +47,21 @@
 
     .page { width: 100%; max-width: 960px; }
 
-    header {
-      margin-bottom: 20px;
+    .page-header-band {
+      background: #f3ece4;
+      margin: 0 -20px 20px;
+      padding: 24px 20px 18px;
       border-bottom: 1px solid var(--rule);
-      padding-bottom: 20px;
+    }
+
+    header {
+      margin-bottom: 14px;
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .page-header-band .intro-block {
+      margin-bottom: 0;
     }
 
     .kicker {
@@ -60,6 +71,40 @@
       text-transform: uppercase;
       color: var(--fire);
       margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .flame-mark {
+      width: 14px;
+      height: 16px;
+      flex-shrink: 0;
+      opacity: 0.9;
+    }
+
+    .flame-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin: 18px 0 14px;
+      color: var(--ink-light);
+      opacity: 0.45;
+    }
+
+    .flame-divider::before,
+    .flame-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--rule);
+    }
+
+    .flame-divider .flame-mark {
+      width: 12px;
+      height: 14px;
+      opacity: 0.55;
     }
 
     h1 {
@@ -181,13 +226,15 @@
       display: flex;
       gap: 0;
       border-bottom: 1px solid var(--rule);
-      margin-bottom: 16px;
+      margin: 0 -12px;
       flex-wrap: wrap;
+      background: #f0ece6;
+      padding: 0 4px;
     }
 
     .tab-btn {
       font-family: 'DM Mono', monospace;
-      font-size: 9px;
+      font-size: 10px;
       letter-spacing: 0.06em;
       text-transform: uppercase;
       color: var(--ink-light);
@@ -202,13 +249,186 @@
     .tab-btn:hover { color: var(--ink); }
 
     .tab-btn[aria-selected="true"] {
-      color: var(--fire);
-      border-bottom-color: var(--fire);
       font-weight: 500;
     }
 
+    .tab-btn[data-tab="outcomes"][aria-selected="true"] {
+      color: var(--fire);
+      background: rgba(201, 74, 26, 0.1);
+      border-bottom-color: var(--fire);
+    }
+
+    .tab-btn[data-tab="drivers"][aria-selected="true"] {
+      color: var(--vpd);
+      background: rgba(154, 107, 58, 0.12);
+      border-bottom-color: var(--vpd);
+    }
+
+    .tab-btn[data-tab="coupling"][aria-selected="true"] {
+      color: var(--dsci);
+      background: rgba(123, 94, 167, 0.1);
+      border-bottom-color: var(--dsci);
+    }
+
+    .tab-btn[data-tab="interpret"][aria-selected="true"] {
+      color: var(--ink);
+      background: rgba(253, 248, 242, 0.95);
+      border-bottom-color: #b8b2a9;
+    }
+
     .tab-panel { display: none; }
-    .tab-panel.active { display: block; }
+
+    .tab-panel.active {
+      display: block;
+      border-radius: 0 0 4px 4px;
+      padding: 16px 12px 8px;
+      margin: 0 -12px 16px;
+    }
+
+    .tab-panel--outcomes { background: rgba(201, 74, 26, 0.06); }
+    .tab-panel--drivers { background: rgba(154, 107, 58, 0.05); }
+    .tab-panel--coupling { background: rgba(123, 94, 167, 0.06); }
+    .tab-panel--interpret { background: #fdf8f2; }
+
+    .tab-dek {
+      font-size: 13px;
+      color: rgba(28, 26, 23, 0.78);
+      line-height: 1.55;
+      font-weight: 400;
+      margin-bottom: 14px;
+    }
+
+    .coupling-badge {
+      display: inline-block;
+      font-family: 'DM Mono', monospace;
+      font-size: 8px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border: 1px solid rgba(123, 94, 167, 0.35);
+      color: var(--dsci);
+      border-radius: 2px;
+      margin-left: 6px;
+      vertical-align: middle;
+      font-weight: 500;
+    }
+
+    .chart-container--fire { border-left: 3px solid var(--fire); }
+    .chart-container--atmosphere {
+      border-left: 3px solid var(--vpd);
+      background: rgba(255, 255, 255, 0.72);
+    }
+    .chart-container--policy {
+      border-left: 3px solid var(--fs);
+      background: rgba(255, 255, 255, 0.72);
+    }
+    .chart-container--coupling { border-left: 3px solid var(--dsci); }
+    .chart-container--coupling-alt { border-left: 3px solid rgba(123, 94, 167, 0.45); }
+
+    .chart-figure { margin: 0; }
+
+    .chart-caption-block {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid var(--rule);
+    }
+
+    .chart-caption {
+      font-size: 11.5px;
+      line-height: 1.55;
+      color: var(--ink-light);
+      margin: 0 0 8px;
+      font-weight: 400;
+    }
+
+    .chart-note {
+      font-size: 11.5px;
+      line-height: 1.55;
+      color: var(--ink-light);
+      margin: 0 0 8px;
+      font-weight: 400;
+    }
+
+    .note-label {
+      display: block;
+      font-family: 'DM Mono', monospace;
+      font-size: 8px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink);
+      margin-bottom: 4px;
+      opacity: 0.8;
+    }
+
+    .chart-source {
+      display: block;
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      margin-top: 2px;
+      opacity: 0.75;
+      letter-spacing: 0.02em;
+    }
+
+    .drivers-divider {
+      border: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .corr-table tr.corr-highlight td {
+      background: rgba(154, 107, 58, 0.1);
+    }
+
+    .corr-table tr.corr-highlight td:first-child {
+      border-left: 3px solid var(--vpd);
+    }
+
+    .corr-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      margin-bottom: 12px;
+    }
+
+    .corr-table th,
+    .corr-table td {
+      border: 1px solid var(--rule);
+      padding: 6px 8px;
+      text-align: left;
+    }
+
+    .corr-table th {
+      font-weight: 500;
+      color: var(--ink);
+      background: #fdf8f2;
+    }
+
+    .corr-table td.num { text-align: right; }
+
+    .outcomes-callouts {
+      margin-bottom: 12px;
+    }
+
+    .drivers-section-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 8px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      margin: 4px 0 10px;
+      opacity: 0.8;
+    }
+
+    .drivers-intro {
+      margin-bottom: 16px;
+      padding: 12px 14px;
+      background: rgba(255, 255, 255, 0.55);
+      border: 1px solid var(--rule);
+      border-left: 3px solid var(--vpd);
+    }
+
+    .chart-container + .chart-container { margin-top: 0; }
 
     .signal-tier {
       font-family: 'DM Mono', monospace;
@@ -278,7 +498,11 @@
       margin: 16px 0 14px;
     }
 
-    .callout { background: white; padding: 14px 16px; }
+    .callout { background: white; padding: 14px 16px; border-top: 2px solid var(--rule); }
+
+    .callout--fire { border-top-color: rgba(201, 74, 26, 0.4); }
+    .callout--forecast { border-top-color: rgba(232, 124, 42, 0.45); }
+    .callout--policy { border-top-color: rgba(42, 107, 74, 0.35); }
 
     .callout-num {
       font-family: 'Libre Baskerville', serif;
@@ -394,6 +618,8 @@
 
     @media (max-width: 600px) {
       body { padding: 16px 12px; }
+      .page-header-band { margin: 0 -12px 16px; padding: 20px 12px 14px; }
+      .tab-bar { margin-left: -8px; margin-right: -8px; }
       h1 { font-size: 22px; }
       .h1-sub { font-size: 15px; }
       .dek, .intro-block { font-size: 13px; }
@@ -401,6 +627,8 @@
       .legend-row { gap: 10px; }
       .legend-item { font-size: 9.5px; }
       .tab-btn { font-size: 8px; padding: 8px 8px; }
+      .tab-panel.active { margin: 0 -4px; padding: 12px 8px 4px; }
+      .chart-caption { font-size: 11px; }
       .callouts { grid-template-columns: repeat(2, 1fr); }
       .callout { padding: 14px 14px; }
       .callout-num { font-size: 18px; }
@@ -416,36 +644,60 @@
 <body>
 <div class="page">
 
-  <header>
-    <div class="kicker">U.S. Wildfire Data · 1983-2026 · Updated June 2026</div>
-    <h1>An Ounce of Prevention</h1>
-    <p class="h1-sub">National wildfire activity, 1983-2026</p>
-    <p class="dek">
-      As of June 18, 2026, more than <strong>2.6 million acres</strong> have burned nationally,
-      about <strong>63% above the 10-year average</strong> to date. Peak fire season starts in summer.
-      In 2025 the Forest Service treated <strong>35% fewer acres</strong> for wildfire risk than the year before.
-    </p>
-  </header>
+  <div class="page-header-band">
+    <header>
+      <div class="kicker">
+        <img src="assets/flame-mark.svg" alt="" class="flame-mark" width="14" height="16" aria-hidden="true">
+        U.S. Wildfire Data · 1983-2026 · Updated June 2026
+      </div>
+      <h1>An Ounce of Prevention</h1>
+      <p class="h1-sub">National wildfire activity, 1983-2026</p>
+      <p class="dek">
+        As of June 18, 2026, more than <strong>2.6 million acres</strong> have burned nationally,
+        about <strong>63% above the 10-year average</strong> to date. Peak fire season starts in summer.
+        In 2025 the Forest Service treated <strong>35% fewer acres</strong> for wildfire risk than the year before.
+      </p>
+    </header>
 
-  <p class="intro-block">
-    Four tabs cover fire outcomes, atmospheric drivers, federal treatment, and how to read the series.
-    Tier 1 marks primary observed outcomes; Tier 2 marks drivers and context.
-    National acres burned start in 1983. This page does not claim one line caused another.
-  </p>
+    <p class="intro-block">
+      Four tabs: national fire outcomes, drivers and federal context, exploratory coupling, and how to read the series.
+      This page does not claim one line caused another.
+    </p>
+  </div>
 
   <nav class="tab-bar" role="tablist" aria-label="Wildfire data views">
-    <button class="tab-btn" role="tab" id="tab-btn-fire" aria-selected="true" aria-controls="tab-fire" data-tab="fire">Fire state</button>
-    <button class="tab-btn" role="tab" id="tab-btn-atmosphere" aria-selected="false" aria-controls="tab-atmosphere" data-tab="atmosphere">Atmospheric drivers</button>
-    <button class="tab-btn" role="tab" id="tab-btn-policy" aria-selected="false" aria-controls="tab-policy" data-tab="policy">Human intervention</button>
-    <button class="tab-btn" role="tab" id="tab-btn-interpret" aria-selected="false" aria-controls="tab-interpret" data-tab="interpret">Interpretation</button>
+    <button class="tab-btn" role="tab" id="tab-btn-outcomes" aria-selected="true" aria-controls="tab-outcomes" data-tab="outcomes">Outcomes</button>
+    <button class="tab-btn" role="tab" id="tab-btn-drivers" aria-selected="false" aria-controls="tab-drivers" data-tab="drivers">Drivers &amp; context</button>
+    <button class="tab-btn" role="tab" id="tab-btn-coupling" aria-selected="false" aria-controls="tab-coupling" data-tab="coupling">Coupling</button>
+    <button class="tab-btn" role="tab" id="tab-btn-interpret" aria-selected="false" aria-controls="tab-interpret" data-tab="interpret">How to read</button>
   </nav>
 
-  <section id="tab-fire" class="tab-panel active" role="tabpanel" aria-labelledby="tab-btn-fire">
-    <div class="chart-container">
+  <section id="tab-outcomes" class="tab-panel tab-panel--outcomes active" role="tabpanel" aria-labelledby="tab-btn-outcomes">
+    <p class="tab-dek">National acres burned by calendar year. YTD callouts are through June 18, 2026. The shaded band is not the same benchmark as NIFC's same-date 10-year average in the header.</p>
+    <div class="callouts outcomes-callouts">
+      <div class="callout callout--fire">
+        <div class="callout-num fire">2.6M</div>
+        <div class="callout-label">Acres burned YTD (Jun 18, 2026), 63% above the 10-year average to date</div>
+      </div>
+      <div class="callout callout--fire">
+        <div class="callout-num fs">163%</div>
+        <div class="callout-label">Of the 10-year average acres burned to date (NIFC same-date comparison)</div>
+      </div>
+      <div class="callout callout--forecast">
+        <div class="callout-num forecast">5.5-8M</div>
+        <div class="callout-label">AccuWeather full-year forecast for 2026 (speculative)</div>
+      </div>
+      <div class="callout callout--policy">
+        <div class="callout-num fs">35%</div>
+        <div class="callout-label">Policy context: drop in Forest Service prevention acres treated, 2024 to 2025 (not a fire outcome)</div>
+      </div>
+    </div>
+    <div class="chart-container chart-container--fire">
       <div class="chart-date-badge">Data through June 18, 2026 · NIFC National Fire News</div>
       <div class="signal-tier signal-tier-1">Tier 1 · National acres burned (observed)</div>
       <div class="panel-label">Wildfire activity</div>
-      <p class="panel-note">Shaded band shows the min-to-max range of the prior ten full calendar years. Band starts in 1993 when ten years of NIFC data exist. Header and callout YTD figures use NIFC's same-date 10-year average; the chart band uses prior full calendar years only. AccuWeather forecast range appears in million acres view only.</p>
+      <p class="panel-note">Shaded band: min-to-max of the prior ten <em>full</em> calendar years (starts 1993). That is a dispersion benchmark, not NIFC's same-date YTD 10-year average used in the header callouts. AccuWeather forecast range appears in million acres view only. In most years, most U.S. acres burned occur in western states; this line is national.</p>
+      <figure class="chart-figure">
       <div class="chart-toggle" role="group" aria-label="Fire chart scale">
         <button type="button" class="toggle-btn active" data-fire-mode="acres">Million acres</button>
         <button type="button" class="toggle-btn" data-fire-mode="pct">% from 10-yr avg</button>
@@ -469,86 +721,196 @@
         </div>
       </div>
       <div id="chart-fire" class="chart-slot" role="img" aria-label="Chart of U.S. wildfire acres burned, 1983 to 2026"></div>
+      <figcaption class="chart-caption-block">
+        <p class="chart-caption">Full-year acres vary widely year to year; 2015, 2017, and 2020 were among the highest in this period.</p>
+        <p class="chart-note"><span class="note-label">In context</span>2026 YTD sits above the prior-10-year band but is not a full-year figure. Same date in 2022 saw about 3.1M acres YTD (highest in NIFC's table); 2026 ranks second. Early-season acres do not predict the full-year total.</p>
+        <span class="chart-source">Source: NIFC annual statistics · calendar year · national total</span>
+      </figcaption>
+      </figure>
     </div>
   </section>
 
-  <section id="tab-atmosphere" class="tab-panel" role="tabpanel" aria-labelledby="tab-btn-atmosphere" hidden>
-    <div class="chart-container chart-panel-secondary">
-      <div class="signal-tier signal-tier-2">Tier 2 · Drought index (western + national)</div>
-      <div class="panel-label">Drought severity</div>
-      <p class="panel-note">Annual average DSCI from the U.S. Drought Monitor API, 2000 onward. National and NWS Western Region on the same chart; much of the fire season hits the West.</p>
-      <div class="legend-row">
-        <div class="legend-item">
-          <div class="ls-line" style="background:#7b5ea7;"></div>
-          <span>Contiguous U.S. DSCI</span>
-        </div>
-        <div class="legend-item">
-          <div class="ls-line" style="background:#9b7ec8; border-top:2px dashed #9b7ec8; height:0; width:18px;"></div>
-          <span>NWS Western Region DSCI</span>
-        </div>
-      </div>
-      <div id="chart-dsci" class="chart-slot" role="img" aria-label="Chart of annual average drought severity index, 2000 to 2026"></div>
+  <section id="tab-drivers" class="tab-panel tab-panel--drivers" role="tabpanel" aria-labelledby="tab-btn-drivers" hidden>
+    <p class="tab-dek">Western fire-season dryness and federal fuels treatment. These series use different geographies, seasons, and calendars than national burn totals.</p>
+
+    <div class="drivers-intro prose-block">
+      <strong>VPD</strong> (vapor pressure deficit) measures how strongly the atmosphere pulls moisture from fuels: a physical dryness index from gridMET, May through September, west of 100°W.<br><br>
+      <strong>DSCI</strong> (Drought Severity Coverage Index) summarizes modeled drought stress from U.S. Drought Monitor categories. It can stay elevated after rain if deep soil moisture is still depleted.<br><br>
+      <strong>Treatment acres</strong> count federal hazardous-fuels work reported by agency. Acres treated are not the same as risk reduced; effects can lag and depend on where treatment occurs.
     </div>
 
-    <div class="chart-container chart-panel-secondary">
-      <div class="signal-tier signal-tier-1">Tier 1 · Western fire-season dryness</div>
-      <div class="panel-label">Western fire-season vapor pressure deficit</div>
-      <p class="panel-note">Western U.S. west of 100°W, May through September, gridMET (1979-2025). National acres burned count the whole country. Western dryness, not a national match.</p>
+    <p class="drivers-section-label">Atmospheric dryness (western)</p>
+    <div class="chart-container chart-container--atmosphere">
+      <div class="signal-tier signal-tier-1">Western fire-season dryness</div>
+      <div class="panel-label">Dryness vs 2000-2025 average (z-score)</div>
+      <p class="panel-note">Western VPD and western NWS Region DSCI on a common z-score axis (2000-2025 average). 2026 partial DSCI excluded from z-scores. Z-score puts both series on comparable units; it does not imply they measure the same process.</p>
+      <figure class="chart-figure">
       <div class="legend-row">
         <div class="legend-item">
           <div class="ls-line" style="background:#9a6b3a;"></div>
-          <span>Mean VPD (kPa)</span>
+          <span>Western VPD z-score</span>
+        </div>
+        <div class="legend-item">
+          <div class="ls-line" style="background:#9b7ec8; border-top:2px dashed #9b7ec8; height:0; width:18px;"></div>
+          <span>Western DSCI z-score</span>
         </div>
       </div>
-      <div id="chart-vpd" class="chart-slot" role="img" aria-label="Chart of western U.S. fire season vapor pressure deficit, 1979 to 2025"></div>
+      <div id="chart-atmosphere" class="chart-slot" role="img" aria-label="Western VPD and DSCI z-score overlay, 2000 to 2025"></div>
+      <figcaption class="chart-caption-block">
+        <p class="chart-caption">2020-2022 show above-average western dryness on this scale, overlapping several high national fire years.</p>
+        <p class="chart-note"><span class="note-label">In context</span>VPD (physical atmosphere) and DSCI (modeled drought stress) do not always move together. A wet spring can lower VPD while DSCI stays high if soils are dry.</p>
+        <span class="chart-source">Source: gridMET VPD · USDM western DSCI · western U.S. · not national fire acres</span>
+      </figcaption>
+      </figure>
     </div>
-  </section>
 
-  <section id="tab-policy" class="tab-panel" role="tabpanel" aria-labelledby="tab-btn-policy" hidden>
-    <div class="chart-container chart-panel-secondary">
+    <details class="methodology-details atmosphere-national-details">
+      <summary>National vs western DSCI (raw index)</summary>
+      <div class="methodology-body">
+        <p class="panel-note" style="margin-bottom:10px;">Secondary view. Contiguous U.S. and NWS Western Region DSCI, annual average, 2000 onward. National DSCI averages drought across the entire country, which can dilute western fire-season extremes. 2026 values are 24-week averages through June 16.</p>
+        <figure class="chart-figure">
+        <div class="legend-row">
+          <div class="legend-item">
+            <div class="ls-line" style="background:#7b5ea7;"></div>
+            <span>Contiguous U.S. DSCI</span>
+          </div>
+          <div class="legend-item">
+            <div class="ls-line" style="background:#9b7ec8; border-top:2px dashed #9b7ec8; height:0; width:18px;"></div>
+            <span>NWS Western Region DSCI</span>
+          </div>
+        </div>
+        <div id="chart-atmosphere-national" class="chart-slot" role="img" aria-label="National and western DSCI, 2000 to 2026"></div>
+        <figcaption class="chart-caption-block">
+          <p class="chart-caption">National and western drought indices often differ in level and year-to-year swings.</p>
+          <p class="chart-note"><span class="note-label">In context</span>On the Coupling tab, national DSCI correlates weakly with national acres burned (r ≈ 0.10) compared with western VPD (r ≈ 0.63), consistent with fire activity concentrating in the West.</p>
+          <span class="chart-source">Source: U.S. Drought Monitor API · annual average DSCI</span>
+        </figcaption>
+        </figure>
+      </div>
+    </details>
+
+    <div class="flame-divider drivers-divider" aria-hidden="true">
+      <img src="assets/flame-mark.svg" alt="" class="flame-mark" width="12" height="14">
+    </div>
+
+    <p class="drivers-section-label">Federal fuels treatment</p>
+    <div class="chart-container chart-container--policy">
       <div class="signal-tier signal-tier-2">Tier 2 · Federal fuels treatment</div>
       <div class="panel-label">Federal hazardous fuels treatment</div>
-      <p class="panel-note">Forest Service figures (2023-2025) from NPR analysis of USFS FACTS. Interior Department figures (2018-2024) are fiscal year (Oct 1 start), not calendar year.</p>
+      <p class="panel-note">Combined federal treated acres where reported. Forest Service (2023-2025) is calendar year; Interior (2018-2024) is fiscal year (Oct 1). Summing is approximate. Treatment timing, effectiveness, and location are not shown. Not comparable to fire outcomes on the same axis.</p>
+      <figure class="chart-figure">
+      <div class="chart-toggle" role="group" aria-label="Policy chart view">
+        <button type="button" class="toggle-btn active" data-policy-mode="total">Combined total</button>
+        <button type="button" class="toggle-btn" data-policy-mode="breakdown">Agency breakdown</button>
+      </div>
       <div class="legend-row">
         <div class="legend-item">
           <div class="ls-line" style="background:#2a6b4a;"></div>
-          <span>Forest Service treatment (millions of acres)</span>
+          <span>Combined or Forest Service</span>
         </div>
         <div class="legend-item">
           <div class="ls-line-dashed"></div>
-          <span>Interior Dept treatment (millions of acres)</span>
+          <span>Interior Dept (breakdown view)</span>
         </div>
       </div>
-      <div id="chart-prevention" class="chart-slot" role="img" aria-label="Chart of federal hazardous fuels treatment acres, 2018 to 2025"></div>
+      <div id="chart-policy" class="chart-slot" role="img" aria-label="Federal hazardous fuels treatment acres"></div>
+      <figcaption class="chart-caption-block">
+        <p class="chart-caption">Combined federal treatment rose through 2023-2024, then fell in 2025 on the Forest Service calendar-year series.</p>
+        <p class="chart-note"><span class="note-label">In context</span>Interior uses fiscal years that do not align with burn statistics. More acres treated does not map one-to-one to less fire in the following season; fuels work is one of several levers (weather, ignitions, suppression, development).</p>
+        <span class="chart-source">Source: NPR/USFS FACTS · DOI fuels program · not causal evidence for fire outcomes</span>
+      </figcaption>
+      </figure>
     </div>
   </section>
 
-  <section id="tab-interpret" class="tab-panel" role="tabpanel" aria-labelledby="tab-btn-interpret" hidden>
-    <div class="interp-section">
-      <div class="interp-heading">Observed facts</div>
-      <div class="callouts">
-        <div class="callout">
-          <div class="callout-num fire">35%</div>
-          <div class="callout-label">Drop in Forest Service prevention acres treated, 2024 to 2025</div>
-        </div>
-        <div class="callout">
-          <div class="callout-num fire">2.6M</div>
-          <div class="callout-label">Acres burned through June 18, 2026, 63% above the 10-year average to date</div>
-        </div>
-        <div class="callout">
-          <div class="callout-num forecast">5.5-8M</div>
-          <div class="callout-label">AccuWeather full year forecast for 2026</div>
-        </div>
-        <div class="callout">
-          <div class="callout-num fs">163%</div>
-          <div class="callout-label">Of the 10-year average acres burned to date (NIFC, June 18 comparison)</div>
-        </div>
+  <section id="tab-coupling" class="tab-panel tab-panel--coupling" role="tabpanel" aria-labelledby="tab-btn-coupling" hidden>
+    <p class="tab-dek">Do these series move together in time? Sixteen full calendar years (2010-2025) show moderate association between western dryness and national acres (r ≈ 0.63). That is exploratory overlap, not a model of fire causes. <span class="coupling-badge">Exploratory · not causal</span></p>
+
+    <div class="chart-container chart-container--coupling">
+      <div class="panel-label">Pairwise correlations (Pearson r, 2010-2025)</div>
+      <p class="panel-note">n = 16 full calendar years; partial 2026 excluded. Pearson r measures linear co-movement, not causation. From <a href="data/correlation-matrix.csv">correlation-matrix.csv</a> and <a href="data/correlation-notes.md">analysis notes</a>.</p>
+      <table class="corr-table" aria-label="Pearson correlation table, 2010 to 2025">
+        <thead>
+          <tr>
+            <th scope="col">Pair</th>
+            <th scope="col">r</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="corr-highlight"><td>Acres burned vs western VPD</td><td class="num">0.63</td></tr>
+          <tr><td>Acres burned vs national DSCI</td><td class="num">0.10</td></tr>
+          <tr><td>Western VPD vs national DSCI</td><td class="num">0.56</td></tr>
+          <tr><td>National vs western DSCI</td><td class="num">0.73</td></tr>
+        </tbody>
+      </table>
+      <div class="chart-caption-block">
+        <p class="chart-caption">Western VPD aligns more closely with national acres burned than national DSCI does in this window (0.63 vs 0.10).</p>
+        <p class="chart-note"><span class="note-label">In context</span>r ≈ 0.63 explains roughly 40% of year-to-year variance (r² ≈ 0.39); the rest is other factors (ignitions, fuels, suppression, weather luck). National acres vs western VPD is still a geography mismatch; western fire activity drives much of the national total.</p>
+        <span class="chart-source">Pearson r · n = 16 years · 2010-2025 full years · exploratory</span>
       </div>
+    </div>
+
+    <div class="chart-container chart-container--coupling chart-panel-secondary">
+      <div class="panel-label">Fire vs western dryness (same year)</div>
+      <p class="panel-note">Western VPD vs national acres burned, 2010-2025. Each point is one calendar year. High-acre years (2015, 2017, 2020) tend to sit in the upper-right; low years in the lower-left. No regression line is fitted on purpose.</p>
+      <figure class="chart-figure">
+      <div id="chart-scatter" class="chart-slot" role="img" aria-label="Scatter plot of western VPD vs national acres burned"></div>
+      <figcaption class="chart-caption-block">
+        <p class="chart-caption">Higher western fire-season VPD tends to coincide with higher national acres burned in the same year.</p>
+        <p class="chart-note"><span class="note-label">In context</span>Correlation is sensitive to a few extreme years. Western VPD is not measured nationally; national acres are not measured regionally on this chart. Controls for ENSO, fuel continuity, or spending are not applied.</p>
+        <span class="chart-source">Western VPD vs national acres · r ≈ 0.63 · not causal</span>
+      </figcaption>
+      </figure>
+    </div>
+
+    <div class="chart-container chart-container--coupling-alt chart-panel-secondary">
+      <div class="panel-label">Timing proxy (annual)</div>
+      <p class="panel-note">Western VPD in year t vs national acres burned in year t+1, each series normalized to its own scale. Tests a coarse "dry year then big fire year" pattern at annual resolution only.</p>
+      <figure class="chart-figure">
+      <div id="chart-lag" class="chart-slot" role="img" aria-label="Lagged alignment of VPD and acres burned"></div>
+      <figcaption class="chart-caption-block">
+        <p class="chart-caption">Dry western years sometimes precede higher national fire years on annual data, but the pattern is noisy.</p>
+        <p class="chart-note"><span class="note-label">In context</span>Spring VPD vs summer acres would need monthly data. This view cannot prove sub-seasonal timing, fuel lag, or causation.</p>
+        <span class="chart-source">Year t VPD · year t+1 acres · normalized scales · hypothesis sketch only</span>
+      </figcaption>
+      </figure>
+    </div>
+
+    <details class="methodology-details coupling-policy-details">
+      <summary>Treatment vs following-year fire (n = 3, illustrative)</summary>
+      <div class="methodology-body">
+        <p class="panel-note">Forest Service treatment in year t vs national acres burned in year t+1. FS figures comparable from 2023 only. Not causal evidence.</p>
+        <figure class="chart-figure">
+        <div id="chart-policy-scatter" class="chart-slot" role="img" aria-label="Forest Service treatment vs following year acres burned"></div>
+        <figcaption class="chart-caption-block">
+          <p class="chart-caption">Only three FS year pairs exist (2023-2025 treatment years).</p>
+          <p class="chart-note"><span class="note-label">In context</span>Three points cannot support regression or causal claims. Treatment in year t is not isolated from weather in year t+1.</p>
+          <span class="chart-source">FS treatment · following-year acres · illustrative only</span>
+        </figcaption>
+        </figure>
+      </div>
+    </details>
+  </section>
+
+  <section id="tab-interpret" class="tab-panel tab-panel--interpret" role="tabpanel" aria-labelledby="tab-btn-interpret" hidden>
+    <div class="interp-section">
+      <div class="interp-heading">How to read this</div>
       <div class="prose-block">
-        <strong>June 2026 snapshot.</strong>
-        Same date in 2022 saw about 3.1 million acres burned, the highest in NIFC's year-to-date table.
-        2026 ranks second, not a record, but well above normal. Peak season is still ahead.
-        AccuWeather projects 5.5 to 8 million acres burned by year end if conditions hold.
+        <strong>Outcomes</strong> are national acres burned (NIFC, 1983 onward). YTD and forecast figures are partial or speculative. The rolling band uses prior full calendar years; header YTD uses NIFC's same-date 10-year average.<br><br>
+        <strong>Drivers &amp; context</strong> cover western dryness and federal treatment on different geographies and calendars. VPD is physical; DSCI is modeled drought stress; treatment acres are reported work, not proven risk reduction.<br><br>
+        <strong>Coupling</strong> shows statistical overlap only (16 years, 2010-2025). Western VPD tracks national acres more closely than national drought index in this window (r ≈ 0.63 vs 0.10). That reflects geography and measurement, not a single cause.<br><br>
+        <strong>What this is not.</strong> A model of fire causes. The page does not claim that 2025 prevention cuts caused the 2026 fire season.
+      </div>
+    </div>
+
+    <div class="interp-section">
+      <div class="interp-heading">Scientific limits</div>
+      <div class="prose-block">
+        <strong>Geography.</strong> National acres include all states; VPD and western DSCI cover western fire-prone areas. Comparing them is common in practice but imperfect.<br><br>
+        <strong>Calendar.</strong> Burn acres and DSCI are calendar years; Interior treatment is fiscal year (Oct 1). Fire season spans months, but these series are annual.<br><br>
+        <strong>Correlation.</strong> Pearson r describes linear co-movement in a short sample. It does not control for climate oscillations, vegetation, ignitions, suppression, or development in the wildland-urban interface.<br><br>
+        <strong>Policy.</strong> Acres treated measure effort, not outcomes. Hazard reduction depends on treatment type, location, and whether subsequent weather overwhelms fuels work.<br><br>
+        <strong>Forecasts.</strong> The AccuWeather 2026 range is a conditional projection, not observed data.
       </div>
     </div>
 
@@ -556,36 +918,8 @@
       <div class="interp-heading">Policy context</div>
       <div class="prose-block">
         In 2025 the Forest Service treated 2.6 million acres for wildfire risk, down from 4.1 million in 2024.
-        In March 2026 USDA announced plans to close 57 of 77 Forest Service research stations.
-        Many of those sites study fire behavior and smoke forecasting.
-      </div>
-    </div>
-
-    <div class="interp-section">
-      <div class="interp-heading">Known drivers</div>
-      <div class="prose-block">
-        Western fire-season VPD and drought index (DSCI) track atmospheric dryness on different geographies.
-        Federal fuels treatment covers Forest Service and Interior Department lands on fiscal and calendar years that do not line up with burn acres.
-        None of these series share the same spatial domain or reporting calendar.
-      </div>
-    </div>
-
-    <div class="interp-section">
-      <div class="interp-heading">Uncertainty boundaries</div>
-      <div class="prose-block">
-        2026 burn acres and DSCI readings are partial-year snapshots, not full calendar years.
-        Interior treatment is fiscal year (Oct 1). Burn acres and DSCI are calendar year.
-        Forest Service treatment figures are comparable from 2023 onward only.
-        Correlation is not causation. The page shows overlap in time; it does not identify a single cause.
-      </div>
-    </div>
-
-    <div class="interp-section">
-      <div class="interp-heading">How to read this</div>
-      <div class="prose-block">
-        <strong>What this is.</strong> Observed time series on different geographies and reporting calendars.<br><br>
-        <strong>What it is not.</strong> A model of fire causes. Overlap in time is not evidence that one series drove another.<br><br>
-        <strong>How to compare.</strong> Use callouts and the header for year-to-date burn figures. Use the fire chart band for full-calendar-year context.
+        In March 2026 USDA announced plans to close 57 of 77 Forest Service research stations; many study fire behavior and smoke forecasting.
+        Same date in 2022 saw about 3.1 million acres burned YTD, the highest in NIFC's table; 2026 ranks second.
       </div>
     </div>
 
@@ -602,7 +936,7 @@
           <li>VPD: western U.S. fire-season mean from gridMET via OPeNDAP (<a href="https://doi.org/10.1002/joc.3413">Abatzoglou 2013</a>). May through September, west of 100°W, 1979-2025.</li>
           <li>2026 forecast: AccuWeather published 2026 wildfire season projection, 5.5 to 8 million acres.</li>
           <li>Research stations: USDA Forest Service reorganization announced March 31, 2026.</li>
-          <li>Correlations: exploratory pairwise analysis in repository notebooks; not shown on this page. See <a href="https://github.com/saraxlinnea/wildfire-prevention-viz/blob/main/notebooks/correlation-analysis.ipynb">correlation notebook</a> and <a href="data/correlation-matrix.csv">matrix CSV</a>.</li>
+          <li>Correlations: exploratory views on the Coupling tab; matrix in <a href="data/correlation-matrix.csv">correlation-matrix.csv</a> and <a href="https://github.com/saraxlinnea/wildfire-prevention-viz/blob/main/notebooks/correlation-analysis.ipynb">notebook</a>. Not causal evidence.</li>
           <li>Data processing: drought from U.S. Drought Monitor API; western fire-season VPD from gridMET (<a href="https://doi.org/10.1002/joc.3413">Abatzoglou 2013</a>). CSVs and notebooks in the <a href="https://github.com/saraxlinnea/wildfire-prevention-viz">GitHub repository</a>.</li>
         </ul>
         <p class="closing">This page is not claiming that cutting prevention in 2025 caused the 2026 fire season. It shows two things happening at the same time and leaves the conclusion to the reader.</p>
@@ -631,634 +965,8 @@
 
 </div>
 
-<script>
-  const chartConfig = {
-    font: 'DM Sans',
-    axis: {
-      labelFont: 'DM Mono, monospace',
-      labelFontSize: 9,
-      labelColor: '#9b9590',
-      tickColor: 'transparent',
-      domainColor: '#e8e4de',
-      gridColor: '#f0ece6',
-      gridDash: [3, 4]
-    },
-    view: { stroke: 'transparent' }
-  };
-
-  const embedOpts = {
-    actions: { export: true, source: false, compiled: false, editor: false },
-    renderer: 'svg'
-  };
-
-  function parseCSVLine(line) {
-    const values = [];
-    let current = '';
-    let inQuotes = false;
-    for (let i = 0; i < line.length; i++) {
-      const ch = line[i];
-      if (ch === '"') {
-        if (inQuotes && line[i + 1] === '"') { current += '"'; i++; }
-        else inQuotes = !inQuotes;
-      } else if (ch === ',' && !inQuotes) {
-        values.push(current.trim());
-        current = '';
-      } else current += ch;
-    }
-    values.push(current.trim());
-    return values;
-  }
-
-  function parseWildfireCSV(text) {
-    const lines = text.trim().split('\n');
-    const headers = parseCSVLine(lines[0]).map(h => h.trim());
-    return lines.slice(1)
-      .map(line => {
-        const values = parseCSVLine(line);
-        const row = {};
-        headers.forEach((header, i) => { row[header] = (values[i] || '').trim(); });
-        return row;
-      })
-      .filter(row => /^\d{4}$/.test(row.year));
-  }
-
-  function parseSimpleCSV(text) {
-    const lines = text.trim().split('\n');
-    const headers = parseCSVLine(lines[0]);
-    return lines.slice(1)
-      .map(line => {
-        const values = parseCSVLine(line);
-        const row = {};
-        headers.forEach((h, i) => { row[h] = (values[i] || '').trim(); });
-        return row;
-      })
-      .filter(row => /^\d{4}$/.test(row.year));
-  }
-
-  function computeRollingBaseline(burnData) {
-    const byYear = Object.fromEntries(burnData.map(d => [d.year, d.acres]));
-    return burnData.map(d => {
-      const y = parseInt(d.year, 10);
-      const window = [];
-      for (let i = y - 10; i < y; i++) {
-        const key = String(i);
-        if (byYear[key] !== undefined) window.push(byYear[key]);
-      }
-      if (window.length < 10) {
-        return {
-          year: d.year, acres: d.acres,
-          rolling_min: null, rolling_max: null, rolling_mean: null,
-          pct_dev: null, pct_min: null, pct_max: null
-        };
-      }
-      const rolling_min = Math.min(...window);
-      const rolling_max = Math.max(...window);
-      const rolling_mean = window.reduce((a, b) => a + b, 0) / 10;
-      const pct_dev = ((d.acres - rolling_mean) / rolling_mean) * 100;
-      const pct_min = ((rolling_min - rolling_mean) / rolling_mean) * 100;
-      const pct_max = ((rolling_max - rolling_mean) / rolling_mean) * 100;
-      return {
-        year: d.year, acres: d.acres,
-        rolling_min, rolling_max, rolling_mean,
-        pct_dev, pct_min, pct_max
-      };
-    });
-  }
-
-  function rollingForYear(burnData, targetYear) {
-    const byYear = Object.fromEntries(burnData.map(d => [d.year, d.acres]));
-    const window = [];
-    for (let i = targetYear - 10; i < targetYear; i++) {
-      const key = String(i);
-      if (byYear[key] !== undefined) window.push(byYear[key]);
-    }
-    if (window.length < 10) return null;
-    const rolling_mean = window.reduce((a, b) => a + b, 0) / 10;
-    return { rolling_min: Math.min(...window), rolling_max: Math.max(...window), rolling_mean };
-  }
-
-  function buildDatasets(rows) {
-    const years = rows.map(r => r.year);
-    const burnData = rows
-      .filter(r => r.acres_burned_millions && r.acres_burned_partial !== 'true')
-      .map(r => ({ year: r.year, acres: parseFloat(r.acres_burned_millions) }));
-    const burnWithRolling = computeRollingBaseline(burnData);
-    const bandData = burnWithRolling.filter(d => d.rolling_min !== null);
-    const partial2026 = rows
-      .filter(r => r.acres_burned_partial === 'true')
-      .map(r => {
-        const acres = parseFloat(r.acres_burned_millions);
-        const rolling = rollingForYear(burnData, 2026);
-        const pct_dev = rolling ? ((acres - rolling.rolling_mean) / rolling.rolling_mean) * 100 : null;
-        return { year: r.year, acres, pct_dev };
-      });
-    const forecastRow = rows.find(r => r.forecast_low);
-    const forecast2026 = forecastRow
-      ? [{ year: forecastRow.year, low: parseFloat(forecastRow.forecast_low), high: parseFloat(forecastRow.forecast_high) }]
-      : [];
-    const fsData = rows
-      .filter(r => r.fs_treatment_millions)
-      .map(r => ({ year: r.year, treatment: parseFloat(r.fs_treatment_millions) }));
-    const interiorData = rows
-      .filter(r => r.interior_treatment_millions)
-      .map(r => ({ year: r.year, treatment: parseFloat(r.interior_treatment_millions) }));
-    const dsciFull = rows
-      .filter(r => r.dsci_avg && r.dsci_partial !== 'true')
-      .map(r => ({ year: r.year, dsci: parseFloat(r.dsci_avg) }));
-    const dsciPartial = rows
-      .filter(r => r.dsci_avg && r.dsci_partial === 'true')
-      .map(r => ({ year: r.year, dsci: parseFloat(r.dsci_avg) }));
-    const dsciBridge = dsciFull.length && dsciPartial.length
-      ? [
-          { year: dsciFull[dsciFull.length - 1].year, dsci: dsciFull[dsciFull.length - 1].dsci },
-          { year: dsciPartial[0].year, dsci: dsciPartial[0].dsci }
-        ]
-      : [];
-    const dsciWestFull = rows
-      .filter(r => r.dsci_west_avg && r.dsci_west_partial !== 'true')
-      .map(r => ({ year: r.year, dsci: parseFloat(r.dsci_west_avg) }));
-    const dsciWestPartial = rows
-      .filter(r => r.dsci_west_avg && r.dsci_west_partial === 'true')
-      .map(r => ({ year: r.year, dsci: parseFloat(r.dsci_west_avg) }));
-    const dsciWestBridge = dsciWestFull.length && dsciWestPartial.length
-      ? [
-          { year: dsciWestFull[dsciWestFull.length - 1].year, dsci: dsciWestFull[dsciWestFull.length - 1].dsci },
-          { year: dsciWestPartial[0].year, dsci: dsciWestPartial[0].dsci }
-        ]
-      : [];
-    return {
-      burnData, burnWithRolling, bandData, partial2026, forecast2026,
-      fsData, interiorData,
-      dsciFull, dsciPartial, dsciBridge,
-      dsciWestFull, dsciWestPartial, dsciWestBridge,
-      years
-    };
-  }
-
-  function isMobile() {
-    return window.matchMedia('(max-width: 600px)').matches;
-  }
-
-  function mainChartHeight() { return isMobile() ? 260 : 340; }
-  function secondaryChartHeight() { return isMobile() ? 140 : 190; }
-
-  function yearAxis() {
-    return {
-      title: null,
-      labelAngle: 0,
-      labelExpr: "toNumber(datum.label) % 5 == 0 ? datum.label : ''"
-    };
-  }
-
-  function buildFireSpec(data, mode) {
-    const { burnWithRolling, bandData, partial2026, forecast2026 } = data;
-    const isPct = mode === 'pct';
-
-    let yDomain;
-    if (isPct) {
-      const pctVals = burnWithRolling.filter(d => d.pct_dev !== null).map(d => d.pct_dev);
-      const partialPct = partial2026.map(d => d.pct_dev).filter(v => v !== null);
-      const all = [...pctVals, ...partialPct, ...bandData.flatMap(d => [d.pct_min, d.pct_max])];
-      const pad = Math.max(10, (Math.max(...all) - Math.min(...all)) * 0.1);
-      yDomain = [Math.min(...all) - pad, Math.max(...all) + pad];
-    } else {
-      const acreVals = burnWithRolling.map(d => d.acres);
-      const forecastHigh = forecast2026.length ? forecast2026[0].high : 0;
-      yDomain = [0, Math.max(...acreVals, ...partial2026.map(d => d.acres), forecastHigh) * 1.08];
-    }
-
-    const yScale = { domain: yDomain };
-    const yAxis = isPct
-      ? {
-          title: '% from 10-yr avg',
-          titleFont: 'DM Sans', titleFontSize: 10, titleColor: '#9b9590',
-          titleAngle: -90, titleX: -44,
-          format: '+.0f'
-        }
-      : {
-          title: 'Million acres',
-          titleFont: 'DM Sans', titleFontSize: 10, titleColor: '#9b9590',
-          titleAngle: -90, titleX: -36
-        };
-
-    const lineY = isPct ? 'pct_dev' : 'acres';
-    const bandY = isPct ? 'pct_min' : 'rolling_min';
-    const bandY2 = isPct ? 'pct_max' : 'rolling_max';
-
-    const lineData = isPct
-      ? burnWithRolling.filter(d => d.pct_dev !== null)
-      : burnWithRolling;
-
-    const layers = [
-      {
-        data: { values: bandData },
-        mark: { type: 'area', color: '#c94a1a', opacity: 0.12 },
-        encoding: {
-          x: { field: 'year', type: 'ordinal', axis: yearAxis() },
-          y: { field: bandY, type: 'quantitative', scale: yScale },
-          y2: { field: bandY2 }
-        }
-      },
-      {
-        data: { values: lineData },
-        mark: {
-          type: 'line', color: '#c94a1a', strokeWidth: 2,
-          point: { filled: true, fill: 'white', stroke: '#c94a1a', strokeWidth: 1.5, size: 40 }
-        },
-        encoding: {
-          x: { field: 'year', type: 'ordinal', axis: yearAxis() },
-          y: { field: lineY, type: 'quantitative', scale: yScale, axis: yAxis },
-          tooltip: [
-            { field: 'year', title: 'Year' },
-            { field: 'acres', title: 'Acres burned (M)', format: '.1f' },
-            { field: 'pct_dev', title: '% from 10-yr avg', format: '+.0f' },
-            { field: 'rolling_mean', title: '10-yr avg (M)', format: '.2f' }
-          ]
-        }
-      }
-    ];
-
-    if (!isPct) {
-      layers.push(
-        {
-          data: { values: partial2026 },
-          mark: {
-            type: 'point', filled: true, color: '#e87c2a', size: 90,
-            stroke: 'white', strokeWidth: 2
-          },
-          encoding: {
-            x: { field: 'year', type: 'ordinal' },
-            y: { field: 'acres', type: 'quantitative', scale: yScale },
-            tooltip: [
-              { field: 'year', title: 'Year' },
-              { field: 'acres', title: 'Acres burned YTD Jun 18 (M)', format: '.1f' }
-            ]
-          }
-        },
-        {
-          data: { values: forecast2026 },
-          mark: {
-            type: 'bar', color: 'rgba(232,124,42,0.1)',
-            stroke: '#e87c2a', strokeWidth: 1.5, strokeDash: [3, 2],
-            cornerRadiusTopLeft: 2, cornerRadiusTopRight: 2
-          },
-          encoding: {
-            x: { field: 'year', type: 'ordinal' },
-            y: { field: 'low', type: 'quantitative', scale: yScale },
-            y2: { field: 'high' },
-            tooltip: [
-              { field: 'year', title: '2026 forecast' },
-              { field: 'low', title: 'Low estimate (M)' },
-              { field: 'high', title: 'High estimate (M)' }
-            ]
-          }
-        }
-      );
-    } else if (partial2026.length && partial2026[0].pct_dev !== null) {
-      layers.push({
-        data: { values: partial2026 },
-        mark: {
-          type: 'point', filled: true, color: '#e87c2a', size: 90,
-          stroke: 'white', strokeWidth: 2
-        },
-        encoding: {
-          x: { field: 'year', type: 'ordinal' },
-          y: { field: 'pct_dev', type: 'quantitative', scale: yScale },
-          tooltip: [
-            { field: 'year', title: 'Year' },
-            { field: 'pct_dev', title: '% from 10-yr avg (YTD)', format: '+.0f' }
-          ]
-        }
-      });
-    }
-
-    return {
-      $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
-      width: 'container',
-      height: mainChartHeight(),
-      config: chartConfig,
-      layer: layers
-    };
-  }
-
-  function buildPreventionSpec(data) {
-    const { fsData, interiorData } = data;
-    const yAxis = {
-      title: 'Million acres treated',
-      titleFont: 'DM Sans', titleFontSize: 10, titleColor: '#9b9590',
-      titleAngle: -90, titleX: -42
-    };
-
-    return {
-      $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
-      width: 'container',
-      height: secondaryChartHeight(),
-      config: chartConfig,
-      layer: [
-        {
-          data: { values: interiorData },
-          mark: {
-            type: 'line', color: '#1a4a7a', strokeWidth: 2, strokeDash: [6, 2],
-            point: { filled: true, fill: 'white', stroke: '#1a4a7a', strokeWidth: 1.5, size: 50 }
-          },
-          encoding: {
-            x: { field: 'year', type: 'ordinal', axis: yearAxis() },
-            y: { field: 'treatment', type: 'quantitative', scale: { domain: [0, 5] }, axis: yAxis },
-            tooltip: [
-              { field: 'year', title: 'Year (fiscal)' },
-              { field: 'treatment', title: 'Interior treatment (M acres)', format: '.2f' }
-            ]
-          }
-        },
-        {
-          data: { values: fsData },
-          mark: {
-            type: 'line', color: '#2a6b4a', strokeWidth: 2.5,
-            point: { filled: true, fill: 'white', stroke: '#2a6b4a', strokeWidth: 2, size: 65 }
-          },
-          encoding: {
-            x: { field: 'year', type: 'ordinal' },
-            y: { field: 'treatment', type: 'quantitative', scale: { domain: [0, 5] }, axis: null },
-            tooltip: [
-              { field: 'year', title: 'Year' },
-              { field: 'treatment', title: 'Forest Service treatment (M acres)', format: '.1f' }
-            ]
-          }
-        },
-        {
-          data: { values: fsData },
-          mark: {
-            type: 'text', dy: -14, font: 'DM Mono, monospace',
-            fontSize: 9, color: '#2a6b4a', fontWeight: '500'
-          },
-          encoding: {
-            x: { field: 'year', type: 'ordinal' },
-            y: { field: 'treatment', type: 'quantitative', scale: { domain: [0, 5] } },
-            text: { field: 'treatment', format: '.1f' }
-          }
-        }
-      ]
-    };
-  }
-
-  function buildDsciSpec(data) {
-    const {
-      dsciFull, dsciPartial, dsciBridge,
-      dsciWestFull, dsciWestPartial, dsciWestBridge
-    } = data;
-    const dsciScale = { domain: [0, 350] };
-    const dsciAxis = {
-      title: 'DSCI (drought index)',
-      titleFont: 'DM Sans', titleFontSize: 10, titleColor: '#7b5ea7',
-      labelColor: '#9b9590', labelFont: 'DM Mono, monospace', labelFontSize: 9
-    };
-
-    return {
-      $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
-      width: 'container',
-      height: secondaryChartHeight(),
-      config: chartConfig,
-      layer: [
-        {
-          data: { values: dsciWestFull },
-          mark: {
-            type: 'line', color: '#9b7ec8', strokeWidth: 1.5, strokeDash: [5, 3],
-            point: { filled: true, fill: 'white', stroke: '#9b7ec8', strokeWidth: 1.2, size: 40 }
-          },
-          encoding: {
-            x: { field: 'year', type: 'ordinal', axis: yearAxis() },
-            y: { field: 'dsci', type: 'quantitative', scale: dsciScale, axis: dsciAxis },
-            tooltip: [
-              { field: 'year', title: 'Year' },
-              { field: 'dsci', title: 'Western DSCI', format: '.1f' }
-            ]
-          }
-        },
-        {
-          data: { values: dsciWestBridge },
-          mark: { type: 'line', color: '#9b7ec8', strokeWidth: 1.5, strokeDash: [4, 3], opacity: 0.45 },
-          encoding: {
-            x: { field: 'year', type: 'ordinal' },
-            y: { field: 'dsci', type: 'quantitative', scale: dsciScale, axis: null }
-          }
-        },
-        {
-          data: { values: dsciWestPartial },
-          mark: {
-            type: 'point', filled: true, fill: 'white', stroke: '#9b7ec8',
-            strokeWidth: 1.2, size: 40, opacity: 0.45
-          },
-          encoding: {
-            x: { field: 'year', type: 'ordinal' },
-            y: { field: 'dsci', type: 'quantitative', scale: dsciScale, axis: null },
-            tooltip: [
-              { field: 'year', title: 'Year' },
-              { field: 'dsci', title: 'Western DSCI (partial)', format: '.1f' }
-            ]
-          }
-        },
-        {
-          data: { values: dsciFull },
-          mark: {
-            type: 'line', color: '#7b5ea7', strokeWidth: 2,
-            point: { filled: true, fill: 'white', stroke: '#7b5ea7', strokeWidth: 1.5, size: 50 }
-          },
-          encoding: {
-            x: { field: 'year', type: 'ordinal' },
-            y: { field: 'dsci', type: 'quantitative', scale: dsciScale, axis: null },
-            tooltip: [
-              { field: 'year', title: 'Year' },
-              { field: 'dsci', title: 'National DSCI', format: '.1f' }
-            ]
-          }
-        },
-        {
-          data: { values: dsciBridge },
-          mark: { type: 'line', color: '#7b5ea7', strokeWidth: 2, strokeDash: [4, 3], opacity: 0.55 },
-          encoding: {
-            x: { field: 'year', type: 'ordinal' },
-            y: { field: 'dsci', type: 'quantitative', scale: dsciScale, axis: null }
-          }
-        },
-        {
-          data: { values: dsciPartial },
-          mark: {
-            type: 'point', filled: true, fill: 'white', stroke: '#7b5ea7',
-            strokeWidth: 1.5, size: 50, opacity: 0.55
-          },
-          encoding: {
-            x: { field: 'year', type: 'ordinal' },
-            y: { field: 'dsci', type: 'quantitative', scale: dsciScale, axis: null },
-            tooltip: [
-              { field: 'year', title: 'Year' },
-              { field: 'dsci', title: 'National DSCI (partial)', format: '.1f' }
-            ]
-          }
-        }
-      ]
-    };
-  }
-
-  function buildVpdSpec(vpdRows) {
-    const vpdData = vpdRows.map(r => ({
-      year: r.year,
-      vpd: parseFloat(r.vpd_kpa)
-    }));
-    const vpdMin = Math.min(...vpdData.map(d => d.vpd));
-    const vpdMax = Math.max(...vpdData.map(d => d.vpd));
-    const pad = 0.08;
-
-    return {
-      $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
-      width: 'container',
-      height: secondaryChartHeight(),
-      config: chartConfig,
-      data: { values: vpdData },
-      mark: {
-        type: 'line', color: '#9a6b3a', strokeWidth: 2,
-        point: { filled: true, fill: 'white', stroke: '#9a6b3a', strokeWidth: 1.5, size: 45 }
-      },
-      encoding: {
-        x: { field: 'year', type: 'ordinal', axis: yearAxis() },
-        y: {
-          field: 'vpd', type: 'quantitative',
-          scale: { domain: [vpdMin - pad, vpdMax + pad] },
-          axis: {
-            title: 'VPD (kPa)',
-            titleFont: 'DM Sans', titleFontSize: 10, titleColor: '#9a6b3a',
-            labelColor: '#9b9590', labelFont: 'DM Mono, monospace', labelFontSize: 9
-          }
-        },
-        tooltip: [
-          { field: 'year', title: 'Year' },
-          { field: 'vpd', title: 'Mean VPD (kPa)', format: '.3f' }
-        ]
-      }
-    };
-  }
-
-  const views = { fire: null, prevention: null, dsci: null, vpd: null };
-  let cache = null;
-  let lastLayout = null;
-  let fireMode = 'acres';
-  let activeTab = 'fire';
-  const renderedTabs = new Set();
-
-  function layoutKey() {
-    return `${isMobile()}-${mainChartHeight()}-${secondaryChartHeight()}-${fireMode}`;
-  }
-
-  function finalizeChart(id) {
-    if (views[id]) {
-      views[id].finalize();
-      views[id] = null;
-    }
-  }
-
-  function renderFireChart(data) {
-    finalizeChart('fire');
-    return vegaEmbed('#chart-fire', buildFireSpec(data, fireMode), embedOpts)
-      .then(r => { views.fire = r.view; });
-  }
-
-  function renderTabCharts(tabId, force) {
-    if (!cache) return;
-    const key = layoutKey();
-    if (!force && renderedTabs.has(tabId) && lastLayout === key) return;
-
-    const data = buildDatasets(cache.wildfireRows);
-
-    if (tabId === 'fire') {
-      renderFireChart(data).then(() => {
-        renderedTabs.add('fire');
-        lastLayout = key;
-      });
-    } else if (tabId === 'atmosphere') {
-      finalizeChart('dsci');
-      finalizeChart('vpd');
-      Promise.all([
-        vegaEmbed('#chart-dsci', buildDsciSpec(data), embedOpts).then(r => { views.dsci = r.view; }),
-        vegaEmbed('#chart-vpd', buildVpdSpec(cache.vpdRows), embedOpts).then(r => { views.vpd = r.view; })
-      ]).then(() => {
-        renderedTabs.add('atmosphere');
-        lastLayout = key;
-      });
-    } else if (tabId === 'policy') {
-      finalizeChart('prevention');
-      vegaEmbed('#chart-prevention', buildPreventionSpec(data), embedOpts).then(r => {
-        views.prevention = r.view;
-        renderedTabs.add('policy');
-        lastLayout = key;
-      });
-    }
-  }
-
-  function switchTab(tabId) {
-    activeTab = tabId;
-    document.querySelectorAll('.tab-btn').forEach(btn => {
-      const selected = btn.dataset.tab === tabId;
-      btn.setAttribute('aria-selected', selected ? 'true' : 'false');
-    });
-    document.querySelectorAll('.tab-panel').forEach(panel => {
-      const isActive = panel.id === `tab-${tabId}`;
-      panel.classList.toggle('active', isActive);
-      panel.hidden = !isActive;
-    });
-    if (tabId === 'fire' || tabId === 'atmosphere' || tabId === 'policy') {
-      requestAnimationFrame(() => renderTabCharts(tabId, false));
-    }
-  }
-
-  function renderCharts(wildfireRows, vpdRows) {
-    cache = { wildfireRows, vpdRows };
-    renderedTabs.clear();
-    lastLayout = null;
-    renderTabCharts(activeTab, true);
-  }
-
-  function showChartError() {
-    const msg = '<p style="font-size:12px;color:#6b6560;padding:16px 0;">Charts could not load. Open via a local server (<code>python3 -m http.server</code>) or view the <a href="https://saraxlinnea.github.io/wildfire-prevention-viz/">live page</a>.</p>';
-    document.getElementById('chart-fire').innerHTML = msg;
-    const prevention = document.getElementById('chart-prevention');
-    const dsci = document.getElementById('chart-dsci');
-    const vpd = document.getElementById('chart-vpd');
-    if (prevention) prevention.innerHTML = '';
-    if (dsci) dsci.innerHTML = '';
-    if (vpd) vpd.innerHTML = '';
-  }
-
-  document.querySelectorAll('.tab-btn').forEach(btn => {
-    btn.addEventListener('click', () => switchTab(btn.dataset.tab));
-  });
-
-  document.querySelectorAll('[data-fire-mode]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      fireMode = btn.dataset.fireMode;
-      document.querySelectorAll('[data-fire-mode]').forEach(b => {
-        b.classList.toggle('active', b.dataset.fireMode === fireMode);
-      });
-      if (cache) {
-        renderedTabs.delete('fire');
-        renderTabCharts('fire', true);
-      }
-    });
-  });
-
-  Promise.all([
-    fetch('data/wildfire-data.csv').then(r => { if (!r.ok) throw new Error(); return r.text(); }),
-    fetch('data/vpd-annual.csv').then(r => { if (!r.ok) throw new Error(); return r.text(); })
-  ])
-    .then(([wildfireText, vpdText]) => {
-      renderCharts(parseWildfireCSV(wildfireText), parseSimpleCSV(vpdText));
-    })
-    .catch(showChartError);
-
-  window.addEventListener('resize', () => {
-    if (cache) {
-      renderedTabs.delete(activeTab);
-      renderTabCharts(activeTab, true);
-    }
-  });
-</script>
+<script src="js/datasets.js"></script>
+<script src="js/charts.js"></script>
+<script src="js/app.js"></script>
 </body>
 </html>

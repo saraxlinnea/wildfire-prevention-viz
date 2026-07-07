@@ -1,6 +1,6 @@
-# An Ounce of Prevention: Our Forests on Fire
+# An Ounce of Prevention: U.S. Wildfire Data
 
-U.S. wildfire data visualization, 1983-2026. Four tabs: fire state, atmospheric drivers, federal treatment, and interpretation.
+U.S. wildfire data visualization, 1983-2026. Four tabs: outcomes, drivers and context, exploratory coupling, and how to read.
 
 **[View live](https://saraxlinnea.github.io/wildfire-prevention-viz)**
 
@@ -8,12 +8,12 @@ U.S. wildfire data visualization, 1983-2026. Four tabs: fire state, atmospheric 
 
 ## What This Shows
 
-The page uses four tabs because fire, atmosphere, policy, and interpretation sit on different years and geographies:
+The page uses four tabs:
 
-- **Fire state** (1983-2026): national acres burned with rolling 10-year baseline band; toggle for % from 10-yr avg; 2026 YTD point and AccuWeather forecast range
-- **Atmospheric drivers**: national and western DSCI (2000-2026) and western fire-season VPD (1979-2025)
-- **Human intervention** (2018-2025): Forest Service (2023-2025) and Interior Dept (2018-2024, fiscal year)
-- **Interpretation**: callouts, context, methodology, and how to read the series
+- **Outcomes**: national acres burned with rolling 10-year baseline band; YTD callouts; 2026 forecast overlay
+- **Drivers & context**: western dryness z-score overlay, national/western DSCI (collapsible), combined federal treatment
+- **Coupling** (exploratory): correlation table, VPD vs acres scatter, annual lag proxy; treatment scatter in collapsible (n=3)
+- **How to read**: framing, policy context, methodology
 
 As of June 18, 2026, more than 2.6 million acres have already burned, about 63% above the 10-year average to date. Peak fire season starts in summer. In 2025 the Forest Service treated 35% fewer acres for wildfire risk than the year before.
 
@@ -42,7 +42,7 @@ This page does not claim that cutting prevention in 2025 directly caused the 202
 
 **VPD:** [`data/vpd-annual.csv`](data/vpd-annual.csv). Extend with `python scripts/extend_vpd.py`.
 
-**Correlations (exploratory, not on the viz):** [`data/correlation-by-window.csv`](data/correlation-by-window.csv), [`data/correlation-matrix.csv`](data/correlation-matrix.csv), [`data/correlation-notes.md`](data/correlation-notes.md)
+**Correlations (exploratory, Coupling tab):** [`data/correlation-by-window.csv`](data/correlation-by-window.csv), [`data/correlation-matrix.csv`](data/correlation-matrix.csv), [`data/correlation-notes.md`](data/correlation-notes.md). Scatter annotates r ≈ 0.63 (western VPD vs national acres, 2010-2025); not causal evidence.
 
 ---
 
@@ -52,7 +52,7 @@ This page does not claim that cutting prevention in 2025 directly caused the 202
 |---|---|
 | [`notebooks/process-vpd-data.ipynb`](https://github.com/saraxlinnea/wildfire-prevention-viz/blob/main/notebooks/process-vpd-data.ipynb) | gridMET VPD via OPeNDAP; western US, May-Sep, 1979-2025 |
 | [`notebooks/verify-dsci-data.ipynb`](https://github.com/saraxlinnea/wildfire-prevention-viz/blob/main/notebooks/verify-dsci-data.ipynb) | DSCI annual averages from USDM API (national + western) |
-| [`notebooks/correlation-analysis.ipynb`](https://github.com/saraxlinnea/wildfire-prevention-viz/blob/main/notebooks/correlation-analysis.ipynb) | Exploratory pairwise correlations (not shown on page) |
+| [`notebooks/correlation-analysis.ipynb`](https://github.com/saraxlinnea/wildfire-prevention-viz/blob/main/notebooks/correlation-analysis.ipynb) | Exploratory pairwise correlations (Coupling tab + CSVs) |
 
 Scripts:
 
@@ -78,8 +78,11 @@ VPD processing takes several minutes over the network (OPeNDAP subsetting per ye
 ```bash
 pip install -r requirements.txt
 python scripts/audit_data.py          # must exit 0
+python3 scripts/verify_local.py       # checks js/, data/, and local server
 python3 -m http.server 8000           # open http://localhost:8000
 ```
+
+If charts show a load error, open the browser console. Common causes: `file://` URL (use the server above), server started outside the repo root (404 on `js/` or `data/`), or Vega CDN blocked offline.
 
 See [`data/qa-audit-report.md`](data/qa-audit-report.md) for the latest audit checklist.
 
@@ -97,12 +100,13 @@ Every statement on the live page is tracked in [`research/claims.md`](research/c
 - DSCI verified against USDM API; raw weekly files in [`data/dsci-source/`](data/dsci-source/)
 - VPD from gridMET OPeNDAP; extend via [`scripts/extend_vpd.py`](scripts/extend_vpd.py)
 - Audit script: [`scripts/audit_data.py`](scripts/audit_data.py)
+- Front-end: [`js/datasets.js`](js/datasets.js), [`js/charts.js`](js/charts.js), [`js/app.js`](js/app.js) (loaded from `index.html`; no build step)
 
-**Exploratory correlations (not on the public page)**
+**Exploratory correlations (Coupling tab)**
 
 - [`data/correlation-notes.md`](data/correlation-notes.md) documents caveats and key findings
-- 2010-2025 window: western VPD vs national acres burned r=0.63; national DSCI vs acres r=0.10
-- 2023-2025 FS overlap is only 3 years; treat as illustrative
+- 2010-2025 window: western VPD vs national acres burned r ≈ 0.63; shown on scatter chart, not causal evidence
+- 2023-2025 FS treatment vs next-year fire: 3 pairs only; illustrative
 
 **Known limitations**
 
@@ -121,14 +125,14 @@ Ready-to-use LinkedIn and journalist copy: [`SHARE.md`](SHARE.md)
 
 ## A Note on the Data
 
-Forest Service treatment data is only available consistently from 2023 onward. Interior Department figures run on a fiscal year starting October 1. DSCI national and western series start in 2000 (USDM API has no 1999 data). VPD is western U.S. only. Exploratory correlations live in the notebooks and CSV files, not on the public page.
+Forest Service treatment data is only available consistently from 2023 onward. Interior Department figures run on a fiscal year starting October 1. DSCI national and western series start in 2000 (USDM API has no 1999 data). VPD is western U.S. only. The Coupling tab shows exploratory coupling views; full analysis is in the notebooks and CSV files.
 
 ---
 
 ## Built With
 
 - [Vega-Lite](https://vega.github.io/vega-lite/)
-- Vanilla HTML and CSS
+- Vanilla HTML and CSS; chart logic in `js/` modules
 - Python / Jupyter for data processing (optional; chart runs without it)
 
 ```bash

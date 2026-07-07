@@ -1,6 +1,6 @@
 # Correlation analysis notes
 
-Exploratory only. Not shown on the public visualization.
+Exploratory only. Summary statistics appear on the Coupling tab; full analysis stays in notebooks and CSVs.
 
 ## Caveats
 
