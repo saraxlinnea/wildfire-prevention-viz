@@ -3,6 +3,8 @@
 
 from __future__ import annotations
 
+import csv
+import re
 import sys
 import urllib.error
 import urllib.request
@@ -10,28 +12,57 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 BASE = "http://localhost:8000"
-PATHS = [
+
+STATIC_PATHS = [
     "index.html",
     "js/datasets.js",
     "js/charts.js",
     "js/app.js",
-    "data/wildfire-data.csv",
-    "data/vpd-annual.csv",
 ]
+
+# Boot CSVs loaded by js/app.js Promise.all (min data rows after parse)
+BOOT_CSVS: list[tuple[str, str, int, bool]] = [
+    ("data/wildfire-data.csv", "year", 40, True),  # skip metadata row 2
+    ("data/vpd-annual.csv", "year", 40, False),
+    ("data/erc-annual.csv", "year", 40, False),
+    ("data/regional-acres-annual.csv", "year", 18, False),
+    ("data/hfr-prevention-annual.csv", "fiscal_year", 19, False),
+]
+
+
+def count_csv_rows(path: Path, year_col: str, skip_metadata: bool) -> int:
+    with path.open(newline="", encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        n = 0
+        for i, row in enumerate(reader, start=2):
+            if skip_metadata and i == 2:
+                continue
+            val = (row.get(year_col) or "").strip()
+            if re.fullmatch(r"\d{4}", val):
+                n += 1
+    return n
 
 
 def check_files() -> list[str]:
     errors: list[str] = []
-    for rel in PATHS:
-        p = ROOT / rel
-        if not p.is_file():
+    for rel in STATIC_PATHS:
+        if not (ROOT / rel).is_file():
             errors.append(f"Missing file: {rel}")
+    for rel, year_col, min_rows, skip_meta in BOOT_CSVS:
+        path = ROOT / rel
+        if not path.is_file():
+            errors.append(f"Missing boot CSV: {rel}")
+            continue
+        n = count_csv_rows(path, year_col, skip_meta)
+        if n < min_rows:
+            errors.append(f"{rel}: expected >={min_rows} {year_col} rows, got {n}")
     return errors
 
 
 def check_server() -> list[str]:
     errors: list[str] = []
-    for rel in PATHS:
+    paths = STATIC_PATHS + [rel for rel, _, _, _ in BOOT_CSVS]
+    for rel in paths:
         url = f"{BASE}/{rel}"
         try:
             with urllib.request.urlopen(url, timeout=2) as resp:
@@ -52,7 +83,10 @@ def main() -> int:
         for e in file_errors:
             print(f"  - {e}")
         return 1
-    print("FILE CHECK: OK (all required paths present)")
+    print("FILE CHECK: OK (static assets + boot CSV row counts)")
+    for rel, year_col, min_rows, _ in BOOT_CSVS:
+        n = count_csv_rows(ROOT / rel, year_col, rel.endswith("wildfire-data.csv"))
+        print(f"  - {rel}: {n} rows ({year_col})")
 
     server_errors = check_server()
     if server_errors:

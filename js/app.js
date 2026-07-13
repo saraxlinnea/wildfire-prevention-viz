@@ -5,6 +5,7 @@
   let lastLayout = null;
   let fireMode = 'acres';
   let policyMode = 'total';
+  let policyYearBasis = 'fiscal';
   let scatterMode = 'western';
   let scatterDriverMode = 'erc';
   let atmosDrynessMode = 'erc';
@@ -106,7 +107,7 @@
   }
 
   function layoutKey() {
-    return `${WF.isMobile()}-${WF.mainChartHeight()}-${WF.secondaryChartHeight()}-${fireMode}-${policyMode}-${scatterMode}-${scatterDriverMode}-${atmosDrynessMode}`;
+    return `${WF.isMobile()}-${WF.mainChartHeight()}-${WF.secondaryChartHeight()}-${fireMode}-${policyMode}-${policyYearBasis}-${scatterMode}-${scatterDriverMode}-${atmosDrynessMode}`;
   }
 
   function finalizeChart(id) {
@@ -145,11 +146,24 @@
     return embedChart('#chart-fire', WF.buildFireSpec(d, fireMode), 'fire');
   }
 
+  function updatePolicyYearCopy() {
+    const cal = policyYearBasis === 'calendar';
+    const noteText = cal
+      ? 'Calendar view shifts HFR fiscal-year treatment one year forward (FY 2020 work → 2021 on the axis) to line up with the calendar fire year. Acres burned always use calendar year. Approximate alignment only.'
+      : 'Fiscal view labels treatment by federal fiscal year (Oct 1 start). Acres burned use calendar year on the same tick. The two measures do not share the same reporting window.';
+    document.querySelectorAll('.treatment-year-note').forEach(el => { el.textContent = noteText; });
+    document.querySelectorAll('[data-policy-year]').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.policyYear === policyYearBasis);
+    });
+  }
+
   function renderDrivers(d) {
     updateAtmosCopy();
+    updatePolicyYearCopy();
     const tasks = [
-      embedChart('#chart-policy', WF.buildPolicySpec(d, policyMode), 'policy'),
-      embedChart('#chart-treatment-acres', WF.buildTreatmentAcresDualSpec(d), 'treatmentAcres'),
+      embedChart('#chart-policy', WF.buildPolicySpec(d, policyMode, policyYearBasis), 'policy'),
+      embedChart('#chart-treatment-acres', WF.buildTreatmentAcresDualSpec(d, policyYearBasis), 'treatmentAcres'),
+      embedChart('#chart-wui-share', WF.buildWuiShareSpec(d), 'wuiShare'),
       embedChart('#chart-atmosphere', WF.buildAtmosphericSpec(d, atmosDrynessMode), 'atmosphere')
     ];
     const nationalDetails = document.querySelector('details.atmosphere-national-details');
@@ -293,6 +307,7 @@
       finalizeChart('atmosphereNational');
       finalizeChart('policy');
       finalizeChart('treatmentAcres');
+      finalizeChart('wuiShare');
       promise = renderDrivers(d);
     } else if (tabId === 'coupling') {
       finalizeChart('scatter');
@@ -420,6 +435,16 @@
       document.querySelectorAll('[data-policy-mode]').forEach(b => {
         b.classList.toggle('active', b.dataset.policyMode === policyMode);
       });
+      if (cache) {
+        renderedTabs.delete('drivers');
+        renderTabCharts('drivers', true);
+      }
+    });
+  });
+
+  document.querySelectorAll('[data-policy-year]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      policyYearBasis = btn.dataset.policyYear;
       if (cache) {
         renderedTabs.delete('drivers');
         renderTabCharts('drivers', true);

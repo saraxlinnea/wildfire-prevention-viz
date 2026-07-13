@@ -59,6 +59,32 @@ WF.parseHfrCSV = function (text) {
     .filter(row => /^\d{4}$/.test(row.fiscal_year));
 };
 
+/** Fiscal (HFR) vs calendar alignment for treatment series. Calendar shifts HFR FY +1. */
+WF.withTreatmentYearBasis = function (rows, basis) {
+  if (!rows || !rows.length) return [];
+  if (basis !== 'calendar') {
+    return rows.map(d => ({
+      ...d,
+      axis_year: d.year,
+      year_label: d.source === 'HFR fiscal' || d.from_hfr ? `FY ${d.year}` : String(d.year)
+    }));
+  }
+  const byYear = {};
+  rows.forEach(d => {
+    const isHfr = d.source === 'HFR fiscal' || d.from_hfr === true;
+    const axisYear = isHfr ? String(parseInt(d.year, 10) + 1) : d.year;
+    const entry = {
+      ...d,
+      year: axisYear,
+      axis_year: axisYear,
+      year_label: String(axisYear),
+      shifted_from_fiscal: isHfr ? d.year : null
+    };
+    if (!byYear[axisYear] || d.source === 'Page series') byYear[axisYear] = entry;
+  });
+  return Object.values(byYear).sort((a, b) => parseInt(a.year, 10) - parseInt(b.year, 10));
+};
+
 WF.computeRollingBaseline = function (burnData) {
   const byYear = Object.fromEntries(burnData.map(d => [d.year, d.acres]));
   return burnData.map(d => {
@@ -337,11 +363,25 @@ WF.buildDatasets = function (rows, vpdRows, ercRows, regionalAcresRows, hfrRows)
     })
   );
   const hfrFsData = Object.entries(hfrByYear)
-    .map(([year, v]) => ({ year, treatment: v.fs }))
+    .map(([year, v]) => ({ year, treatment: v.fs, from_hfr: true }))
     .sort((a, b) => parseInt(a.year, 10) - parseInt(b.year, 10));
   const hfrInteriorData = Object.entries(hfrByYear)
-    .map(([year, v]) => ({ year, treatment: v.doi }))
+    .map(([year, v]) => ({ year, treatment: v.doi, from_hfr: true }))
     .sort((a, b) => parseInt(a.year, 10) - parseInt(b.year, 10));
+
+  const wuiShareSeries = (hfrRows || []).map(r => {
+    const fw = parseFloat(r.fs_wui_acres) || 0;
+    const fn = parseFloat(r.fs_non_wui_acres) || 0;
+    const dw = parseFloat(r.doi_wui_acres) || 0;
+    const dn = parseFloat(r.doi_non_wui_acres) || 0;
+    const wui = fw + dw;
+    const designation = wui + fn + dn;
+    return {
+      fiscal_year: r.fiscal_year,
+      year: r.fiscal_year,
+      wui_share: designation > 0 ? wui / designation : null
+    };
+  }).filter(r => r.wui_share !== null && r.wui_share !== undefined);
   const policyLongSeries = [];
   for (let y = 2003; y <= 2025; y++) {
     const year = String(y);
@@ -476,6 +516,7 @@ WF.buildDatasets = function (rows, vpdRows, ercRows, regionalAcresRows, hfrRows)
     scatterRowsNationalErc, scatterRowsWesternErc,
     lagRows, policyScatter,
     westernAcresSeries, regionalShareSeries, proxyRankBars, treatmentAcresOverlap,
+    wuiShareSeries,
     years,
     pearsonVpdAcres: 0.625,
     pearsonVpdWesternAcres: 0.808,

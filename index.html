@@ -494,6 +494,37 @@
       font-weight: 400;
     }
 
+    .treatment-limits-box {
+      background: #f0ebe3;
+      border-left: 3px solid #9b9590;
+      border-radius: 0 6px 6px 0;
+      padding: 12px 14px;
+      margin-bottom: 16px;
+      font-size: 12.5px;
+      line-height: 1.55;
+      color: var(--ink);
+    }
+
+    .treatment-limits-box strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 13px;
+    }
+
+    .treatment-limits-box ul {
+      margin: 0 0 0 18px;
+      color: var(--ink-light);
+    }
+
+    .treatment-limits-box li { margin-bottom: 4px; }
+
+    .year-basis-note {
+      font-size: 11.5px;
+      color: var(--ink-light);
+      margin: 8px 0 0;
+      line-height: 1.5;
+    }
+
     .rank-table th.rank-col,
     .rank-table td.rank-col {
       width: 2.2em;
@@ -854,15 +885,30 @@
 
     <p class="drivers-section-label">Federal fuels treatment</p>
 
+    <div class="treatment-limits-box" role="note">
+      <strong>What treatment numbers do not mean</strong>
+      <ul>
+        <li><strong>Not vegetation structure change</strong> on the ground. Reported acres are where work was done, not how much fuel was removed or how fire behavior would change.</li>
+        <li><strong>Not community outcomes.</strong> The count does not track homes protected, evacuations avoided, or lives saved.</li>
+        <li><strong>Not maintained acres.</strong> One-time treatment without follow-up can lose effect; the series does not show retreatment or upkeep.</li>
+        <li><strong>Not comparable acre-for-acre with acres burned.</strong> Treatment is planned workload; burn acres are an outcome shaped by weather, ignitions, and suppression.</li>
+      </ul>
+    </div>
+
     <div class="chart-container chart-container--policy">
       <div class="signal-tier signal-tier-2">Federal prevention work</div>
       <div class="panel-label">Federal hazardous fuels treatment (2003-2025)</div>
       <p class="plain-read"><strong>What you are looking at:</strong> combined acres the U.S. Forest Service and Interior Department (BLM, Park Service, Fish and Wildlife, Bureau of Indian Affairs) say they treated for hazardous fuels each year. The long history comes from the joint federal HFR report for fiscal years 2003 through 2021. Recent years use agency totals verified for this page. Treatment includes prescribed fire, mechanical thinning, and pile burning. The line moves with congressional funding, hiring, smoke windows, and which forests were prioritized. A higher number does not automatically mean communities are safer, because location and maintenance matter more than the national total.</p>
       <figure class="chart-figure">
+      <div class="chart-toggle" role="group" aria-label="Treatment year basis">
+        <button type="button" class="toggle-btn active" data-policy-year="fiscal">Federal fiscal year</button>
+        <button type="button" class="toggle-btn" data-policy-year="calendar">Calendar year (aligned)</button>
+      </div>
       <div class="chart-toggle" role="group" aria-label="Policy chart view">
         <button type="button" class="toggle-btn active" data-policy-mode="total">Combined total</button>
         <button type="button" class="toggle-btn" data-policy-mode="breakdown">Agency breakdown</button>
       </div>
+      <p class="year-basis-note treatment-year-note" id="treatment-year-note">Fiscal view labels treatment by federal fiscal year (Oct 1 start). Acres burned use calendar year on the same tick. The two measures do not share the same reporting window.</p>
       <div class="legend-row">
         <div class="legend-item">
           <div class="ls-line" style="background:#2a6b4a;"></div>
@@ -882,11 +928,30 @@
       </figure>
     </div>
 
+    <div class="chart-container chart-container--policy chart-container--wui">
+      <div class="signal-tier signal-tier-2">WUI designation (HFR, FY 2003-2021)</div>
+      <div class="panel-label">Share of treatment acres categorized as wildland-urban interface</div>
+      <p class="plain-read">HFR reports how much of each year’s <em>designation</em> acres were tagged WUI vs non-WUI. That is where agencies categorized work, not a count of homes protected. WUI share rose from about 55% in the early 2000s to roughly 64% by FY 2020-2021 as community-adjacent projects took a larger slice of the portfolio.</p>
+      <figure class="chart-figure">
+      <div id="chart-wui-share" class="chart-slot" role="img" aria-label="WUI share of HFR designation acres by fiscal year"></div>
+      <figcaption class="chart-caption-block">
+        <p class="chart-caption">Median WUI share of designation acres was about 59% across FY 2003-2021. Recent fiscal years cluster near 62-64%.</p>
+        <p class="chart-note"><span class="note-label">In context</span>WUI share can rise when agencies prioritize community-adjacent projects even if total treatment acres fall. Not causal evidence linking WUI share to national fire acres.</p>
+        <span class="chart-source">Source: HFR-DOI-FS NFPORS FY 2003-2021 · <a href="data/hfr-wui-notes.md">hfr-wui-notes.md</a></span>
+      </figcaption>
+      </figure>
+    </div>
+
     <div class="chart-container chart-container--policy chart-container--overlap" id="chart-treatment-acres-section">
       <div class="signal-tier signal-tier-2">Same years, two measures</div>
       <div class="panel-label">Treatment and acres burned on one timeline</div>
       <p class="plain-read"><strong>What you are looking at:</strong> two different national measures on the same timeline. The green line is federal treatment acres (left axis). The orange line is national acres burned (right axis). They answer different questions. Treatment is planned work reported by agencies. Acres burned is the outcome of weather, fuels, ignitions, and suppression. When both are high in the same year, that often means a severe fire year that also demanded emergency spending, not proof that prevention failed. When treatment is steady in quieter years, agencies are using the window before the next hot summer.</p>
       <figure class="chart-figure">
+      <div class="chart-toggle" role="group" aria-label="Treatment year basis (dual axis)">
+        <button type="button" class="toggle-btn active" data-policy-year="fiscal">Federal fiscal year</button>
+        <button type="button" class="toggle-btn" data-policy-year="calendar">Calendar year (aligned)</button>
+      </div>
+      <p class="year-basis-note treatment-year-note">Fiscal view labels treatment by federal fiscal year (Oct 1 start). Acres burned always use calendar year.</p>
       <div class="legend-row">
         <div class="legend-item">
           <div class="ls-line" style="background:#2a6b4a;"></div>
@@ -1204,6 +1269,38 @@
   </section>
 
   <section id="tab-interpret" class="tab-panel tab-panel--interpret" role="tabpanel" aria-labelledby="tab-btn-interpret" hidden>
+    <details class="methodology-details glossary-details" open>
+      <summary>Glossary (ERC, VPD, DSCI, GACC, WUI, fiscal vs calendar year)</summary>
+      <div class="methodology-body">
+        <dl class="def-list">
+          <div class="def-item">
+            <dt>ERC (Energy Release Component)</dt>
+            <dd>Fuel-focused fire danger index from dead and live fuel moisture. Higher ERC in May-September usually means fuels can burn more intensely if ignited.</dd>
+          </div>
+          <div class="def-item">
+            <dt>VPD (Vapor pressure deficit)</dt>
+            <dd>How strongly the atmosphere pulls moisture from plants and soils. High VPD dries fine fuels quickly during the western fire season.</dd>
+          </div>
+          <div class="def-item">
+            <dt>DSCI (Drought Severity Coverage Index)</dt>
+            <dd>Share of land in drought categories on the U.S. Drought Monitor. Useful for water supply and long-term stress; weaker match to annual acres burned than ERC or VPD on this page.</dd>
+          </div>
+          <div class="def-item">
+            <dt>GACC (Geographic Area Coordination Center)</dt>
+            <dd>Federal fire-reporting regions (West, South, Alaska, East). NICC sums GACC acres for regional share charts; western GACC totals exclude Alaska and the South.</dd>
+          </div>
+          <div class="def-item">
+            <dt>WUI (Wildland-urban interface)</dt>
+            <dd>In HFR tables, a <em>designation</em> label for where treatment was categorized (near communities vs remote). Not the same as homes protected or risk reduced.</dd>
+          </div>
+          <div class="def-item">
+            <dt>Federal fiscal year vs calendar year</dt>
+            <dd><strong>Fiscal year</strong> runs Oct 1 through Sep 30 (e.g., FY 2021). <strong>Calendar year</strong> is Jan 1 through Dec 31. NIFC burn acres and DSCI use calendar years. Interior and HFR treatment totals use fiscal years. Treatment charts offer a fiscal/calendar toggle; calendar view shifts HFR fiscal data +1 year as an approximate fire-season alignment.</dd>
+          </div>
+        </dl>
+      </div>
+    </details>
+
     <div class="interp-section">
       <div class="interp-heading">How to read this</div>
       <div class="prose-block">
@@ -1279,8 +1376,8 @@
 
 </div>
 
-<script src="js/datasets.js?v=20260714"></script>
-<script src="js/charts.js?v=20260714"></script>
-<script src="js/app.js?v=20260714"></script>
+<script src="js/datasets.js?v=20260715"></script>
+<script src="js/charts.js?v=20260715"></script>
+<script src="js/app.js?v=20260715"></script>
 </body>
 </html>

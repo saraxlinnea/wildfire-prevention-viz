@@ -272,19 +272,44 @@ WF.buildAtmosphericNationalSpec = function (data) {
   };
 };
 
-WF.buildPolicySpec = function (data, mode) {
+WF.yearAxisLong = function (yearBasis) {
+  if (!yearBasis || yearBasis === 'default') {
+    return {
+      title: null,
+      labelAngle: -45,
+      labelExpr: "toNumber(datum.label) % 2 == 0 ? datum.label : ''"
+    };
+  }
+  const title = yearBasis === 'calendar'
+    ? 'Calendar year (HFR treatment shifted +1)'
+    : 'Federal fiscal year (Oct 1 start)';
+  return {
+    title,
+    titleFont: 'DM Sans',
+    titleFontSize: 9,
+    titleColor: '#9b9590',
+    labelAngle: -45,
+    labelExpr: "toNumber(datum.label) % 2 == 0 ? datum.label : ''"
+  };
+};
+
+WF.buildPolicySpec = function (data, mode, yearBasis) {
+  const basis = yearBasis || 'fiscal';
   const {
     policyCombined, policyLongSeries,
     policyInteriorBreakdown, policyFsBreakdown
   } = data;
   const isBreakdown = mode === 'breakdown';
-  const totalSeries = (policyLongSeries && policyLongSeries.length)
+  const rawTotal = (policyLongSeries && policyLongSeries.length)
     ? policyLongSeries
     : policyCombined;
+  const totalSeries = WF.withTreatmentYearBasis(rawTotal, basis);
+  const interiorSeries = WF.withTreatmentYearBasis(policyInteriorBreakdown || [], basis);
+  const fsSeries = WF.withTreatmentYearBasis(policyFsBreakdown || [], basis);
   const totalMax = totalSeries.reduce((m, d) => Math.max(m, d.total || 0), 0);
   const breakdownMax = Math.max(
-    ...(policyInteriorBreakdown || []).map(d => d.treatment || 0),
-    ...(policyFsBreakdown || []).map(d => d.treatment || 0),
+    ...interiorSeries.map(d => d.treatment || 0),
+    ...fsSeries.map(d => d.treatment || 0),
     0
   );
   const yMax = Math.ceil((isBreakdown ? breakdownMax : totalMax) * 1.12) || 6;
@@ -308,14 +333,14 @@ WF.buildPolicySpec = function (data, mode) {
             point: { filled: true, fill: 'white', stroke: '#2a6b4a', strokeWidth: 2, size: 55 }
           },
           encoding: {
-            x: { field: 'year', type: 'ordinal', axis: WF.yearAxisLong() },
+            x: { field: 'year', type: 'ordinal', axis: WF.yearAxisLong(basis) },
             y: { field: 'total', type: 'quantitative', scale: { domain: [0, yMax] }, axis: yAxis },
             tooltip: [
-              { field: 'year', title: 'Year' },
+              { field: 'year_label', title: basis === 'calendar' ? 'Calendar year' : 'Year' },
               { field: 'total', title: 'Combined federal (M acres)', format: '.2f' },
               { field: 'source', title: 'Series' },
               { field: 'yoy_pct', title: 'YoY change %', format: '+.0f' },
-              { field: 'interior_fiscal', title: 'Interior is fiscal year', format: '' }
+              { field: 'shifted_from_fiscal', title: 'From fiscal year', format: '' }
             ]
           }
         }
@@ -330,22 +355,23 @@ WF.buildPolicySpec = function (data, mode) {
     config: WF.chartConfig,
     layer: [
       {
-        data: { values: policyInteriorBreakdown || [] },
+        data: { values: interiorSeries },
         mark: {
           type: 'line', color: '#1a4a7a', strokeWidth: 2, strokeDash: [6, 2],
           point: { filled: true, fill: 'white', stroke: '#1a4a7a', strokeWidth: 1.5, size: 50 }
         },
         encoding: {
-          x: { field: 'year', type: 'ordinal', axis: WF.yearAxisLong() },
+          x: { field: 'year', type: 'ordinal', axis: WF.yearAxisLong(basis) },
           y: { field: 'treatment', type: 'quantitative', scale: { domain: [0, yMax] }, axis: yAxis },
           tooltip: [
-            { field: 'year', title: 'Year (DOI / Interior fiscal)' },
-            { field: 'treatment', title: 'DOI or Interior (M acres)', format: '.2f' }
+            { field: 'year_label', title: basis === 'calendar' ? 'Calendar year' : 'Year' },
+            { field: 'treatment', title: 'DOI or Interior (M acres)', format: '.2f' },
+            { field: 'shifted_from_fiscal', title: 'From fiscal year', format: '' }
           ]
         }
       },
       {
-        data: { values: policyFsBreakdown || [] },
+        data: { values: fsSeries },
         mark: {
           type: 'line', color: '#2a6b4a', strokeWidth: 2.5,
           point: { filled: true, fill: 'white', stroke: '#2a6b4a', strokeWidth: 2, size: 55 }
@@ -354,12 +380,60 @@ WF.buildPolicySpec = function (data, mode) {
           x: { field: 'year', type: 'ordinal' },
           y: { field: 'treatment', type: 'quantitative', scale: { domain: [0, yMax] }, axis: null },
           tooltip: [
-            { field: 'year', title: 'Year (FS fiscal or calendar)' },
-            { field: 'treatment', title: 'Forest Service (M acres)', format: '.1f' }
+            { field: 'year_label', title: basis === 'calendar' ? 'Calendar year' : 'Year' },
+            { field: 'treatment', title: 'Forest Service (M acres)', format: '.1f' },
+            { field: 'shifted_from_fiscal', title: 'From fiscal year', format: '' }
           ]
         }
       }
     ]
+  };
+};
+
+WF.buildWuiShareSpec = function (data) {
+  const rows = (data.wuiShareSeries || []).map(d => ({
+    ...d,
+    wui_pct: d.wui_share * 100
+  }));
+  return {
+    $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+    width: 'container',
+    height: WF.compactChartHeight(),
+    config: WF.chartConfig,
+    data: { values: rows },
+    mark: {
+      type: 'line',
+      color: '#1a4a7a',
+      strokeWidth: 2.5,
+      point: { filled: true, fill: 'white', stroke: '#1a4a7a', strokeWidth: 2, size: 55 }
+    },
+    encoding: {
+      x: {
+        field: 'fiscal_year',
+        type: 'ordinal',
+        title: 'Federal fiscal year',
+        titleFont: 'DM Sans',
+        titleFontSize: 9,
+        titleColor: '#9b9590',
+        axis: { labelAngle: -45, labelExpr: "toNumber(datum.label) % 2 == 0 ? datum.label : ''" }
+      },
+      y: {
+        field: 'wui_pct',
+        type: 'quantitative',
+        scale: { domain: [45, 75] },
+        title: 'WUI share of designation (%)',
+        titleFont: 'DM Sans',
+        titleFontSize: 10,
+        titleColor: '#9b9590',
+        titleAngle: -90,
+        titleX: -42,
+        axis: { format: '.0f' }
+      },
+      tooltip: [
+        { field: 'fiscal_year', title: 'Fiscal year' },
+        { field: 'wui_pct', title: 'WUI share of designation', format: '.1f' }
+      ]
+    }
   };
 };
 
@@ -413,16 +487,37 @@ WF.buildProxyRankBarSpec = function (data) {
   };
 };
 
-WF.yearAxisLong = function () {
-  return {
-    title: null,
-    labelAngle: -45,
-    labelExpr: "toNumber(datum.label) % 2 == 0 ? datum.label : ''"
-  };
-};
-
-WF.buildTreatmentAcresDualSpec = function (data) {
-  const rows = data.treatmentAcresOverlap || [];
+WF.buildTreatmentAcresDualSpec = function (data, yearBasis) {
+  const basis = yearBasis || 'fiscal';
+  const raw = data.treatmentAcresOverlap || [];
+  const treatmentPts = WF.withTreatmentYearBasis(
+    raw
+      .filter(d => d.treatment_millions !== null && d.treatment_millions !== undefined)
+      .map(d => ({
+        year: d.year,
+        total: d.treatment_millions,
+        source: d.treatment_source === 'HFR fiscal' ? 'HFR fiscal' : 'Page series'
+      })),
+    basis
+  );
+  const treatmentByYear = Object.fromEntries(
+    treatmentPts.map(d => [d.year, { ...d, overlap_note: 'Same timeline, different measures. Not proof one caused the other.' }])
+  );
+  const acresByYear = Object.fromEntries(
+    raw
+      .filter(d => d.acres_millions !== null && d.acres_millions !== undefined)
+      .map(d => [d.year, d.acres_millions])
+  );
+  const years = [...new Set([...Object.keys(treatmentByYear), ...Object.keys(acresByYear)])]
+    .sort((a, b) => parseInt(a, 10) - parseInt(b, 10));
+  const rows = years.map(year => ({
+    year,
+    treatment_millions: treatmentByYear[year] ? treatmentByYear[year].total : null,
+    treatment_source: treatmentByYear[year] ? treatmentByYear[year].source : null,
+    shifted_from_fiscal: treatmentByYear[year] ? treatmentByYear[year].shifted_from_fiscal : null,
+    acres_millions: acresByYear[year] ?? null,
+    overlap_note: 'Same timeline, different measures. Not proof one caused the other.'
+  }));
   if (!rows.length) {
     return {
       $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
@@ -454,14 +549,14 @@ WF.buildTreatmentAcresDualSpec = function (data) {
           point: { filled: true, fill: 'white', stroke: '#2a6b4a', strokeWidth: 2, size: 50 }
         },
         encoding: {
-          x: { field: 'year', type: 'ordinal', axis: WF.yearAxisLong() },
+          x: { field: 'year', type: 'ordinal', axis: WF.yearAxisLong(basis) },
           y: {
             field: 'treatment_millions',
             type: 'quantitative',
             scale: { domain: [0, Math.max(6, Math.ceil(treatmentMax * 1.12))] },
             axis: {
               orient: 'left',
-              title: 'Federal treatment (M acres)',
+              title: basis === 'calendar' ? 'Treatment (M ac, calendar-aligned)' : 'Federal treatment (M acres, fiscal)',
               titleFont: 'DM Sans',
               titleFontSize: 10,
               titleColor: '#2a6b4a',
@@ -470,10 +565,10 @@ WF.buildTreatmentAcresDualSpec = function (data) {
             }
           },
           tooltip: [
-            { field: 'year', title: 'Year' },
+            { field: 'year', title: basis === 'calendar' ? 'Calendar year' : 'Fiscal year' },
             { field: 'treatment_millions', title: 'Treatment (M acres)', format: '.2f' },
             { field: 'treatment_source', title: 'Series' },
-            { field: 'overlap_note', title: 'Read as' }
+            { field: 'shifted_from_fiscal', title: 'From fiscal year', format: '' }
           ]
         }
       },
