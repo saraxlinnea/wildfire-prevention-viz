@@ -20,6 +20,26 @@
       .replace(/"/g, '&quot;');
   }
 
+  function chartErrorFooter() {
+    if (window.location.protocol === 'file:') {
+      return (
+        'From the project root, run <code>python3 -m http.server 8000</code> and open ' +
+        '<a href="http://localhost:8000/">http://localhost:8000/</a> (not a <code>file://</code> path).'
+      );
+    }
+    if (/localhost|127\.0\.0\.1/.test(window.location.hostname)) {
+      return (
+        'If CSV requests failed, start the server from the repo root: ' +
+        '<code>python3 -m http.server 8000</code>.'
+      );
+    }
+    return (
+      'Try a hard refresh (<kbd>Cmd+Shift+R</kbd> or <kbd>Ctrl+Shift+R</kbd>). ' +
+      'If charts still fail, open the browser console (details above) and check the ' +
+      '<a href="https://github.com/saraxlinnea/wildfire-prevention-viz/issues">GitHub issues</a> page.'
+    );
+  }
+
   function chartErrorHtml(details) {
     const lines = Array.isArray(details) ? details : [details];
     const list = lines.map(l => `<li>${escapeHtml(l)}</li>`).join('');
@@ -27,9 +47,7 @@
       '<div class="chart-load-error" style="font-size:12px;color:#6b6560;padding:16px 0;line-height:1.55;">' +
       '<p style="margin-bottom:8px;"><strong>Charts could not load.</strong></p>' +
       `<ul style="margin:0 0 10px 18px;">${list}</ul>` +
-      '<p style="margin:0;">From the project root, run <code>python3 -m http.server 8000</code> and open ' +
-      '<a href="http://localhost:8000/">http://localhost:8000/</a> (not a <code>file://</code> path). ' +
-      'Or view the <a href="https://saraxlinnea.github.io/wildfire-prevention-viz/">live page</a>.</p>' +
+      `<p style="margin:0;">${chartErrorFooter()}</p>` +
       '</div>'
     );
   }
@@ -346,7 +364,7 @@
           vpdRows = WF.parseSimpleCSV(vpdText);
           ercRows = WF.parseSimpleCSV(ercText);
           regionalAcresRows = WF.parseSimpleCSV(regionalAcresText);
-          hfrRows = WF.parseSimpleCSV(hfrText);
+          hfrRows = WF.parseHfrCSV(hfrText);
         } catch (e) {
           e.stage = 'parse CSV';
           throw e;

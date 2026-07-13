@@ -47,6 +47,31 @@
 
     .page { width: 100%; max-width: 960px; }
 
+    .file-protocol-banner {
+      display: none;
+      background: #fff8e6;
+      border: 1px solid #e6c84a;
+      border-radius: 6px;
+      padding: 12px 14px;
+      margin-bottom: 16px;
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--ink);
+    }
+
+    html.file-protocol .file-protocol-banner {
+      display: block;
+    }
+
+    .file-protocol-banner code {
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+    }
+
+    .file-protocol-banner a {
+      color: var(--interior);
+    }
+
     .page-header-band {
       background: #f3ece4;
       margin: 0 -20px 20px;
@@ -702,7 +727,19 @@
   </style>
 </head>
 <body>
+<script>
+  if (window.location.protocol === 'file:') {
+    document.documentElement.classList.add('file-protocol');
+  }
+</script>
 <div class="page">
+
+  <div class="file-protocol-banner" role="status">
+    <strong>Charts cannot load from a saved file path.</strong>
+    Browsers block CSV requests on <code>file://</code> URLs. From this project folder run
+    <code>python3 -m http.server 8000</code>, then open
+    <a href="http://localhost:8000/">http://localhost:8000/</a> in the browser (including Cursor’s Simple Browser).
+  </div>
 
   <div class="page-header-band">
     <header>
@@ -1242,8 +1279,8 @@
 
 </div>
 
-<script src="js/datasets.js?v=20260713"></script>
-<script src="js/charts.js?v=20260713"></script>
-<script src="js/app.js?v=20260713"></script>
+<script src="js/datasets.js?v=20260714"></script>
+<script src="js/charts.js?v=20260714"></script>
+<script src="js/app.js?v=20260714"></script>
 </body>
 </html>

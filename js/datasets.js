@@ -45,6 +45,20 @@ WF.parseSimpleCSV = function (text) {
     .filter(row => /^\d{4}$/.test(row.year));
 };
 
+/** HFR prevention CSV uses fiscal_year, not year. */
+WF.parseHfrCSV = function (text) {
+  const lines = text.trim().split('\n');
+  const headers = WF.parseCSVLine(lines[0]);
+  return lines.slice(1)
+    .map(line => {
+      const values = WF.parseCSVLine(line);
+      const row = {};
+      headers.forEach((h, i) => { row[h] = (values[i] || '').trim(); });
+      return row;
+    })
+    .filter(row => /^\d{4}$/.test(row.fiscal_year));
+};
+
 WF.computeRollingBaseline = function (burnData) {
   const byYear = Object.fromEntries(burnData.map(d => [d.year, d.acres]));
   return burnData.map(d => {
