@@ -27,6 +27,12 @@ BOOT_CSVS: list[tuple[str, str, int, bool]] = [
     ("data/erc-annual.csv", "year", 40, False),
     ("data/regional-acres-annual.csv", "year", 18, False),
     ("data/hfr-prevention-annual.csv", "fiscal_year", 19, False),
+    ("data/vpd-monthly-annual.csv", "year", 14, False),
+]
+
+OPTIONAL_CSVS: list[tuple[str, int]] = [
+    ("data/ignition-cause-annual.csv", 4),
+    ("data/correlation-sensitivity.csv", 5),
 ]
 
 
@@ -87,6 +93,15 @@ def main() -> int:
     for rel, year_col, min_rows, _ in BOOT_CSVS:
         n = count_csv_rows(ROOT / rel, year_col, rel.endswith("wildfire-data.csv"))
         print(f"  - {rel}: {n} rows ({year_col})")
+    for rel, min_rows in OPTIONAL_CSVS:
+        path = ROOT / rel
+        if path.is_file():
+            with path.open(newline="", encoding="utf-8") as f:
+                n = sum(1 for _ in csv.DictReader(f))
+            status = "OK" if n >= min_rows else f"WARN (expected >={min_rows}, got {n})"
+            print(f"  - {rel}: {n} data rows [{status}, optional]")
+        else:
+            print(f"  - {rel}: missing [optional]")
 
     server_errors = check_server()
     if server_errors:

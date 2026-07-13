@@ -42,7 +42,7 @@ WF.yearAxis = function () {
 };
 
 WF.buildFireSpec = function (data, mode) {
-  const { burnWithRolling, bandData, partial2026, forecast2026 } = data;
+  const { burnWithRolling, bandData, partial2026, forecast2026, fireStoryMarks } = data;
   const isPct = mode === 'pct';
 
   let yDomain;
@@ -150,8 +150,11 @@ WF.buildFireSpec = function (data, mode) {
           { field: 'pct_dev', title: '% from 10-yr avg (YTD)', format: '+.0f' }
         ]
       }
-    });
+    }    );
   }
+
+  const storyLayer = WF.storyYearTextLayer(fireStoryMarks, 'year', lineY, isPct ? -8 : -0.15);
+  if (storyLayer) layers.push(storyLayer);
 
   return {
     $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
@@ -681,11 +684,13 @@ WF.buildWesternAcresSpec = function (data) {
 
 WF.buildRegionalShareSpec = function (data) {
   const values = data.regionalShareSeries || [];
-  return {
-    $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
-    width: 'container',
-    height: WF.secondaryChartHeight(),
-    config: WF.chartConfig,
+  const westOnly = values.filter(d => d.region === 'West');
+  const storyMarks = (data.regionalStoryMarks || []).map(m => ({
+    year: m.year,
+    share_pct: m.share_pct,
+    label: m.label
+  }));
+  const layers = [{
     data: { values },
     mark: {
       type: 'area',
@@ -736,6 +741,16 @@ WF.buildRegionalShareSpec = function (data) {
         { field: 'geo_note', title: 'Scope' }
       ]
     }
+  }];
+  const storyLayer = WF.storyYearTextLayer(storyMarks, 'year', 'share_pct', -4);
+  if (storyLayer) layers.push(storyLayer);
+
+  return {
+    $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+    width: 'container',
+    height: WF.secondaryChartHeight(),
+    config: WF.chartConfig,
+    layer: layers
   };
 };
 
@@ -747,6 +762,8 @@ WF.buildScatterSpec = function (data, acreMode, driverMode) {
     national: { vpd: 'scatterRowsNationalVpd', erc: 'scatterRowsNationalErc' }
   };
   const scatterRows = data[rowMap[acresKey][driver]] || [];
+  const storyMarks = (data.scatterStoryMarks || [])
+    .filter(m => scatterRows.some(d => d.year === m.year));
   const r = driver === 'erc'
     ? (acresKey === 'western' ? (data.pearsonErcWesternAcres ?? 0.821) : (data.pearsonErcNationalAcres ?? 0.532))
     : (acresKey === 'western' ? (data.pearsonVpdWesternAcres ?? 0.808) : (data.pearsonVpdAcres ?? 0.625));
@@ -768,39 +785,34 @@ WF.buildScatterSpec = function (data, acreMode, driverMode) {
   const acreMax = Math.max(...acreVals);
   const acrePad = Math.max(0.3, (acreMax - acreMin) * 0.08);
   const acreDomain = [Math.max(0, acreMin - acrePad), acreMax + acrePad];
-  return {
-    $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
-    width: 'container',
-    height: WF.secondaryChartHeight(),
-    config: WF.chartConfig,
-    data: { values: scatterRows },
-    layer: [
+  const layers = [
     {
-    mark: { type: 'point', filled: true, size: 80 },
-    encoding: {
-      x: {
-        field: 'driver', type: 'quantitative',
-        scale: { domain: driverDomain, nice: false, zero: false },
-        title: xTitle,
-        titleFont: 'DM Sans', titleFontSize: 10, titleColor: '#9a6b3a'
-      },
-      y: {
-        field: 'acres', type: 'quantitative',
-        scale: { domain: acreDomain, nice: false, zero: false },
-        title: yTitle,
-        titleFont: 'DM Sans', titleFontSize: 10, titleColor: '#c94a1a'
-      },
-      color: {
-        field: 'year', type: 'ordinal',
-        legend: { title: 'Year', orient: 'right' }
-      },
-      tooltip: [
-        { field: 'year', title: 'Year' },
-        { field: 'driver', title: driver === 'erc' ? 'Western ERC' : 'Western VPD (kPa)', format: driverFmt },
-        { field: 'acres', title: 'Acres burned (M)', format: '.2f' },
-        { field: 'geo_note', title: 'Scope' }
-      ]
-    }
+      data: { values: scatterRows },
+      mark: { type: 'point', filled: true, size: 80 },
+      encoding: {
+        x: {
+          field: 'driver', type: 'quantitative',
+          scale: { domain: driverDomain, nice: false, zero: false },
+          title: xTitle,
+          titleFont: 'DM Sans', titleFontSize: 10, titleColor: '#9a6b3a'
+        },
+        y: {
+          field: 'acres', type: 'quantitative',
+          scale: { domain: acreDomain, nice: false, zero: false },
+          title: yTitle,
+          titleFont: 'DM Sans', titleFontSize: 10, titleColor: '#c94a1a'
+        },
+        color: {
+          field: 'year', type: 'ordinal',
+          legend: { title: 'Year', orient: 'right' }
+        },
+        tooltip: [
+          { field: 'year', title: 'Year' },
+          { field: 'driver', title: driver === 'erc' ? 'Western ERC' : 'Western VPD (kPa)', format: driverFmt },
+          { field: 'acres', title: 'Acres burned (M)', format: '.2f' },
+          { field: 'geo_note', title: 'Scope' }
+        ]
+      }
     },
     {
       data: { values: [{ label: rNote }] },
@@ -810,7 +822,20 @@ WF.buildScatterSpec = function (data, acreMode, driverMode) {
       },
       encoding: { text: { field: 'label', type: 'nominal' } }
     }
-    ]
+  ];
+  if (acresKey === 'western' && driver === 'erc' && storyMarks.length) {
+    const storyLayer = WF.storyYearTextLayer(storyMarks, 'driver', 'acres', -0.12);
+    if (storyLayer) {
+      storyLayer.encoding.x = { field: 'driver', type: 'quantitative' };
+      layers.push(storyLayer);
+    }
+  }
+  return {
+    $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+    width: 'container',
+    height: WF.secondaryChartHeight(),
+    config: WF.chartConfig,
+    layer: layers
   };
 };
 
@@ -857,6 +882,166 @@ WF.buildLagSpec = function (data) {
         }
       }
     ]
+  };
+};
+
+WF.buildMayVpdScatterSpec = function (data) {
+  const rows = data.mayVpdScatterRows || [];
+  if (!rows.length) {
+    return {
+      $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+      width: 'container',
+      height: WF.compactChartHeight(),
+      data: { values: [{ label: 'No May VPD data' }] },
+      mark: { type: 'text', color: '#9b9590', fontSize: 12 },
+      encoding: { text: { field: 'label' } }
+    };
+  }
+  const r = data.pearsonMayVpdWestern;
+  const rNote = r !== null && r !== undefined ? `Pearson r ≈ ${r.toFixed(2)} (exploratory)` : 'n too small';
+  const vpdVals = rows.map(d => d.vpd_may);
+  const acreVals = rows.map(d => d.acres);
+  const vpdPad = Math.max(0.02, (Math.max(...vpdVals) - Math.min(...vpdVals)) * 0.08);
+  const acrePad = Math.max(0.2, (Math.max(...acreVals) - Math.min(...acreVals)) * 0.08);
+  return {
+    $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+    width: 'container',
+    height: WF.compactChartHeight(),
+    config: WF.chartConfig,
+    layer: [
+      {
+        data: { values: rows },
+        mark: { type: 'point', filled: true, size: 70, color: '#9a6b3a' },
+        encoding: {
+          x: {
+            field: 'vpd_may',
+            type: 'quantitative',
+            title: 'May western VPD (kPa)',
+            titleFont: 'DM Sans',
+            titleFontSize: 10,
+            titleColor: '#9a6b3a',
+            scale: {
+              domain: [Math.min(...vpdVals) - vpdPad, Math.max(...vpdVals) + vpdPad],
+              nice: false,
+              zero: false
+            }
+          },
+          y: {
+            field: 'acres',
+            type: 'quantitative',
+            title: 'Western GACC acres (M, calendar year)',
+            titleFont: 'DM Sans',
+            titleFontSize: 10,
+            titleColor: '#c94a1a',
+            scale: {
+              domain: [Math.max(0, Math.min(...acreVals) - acrePad), Math.max(...acreVals) + acrePad],
+              nice: false,
+              zero: false
+            }
+          },
+          tooltip: [
+            { field: 'year', title: 'Year' },
+            { field: 'vpd_may', title: 'May VPD (kPa)', format: '.3f' },
+            { field: 'acres', title: 'Western acres (M)', format: '.2f' },
+            { field: 'geo_note', title: 'Scope' }
+          ]
+        }
+      },
+      {
+        data: { values: [{ label: rNote }] },
+        mark: {
+          type: 'text', align: 'left', baseline: 'top', dx: 4, dy: 4,
+          font: 'DM Mono, monospace', fontSize: 9, color: '#9b9590'
+        },
+        encoding: { text: { field: 'label', type: 'nominal' } }
+      }
+    ]
+  };
+};
+
+WF.buildIgnitionCauseSpec = function (data) {
+  const rows = (data.ignitionCauseSeries || []).flatMap(d => ([
+    { year: d.year, cause: 'Lightning', share: d.lightning_share, acres: d.lightning_acres },
+    { year: d.year, cause: 'Human', share: d.human_share, acres: d.human_acres }
+  ]));
+  return {
+    $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+    width: 'container',
+    height: WF.compactChartHeight(),
+    config: WF.chartConfig,
+    data: { values: rows },
+    mark: { type: 'bar' },
+    encoding: {
+      x: { field: 'year', type: 'ordinal', axis: WF.yearAxis(), title: null },
+      y: {
+        field: 'share',
+        type: 'quantitative',
+        stack: 'normalize',
+        title: 'Share of NICC cause acres',
+        axis: { format: '.0%' }
+      },
+      color: {
+        field: 'cause',
+        type: 'nominal',
+        scale: { domain: ['Lightning', 'Human'], range: ['#4a7c9e', '#c94a1a'] },
+        legend: { title: 'Initial cause', orient: 'bottom' }
+      },
+      tooltip: [
+        { field: 'year', title: 'Year' },
+        { field: 'cause', title: 'Cause' },
+        { field: 'share', title: 'Share', format: '.1%' },
+        { field: 'acres', title: 'Acres', format: ',' }
+      ]
+    }
+  };
+};
+
+WF.buildTreatmentPerAcreSpec = function (data) {
+  const rows = data.treatmentPerAcreSeries || [];
+  if (!rows.length) {
+    return {
+      $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+      width: 'container',
+      height: WF.compactChartHeight(),
+      data: { values: [{ label: 'No ratio data' }] },
+      mark: { type: 'text', color: '#9b9590', fontSize: 12 },
+      encoding: { text: { field: 'label' } }
+    };
+  }
+  const yMax = Math.max(...rows.map(d => d.ratio), 0) * 1.12;
+  return {
+    $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+    width: 'container',
+    height: WF.compactChartHeight(),
+    config: WF.chartConfig,
+    data: { values: rows },
+    mark: {
+      type: 'line',
+      color: '#2a6b4a',
+      strokeWidth: 2,
+      point: { filled: true, fill: 'white', stroke: '#2a6b4a', strokeWidth: 1.5, size: 45 }
+    },
+    encoding: {
+      x: { field: 'year', type: 'ordinal', axis: WF.yearAxisLong('fiscal') },
+      y: {
+        field: 'ratio',
+        type: 'quantitative',
+        scale: { domain: [0, yMax || 3] },
+        title: 'Treatment acres per acre burned',
+        titleFont: 'DM Sans',
+        titleFontSize: 10,
+        titleColor: '#9b9590',
+        titleAngle: -90,
+        titleX: -48
+      },
+      tooltip: [
+        { field: 'year', title: 'Year label' },
+        { field: 'ratio', title: 'Ratio', format: '.2f' },
+        { field: 'treatment_millions', title: 'Treatment (M)', format: '.2f' },
+        { field: 'acres_millions', title: 'Acres burned (M)', format: '.1f' },
+        { field: 'note', title: 'Read as' }
+      ]
+    }
   };
 };
 

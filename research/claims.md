@@ -841,12 +841,39 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 | Field | Value |
 |---|---|
 | **Normalized statement** | HFR-DOI-FS WUI and Non-WUI columns are designation acres from the same prevention tables (FY 2003-2021). Median WUI share of designation acres ≈ 59.0%. Exploratory Pearson r (WUI share vs national acres, same FY label) ≈ 0.202 (n=19); combined WUI acres vs national acres r ≈ 0.003; combined treatment vs national acres r ≈ −0.135 |
-| **Display text** | Coupling research accordion row; `data/hfr-wui-notes.md` |
-| **Page location** | Repository only (not main charts); `data/hfr-wui-annual.csv`; `scripts/compute_hfr_wui_analysis.py` |
+| **Display text** | Drivers WUI share chart; median 59%; FY 2003-2021 |
+| **Page location** | Drivers tab WUI chart; `data/hfr-wui-notes.md` |
 | **Status** | Supported (derived) |
 | **Confidence** | Medium |
 | **Limitations** | WUI designation ≠ homes protected or treatment effectiveness; fiscal vs calendar year mismatch for acres; not causal |
 | **Related** | C-P07, C-X05 |
+
+---
+
+### C-R10 — NICC lightning vs human cause acres (repository research)
+
+| Field | Value |
+|---|---|
+| **Normalized statement** | NICC annual report GACC Total columns for lightning vs human caused acres burned extracted for 2003-2005, 2006, 2010-2012 (n=7); median lightning share ≈ 61%; 2007-2009 not parsed from PDFs in repo |
+| **Display text** | Coupling ignition stacked bar; median lightning share ≈ 61% |
+| **Page location** | Coupling tab ignition cause chart; `data/ignition-cause-notes.md` |
+| **Status** | Supported (derived) |
+| **Confidence** | Medium |
+| **Limitations** | Initial cause only; GACC totals may differ from NIFC national series; incomplete year window; not causal |
+| **Related** | C-X05 |
+
+---
+
+### C-R11 — Correlation sensitivity windows (repository research)
+
+| Field | Value |
+|---|---|
+| **Normalized statement** | Alternate Pearson r windows for western acres vs ERC/VPD: 2010-2025 (r ≈ 0.821 / 0.808, n=16); 2013-2025 (r ≈ 0.833 / 0.765, n=13); excl. 2020 (r ≈ 0.773 / 0.778, n=15) |
+| **Display text** | Coupling supplementary sensitivity table |
+| **Page location** | Coupling tab supplementary details; `data/correlation-sensitivity.csv` |
+| **Status** | Methodological |
+| **Confidence** | High |
+| **Related** | C-W02, C-W03, C-X05 |
 
 ---
 
@@ -919,7 +946,8 @@ Quick lookup: where each claim appears on `index.html`.
 | Intro story spine | C-X01 |
 | Outcomes tab | C-F01, C-F02, C-F03, C-F04, C-F08, C-F09, C-F10, C-P03, C-M01, C-M07 |
 | Drivers tab | C-A01, C-D01, C-D02, C-D03, C-M04, C-M05, C-M06, C-P04, C-P05, C-P07, C-P08, C-V01, C-V02, C-V03 |
-| Coupling tab | C-X05, C-C01, C-C02, C-C03, C-C04, C-Lit01, C-W01, C-W02, C-W03, C-M02, C-M03, C-M06, C-M07, C-V02, C-V03, C-R06, C-R07, C-R08, C-R09 |
+| Drivers tab | C-P01, C-P02, C-P03, C-P04, C-P05, C-P06, C-P07, C-P08, C-V01, C-V02, C-V03, C-R09 |
+| Coupling tab | C-X05, C-C01, C-C02, C-C03, C-C04, C-Lit01, C-W01, C-W02, C-W03, C-M02, C-M03, C-M06, C-M07, C-V02, C-V03, C-R06, C-R07, C-R08, C-R09, C-R10, C-R11 |
 | How to read tab | C-X06, C-F04, C-F09, C-F11, C-P01, C-P02, C-F08, C-R01, C-R02, C-X01, C-X02, C-M03, C-M04, C-M05, C-M07 |
 | How to read methodology | C-F05, C-F06, C-F07, C-P06, C-F08, C-R01, C-X05 |
 | Meta / OG tags | C-F01, C-F02 (twitter description) |

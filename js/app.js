@@ -123,8 +123,20 @@
       cache.vpdRows,
       cache.ercRows,
       cache.regionalAcresRows,
-      cache.hfrRows
+      cache.hfrRows,
+      cache.vpdMonthlyRows,
+      cache.ignitionRows,
+      cache.sensitivityRows
     );
+  }
+
+  function fillSensitivityTable(rows) {
+    const tbody = document.getElementById('sensitivity-table-body');
+    if (!tbody || !rows || !rows.length) return;
+    tbody.innerHTML = rows.map(r => (
+      `<tr><td>${escapeHtml(r.pairing)}</td><td class="num">${r.pearson_r.toFixed(3)}</td>` +
+      `<td class="num">${r.n}</td><td>${escapeHtml(r.window)}</td></tr>`
+    )).join('');
   }
 
   function embedChart(selector, spec, viewKey) {
@@ -143,7 +155,11 @@
   }
 
   function renderOutcomes(d) {
-    return embedChart('#chart-fire', WF.buildFireSpec(d, fireMode), 'fire');
+    const tasks = [
+      embedChart('#chart-fire', WF.buildFireSpec(d, fireMode), 'fire'),
+      embedChart('#chart-western-acres-outcomes', WF.buildWesternAcresSpec(d), 'westernAcresOutcomes')
+    ];
+    return Promise.all(tasks);
   }
 
   function updatePolicyYearCopy() {
@@ -166,6 +182,12 @@
       embedChart('#chart-wui-share', WF.buildWuiShareSpec(d), 'wuiShare'),
       embedChart('#chart-atmosphere', WF.buildAtmosphericSpec(d, atmosDrynessMode), 'atmosphere')
     ];
+    const treatmentResearch = document.querySelector('details.drivers-research-details');
+    if (treatmentResearch && treatmentResearch.open) {
+      tasks.push(
+        embedChart('#chart-treatment-per-acre', WF.buildTreatmentPerAcreSpec(d), 'treatmentPerAcre')
+      );
+    }
     const nationalDetails = document.querySelector('details.atmosphere-national-details');
     if (nationalDetails && nationalDetails.open) {
       tasks.push(
@@ -268,13 +290,20 @@
       embedChart('#chart-western-acres', WF.buildWesternAcresSpec(d), 'westernAcres'),
       embedChart('#chart-regional-share', WF.buildRegionalShareSpec(d), 'regionalShare')
     ];
+    if (d.ignitionCauseSeries && d.ignitionCauseSeries.length) {
+      tasks.push(
+        embedChart('#chart-ignition-cause', WF.buildIgnitionCauseSpec(d), 'ignitionCause')
+      );
+    }
     const supplementary = document.querySelector('details.coupling-supplementary-details');
     if (supplementary && supplementary.open) {
       updateLagCopy(d.lagPearsonVpdNational, d.lagRows);
       tasks.push(
         embedChart('#chart-proxy-rank', WF.buildProxyRankBarSpec(d), 'proxyRank'),
-        embedChart('#chart-lag', WF.buildLagSpec(d), 'lag')
+        embedChart('#chart-lag', WF.buildLagSpec(d), 'lag'),
+        embedChart('#chart-may-vpd', WF.buildMayVpdScatterSpec(d), 'mayVpd')
       );
+      fillSensitivityTable(d.sensitivitySeries);
     }
     const policyDetails = document.querySelector('details.coupling-policy-details');
     if (policyDetails && policyDetails.open) {
@@ -301,6 +330,7 @@
 
     let promise;
     if (tabId === 'outcomes') {
+      finalizeChart('westernAcresOutcomes');
       promise = renderOutcomes(d);
     } else if (tabId === 'drivers') {
       finalizeChart('atmosphere');
@@ -308,13 +338,16 @@
       finalizeChart('policy');
       finalizeChart('treatmentAcres');
       finalizeChart('wuiShare');
+      finalizeChart('treatmentPerAcre');
       promise = renderDrivers(d);
     } else if (tabId === 'coupling') {
       finalizeChart('scatter');
       finalizeChart('westernAcres');
       finalizeChart('regionalShare');
+      finalizeChart('ignitionCause');
       finalizeChart('proxyRank');
       finalizeChart('lag');
+      finalizeChart('mayVpd');
       finalizeChart('policyScatter');
       promise = renderCoupling(d);
     } else {
@@ -343,10 +376,19 @@
     }
   }
 
-  function renderCharts(wildfireRows, vpdRows, ercRows, regionalAcresRows, hfrRows) {
-    cache = { wildfireRows, vpdRows, ercRows, regionalAcresRows, hfrRows };
+  function renderCharts(wildfireRows, vpdRows, ercRows, regionalAcresRows, hfrRows, vpdMonthlyRows, ignitionRows, sensitivityRows) {
+    cache = {
+      wildfireRows, vpdRows, ercRows, regionalAcresRows, hfrRows,
+      vpdMonthlyRows, ignitionRows, sensitivityRows
+    };
     renderedTabs.clear();
     lastLayout = null;
+    try {
+      fillSensitivityTable(WF.buildDatasets(
+        wildfireRows, vpdRows, ercRows, regionalAcresRows, hfrRows,
+        vpdMonthlyRows, ignitionRows, sensitivityRows
+      ).sensitivitySeries);
+    } catch (e) { /* table optional until coupling opens */ }
     renderTabCharts(activeTab, true);
   }
 
@@ -366,20 +408,29 @@
       fetchText('data/vpd-annual.csv'),
       fetchText('data/erc-annual.csv'),
       fetchText('data/regional-acres-annual.csv'),
-      fetchText('data/hfr-prevention-annual.csv')
+      fetchText('data/hfr-prevention-annual.csv'),
+      fetchText('data/vpd-monthly-annual.csv'),
+      fetchText('data/ignition-cause-annual.csv'),
+      fetchText('data/correlation-sensitivity.csv')
     ])
-      .then(([wildfireText, vpdText, ercText, regionalAcresText, hfrText]) => {
+      .then(([wildfireText, vpdText, ercText, regionalAcresText, hfrText, vpdMonthlyText, ignitionText, sensitivityText]) => {
         let wildfireRows;
         let vpdRows;
         let ercRows;
         let regionalAcresRows;
         let hfrRows;
+        let vpdMonthlyRows;
+        let ignitionRows;
+        let sensitivityRows;
         try {
           wildfireRows = WF.parseWildfireCSV(wildfireText);
           vpdRows = WF.parseSimpleCSV(vpdText);
           ercRows = WF.parseSimpleCSV(ercText);
           regionalAcresRows = WF.parseSimpleCSV(regionalAcresText);
           hfrRows = WF.parseHfrCSV(hfrText);
+          vpdMonthlyRows = WF.parseSimpleCSV(vpdMonthlyText);
+          ignitionRows = WF.parseSimpleCSV(ignitionText);
+          sensitivityRows = WF.parseSimpleCSV(sensitivityText);
         } catch (e) {
           e.stage = 'parse CSV';
           throw e;
@@ -399,15 +450,21 @@
         if (!hfrRows.length) {
           throw Object.assign(new Error('hfr-prevention-annual.csv parsed to zero year rows'), { stage: 'parse CSV' });
         }
+        if (!vpdMonthlyRows.length) {
+          throw Object.assign(new Error('vpd-monthly-annual.csv parsed to zero year rows'), { stage: 'parse CSV' });
+        }
         console.info(
           '[wildfire-viz] loaded',
           wildfireRows.length, 'wildfire rows,',
           vpdRows.length, 'VPD rows,',
           ercRows.length, 'ERC rows,',
           regionalAcresRows.length, 'regional GACC rows,',
-          hfrRows.length, 'HFR prevention rows'
+          hfrRows.length, 'HFR prevention rows,',
+          vpdMonthlyRows.length, 'monthly VPD rows,',
+          ignitionRows.length, 'ignition cause rows,',
+          sensitivityRows.length, 'sensitivity rows'
         );
-        renderCharts(wildfireRows, vpdRows, ercRows, regionalAcresRows, hfrRows);
+        renderCharts(wildfireRows, vpdRows, ercRows, regionalAcresRows, hfrRows, vpdMonthlyRows, ignitionRows, sensitivityRows);
       })
       .catch(showChartError);
   }
@@ -492,6 +549,15 @@
   });
 
   document.querySelectorAll('details.atmosphere-national-details').forEach(el => {
+    el.addEventListener('toggle', () => {
+      if (el.open && cache) {
+        renderedTabs.delete('drivers');
+        renderTabCharts('drivers', true);
+      }
+    });
+  });
+
+  document.querySelectorAll('details.drivers-research-details').forEach(el => {
     el.addEventListener('toggle', () => {
       if (el.open && cache) {
         renderedTabs.delete('drivers');

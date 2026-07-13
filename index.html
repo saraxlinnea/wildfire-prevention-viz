@@ -251,6 +251,8 @@
       line-height: 1.65;
       color: var(--ink-soft);
       margin: 0 0 14px;
+      padding-left: 12px;
+      border-left: 3px solid rgba(154, 107, 58, 0.25);
     }
     .plain-read strong { color: var(--ink); font-weight: 600; }
 
@@ -317,9 +319,9 @@
       margin: 0 -12px 16px;
     }
 
-    .tab-panel--outcomes { background: rgba(201, 74, 26, 0.06); }
-    .tab-panel--drivers { background: rgba(154, 107, 58, 0.05); }
-    .tab-panel--coupling { background: rgba(123, 94, 167, 0.06); }
+    .tab-panel--outcomes { background: rgba(201, 74, 26, 0.035); }
+    .tab-panel--drivers { background: rgba(154, 107, 58, 0.03); }
+    .tab-panel--coupling { background: rgba(123, 94, 167, 0.035); }
     .tab-panel--interpret { background: #fdf8f2; }
 
     .tab-dek {
@@ -617,7 +619,98 @@
     .callout { background: white; padding: 14px 16px; border-top: 2px solid var(--rule); }
 
     .callout--fire { border-top-color: rgba(201, 74, 26, 0.4); }
-    .callout--forecast { border-top-color: rgba(232, 124, 42, 0.45); }
+    .callout--forecast { border-top-color: rgba(232, 124, 42, 0.35); opacity: 0.92; }
+    .callout--forecast .callout-label::after {
+      content: ' · projection';
+      font-family: 'DM Mono', monospace;
+      font-size: 8px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+    }
+
+    .federal-context-strip {
+      margin: 0 0 16px;
+      padding: 12px 14px;
+      background: rgba(42, 107, 74, 0.08);
+      border: 1px solid rgba(42, 107, 74, 0.2);
+      border-left: 3px solid var(--fs);
+      font-size: 13px;
+      line-height: 1.55;
+      color: var(--ink-soft);
+    }
+
+    .federal-context-strip strong { color: var(--ink); }
+
+    .start-here {
+      margin-bottom: 18px;
+      padding: 14px 16px;
+      background: rgba(255, 255, 255, 0.65);
+      border: 1px solid var(--rule);
+    }
+
+    .start-here ol {
+      margin: 8px 0 0 18px;
+      padding: 0;
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--ink-soft);
+    }
+
+    .start-here li { margin-bottom: 6px; }
+
+    .methods-box {
+      margin: 0 0 16px;
+      padding: 12px 14px;
+      background: rgba(255, 255, 255, 0.55);
+      border: 1px solid rgba(123, 94, 167, 0.2);
+      border-left: 3px solid var(--dsci);
+      font-size: 12.5px;
+      line-height: 1.55;
+      color: var(--ink-soft);
+    }
+
+    .methods-box ul {
+      margin: 8px 0 0 18px;
+      padding: 0;
+    }
+
+    .drivers-multiple {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+
+    @media (min-width: 720px) {
+      .drivers-multiple {
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+      .drivers-multiple .chart-container { margin-top: 0; }
+    }
+
+    .section-num {
+      font-family: 'DM Mono', monospace;
+      font-size: 8px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      margin-right: 6px;
+    }
+
+    .exploratory-badge {
+      display: inline-block;
+      font-family: 'DM Mono', monospace;
+      font-size: 8px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border: 1px solid rgba(42, 107, 74, 0.3);
+      color: var(--fs);
+      border-radius: 2px;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
     .callout--policy { border-top-color: rgba(42, 107, 74, 0.35); }
 
     .callout-num {
@@ -783,7 +876,6 @@
       <p class="dek">
         As of June 18, 2026, more than <strong>2.6 million acres</strong> have burned nationally,
         about <strong>63% above the 10-year average</strong> to date. Peak fire season starts in summer.
-        In 2025 the Forest Service treated <strong>35% fewer acres</strong> for wildfire risk than the year before.
       </p>
     </header>
 
@@ -800,23 +892,23 @@
   </nav>
 
   <section id="tab-outcomes" class="tab-panel tab-panel--outcomes active" role="tabpanel" aria-labelledby="tab-btn-outcomes">
-    <p class="tab-dek">This is the bottom line most people want first: how many acres burned nationally each year, and whether 2026 is running high for this point in the season. Most acres burn in western states, especially California, Oregon, and the northern Rockies, but this line counts the entire country. Figures through June 18, 2026 are year-to-date only, not a full calendar year.</p>
+    <p class="tab-dek">National acres burned each calendar year, plus western GACC totals for geography context. Figures through June 18, 2026 are year-to-date only.</p>
     <div class="callouts outcomes-callouts">
       <div class="callout callout--fire">
         <div class="callout-num fire">2.6M</div>
         <div class="callout-label">Acres burned YTD (Jun 18, 2026), 63% above the 10-year average to date</div>
       </div>
       <div class="callout callout--fire">
-        <div class="callout-num fs">163%</div>
-        <div class="callout-label">Of the 10-year average acres burned to date (NIFC same-date comparison)</div>
+        <div class="callout-num fire">2nd</div>
+        <div class="callout-label">Highest YTD pace since 2022 (~3.1M acres on the same date)</div>
+      </div>
+      <div class="callout callout--fire">
+        <div class="callout-num fire">Jul–Sep</div>
+        <div class="callout-label">Peak western fire season ahead (historical concentration of acres)</div>
       </div>
       <div class="callout callout--forecast">
         <div class="callout-num forecast">5.5-8M</div>
-        <div class="callout-label">AccuWeather full-year forecast for 2026 (speculative)</div>
-      </div>
-      <div class="callout callout--policy">
-        <div class="callout-num fs">35%</div>
-        <div class="callout-label">Policy context: drop in Forest Service prevention acres treated, 2024 to 2025 (not a fire outcome)</div>
+        <div class="callout-label">AccuWeather full-year forecast for 2026</div>
       </div>
     </div>
     <div class="chart-container chart-container--fire">
@@ -855,12 +947,32 @@
       </figcaption>
       </figure>
     </div>
+
+    <div class="chart-container chart-container--fire chart-panel-secondary">
+      <div class="panel-label">Where fires burned (western vs national)</div>
+      <p class="plain-read">Solid orange: seven western GACCs. Dashed red: national NIFC total. Most years the West carries the national line, but Alaska and the South can dominate individual seasons.</p>
+      <figure class="chart-figure">
+      <div id="chart-western-acres-outcomes" class="chart-slot" role="img" aria-label="Western GACC acres burned compared to national total"></div>
+      <figcaption class="chart-caption-block">
+        <p class="chart-caption">See the Coupling tab for regional share breakdowns and how dryness indices pair with western acres.</p>
+        <span class="chart-source">Source: NICC annual GACC reports · calendar year</span>
+      </figcaption>
+      </figure>
+    </div>
   </section>
 
   <section id="tab-drivers" class="tab-panel tab-panel--drivers" role="tabpanel" aria-labelledby="tab-btn-drivers" hidden>
-    <p class="tab-dek">Prevention work and weather drivers live here. Treatment charts count acres federal crews treated (thinning, prescribed fire, clearing brush). Dryness charts describe how stressful the western fire season was for fuels and atmosphere. Neither tab alone explains every acre burned nationally, because sparks, wind, and firefighting also matter.</p>
+    <p class="tab-dek">Federal treatment workload and western fire-season dryness. Different geographies and calendars than national burn totals.</p>
 
-    <div class="drivers-intro">
+    <div class="federal-context-strip" role="note">
+      <strong>Federal context (not a fire outcome):</strong> In 2025 the Forest Service treated <strong>35% fewer acres</strong> for wildfire risk than in 2024 (2.6M vs 4.1M). Treatment is reported workload, not proof of what burned that year.
+    </div>
+
+    <p class="plain-read"><strong>Three federal stories on different clocks:</strong> (1) how many acres burned (calendar, national), (2) how much treatment agencies reported (mostly fiscal, designation not outcomes), (3) how dry the western fire season was (calendar, regional). This tab lines them up for comparison. It does not score whether treatment worked.</p>
+
+    <details class="methodology-details drivers-terms-details">
+      <summary>Terms used on this tab (ERC, VPD, DSCI, treatment)</summary>
+      <div class="methodology-body drivers-intro">
       <div class="panel-label">Terms used on this tab</div>
       <p class="plain-read">Fire managers combine weather readings, fuel conditions, and maps to plan each season. Below are the measures this page charts, in everyday language.</p>
       <dl class="def-list">
@@ -881,9 +993,10 @@
           <dd><span class="def-plain">Acres where federal agencies report hazardous-fuels work.</span> That can mean thinning dense forest, burning piles under controlled conditions, or clearing brush near roads and communities. The count is workload, not a report card. Work next to homes and evacuation routes matters more for safety than remote acreage far from people.</dd>
         </div>
       </dl>
-    </div>
+      </div>
+    </details>
 
-    <p class="drivers-section-label">Federal fuels treatment</p>
+    <p class="drivers-section-label"><span class="section-num">1</span> Federal fuels treatment</p>
 
     <div class="treatment-limits-box" role="note">
       <strong>What treatment numbers do not mean</strong>
@@ -895,9 +1008,10 @@
       </ul>
     </div>
 
+    <div class="drivers-multiple">
     <div class="chart-container chart-container--policy">
       <div class="signal-tier signal-tier-2">Federal prevention work</div>
-      <div class="panel-label">Federal hazardous fuels treatment (2003-2025)</div>
+      <div class="panel-label">Combined treatment acres (2003-2025)</div>
       <p class="plain-read"><strong>What you are looking at:</strong> combined acres the U.S. Forest Service and Interior Department (BLM, Park Service, Fish and Wildlife, Bureau of Indian Affairs) say they treated for hazardous fuels each year. The long history comes from the joint federal HFR report for fiscal years 2003 through 2021. Recent years use agency totals verified for this page. Treatment includes prescribed fire, mechanical thinning, and pile burning. The line moves with congressional funding, hiring, smoke windows, and which forests were prioritized. A higher number does not automatically mean communities are safer, because location and maintenance matter more than the national total.</p>
       <figure class="chart-figure">
       <div class="chart-toggle" role="group" aria-label="Treatment year basis">
@@ -929,8 +1043,8 @@
     </div>
 
     <div class="chart-container chart-container--policy chart-container--wui">
-      <div class="signal-tier signal-tier-2">WUI designation (HFR, FY 2003-2021)</div>
-      <div class="panel-label">Share of treatment acres categorized as wildland-urban interface</div>
+      <div class="signal-tier signal-tier-2">WUI designation (HFR)</div>
+      <div class="panel-label"><span class="section-num">2</span> WUI share of designation acres <span class="exploratory-badge">designation · not outcomes</span></div>
       <p class="plain-read">HFR reports how much of each year’s <em>designation</em> acres were tagged WUI vs non-WUI. That is where agencies categorized work, not a count of homes protected. WUI share rose from about 55% in the early 2000s to roughly 64% by FY 2020-2021 as community-adjacent projects took a larger slice of the portfolio.</p>
       <figure class="chart-figure">
       <div id="chart-wui-share" class="chart-slot" role="img" aria-label="WUI share of HFR designation acres by fiscal year"></div>
@@ -941,10 +1055,11 @@
       </figcaption>
       </figure>
     </div>
+    </div>
 
     <div class="chart-container chart-container--policy chart-container--overlap" id="chart-treatment-acres-section">
       <div class="signal-tier signal-tier-2">Same years, two measures</div>
-      <div class="panel-label">Treatment and acres burned on one timeline</div>
+      <div class="panel-label"><span class="section-num">3</span> Treatment and acres burned on one timeline <span class="exploratory-badge">not causal</span></div>
       <p class="plain-read"><strong>What you are looking at:</strong> two different national measures on the same timeline. The green line is federal treatment acres (left axis). The orange line is national acres burned (right axis). They answer different questions. Treatment is planned work reported by agencies. Acres burned is the outcome of weather, fuels, ignitions, and suppression. When both are high in the same year, that often means a severe fire year that also demanded emergency spending, not proof that prevention failed. When treatment is steady in quieter years, agencies are using the window before the next hot summer.</p>
       <figure class="chart-figure">
       <div class="chart-toggle" role="group" aria-label="Treatment year basis (dual axis)">
@@ -971,11 +1086,21 @@
       </figure>
     </div>
 
+    <details class="methodology-details drivers-research-details">
+      <summary>Research: treatment per acre burned (exploratory ratio)</summary>
+      <div class="methodology-body">
+        <p class="panel-note">Federal treatment acres divided by national acres burned for the same year label. Not treatment effectiveness. See <a href="data/treatment-per-acre-notes.md">treatment-per-acre-notes.md</a>.</p>
+        <figure class="chart-figure">
+        <div id="chart-treatment-per-acre" class="chart-slot" role="img" aria-label="Ratio of federal treatment acres to national acres burned"></div>
+        </figure>
+      </div>
+    </details>
+
     <div class="flame-divider drivers-divider" aria-hidden="true">
       <img src="assets/flame-mark.svg" alt="" class="flame-mark" width="12" height="14">
     </div>
 
-    <p class="drivers-section-label">Atmospheric dryness (western)</p>
+    <p class="drivers-section-label"><span class="section-num">4</span> Western fire-season dryness</p>
     <div class="chart-container chart-container--atmosphere">
       <div class="signal-tier signal-tier-1">Western fire-season dryness</div>
       <div class="panel-label">How dry was the western fire season? (vs 2000-2025 average)</div>
@@ -1031,7 +1156,7 @@
   </section>
 
   <section id="tab-coupling" class="tab-panel tab-panel--coupling" role="tabpanel" aria-labelledby="tab-btn-coupling" hidden>
-    <p class="tab-dek">Researchers ask which dryness measures track wildfire acres best in the West. Published work ranks short-term fire danger (ERC) and atmospheric dryness (VPD) above broad drought indices. This tab shows that ranking, then tests it against this page’s data from 2010 through 2025. It also shows <em>where</em> fires burned (western vs Alaska vs South). These are statistical patterns only. They do not explain every fire or prove cause and effect. <span class="coupling-badge">Exploratory · not causal</span></p>
+    <p class="tab-dek">Which dryness measures track western acres in this dataset (2010-2025)? Literature ranking first, then replication checks. <span class="coupling-badge">Exploratory · not causal</span></p>
 
     <div class="chart-container chart-container--coupling">
       <div class="panel-label">Proxy ranking (literature vs this page)</div>
@@ -1075,6 +1200,16 @@
         <p class="chart-note"><span class="note-label">In plain terms</span>ERC and VPD measure similar dryness signals and often rise together (correlation about 0.94 here). ERC is more directly tied to fire danger ratings firefighters already use. DSCI is still worth watching for water and vegetation stress, but it is a weaker match to annual acres burned on this page.</p>
         <span class="chart-source">Literature: Riley et al. 2013 · Williams et al. 2015 · Abatzoglou &amp; Williams 2016 · This page: NICC western GACC acres · gridMET ERC/VPD · USDM DSCI · n = 16 · exploratory</span>
       </div>
+    </div>
+
+    <div class="methods-box" role="note">
+      <strong>How to read r on this tab</strong>
+      <ul>
+        <li><strong>n = 16</strong> full calendar years (2010-2025); partial 2026 excluded.</li>
+        <li><strong>Geography:</strong> western ERC/VPD paired with western GACC acres is the fair match; national acres dilutes the signal.</li>
+        <li><strong>ERC and VPD are collinear</strong> here (r ≈ 0.94); do not treat them as independent predictors.</li>
+        <li><strong>No controls</strong> for El Niño, ignitions, suppression, or housing growth. Exploratory co-movement only.</li>
+      </ul>
     </div>
 
     <div class="chart-container chart-container--coupling chart-panel-secondary">
@@ -1134,9 +1269,48 @@
       </figure>
     </div>
 
+    <div class="chart-container chart-container--coupling chart-panel-secondary">
+      <div class="panel-label">Initial cause: lightning vs human (NICC, 2003-2012)</div>
+      <p class="plain-read">Share of NICC-reported cause acres from annual GACC tables. Adds the “spark” leg of the fire triangle. Lightning-heavy years (2004, 2005, 2012) can diverge from dryness-only stories. n = 7 years in this extract; 2007-2009 not parsed from PDFs.</p>
+      <figure class="chart-figure">
+      <div id="chart-ignition-cause" class="chart-slot" role="img" aria-label="Stacked bar of lightning vs human caused acres share"></div>
+      <figcaption class="chart-caption-block">
+        <p class="chart-caption">Median lightning share ≈ 61% across extracted years. Human-caused share dominated in 2011.</p>
+        <p class="chart-note"><span class="note-label">Limits</span>Initial cause classification only; GACC totals may differ from NIFC national series. Not causal.</p>
+        <span class="chart-source">Source: NICC annual reports · <a href="data/ignition-cause-notes.md">ignition-cause-notes.md</a> · <code>scripts/extract_ignition_cause.py</code></span>
+      </figcaption>
+      </figure>
+    </div>
+
     <details class="methodology-details coupling-supplementary-details">
-      <summary>Supplementary: ranked r, full matrix, annual lag proxy</summary>
+      <summary>Supplementary: sensitivity windows, May VPD, ranked r, lag proxy</summary>
       <div class="methodology-body">
+    <div class="chart-container chart-container--coupling chart-panel-secondary">
+      <div class="panel-label">Correlation sensitivity (alternate windows)</div>
+      <p class="panel-note">Same pairings under different year windows. Shows whether r ≈ 0.82 is fragile to sample choice. From <a href="data/correlation-sensitivity.csv">correlation-sensitivity.csv</a>.</p>
+      <table class="corr-table" aria-label="Sensitivity of Pearson r to window choice">
+        <thead>
+          <tr>
+            <th scope="col">Pairing</th>
+            <th scope="col">r</th>
+            <th scope="col">n</th>
+            <th scope="col">Window</th>
+          </tr>
+        </thead>
+        <tbody id="sensitivity-table-body">
+          <tr><td>Western acres vs ERC</td><td class="num">0.821</td><td class="num">16</td><td>2010-2025</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="chart-container chart-container--coupling chart-panel-secondary">
+      <div class="panel-label">May western VPD vs western acres (timing check)</div>
+      <p class="panel-note">Spring dryness vs calendar-year western acres (2010-2025). Weaker than fire-season VPD (r ≈ 0.81). Outcome is still full-year acres, not summer-only burn. See <a href="data/vpd-monthly-correlation-notes.md">vpd-monthly-correlation-notes.md</a>.</p>
+      <figure class="chart-figure">
+      <div id="chart-may-vpd" class="chart-slot" role="img" aria-label="Scatter of May western VPD vs western acres burned"></div>
+      </figure>
+    </div>
+
     <div class="chart-container chart-container--coupling chart-panel-secondary">
       <div class="panel-label">This page’s correlations (ranked bar)</div>
       <p class="panel-note">Visual summary of key pairings, 2010-2025. Strong ≈ r &gt; 0.6; moderate ≈ 0.3-0.6; weak &lt; 0.3 (rule of thumb only; n = 16).</p>
@@ -1269,6 +1443,29 @@
   </section>
 
   <section id="tab-interpret" class="tab-panel tab-panel--interpret" role="tabpanel" aria-labelledby="tab-btn-interpret" hidden>
+    <div class="start-here">
+      <div class="interp-heading">Start here (60 seconds)</div>
+      <ol>
+        <li><strong>Outcomes</strong> — national fire band + 2026 YTD; western acres chart below it.</li>
+        <li><strong>Drivers &amp; context</strong> — federal treatment, WUI share, dryness toggle (ERC/VPD).</li>
+        <li><strong>Coupling</strong> — western acres × ERC scatter (default); regional share for who burned.</li>
+        <li><strong>Scientific limits</strong> — geography, fiscal vs calendar, correlation ≠ causation (below).</li>
+      </ol>
+    </div>
+
+    <details class="methodology-details" open>
+      <summary>What this dataset does not include</summary>
+      <div class="methodology-body">
+        <ul>
+          <li><strong>Monthly burn acres</strong> — true May-dry → summer-burn timing needs NIFC monthly or MTBS. See <a href="data/monthly-burn-gap-notes.md">monthly-burn-gap-notes.md</a>.</li>
+          <li><strong>Suppression spending / staffing</strong> — crews and aircraft change outcomes within the same weather.</li>
+          <li><strong>WUI housing growth</strong> — exposure changes independent of acres burned.</li>
+          <li><strong>Smoke / health impacts</strong> — acres burned ≠ population affected.</li>
+          <li><strong>State / ecoregion small multiples</strong> — deferred; see <a href="data/state-ecoregion-research-notes.md">state-ecoregion-research-notes.md</a>.</li>
+        </ul>
+      </div>
+    </details>
+
     <details class="methodology-details glossary-details" open>
       <summary>Glossary (ERC, VPD, DSCI, GACC, WUI, fiscal vs calendar year)</summary>
       <div class="methodology-body">
@@ -1376,8 +1573,8 @@
 
 </div>
 
-<script src="js/datasets.js?v=20260715"></script>
-<script src="js/charts.js?v=20260715"></script>
-<script src="js/app.js?v=20260715"></script>
+<script src="js/datasets.js?v=20260716"></script>
+<script src="js/charts.js?v=20260716"></script>
+<script src="js/app.js?v=20260716"></script>
 </body>
 </html>

@@ -1,0 +1,8 @@
+pairing,pearson_r,n,window
+Western acres vs ERC,0.821,16,2010-2025
+Western acres vs VPD,0.808,16,2010-2025
+Western acres vs ERC,0.833,13,2013-2025
+Western acres vs VPD,0.765,13,2013-2025
+Western acres vs ERC (excl. 2020),0.773,15,2010-2025 excl 2020
+Western acres vs VPD (excl. 2020),0.778,15,2010-2025 excl 2020
+National acres vs western VPD,0.625,16,2010-2025

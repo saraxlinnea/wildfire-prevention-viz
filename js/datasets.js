@@ -135,6 +135,46 @@ WF.zScores = function (rows, key) {
   return rows.map(r => ({ ...r, z: (r[key] - mean) / sd }));
 };
 
+WF.STORY_YEAR_MARKS = {
+  fire: [
+    { year: '2015', label: 'Western heat' },
+    { year: '2020', label: 'Western heat' },
+    { year: '2022', label: 'Large burn year' }
+  ],
+  regional: [
+    { year: '2004', label: 'Alaska-driven' },
+    { year: '2015', label: 'Western share high' },
+    { year: '2019', label: 'South + Alaska' }
+  ],
+  scatter: [
+    { year: '2015', label: 'Western heat' },
+    { year: '2020', label: 'Western heat' },
+    { year: '2012', label: 'Extreme dry' }
+  ]
+};
+
+WF.storyYearTextLayer = function (marks, xField, yField, yOffset) {
+  if (!marks || !marks.length) return null;
+  const dy = yOffset !== undefined ? yOffset : -12;
+  return {
+    data: { values: marks },
+    mark: {
+      type: 'text',
+      align: 'center',
+      baseline: 'bottom',
+      dy,
+      fontSize: 9,
+      font: 'DM Mono, monospace',
+      color: '#6b6560'
+    },
+    encoding: {
+      x: { field: xField, type: 'ordinal' },
+      y: { field: yField, type: 'quantitative' },
+      text: { field: 'label', type: 'nominal' }
+    }
+  };
+};
+
 WF.pearson = function (xs, ys) {
   const n = xs.length;
   if (n < 2 || n !== ys.length) return null;
@@ -154,7 +194,7 @@ WF.pearson = function (xs, ys) {
   return denom === 0 ? null : num / denom;
 };
 
-WF.buildDatasets = function (rows, vpdRows, ercRows, regionalAcresRows, hfrRows) {
+WF.buildDatasets = function (rows, vpdRows, ercRows, regionalAcresRows, hfrRows, vpdMonthlyRows, ignitionRows, sensitivityRows) {
   const years = rows.map(r => r.year);
   const burnData = rows
     .filter(r => r.acres_burned_millions && r.acres_burned_partial !== 'true')
@@ -504,6 +544,78 @@ WF.buildDatasets = function (rows, vpdRows, ercRows, regionalAcresRows, hfrRows)
     }
   });
 
+  const treatmentPerAcreSeries = [];
+  for (let y = 2003; y <= 2025; y++) {
+    const year = String(y);
+    const policyPt = policyLongByYear[year];
+    const acres = burnByYear[year];
+    if (!policyPt || acres === undefined || acres <= 0) continue;
+    treatmentPerAcreSeries.push({
+      year,
+      ratio: policyPt.total / acres,
+      treatment_millions: policyPt.total,
+      acres_millions: acres,
+      source: policyPt.source,
+      note: 'Treatment acres ÷ national acres burned. Not effectiveness.'
+    });
+  }
+
+  const mayVpdScatterRows = [];
+  const vpdMayByYear = Object.fromEntries(
+    (vpdMonthlyRows || []).map(r => [r.year, parseFloat(r.vpd_kpa_may)])
+  );
+  for (let y = 2010; y <= 2025; y++) {
+    const year = String(y);
+    if (vpdMayByYear[year] !== undefined && westernBurnByYear[year] !== undefined) {
+      mayVpdScatterRows.push({
+        year,
+        vpd_may: vpdMayByYear[year],
+        acres: westernBurnByYear[year],
+        geo_note: 'May western VPD vs calendar-year western GACC acres'
+      });
+    }
+  }
+  const pearsonMayVpdWestern = mayVpdScatterRows.length >= 2
+    ? WF.pearson(mayVpdScatterRows.map(d => d.vpd_may), mayVpdScatterRows.map(d => d.acres))
+    : null;
+
+  const ignitionCauseSeries = (ignitionRows || []).map(r => ({
+    year: r.year,
+    lightning_acres: parseInt(r.lightning_acres, 10),
+    human_acres: parseInt(r.human_acres, 10),
+    lightning_share: parseFloat(r.lightning_share),
+    human_share: parseFloat(r.human_share)
+  })).sort((a, b) => parseInt(a.year, 10) - parseInt(b.year, 10));
+
+  const sensitivitySeries = (sensitivityRows || []).map(r => ({
+    pairing: r.pairing,
+    pearson_r: parseFloat(r.pearson_r),
+    n: parseInt(r.n, 10),
+    window: r.window
+  }));
+
+  const fireStoryMarks = WF.STORY_YEAR_MARKS.fire
+    .map(m => {
+      const pt = burnWithRolling.find(d => d.year === m.year);
+      return pt ? { year: m.year, acres: pt.acres, label: m.label } : null;
+    })
+    .filter(Boolean);
+
+  const scatterStoryMarks = WF.STORY_YEAR_MARKS.scatter
+    .map(m => {
+      const pt = scatterRowsWesternErc.find(d => d.year === m.year);
+      return pt ? { year: m.year, acres: pt.acres, driver: pt.driver, label: m.label } : null;
+    })
+    .filter(Boolean);
+
+  const regionalStoryMarks = [];
+  WF.STORY_YEAR_MARKS.regional.forEach(m => {
+    const west = regionalShareSeries.find(d => d.year === m.year && d.region === 'West');
+    if (west) {
+      regionalStoryMarks.push({ year: m.year, share_pct: west.share_pct, label: m.label });
+    }
+  });
+
   return {
     burnData, burnWithRolling, bandData, partial2026, forecast2026,
     fsData, interiorData, policyCombined, policyLongSeries,
@@ -516,7 +628,9 @@ WF.buildDatasets = function (rows, vpdRows, ercRows, regionalAcresRows, hfrRows)
     scatterRowsNationalErc, scatterRowsWesternErc,
     lagRows, policyScatter,
     westernAcresSeries, regionalShareSeries, proxyRankBars, treatmentAcresOverlap,
-    wuiShareSeries,
+    wuiShareSeries, treatmentPerAcreSeries, mayVpdScatterRows, ignitionCauseSeries,
+    sensitivitySeries, fireStoryMarks, scatterStoryMarks, regionalStoryMarks,
+    pearsonMayVpdWestern,
     years,
     pearsonVpdAcres: 0.625,
     pearsonVpdWesternAcres: 0.808,
