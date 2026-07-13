@@ -39,6 +39,9 @@ credentials.json
 # Jupyter
 .ipynb_checkpoints/
 
+# NICC annual report PDFs (download via data/nicc-source/README.md)
+data/nicc-source/*.pdf
+
 # Local agent / Cursor (not for GitHub)
 AGENTS.md
 .cursor/

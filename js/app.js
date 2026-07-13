@@ -5,6 +5,9 @@
   let lastLayout = null;
   let fireMode = 'acres';
   let policyMode = 'total';
+  let scatterMode = 'western';
+  let scatterDriverMode = 'erc';
+  let atmosDrynessMode = 'erc';
   let activeTab = 'outcomes';
   const renderedTabs = new Set();
   const CHART_TABS = ['outcomes', 'drivers', 'coupling'];
@@ -34,7 +37,7 @@
   function showChartError(err) {
     const details = [];
     if (window.location.protocol === 'file:') {
-      details.push('Page opened as file:// — browsers block fetch() for local CSV/JS assets.');
+      details.push('Page opened as file://. Browsers block fetch() for local CSV/JS assets.');
     }
     const missing = checkDependencies();
     if (missing.length) {
@@ -85,7 +88,7 @@
   }
 
   function layoutKey() {
-    return `${WF.isMobile()}-${WF.mainChartHeight()}-${WF.secondaryChartHeight()}-${fireMode}-${policyMode}`;
+    return `${WF.isMobile()}-${WF.mainChartHeight()}-${WF.secondaryChartHeight()}-${fireMode}-${policyMode}-${scatterMode}-${scatterDriverMode}-${atmosDrynessMode}`;
   }
 
   function finalizeChart(id) {
@@ -96,7 +99,13 @@
   }
 
   function data() {
-    return WF.buildDatasets(cache.wildfireRows, cache.vpdRows);
+    return WF.buildDatasets(
+      cache.wildfireRows,
+      cache.vpdRows,
+      cache.ercRows,
+      cache.regionalAcresRows,
+      cache.hfrRows
+    );
   }
 
   function embedChart(selector, spec, viewKey) {
@@ -111,7 +120,6 @@
         const el = document.querySelector(selector);
         if (el) el.innerHTML = msg;
         console.error('[wildfire-viz] vegaEmbed failed:', selector, e);
-        throw e;
       });
   }
 
@@ -120,9 +128,11 @@
   }
 
   function renderDrivers(d) {
+    updateAtmosCopy();
     const tasks = [
-      embedChart('#chart-atmosphere', WF.buildAtmosphericSpec(d), 'atmosphere'),
-      embedChart('#chart-policy', WF.buildPolicySpec(d, policyMode), 'policy')
+      embedChart('#chart-policy', WF.buildPolicySpec(d, policyMode), 'policy'),
+      embedChart('#chart-treatment-acres', WF.buildTreatmentAcresDualSpec(d), 'treatmentAcres'),
+      embedChart('#chart-atmosphere', WF.buildAtmosphericSpec(d, atmosDrynessMode), 'atmosphere')
     ];
     const nationalDetails = document.querySelector('details.atmosphere-national-details');
     if (nationalDetails && nationalDetails.open) {
@@ -133,11 +143,107 @@
     return Promise.all(tasks);
   }
 
+  function updateAtmosCopy() {
+    const erc = atmosDrynessMode === 'erc';
+    const legend = document.getElementById('atmos-dryness-legend');
+    const note = document.getElementById('atmos-dryness-note');
+    const context = document.getElementById('atmos-dryness-context');
+    const source = document.getElementById('atmos-dryness-source');
+    if (legend) {
+      legend.textContent = erc ? 'Western ERC z-score' : 'Western VPD z-score';
+    }
+    if (note) {
+      note.textContent = erc
+        ? 'Solid line: western fire danger (ERC) compared to the 2000 through 2025 average. Dashed line: drought coverage (DSCI) on the same scale. Above zero means drier or more drought-stressed than normal for that index. ERC rises as fuels dry and is widely used in fire preparedness planning.'
+        : 'Solid line: atmospheric dryness (VPD) compared to the 2000 through 2025 average. Dashed line: drought coverage (DSCI). Above zero means drier than normal. High VPD dries grasses and fine fuels quickly during the western fire season.';
+    }
+    if (context) {
+      context.innerHTML = erc
+        ? '<span class="note-label">What this means for fire season</span>When ERC runs high into late spring and summer, fires that start can grow faster and produce more heat. Agencies add crews, tankers, and engines earlier. Storms that break the pattern can still lower danger for a week or two.'
+        : '<span class="note-label">What this means for fire season</span>VPD is the thirsty-air signal meteorologists pair with red-flag warnings. It often moves with ERC but describes physical drying of fuels, not fire behavior directly.';
+    }
+    if (source) {
+      source.textContent = erc
+        ? 'Source: gridMET ERC · USDM western DSCI · western U.S. · not national fire acres'
+        : 'Source: gridMET VPD · USDM western DSCI · western U.S. · not national fire acres';
+    }
+  }
+
+  function updateLagCopy(lagR, lagRows) {
+    const rText = lagR !== null && lagR !== undefined ? lagR.toFixed(2) : 'n/a';
+    const n = lagRows && lagRows.length ? lagRows.length : 0;
+    const span = lagRows && lagRows.length
+      ? `${lagRows[0].driver_year} to ${lagRows[lagRows.length - 1].driver_year}`
+      : '';
+    const caption = document.getElementById('lag-caption');
+    const context = document.getElementById('lag-context');
+    if (caption) {
+      caption.textContent = `Western VPD in year t compared to national acres in year t+1 (${span}, ${n} pairs): correlation about ${rText}. Annual data are too coarse to test spring-dry vs summer-burn timing.`;
+    }
+    if (context) {
+      context.innerHTML = '<span class="note-label">In plain terms</span>Western dryness paired with a national acres total next year is a rough experiment. Geography mismatches and noisy years dominate. Monthly data would be needed for a serious lag study. Not causal.';
+    }
+  }
+
+  function updateScatterCopy() {
+    const west = scatterMode === 'western';
+    const erc = scatterDriverMode === 'erc';
+    const r = west
+      ? (erc ? '0.82' : '0.81')
+      : (erc ? '0.53' : '0.63');
+    const r2 = west
+      ? (erc ? '0.67' : '0.65')
+      : (erc ? '0.28' : '0.40');
+    const note = document.getElementById('scatter-panel-note');
+    const caption = document.getElementById('scatter-caption');
+    const context = document.getElementById('scatter-context');
+    const source = document.getElementById('scatter-source');
+    const driverLabel = erc ? 'ERC' : 'VPD';
+    const acresLabel = west ? 'western GACC acres burned' : 'national acres burned';
+    const geoDetail = west
+      ? 'Seven western GACCs (NW, NR, GB, RM, SW, NO, SO); excludes AK, EA, SA.'
+      : 'National NIFC total vs western gridMET driver (geography mismatch).';
+    if (note) {
+      note.textContent = `Each dot is one calendar year from 2010 through 2025. Horizontal axis: western fire-season ${driverLabel}. Vertical axis: ${acresLabel}. ${geoDetail} Higher ${driverLabel} years tend to sit higher on acres burned when geography aligns.`;
+    }
+    if (caption) {
+      caption.textContent = west
+        ? (erc
+          ? `Dry western years with high ERC often coincide with more western acres burned the same year (correlation about ${r} here). Extreme seasons like 2012, 2015, and 2020 stand out.`
+          : `High western VPD years often coincide with more western acres burned the same year (correlation about ${r} here). VPD and ERC usually move together.`)
+        : (erc
+          ? `Western ERC vs national acres is a weaker pairing (correlation about ${r}) because national totals include Alaska, the South, and other regions outside the western dryness mask.`
+          : `Western VPD vs national acres is a weaker pairing (correlation about ${r}) for the same geography reason.`);
+    }
+    if (context) {
+      context.innerHTML = erc
+        ? '<span class="note-label">What this means</span>Fire managers use ERC-style indices to scale staffing before peak season. This scatter is a simple check that the literature ranking shows up in this page’s western acres series. It is not a forecast.'
+        : (west
+          ? '<span class="note-label">What this means</span>VPD helps describe how fast fuels dry. It supports the same seasonal story as ERC in most years on this page.'
+          : '<span class="note-label">What this means</span>Mixing western weather with national acres dilutes the signal. Prefer the western acres toggle for a fair geography match.');
+    }
+    if (source) {
+      source.textContent = erc
+        ? `Source: gridMET western ERC (Abatzoglou 2013) · NICC ${west ? 'western GACC' : 'national'} acres · calendar year · r ≈ ${r} · not causal`
+        : `Source: gridMET western VPD (Abatzoglou 2013) · NICC ${west ? 'western GACC' : 'national'} acres · calendar year · r ≈ ${r} · not causal`;
+    }
+  }
+
   function renderCoupling(d) {
+    updateScatterCopy();
     const tasks = [
-      embedChart('#chart-scatter', WF.buildScatterSpec(d), 'scatter'),
-      embedChart('#chart-lag', WF.buildLagSpec(d), 'lag')
+      embedChart('#chart-scatter', WF.buildScatterSpec(d, scatterMode, scatterDriverMode), 'scatter'),
+      embedChart('#chart-western-acres', WF.buildWesternAcresSpec(d), 'westernAcres'),
+      embedChart('#chart-regional-share', WF.buildRegionalShareSpec(d), 'regionalShare')
     ];
+    const supplementary = document.querySelector('details.coupling-supplementary-details');
+    if (supplementary && supplementary.open) {
+      updateLagCopy(d.lagPearsonVpdNational, d.lagRows);
+      tasks.push(
+        embedChart('#chart-proxy-rank', WF.buildProxyRankBarSpec(d), 'proxyRank'),
+        embedChart('#chart-lag', WF.buildLagSpec(d), 'lag')
+      );
+    }
     const policyDetails = document.querySelector('details.coupling-policy-details');
     if (policyDetails && policyDetails.open) {
       tasks.push(
@@ -168,9 +274,13 @@
       finalizeChart('atmosphere');
       finalizeChart('atmosphereNational');
       finalizeChart('policy');
+      finalizeChart('treatmentAcres');
       promise = renderDrivers(d);
     } else if (tabId === 'coupling') {
       finalizeChart('scatter');
+      finalizeChart('westernAcres');
+      finalizeChart('regionalShare');
+      finalizeChart('proxyRank');
       finalizeChart('lag');
       finalizeChart('policyScatter');
       promise = renderCoupling(d);
@@ -200,8 +310,8 @@
     }
   }
 
-  function renderCharts(wildfireRows, vpdRows) {
-    cache = { wildfireRows, vpdRows };
+  function renderCharts(wildfireRows, vpdRows, ercRows, regionalAcresRows, hfrRows) {
+    cache = { wildfireRows, vpdRows, ercRows, regionalAcresRows, hfrRows };
     renderedTabs.clear();
     lastLayout = null;
     renderTabCharts(activeTab, true);
@@ -220,14 +330,23 @@
 
     Promise.all([
       fetchText('data/wildfire-data.csv'),
-      fetchText('data/vpd-annual.csv')
+      fetchText('data/vpd-annual.csv'),
+      fetchText('data/erc-annual.csv'),
+      fetchText('data/regional-acres-annual.csv'),
+      fetchText('data/hfr-prevention-annual.csv')
     ])
-      .then(([wildfireText, vpdText]) => {
+      .then(([wildfireText, vpdText, ercText, regionalAcresText, hfrText]) => {
         let wildfireRows;
         let vpdRows;
+        let ercRows;
+        let regionalAcresRows;
+        let hfrRows;
         try {
           wildfireRows = WF.parseWildfireCSV(wildfireText);
           vpdRows = WF.parseSimpleCSV(vpdText);
+          ercRows = WF.parseSimpleCSV(ercText);
+          regionalAcresRows = WF.parseSimpleCSV(regionalAcresText);
+          hfrRows = WF.parseSimpleCSV(hfrText);
         } catch (e) {
           e.stage = 'parse CSV';
           throw e;
@@ -238,8 +357,24 @@
         if (!vpdRows.length) {
           throw Object.assign(new Error('vpd-annual.csv parsed to zero year rows'), { stage: 'parse CSV' });
         }
-        console.info('[wildfire-viz] loaded', wildfireRows.length, 'wildfire rows,', vpdRows.length, 'VPD rows');
-        renderCharts(wildfireRows, vpdRows);
+        if (!ercRows.length) {
+          throw Object.assign(new Error('erc-annual.csv parsed to zero year rows'), { stage: 'parse CSV' });
+        }
+        if (!regionalAcresRows.length) {
+          throw Object.assign(new Error('regional-acres-annual.csv parsed to zero year rows'), { stage: 'parse CSV' });
+        }
+        if (!hfrRows.length) {
+          throw Object.assign(new Error('hfr-prevention-annual.csv parsed to zero year rows'), { stage: 'parse CSV' });
+        }
+        console.info(
+          '[wildfire-viz] loaded',
+          wildfireRows.length, 'wildfire rows,',
+          vpdRows.length, 'VPD rows,',
+          ercRows.length, 'ERC rows,',
+          regionalAcresRows.length, 'regional GACC rows,',
+          hfrRows.length, 'HFR prevention rows'
+        );
+        renderCharts(wildfireRows, vpdRows, ercRows, regionalAcresRows, hfrRows);
       })
       .catch(showChartError);
   }
@@ -274,6 +409,45 @@
     });
   });
 
+  document.querySelectorAll('[data-scatter-mode]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      scatterMode = btn.dataset.scatterMode;
+      document.querySelectorAll('[data-scatter-mode]').forEach(b => {
+        b.classList.toggle('active', b.dataset.scatterMode === scatterMode);
+      });
+      if (cache) {
+        renderedTabs.delete('coupling');
+        renderTabCharts('coupling', true);
+      }
+    });
+  });
+
+  document.querySelectorAll('[data-scatter-driver]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      scatterDriverMode = btn.dataset.scatterDriver;
+      document.querySelectorAll('[data-scatter-driver]').forEach(b => {
+        b.classList.toggle('active', b.dataset.scatterDriver === scatterDriverMode);
+      });
+      if (cache) {
+        renderedTabs.delete('coupling');
+        renderTabCharts('coupling', true);
+      }
+    });
+  });
+
+  document.querySelectorAll('[data-atmos-dryness]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      atmosDrynessMode = btn.dataset.atmosDryness;
+      document.querySelectorAll('[data-atmos-dryness]').forEach(b => {
+        b.classList.toggle('active', b.dataset.atmosDryness === atmosDrynessMode);
+      });
+      if (cache) {
+        renderedTabs.delete('drivers');
+        renderTabCharts('drivers', true);
+      }
+    });
+  });
+
   document.querySelectorAll('details.atmosphere-national-details').forEach(el => {
     el.addEventListener('toggle', () => {
       if (el.open && cache) {
@@ -286,6 +460,15 @@
   document.querySelectorAll('details.coupling-policy-details').forEach(el => {
     el.addEventListener('toggle', () => {
       if (el.open && cache) {
+        renderedTabs.delete('coupling');
+        renderTabCharts('coupling', true);
+      }
+    });
+  });
+
+  document.querySelectorAll('details.coupling-supplementary-details').forEach(el => {
+    el.addEventListener('toggle', () => {
+      if (cache) {
         renderedTabs.delete('coupling');
         renderTabCharts('coupling', true);
       }

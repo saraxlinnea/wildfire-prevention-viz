@@ -4,7 +4,7 @@ Tracks every empirical and editorial statement on the public visualization.
 Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/main/CORE/CLAIM_TRACKING_LAYER.md) and [Evidence Standard](https://github.com/saraxlinnea/AI-OS/blob/main/CORE/EVIDENCE_STANDARD.md).
 
 **Live page:** [saraxlinnea.github.io/wildfire-prevention-viz](https://saraxlinnea.github.io/wildfire-prevention-viz)  
-**Last audited against:** 2026-07-06 fact-check pass ([`fact-check-log.md`](fact-check-log.md))  
+**Last audited against:** 2026-07-13 fact-check pass ([`fact-check-log.md`](fact-check-log.md))  
 **Update rule:** Any new copy on `index.html` must get a claim ID here before publish.
 
 ---
@@ -273,6 +273,50 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 
 ---
 
+### C-P07 — HFR joint FS+DOI treatment series (FY 2003-2021)
+
+| Field | Value |
+|---|---|
+| **Normalized statement** | USDA FS and DOI hazardous fuels treatment totals from the joint HFR-DOI-FS NFPORS report span fiscal years 2003-2021; combined treatment acres FY 2003 ≈ 3.21M, FY 2021 ≈ 5.26M |
+| **Display text** | Drivers tab treatment chart (combined total); Coupling research accordion |
+| **Page location** | Drivers tab `#chart-policy`; `data/hfr-prevention-annual.csv`; Coupling tab research `<details>` |
+| **Status** | Supported |
+| **Confidence** | High |
+| **Sources** | [HFR-DOI-FS Accomplishments 2003-2021](https://www.forestsandrangelands.gov/documents/resources/reports/2021/HFR-DOI-FS-Accomplishments2003-2021.pdf); `scripts/extract_hfr_prevention.py` |
+| **Limitations** | Fiscal year; definition shifts in report footnotes; exploratory r ≈ −0.27 vs national acres (not causal) |
+| **Related** | C-P04, C-P05, C-P06 |
+
+---
+
+### C-P08 — HFR treatment vs national acres (dual-axis overlap)
+
+| Field | Value |
+|---|---|
+| **Normalized statement** | Dual-axis chart overlays federal hazardous-fuels treatment (HFR FY 2003-2021 plus page-verified totals 2022-2025) and national acres burned (calendar 2003-2025) on shared year labels; shows temporal co-occurrence only, not that treatment caused fire outcomes |
+| **Display text** | Drivers tab "Federal treatment vs national acres burned" panel |
+| **Page location** | Drivers tab `#chart-treatment-acres` |
+| **Status** | Methodological |
+| **Confidence** | High |
+| **Sources** | `data/hfr-prevention-annual.csv`; NIFC national acres in `wildfire-data.csv` |
+| **Limitations** | HFR fiscal years through 2021; page series for 2022-2025; fiscal vs calendar mismatch; weak exploratory r in repository notes is not causal evidence |
+| **Related** | C-P07, C-X01 |
+
+---
+
+### C-R07 — Pre-2010 regional GACC acres (2003-2007, gap 2008-2009)
+
+| Field | Value |
+|---|---|
+| **Normalized statement** | Regional GACC acres extended to 2003-2007 (lightning+human or 2007 multiyear text) and 2010-2012; 2008-2009 omitted (NICC PDFs not machine-readable for GACC splits) |
+| **Display text** | Repository + Coupling research accordion |
+| **Page location** | `data/regional-acres-annual.csv`, `data/pre2010-acres-notes.md`; `western-acres-annual.csv` now 21 years |
+| **Status** | Supported (partial window) |
+| **Confidence** | Medium |
+| **Limitations** | 2007 uses total wildfire acres text table, not lightning+human; 2008-2009 gap; western acres chart 2003-2007 and 2010-2025 |
+| **Related** | C-R01, C-W01 |
+
+---
+
 ## Drought (DSCI)
 
 ### C-D01 — DSCI data availability
@@ -320,13 +364,60 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 
 | Field | Value |
 |---|---|
-| **Normalized statement** | Western U.S. mean fire-season VPD is computed for May–September, west of 100°W, from gridMET, years 1979–2025 |
-| **Display text** | VPD panel note and methodology |
-| **Page location** | Atmosphere tab; Interpretation tab methodology |
+| **Normalized statement** | Western U.S. mean fire-season VPD is computed for May–September, west of 100°W, from gridMET, years 1979–2025; on the Drivers tab VPD is defined as atmospheric “thirst” (temperature + humidity), not a fire model |
+| **Display text** | Drivers tab definition list; VPD panel note and methodology |
+| **Page location** | Drivers tab; Interpretation tab methodology |
 | **Status** | Supported |
 | **Confidence** | High |
 | **Evidence strength** | Strong (published dataset + peer-reviewed gridMET paper) |
 | **Sources** | [gridMET](http://thredds.northwestknowledge.net/thredds/dodsC/MET/vpd/); [Abatzoglou 2013](https://doi.org/10.1002/joc.3413); `data/vpd-annual.csv` |
+
+---
+
+### C-V03 — ERC series definition
+
+| Field | Value |
+|---|---|
+| **Normalized statement** | Western U.S. mean fire-season ERC (Energy Release Component) is computed for May–September, west of 100°W, from gridMET NFDRS fuel model G, years 1979–2025; on the Drivers tab ERC is defined as potential energy release given fuel dryness (no wind/slope) |
+| **Display text** | Drivers tab definition list; ERC panel toggle, methodology, Coupling scatter |
+| **Page location** | Drivers tab atmosphere chart; Coupling tab; methodology |
+| **Status** | Supported |
+| **Confidence** | High |
+| **Evidence strength** | Strong (gridMET derived fire-danger index; Abatzoglou 2013) |
+| **Sources** | [gridMET ERC](http://thredds.northwestknowledge.net/thredds/dodsC/MET/erc/); `data/erc-annual.csv`; `scripts/extend_erc.py` |
+| **Related** | C-V01, C-W03, C-Lit01 |
+
+---
+
+### C-Lit01 — Literature proxy ranking (ERC ≳ VPD ≫ drought)
+
+| Field | Value |
+|---|---|
+| **Normalized statement** | Published western U.S. fire–climate studies treat short-term fire-danger indices (especially ERC) and fire-season VPD as stronger annual burned-area proxies than longer-timescale drought indices such as PDSI; the page ranks ERC, then VPD, then DSCI/drought accordingly and does not claim literature r equals this repository’s Pearson r |
+| **Display text** | Coupling tab “Proxy ranking (literature → this page)” table |
+| **Page location** | Coupling tab |
+| **Status** | Supported |
+| **Confidence** | High |
+| **Evidence strength** | Strong for relative ordering; methods differ across papers |
+| **Sources** | [Riley et al. 2013](https://research.fs.usda.gov/treesearch/49353); [Williams et al. 2015](https://doi.org/10.1071/WF14023); [Abatzoglou & Williams 2016](https://doi.org/10.1073/pnas.1607171113) |
+| **Limitations** | Papers use different years, forest vs all-land burned area, percentiles, and windows; page r column is this repository only (C-W02, C-W03, C-C04) |
+| **Related** | C-V01, C-V03, C-W02, C-W03, C-X05, C-M06 |
+
+---
+
+### C-W03 — Western acres vs western ERC correlation
+
+| Field | Value |
+|---|---|
+| **Normalized statement** | Pearson correlation between western fire-season ERC and western GACC acres burned for 2010-2025 is approximately 0.82 (repository value 0.821) |
+| **Display text** | "Western acres burned vs western ERC" r = 0.82; scatter default ERC driver |
+| **Page location** | Coupling tab correlation table and scatter |
+| **Status** | Supported |
+| **Confidence** | High |
+| **Evidence strength** | High for this bivariate window (exploratory only) |
+| **Sources** | `data/correlation-matrix.csv`; `scripts/compute_correlations.py` |
+| **Limitations** | Exploratory; n = 16; ERC and VPD are collinear (r ≈ 0.94); not causal |
+| **Related** | C-W02, C-V03, C-X05 |
 
 ---
 
@@ -425,7 +516,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 
 | Field | Value |
 |---|---|
-| **Normalized statement** | Pearson r for key pairs in 2010-2025 window: acres vs western VPD 0.63 (0.625 in CSV); acres vs national DSCI 0.10 (0.097); western VPD vs national DSCI 0.56 (0.560); national vs western DSCI 0.73 (0.734) |
+| **Normalized statement** | Pearson r for key pairs in 2010-2025 window: western acres vs western ERC 0.82 (0.821); western acres vs western VPD 0.81 (0.808); national acres vs western ERC 0.53 (0.532); national acres vs western VPD 0.63 (0.625); acres vs national DSCI 0.10 (0.097); western acres vs western DSCI 0.08 (0.075); western VPD vs ERC 0.94 (0.944); western VPD vs national DSCI 0.56 (0.560); national vs western DSCI 0.73 (0.734) |
 | **Display text** | Coupling tab correlation table |
 | **Page location** | Coupling tab |
 | **Status** | Supported (derived) |
@@ -441,7 +532,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 |---|---|
 | **Normalized statement** | Lag view aligns western VPD in year t with national acres burned in year t+1; annual resolution cannot resolve sub-seasonal lag |
 | **Display text** | "Annual data cannot resolve sub-seasonal lag." |
-| **Page location** | Coupling tab lag chart panel note |
+| **Page location** | Coupling tab supplementary `<details>` lag chart panel note |
 | **Status** | Methodological |
 | **Confidence** | High |
 
@@ -477,7 +568,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 
 | Field | Value |
 |---|---|
-| **Normalized statement** | Policy chart default view sums Forest Service (calendar) and Interior (fiscal) reported treatment acres where both exist; sum is approximate because calendars differ |
+| **Normalized statement** | Policy chart default view uses HFR joint FS+DOI totals FY 2003-2021, then page-verified FS (calendar) and Interior (fiscal) for 2022-2025 where reported; sum is approximate because calendars and sources differ |
 | **Display text** | Policy tab panel note; "Combined total" toggle |
 | **Page location** | Policy tab |
 | **Status** | Methodological |
@@ -563,13 +654,13 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 
 | Field | Value |
 |---|---|
-| **Normalized statement** | Pearson r ≈ 0.63 between western VPD and national acres burned implies roughly 39–40% of variance explained (r² ≈ 0.39); remainder reflects other factors |
-| **Display text** | "r ≈ 0.63 explains roughly 40% of year-to-year variance (r² ≈ 0.39)" |
-| **Page location** | Coupling tab correlation table caption (In context) |
+| **Normalized statement** | Pearson r ≈ 0.81 between western VPD and western GACC acres burned implies roughly 65% of variance explained (r² ≈ 0.65); national acres pairing remains r ≈ 0.63 / r² ≈ 0.39 |
+| **Display text** | Coupling tab correlation "In context" (western acres r² ≈ 0.65) |
+| **Page location** | Coupling tab correlation table caption |
 | **Status** | Methodological |
 | **Confidence** | High |
-| **Evidence strength** | Mathematical derivation from C-C01 |
-| **Related** | C-C01, C-X05 |
+| **Evidence strength** | Mathematical derivation from C-W02 / C-C01 |
+| **Related** | C-W02, C-C01, C-X05 |
 
 ---
 
@@ -627,18 +718,166 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 
 ---
 
+### C-W01 — Western GACC acres series (2010-2025)
+
+| Field | Value |
+|---|---|
+| **Normalized statement** | Western acres burned are the sum of NICC Geographic Area Coordination Center (GACC) acres for NW, NR, GB, RM, SW, NO, and SO; for 2010-2012 EB and WB replace GB (pre-merge). Series spans calendar years 2010-2025. |
+| **Display text** | Western acres / western GACC acres in Coupling scatter toggle and correlation table |
+| **Page location** | Coupling tab |
+| **Status** | Supported |
+| **Confidence** | High |
+| **Evidence strength** | High (NICC annual report tables) |
+| **Sources** | NICC annual reports (`scripts/build_western_acres.py`); `data/western-acres-annual.csv`; `data/nicc-gacc-acres-source.csv` |
+| **Limitations** | 2010-2012 derived from lightning+human GACC acres (validated against 2015 total); GACC boundaries ≠ gridMET west-of-100°W VPD mask; excludes AK, EA, SA |
+
+---
+
+### C-R01 — Regional GACC acres series (2010-2025)
+
+| Field | Value |
+|---|---|
+| **Normalized statement** | Regional NICC GACC acres burned are summed by group: West (NW, NR, GB, RM, SW, NO, SO; EB+WB pre-2015), East (EA), South (SA), Alaska (AK), and national total (all ten GACCs when present). Years 2003-2007 and 2010-2012 from legacy PDF extracts; 2008-2009 gap; 2013+ from text tables. |
+| **Display text** | Coupling regional accordion (shares); full series in repository CSVs |
+| **Page location** | `data/regional-acres-annual.csv`; Coupling tab regional `<details>`; built by `scripts/build_western_acres.py` |
+| **Status** | Supported |
+| **Confidence** | High |
+| **Evidence strength** | High (NICC annual report tables; national GACC sum ≈ NIFC national acres 2013-2025 within ~0.04M) |
+| **Sources** | `data/regional-acres-annual.csv`; `data/nicc-gacc-acres-source.csv`; `scripts/build_western_acres.py` |
+| **Limitations** | 2010-2012 lack EA/SA/AK; GACC ≠ state census geography; regional table is summary only |
+| **Related** | C-W01, C-M07 |
+
+---
+
+### C-R02 — Regional gridMET driver series (west, south, east)
+
+| Field | Value |
+|---|---|
+| **Normalized statement** | Regional fire-season VPD and ERC from gridMET: west May-Sep west of 100°W (copied from vpd/erc annual); south Jan-Apr bbox lon -106 to -81 lat 25-36; east Mar-Jun bbox lon -90 to -68 lat 37-47. Alaska not in gridMET (lat max ~49.4°N). |
+| **Display text** | Repository artifacts only |
+| **Page location** | `data/regional-gridmet-annual.csv`; `scripts/extend_regional_indices.py` |
+| **Status** | Supported |
+| **Confidence** | High |
+| **Sources** | gridMET OPeNDAP; `scripts/extend_regional_indices.py` |
+| **Limitations** | Bboxes approximate GACC geography; south/east seasons are research defaults; not on live page |
+| **Related** | C-R01, C-R03 |
+
+---
+
+### C-R03 — Regional correlation ranks (2013-2025)
+
+| Field | Value |
+|---|---|
+| **Normalized statement** | Exploratory Pearson r between regional GACC acres and regional drivers for 2013-2025 (n=13): west acres vs ERC 0.83, vs VPD 0.77, vs DSCI −0.01; south vs VPD 0.36, vs fm100 −0.18, vs ERC 0.17, vs DSCI −0.14; east vs DSCI 0.81, vs VPD 0.49, vs ERC 0.17; Alaska acres vs DSCI 0.51 (gridMET unavailable) |
+| **Display text** | Coupling tab accordion "Regional GACC breakdown (research extension, n = 13)" |
+| **Page location** | Coupling tab `<details>` regional table; `data/regional-correlation-rank.csv`; `scripts/compute_regional_correlations.py` |
+| **Status** | Supported (derived) |
+| **Confidence** | Medium |
+| **Limitations** | n=13; exploratory; east acres small share (~1.5% median); Alaska without gridMET; not causal |
+| **Related** | C-R01, C-R02, C-R04, C-X05 |
+
+---
+
+### C-R04 — Regional NWS DSCI series (east, south, alaska + west merge)
+
+| Field | Value |
+|---|---|
+| **Normalized statement** | Annual average DSCI from USDM NWSRegionStatistics GetDSCI for Eastern (aoi=ER), Southern (SR), Alaska (AR), merged with western (WR) in `regional-dsci-annual.csv` |
+| **Display text** | Repository + Coupling regional accordion source links |
+| **Page location** | `data/regional-dsci-annual.csv`, `data/dsci-eastern-annual.csv`, `data/dsci-southern-annual.csv`, `data/dsci-alaska-annual.csv`; `scripts/fetch_regional_dsci.py` |
+| **Status** | Supported |
+| **Confidence** | High |
+| **Sources** | USDM API; western column from `dsci-western-annual.csv` |
+| **Limitations** | Calendar-year average of weekly DSCI; NWS region boundaries ≠ GACC geography |
+| **Related** | C-D02, C-R03 |
+
+---
+
+### C-R05 — Southeast Jan-Apr 100-hr fuel moisture (fm100)
+
+| Field | Value |
+|---|---|
+| **Normalized statement** | gridMET mean 100-hour dead fuel moisture (%) for Southeast bbox lon −106 to −81, lat 25–36, Jan–Apr, 2010–2025. Southern GACC acres vs fm100 Pearson r ≈ −0.18 (n=13); does not beat VPD (r ≈ 0.36) |
+| **Display text** | Coupling regional accordion south row (fm100 second driver) |
+| **Page location** | `data/south-fm100-annual.csv`; `scripts/extend_fm100.py` |
+| **Status** | Supported (derived) |
+| **Confidence** | Medium |
+| **Limitations** | Negative r expected (drier fuels); weak magnitude; n=13; exploratory |
+| **Related** | C-R02, C-R03 |
+
+---
+
+### C-R06 — Regional GACC share time series (2003-2007, 2010-2025)
+
+| Field | Value |
+|---|---|
+| **Normalized statement** | Stacked 100% chart of NICC GACC regional shares of national GACC acres burned: West, South, Alaska, East for years with `gacc_coverage=all_gaccs` (2003-2007, 2010-2025; gap 2008-2009) |
+| **Display text** | Coupling tab "Regional share of GACC acres burned" chart |
+| **Page location** | Coupling tab `#chart-regional-share`; `data/regional-acres-annual.csv` |
+| **Status** | Supported |
+| **Confidence** | High |
+| **Sources** | `data/regional-acres-annual.csv`; NICC annual reports |
+| **Limitations** | GACC sum ≈ NIFC national when all ten GACCs present; 2008-2009 gap in NICC source tables |
+| **Related** | C-R01, C-M07 |
+
+---
+
+### C-R08 — Monthly western VPD vs acres (repository research)
+
+| Field | Value |
+|---|---|
+| **Normalized statement** | gridMET western May and March-May mean VPD (2010-2025, n=16) vs calendar-year acres: May VPD vs western GACC acres Pearson r ≈ 0.496; Mar-May vs western acres r ≈ 0.544; fire-season VPD vs western acres r ≈ 0.808 (same window); May VPD year t vs western acres t+1 r ≈ −0.54 (n=15). Outcome is still calendar-year burn totals, not summer-only acres |
+| **Display text** | Coupling research accordion row; `data/vpd-monthly-correlation-notes.md` |
+| **Page location** | Repository only (not main charts); `data/vpd-monthly-annual.csv`; `scripts/extend_vpd_monthly.py`; `scripts/compute_vpd_monthly_correlations.py` |
+| **Status** | Supported (derived) |
+| **Confidence** | Medium |
+| **Limitations** | Exploratory; May and fire-season VPD highly correlated; no monthly burn data for true summer-acres test; not causal |
+| **Related** | C-V01, C-W02, C-C02, C-X05 |
+
+---
+
+### C-R09 — HFR WUI vs non-WUI designation acres (repository research)
+
+| Field | Value |
+|---|---|
+| **Normalized statement** | HFR-DOI-FS WUI and Non-WUI columns are designation acres from the same prevention tables (FY 2003-2021). Median WUI share of designation acres ≈ 59.0%. Exploratory Pearson r (WUI share vs national acres, same FY label) ≈ 0.202 (n=19); combined WUI acres vs national acres r ≈ 0.003; combined treatment vs national acres r ≈ −0.135 |
+| **Display text** | Coupling research accordion row; `data/hfr-wui-notes.md` |
+| **Page location** | Repository only (not main charts); `data/hfr-wui-annual.csv`; `scripts/compute_hfr_wui_analysis.py` |
+| **Status** | Supported (derived) |
+| **Confidence** | Medium |
+| **Limitations** | WUI designation ≠ homes protected or treatment effectiveness; fiscal vs calendar year mismatch for acres; not causal |
+| **Related** | C-P07, C-X05 |
+
+---
+
+### C-W02 — Western acres vs western VPD correlation
+
+| Field | Value |
+|---|---|
+| **Normalized statement** | Pearson correlation between western fire-season VPD and western GACC acres burned for 2010-2025 is approximately 0.81 (repository value 0.808) |
+| **Display text** | "Western acres burned vs western VPD" r = 0.81; scatter default western mode |
+| **Page location** | Coupling tab correlation table and scatter |
+| **Status** | Supported |
+| **Confidence** | High |
+| **Evidence strength** | High for this bivariate window (exploratory only) |
+| **Sources** | `data/correlation-matrix.csv`; `scripts/compute_correlations.py` |
+| **Limitations** | Exploratory; n = 16; not causal; still imperfect geography match to VPD mask |
+| **Related** | C-C01, C-X05, C-W01 |
+
+---
+
 ### C-M07 — Western concentration of U.S. fire acres
 
 | Field | Value |
 |---|---|
-| **Normalized statement** | In most years, the majority of U.S. acres burned occur in western states |
+| **Normalized statement** | In most years, the majority of U.S. acres burned occur in western states; western GACC share of national acres in 2010-2025 ranges widely (often majority; Alaska can dominate selected years such as 2015 and 2022) |
 | **Display text** | "In most years, most U.S. acres burned occur in western states" |
 | **Page location** | Outcomes tab fire panel note; Coupling tab captions |
-| **Status** | Partially supported |
-| **Confidence** | Medium |
-| **Evidence strength** | Moderate (NIFC regional patterns; widely cited in CRS/NIFC summaries) |
-| **Sources** | [NIFC statistics](https://www.nifc.gov/fire-information/statistics); [CRS IF10244](https://crsreports.congress.gov/product/pdf/IF/IF10244) |
-| **Limitations** | Not quantified inline on page; national line still used throughout |
+| **Status** | Supported |
+| **Confidence** | High |
+| **Evidence strength** | High (quantified via NICC GACC sums in `data/western-acres-annual.csv`) |
+| **Sources** | NICC annual reports via `scripts/build_western_acres.py`; NIFC national totals |
+| **Limitations** | "Western" here means seven GACCs, not a state census definition |
 
 ---
 
@@ -677,9 +916,10 @@ Quick lookup: where each claim appears on `index.html`.
 |---|---|
 | Header dek | C-F01, C-F02, C-F11, C-P03 |
 | Intro block | C-X01, C-X04 |
+| Intro story spine | C-X01 |
 | Outcomes tab | C-F01, C-F02, C-F03, C-F04, C-F08, C-F09, C-F10, C-P03, C-M01, C-M07 |
-| Drivers tab | C-A01, C-D01, C-D02, C-D03, C-M04, C-M05, C-M06, C-P04, C-P05, C-P07, C-V01, C-V02 |
-| Coupling tab | C-X05, C-C01, C-C02, C-C03, C-C04, C-M02, C-M03, C-M06, C-M07, C-V02 |
+| Drivers tab | C-A01, C-D01, C-D02, C-D03, C-M04, C-M05, C-M06, C-P04, C-P05, C-P07, C-P08, C-V01, C-V02, C-V03 |
+| Coupling tab | C-X05, C-C01, C-C02, C-C03, C-C04, C-Lit01, C-W01, C-W02, C-W03, C-M02, C-M03, C-M06, C-M07, C-V02, C-V03, C-R06, C-R07, C-R08, C-R09 |
 | How to read tab | C-X06, C-F04, C-F09, C-F11, C-P01, C-P02, C-F08, C-R01, C-R02, C-X01, C-X02, C-M03, C-M04, C-M05, C-M07 |
 | How to read methodology | C-F05, C-F06, C-F07, C-P06, C-F08, C-R01, C-X05 |
 | Meta / OG tags | C-F01, C-F02 (twitter description) |
@@ -702,6 +942,17 @@ Before updating the live page:
 
 | Date | Change |
 |---|---|
+| 2026-07-13 | Monthly western VPD vs acres research (C-R08); HFR WUI vs non-WUI designation (C-R09); Coupling research accordion updated |
+| 2026-07-12 | HFR prevention FY 2003-2021 (C-P07); pre-2010 GACC acres 2003-2007 (C-R07); 2008-2009 gap documented |
+| 2026-07-12 | Extended chart windows: lag 1979-2024; regional share 2003-2025; treatment HFR 2003-2021 + page 2022-2025; western acres chart 2003-2025 |
+| 2026-07-12 | Story spine in header; Coupling tab trimmed (scatter first; bar/matrix/lag in supplementary details); dual-axis HFR treatment vs acres on Drivers (C-P08) |
+| 2026-07-11 | Southeast fm100 (C-R05); regional GACC share chart (C-R06); south fm100 does not beat VPD |
+| 2026-07-11 | Regional Phase 3: NWS regional DSCI (C-R04); Coupling regional accordion (C-R03) |
+| 2026-07-11 | Regional Phase 2: C-R02/C-R03; regional gridMET + correlation rank CSVs |
+| 2026-07-11 | Regional GACC Phase 1: `regional-acres-annual.csv` (C-R01) |
+| 2026-07-09 | Drivers definitions rewrite; Coupling literature proxy ranking (C-Lit01); replication framing for scatters |
+| 2026-07-08 | ERC (gridMET fire danger): C-V03, C-W03; Drivers ERC/VPD toggle; Coupling ERC scatter default |
+| 2026-07-07 | Phase B: western GACC acres 2010-2025; C-W01/C-W02; Coupling scatter national/western toggle |
 | 2026-07-06 | Phase A copy: richer captions, drivers intro, scientific limits, claims C-M01–C-M07 |
 | 2026-07-06 | Copy polish: remove Franklin quote, four tabs, neutral framing, deduped interpretation |
 | 2026-07-06 | v2 Phase 2-3: merge atmosphere/policy charts, Relationships tab, JS modules, C-X05 revised |

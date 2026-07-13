@@ -1,5 +1,7 @@
-,acres_burned_m,dsci_national,dsci_west_nws,vpd_west_fireseason
-acres_burned_m,1.0,0.097,0.058,0.625
-dsci_national,0.097,1.0,0.734,0.56
-dsci_west_nws,0.058,0.734,1.0,0.185
-vpd_west_fireseason,0.625,0.56,0.185,1.0
+,acres_burned_m,western_acres_burned_m,dsci_national,dsci_west_nws,vpd_west_fireseason,erc_west_fireseason
+acres_burned_m,1.0,0.839,0.097,0.058,0.625,0.532
+western_acres_burned_m,0.839,1.0,0.152,0.075,0.808,0.821
+dsci_national,0.097,0.152,1.0,0.734,0.56,0.442
+dsci_west_nws,0.058,0.075,0.734,1.0,0.185,0.138
+vpd_west_fireseason,0.625,0.808,0.56,0.185,1.0,0.944
+erc_west_fireseason,0.532,0.821,0.442,0.138,0.944,1.0

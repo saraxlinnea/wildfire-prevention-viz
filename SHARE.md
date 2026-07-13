@@ -8,7 +8,7 @@ Ready-to-use text for LinkedIn and email. Link: https://saraxlinnea.github.io/wi
 
 An Ounce of Prevention: U.S. Wildfire Data
 
-I put together a sourced look at U.S. wildfire data (1983-2026). Four tabs: outcomes with YTD callouts, drivers and federal context, exploratory coupling (r ≈ 0.63 for western VPD vs national acres), and how to read.
+I put together a sourced look at U.S. wildfire data (1983-2026). Five tabs: outcomes with YTD callouts, drivers (federal treatment back to 2003 plus atmosphere), exploratory coupling (western ERC/VPD vs western acres, r ≈ 0.82/0.81), and how to read.
 
 As of June 18, 2026:
 - 2.6 million acres burned nationally, about 63% above the 10-year average to date
@@ -34,11 +34,11 @@ Subject: U.S. wildfire data page (sourced, reproducible)
 
 Hi [name],
 
-I published a data page on U.S. wildfire outcomes and federal hazardous fuels treatment, with western fire-season dryness (VPD and DSCI). The Outcomes tab shows national acres burned with a rolling 10-year baseline band (not a flat CRS reference line).
+I published a data page on U.S. wildfire outcomes and federal hazardous fuels treatment, with western fire-season dryness (ERC, VPD, and DSCI). The Outcomes tab shows national acres burned with a rolling 10-year baseline band (not a flat CRS reference line).
 
 - **Outcomes:** NIFC annual statistics, 1983-2026; rolling 10-yr band; 2026 YTD through June 18
-- **Drivers & context:** western VPD + western DSCI z-score overlay; national vs western DSCI in collapsible view; combined federal treatment (FS + Interior)
-- **Coupling** (exploratory): Pearson r ≈ 0.63 (western VPD vs national acres, 2010-2025, n=16); annual lag proxy; FS treatment vs next-year fire (n=3, illustrative)
+- **Drivers:** HFR joint FS+DOI treatment FY 2003-2021 plus page-verified 2022-2025; dual-axis treatment vs national acres; western ERC/VPD + western DSCI z-score overlay
+- **Coupling** (exploratory): western GACC acres vs western ERC r ≈ 0.82 and vs western VPD r ≈ 0.81 (2010-2025, n=16); regional GACC share 2003-2007 + 2010-2025; repository research on monthly VPD timing and HFR WUI designation (not on main charts)
 - **How to read:** framing, scientific limits, methodology and sources
 
 CSVs, notebooks, and correlation analysis are in the repo. The Coupling tab shows exploratory overlap only; correlation is not presented as causation.

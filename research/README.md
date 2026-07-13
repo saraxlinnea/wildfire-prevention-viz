@@ -5,7 +5,7 @@ Structured reasoning artifacts for the wildfire visualization. Follows [AI-OS](h
 | File | Purpose |
 |---|---|
 | [`claims.md`](claims.md) | Claim registry for every statement on the live page |
-| [`fact-check-log.md`](fact-check-log.md) | Pass/fail audit log per claim ID (latest run: 2026-07-04) |
+| [`fact-check-log.md`](fact-check-log.md) | Pass/fail audit log per claim ID (latest run: 2026-07-13) |
 
 ## Using the claim registry
 

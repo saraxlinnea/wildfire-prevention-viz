@@ -45,6 +45,65 @@ def main() -> int:
     else:
         ok("Western DSCI matches audit CSV")
 
+    west_acres = pd.read_csv(ROOT / "western-acres-annual.csv")
+    merged_a = wf.merge(west_acres, on="year", how="inner")
+    merged_a["western_acres_burned_millions"] = pd.to_numeric(
+        merged_a["western_acres_burned_millions"], errors="coerce"
+    )
+    merged_a["western_acres_millions"] = pd.to_numeric(
+        merged_a["western_acres_millions"], errors="coerce"
+    )
+    bad_a = merged_a[
+        (merged_a["western_acres_burned_millions"] - merged_a["western_acres_millions"]).abs() > TOLERANCE
+    ]
+    if len(bad_a):
+        fail(f"Western acres mismatch in {len(bad_a)} year(s)")
+        errors += 1
+    else:
+        ok("Western acres match western-acres-annual.csv (2010-2025)")
+
+    regional = pd.read_csv(ROOT / "regional-acres-annual.csv")
+    regional["year"] = regional["year"].astype(int)
+    west_reg = regional.merge(
+        west_acres[["year", "western_acres_millions"]].rename(
+            columns={"western_acres_millions": "western_millions_ref"}
+        ),
+        on="year",
+    )
+    west_reg["western_millions_reg"] = pd.to_numeric(
+        west_reg["western_acres_millions"], errors="coerce"
+    )
+    west_reg["western_millions_ref"] = pd.to_numeric(
+        west_reg["western_millions_ref"], errors="coerce"
+    )
+    bad_reg = west_reg[
+        (west_reg["western_millions_reg"] - west_reg["western_millions_ref"]).abs() > TOLERANCE
+    ]
+    if len(bad_reg):
+        fail(f"Regional CSV western mismatch in {len(bad_reg)} year(s)")
+        errors += 1
+    else:
+        ok("Regional CSV western totals match western-acres-annual.csv")
+
+    legacy = regional[regional["year"].between(2010, 2012)]
+    if not (legacy["gacc_coverage"] == "all_gaccs").all():
+        fail("Expected 2010-2012 all_gaccs in regional-acres-annual.csv")
+        errors += 1
+    else:
+        ok("Regional CSV 2010-2012 have all_gaccs (EA/SA/AK in legacy extract)")
+
+    if set(regional["year"]) & {2008, 2009}:
+        fail("2008-2009 should be absent from regional-acres (extract gap)")
+        errors += 1
+    else:
+        ok("Regional CSV omits 2008-2009 (NICC extract gap)")
+
+    if regional["year"].min() > 2003:
+        fail(f"Expected regional acres from 2003, got min year {regional.year.min()}")
+        errors += 1
+    else:
+        ok("Regional acres span includes 2003+")
+
     vpd = pd.read_csv(ROOT / "vpd-annual.csv")
     bad_vpd = vpd[(vpd["vpd_kpa"] < VPD_MIN) | (vpd["vpd_kpa"] > VPD_MAX)]
     if len(bad_vpd):
@@ -52,6 +111,39 @@ def main() -> int:
         errors += 1
     else:
         ok(f"VPD {int(vpd.year.min())}-{int(vpd.year.max())} all in range")
+
+    erc = pd.read_csv(ROOT / "erc-annual.csv")
+    ERC_MIN, ERC_MAX = 35.0, 85.0
+    bad_erc = erc[(erc["erc"] < ERC_MIN) | (erc["erc"] > ERC_MAX)]
+    if len(bad_erc):
+        fail(f"ERC out of range ({ERC_MIN}-{ERC_MAX}): years {bad_erc['year'].tolist()}")
+        errors += 1
+    else:
+        ok(f"ERC {int(erc.year.min())}-{int(erc.year.max())} all in range")
+
+    reg_grid = pd.read_csv(ROOT / "regional-gridmet-annual.csv")
+    reg_grid["year"] = reg_grid["year"].astype(int)
+    west_check = reg_grid.merge(vpd, on="year", how="inner").merge(erc, on="year", how="inner")
+    west_check["west_vpd_kpa"] = pd.to_numeric(west_check["west_vpd_kpa"], errors="coerce")
+    west_check["west_erc"] = pd.to_numeric(west_check["west_erc"], errors="coerce")
+    if (
+        (west_check["west_vpd_kpa"] - west_check["vpd_kpa"]).abs() > TOLERANCE
+    ).any() or (
+        (west_check["west_erc"] - west_check["erc"]).abs() > TOLERANCE
+    ).any():
+        fail("regional-gridmet west columns disagree with vpd/erc annual CSVs")
+        errors += 1
+    else:
+        ok("Regional gridMET west columns match vpd-annual.csv and erc-annual.csv")
+
+    subset = reg_grid[(reg_grid["year"] >= 2010) & (reg_grid["year"] <= 2025)]
+    for col in ["south_vpd_kpa", "south_erc", "east_vpd_kpa", "east_erc"]:
+        if subset[col].isna().any():
+            fail(f"regional-gridmet-annual.csv has nulls in {col} for 2010-2025")
+            errors += 1
+            break
+    else:
+        ok("Regional gridMET south/east columns complete (2010-2025)")
 
     y2026 = wf.loc[wf["year"] == 2026].iloc[0]
     if str(y2026["acres_burned_partial"]).lower() != "true":
@@ -72,8 +164,14 @@ def main() -> int:
         ok(f"Acres burned span {burn_years.min()}-{burn_years.max()}")
 
     required_files = [
-        "wildfire-data.csv", "vpd-annual.csv", "dsci-annual-averages.csv",
-        "dsci-western-annual.csv", "correlation-matrix.csv",
+        "wildfire-data.csv", "vpd-annual.csv", "erc-annual.csv",
+        "dsci-annual-averages.csv", "dsci-western-annual.csv",
+        "western-acres-annual.csv", "regional-acres-annual.csv",
+        "regional-gridmet-annual.csv", "regional-correlation-rank.csv",
+        "regional-dsci-annual.csv", "south-fm100-annual.csv",
+        "hfr-prevention-annual.csv", "hfr-wui-annual.csv",
+        "vpd-monthly-annual.csv", "vpd-monthly-correlation.csv",
+        "correlation-matrix.csv",
     ]
     for name in required_files:
         path = ROOT / name

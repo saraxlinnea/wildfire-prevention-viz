@@ -1,0 +1,8 @@
+pair,pearson_r,n,window
+May VPD vs western acres (same year),0.496,16,2010-2025
+May VPD vs national acres (same year),0.145,16,2010-2025
+Mar-May VPD vs western acres (same year),0.544,16,2010-2025
+Mar-May VPD vs national acres (same year),0.35,16,2010-2025
+Fire-season VPD vs western acres (same year),0.808,16,2010-2025
+May VPD (year t) vs western acres (year t+1),-0.54,15,2010-2025
+May VPD (year t) vs national acres (year t+1),-0.477,15,2010-2025

@@ -11,8 +11,8 @@ U.S. wildfire data visualization, 1983-2026. Four tabs: outcomes, drivers and co
 The page uses four tabs:
 
 - **Outcomes**: national acres burned with rolling 10-year baseline band; YTD callouts; 2026 forecast overlay
-- **Drivers & context**: western dryness z-score overlay, national/western DSCI (collapsible), combined federal treatment
-- **Coupling** (exploratory): correlation table, VPD vs acres scatter, annual lag proxy; treatment scatter in collapsible (n=3)
+- **Drivers & context**: western ERC/VPD z-score overlay (toggle), national/western DSCI (collapsible), combined federal treatment
+- **Coupling** (exploratory): correlation table, ERC/VPD vs western/national acres scatter, annual lag proxy; treatment scatter in collapsible (n=3)
 - **How to read**: framing, policy context, methodology
 
 As of June 18, 2026, more than 2.6 million acres have already burned, about 63% above the 10-year average to date. Peak fire season starts in summer. In 2025 the Forest Service treated 35% fewer acres for wildfire risk than the year before.
@@ -32,6 +32,10 @@ This page does not claim that cutting prevention in 2025 directly caused the 202
 | Drought severity (national) | [U.S. Drought Monitor API](https://usdmdataservices.unl.edu/api/USStatistics/GetDSCI?aoi=conus) | 2000-2026 | See `data/dsci-annual-averages.csv` |
 | Drought severity (western) | [USDM NWS Western Region API](https://usdmdataservices.unl.edu/api/NWSRegionStatistics/GetDSCI?aoi=WR) | 2000-2026 | See `data/dsci-western-annual.csv` |
 | Western fire season VPD | [gridMET via OPeNDAP](http://thredds.northwestknowledge.net/thredds/dodsC/MET/vpd/) | 1979-2025 | Western US, May-Sep; see `data/vpd-annual.csv` |
+| Western fire season ERC | [gridMET via OPeNDAP](http://thredds.northwestknowledge.net/thredds/dodsC/MET/erc/) | 1979-2025 | NFDRS fuel model G fire-danger index; same geo/season as VPD; `data/erc-annual.csv` |
+| Western acres burned (GACC) | NICC annual reports | 2010-2025 | Sum of 7 western GACCs; `data/western-acres-annual.csv` |
+| Regional GACC acres | NICC annual reports | 2010-2025 | West, East (EA), South (SA), Alaska; `data/regional-acres-annual.csv` |
+| Regional gridMET VPD/ERC | gridMET OPeNDAP | 1979-2025 (west); 2010-2025 (south/east) | `data/regional-gridmet-annual.csv`; Alaska not in gridMET |
 | Ten-year average (CRS) | [CRS Report IF10244 (PDF)](https://crsreports.congress.gov/product/pdf/IF/IF10244), [Congress.gov](https://www.congress.gov/crs-product/IF10244) | 2013-2022 | 7.2M acres; reference in CSV only; chart uses rolling 10-yr band from NIFC data |
 | 2026 forecast | [AccuWeather 2026 Wildfire Season Forecast](https://www.accuweather.com/en/press/larger-wildfires-fueled-by-drought-and-heat-expected-across-the-u-s-in-2026/1884295) | 2026 | 5.5-8M acres projected |
 | Research station closures | [Stateline, USDA reorganization March 2026](https://stateline.org/2026/04/17/forest-service-plan-to-close-research-stations-stokes-fear-as-wildfire-season-approaches/) | 2026 | 57 of 77 stations |
@@ -42,7 +46,9 @@ This page does not claim that cutting prevention in 2025 directly caused the 202
 
 **VPD:** [`data/vpd-annual.csv`](data/vpd-annual.csv). Extend with `python scripts/extend_vpd.py`.
 
-**Correlations (exploratory, Coupling tab):** [`data/correlation-by-window.csv`](data/correlation-by-window.csv), [`data/correlation-matrix.csv`](data/correlation-matrix.csv), [`data/correlation-notes.md`](data/correlation-notes.md). Scatter annotates r ≈ 0.63 (western VPD vs national acres, 2010-2025); not causal evidence.
+**ERC:** [`data/erc-annual.csv`](data/erc-annual.csv). Extend with `python scripts/extend_erc.py`.
+
+**Correlations (exploratory, Coupling tab):** [`data/correlation-by-window.csv`](data/correlation-by-window.csv), [`data/correlation-matrix.csv`](data/correlation-matrix.csv), [`data/correlation-notes.md`](data/correlation-notes.md). Default scatter: western GACC acres vs western ERC (r ≈ 0.82, 2010-2025); not causal evidence.
 
 ---
 
@@ -59,7 +65,10 @@ Scripts:
 ```bash
 python scripts/audit_data.py           # pre-publish data integrity check
 python scripts/extend_vpd.py          # extend VPD via gridMET
+python scripts/extend_erc.py          # extend ERC via gridMET
+python scripts/extend_regional_indices.py  # regional VPD/ERC (slow; network)
 python scripts/compute_correlations.py  # regenerate correlation CSVs
+python scripts/compute_regional_correlations.py  # regional rank table
 ```
 
 Setup:
@@ -98,21 +107,22 @@ Every statement on the live page is tracked in [`research/claims.md`](research/c
 
 - Chart data: [`data/wildfire-data.csv`](data/wildfire-data.csv) (row 2 = column metadata with source URLs)
 - DSCI verified against USDM API; raw weekly files in [`data/dsci-source/`](data/dsci-source/)
-- VPD from gridMET OPeNDAP; extend via [`scripts/extend_vpd.py`](scripts/extend_vpd.py)
+- VPD and ERC from gridMET OPeNDAP; extend via [`scripts/extend_erc.py`](scripts/extend_erc.py) and [`scripts/extend_vpd.py`](scripts/extend_vpd.py)
+- Western GACC acres: [`scripts/build_western_acres.py`](scripts/build_western_acres.py) → [`data/western-acres-annual.csv`](data/western-acres-annual.csv), [`data/regional-acres-annual.csv`](data/regional-acres-annual.csv)
 - Audit script: [`scripts/audit_data.py`](scripts/audit_data.py)
 - Front-end: [`js/datasets.js`](js/datasets.js), [`js/charts.js`](js/charts.js), [`js/app.js`](js/app.js) (loaded from `index.html`; no build step)
 
 **Exploratory correlations (Coupling tab)**
 
 - [`data/correlation-notes.md`](data/correlation-notes.md) documents caveats and key findings
-- 2010-2025 window: western VPD vs national acres burned r ≈ 0.63; shown on scatter chart, not causal evidence
+- 2010-2025 window: western GACC acres vs western ERC r ≈ 0.82 (default scatter); western acres vs western VPD r ≈ 0.81; not causal evidence
 - 2023-2025 FS treatment vs next-year fire: 3 pairs only; illustrative
 
 **Known limitations**
 
 - Interior treatment is fiscal year; acres burned and DSCI are calendar year
 - FS treatment comparable from 2023 onward only (NPR/USFS FACTS method)
-- VPD and western DSCI are regional; national burn acres include all land types
+- ERC, VPD, and western DSCI are regional; national burn acres include all land types
 - 2026 values are partial year through June 18 (acres) and June 17 (DSCI)
 
 ---
@@ -125,7 +135,7 @@ Ready-to-use LinkedIn and journalist copy: [`SHARE.md`](SHARE.md)
 
 ## A Note on the Data
 
-Forest Service treatment data is only available consistently from 2023 onward. Interior Department figures run on a fiscal year starting October 1. DSCI national and western series start in 2000 (USDM API has no 1999 data). VPD is western U.S. only. The Coupling tab shows exploratory coupling views; full analysis is in the notebooks and CSV files.
+Forest Service treatment data is only available consistently from 2023 onward. Interior Department figures run on a fiscal year starting October 1. DSCI national and western series start in 2000 (USDM API has no 1999 data). ERC and VPD are western U.S. only. The Coupling tab shows exploratory coupling views; full analysis is in the notebooks and CSV files.
 
 ---
 
@@ -143,7 +153,7 @@ python3 -m http.server 8000
 # open http://localhost:8000
 ```
 
-The charts load `data/wildfire-data.csv` and `data/vpd-annual.csv` via fetch, which requires a local server.
+The charts load `data/wildfire-data.csv`, `data/vpd-annual.csv`, and `data/erc-annual.csv` via fetch, which requires a local server.
 
 ---
 
