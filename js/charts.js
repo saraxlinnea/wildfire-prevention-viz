@@ -17,7 +17,8 @@
     gridColor: '#f0ece6',
     gridDash: [3, 4]
   },
-  view: { stroke: 'transparent' }
+  view: { stroke: 'transparent' },
+  padding: { left: 52, top: 8, right: 12, bottom: 36 }
 };
 
 WF.embedOpts = {
@@ -33,12 +34,23 @@ WF.mainChartHeight = function () { return WF.isMobile() ? 260 : 340; };
 WF.secondaryChartHeight = function () { return WF.isMobile() ? 200 : 260; };
 WF.compactChartHeight = function () { return WF.isMobile() ? 180 : 220; };
 
-WF.yearAxis = function () {
-  return {
-    title: null,
-    labelAngle: 0,
-    labelExpr: "toNumber(datum.label) % 5 == 0 ? datum.label : ''"
+WF.yearAxis = function (opts) {
+  const o = opts || {};
+  const every = o.every != null ? o.every : 5;
+  const axis = {
+    labelAngle: o.angle != null ? o.angle : 0,
+    labelExpr: 'toNumber(datum.label) % ' + every + " == 0 ? datum.label : ''"
   };
+  if (o.title) {
+    axis.title = o.title;
+    axis.titleFont = 'DM Sans';
+    axis.titleFontSize = 9;
+    axis.titleColor = '#9b9590';
+    if (o.angle) axis.labelPadding = 6;
+  } else {
+    axis.title = null;
+  }
+  return axis;
 };
 
 WF.buildFireSpec = function (data, mode) {
@@ -81,7 +93,7 @@ WF.buildFireSpec = function (data, mode) {
       data: { values: bandData },
       mark: { type: 'area', color: '#c94a1a', opacity: 0.12 },
       encoding: {
-        x: { field: 'year', type: 'ordinal', axis: WF.yearAxis() },
+        x: { field: 'year', type: 'ordinal', axis: WF.yearAxis({ title: 'Calendar year' }) },
         y: { field: bandY, type: 'quantitative', scale: yScale },
         y2: { field: bandY2 }
       }
@@ -93,7 +105,7 @@ WF.buildFireSpec = function (data, mode) {
         point: { filled: true, fill: 'white', stroke: '#c94a1a', strokeWidth: 1.5, size: 40 }
       },
       encoding: {
-        x: { field: 'year', type: 'ordinal', axis: WF.yearAxis() },
+        x: { field: 'year', type: 'ordinal', axis: WF.yearAxis({ title: 'Calendar year' }) },
         y: { field: lineY, type: 'quantitative', scale: yScale, axis: yAxis },
         tooltip: [
           { field: 'year', title: 'Year' },
@@ -115,7 +127,7 @@ WF.buildFireSpec = function (data, mode) {
           y: { field: 'acres', type: 'quantitative', scale: yScale },
           tooltip: [
             { field: 'year', title: 'Year' },
-            { field: 'acres', title: 'Acres burned YTD Jun 18 (M)', format: '.1f' }
+            { field: 'acres', title: 'Acres burned YTD Jul 16 (M)', format: '.1f' }
           ]
         }
       },
@@ -196,7 +208,7 @@ WF.buildAtmosphericSpec = function (data, drynessMode) {
           point: { filled: true, fill: 'white', stroke: '#9a6b3a', strokeWidth: 1.5, size: 45 }
         },
         encoding: {
-          x: { field: 'year', type: 'ordinal', axis: WF.yearAxis() },
+          x: { field: 'year', type: 'ordinal', axis: WF.yearAxis({ title: 'Calendar year' }) },
           y: { field: 'z', type: 'quantitative', axis: yAxis },
           tooltip: [
             { field: 'year', title: 'Year' },
@@ -247,7 +259,7 @@ WF.buildAtmosphericNationalSpec = function (data) {
           point: { filled: true, fill: 'white', stroke: '#9b7ec8', strokeWidth: 1.2, size: 35 }
         },
         encoding: {
-          x: { field: 'year', type: 'ordinal', axis: WF.yearAxis() },
+          x: { field: 'year', type: 'ordinal', axis: WF.yearAxis({ title: 'Calendar year' }) },
           y: { field: 'dsci', type: 'quantitative', scale: dsciScale, axis: dsciAxis },
           tooltip: [{ field: 'year', title: 'Year' }, { field: 'dsci', title: 'Western DSCI', format: '.1f' }]
         }
@@ -276,16 +288,11 @@ WF.buildAtmosphericNationalSpec = function (data) {
 };
 
 WF.yearAxisLong = function (yearBasis) {
-  if (!yearBasis || yearBasis === 'default') {
-    return {
-      title: null,
-      labelAngle: -45,
-      labelExpr: "toNumber(datum.label) % 2 == 0 ? datum.label : ''"
-    };
-  }
-  const title = yearBasis === 'calendar'
-    ? 'Calendar year (HFR treatment shifted +1)'
-    : 'Federal fiscal year (Oct 1 start)';
+  const title = !yearBasis || yearBasis === 'default'
+    ? 'Year'
+    : yearBasis === 'calendar'
+      ? 'Calendar year (HFR treatment shifted +1)'
+      : 'Federal fiscal year (Oct 1 start)';
   return {
     title,
     titleFont: 'DM Sans',
@@ -398,45 +405,66 @@ WF.buildWuiShareSpec = function (data) {
     ...d,
     wui_pct: d.wui_share * 100
   }));
+  const medPct = rows.length
+    ? rows.map(d => d.wui_pct).sort((a, b) => a - b)[Math.floor(rows.length / 2)]
+    : 59;
+  const yAxis = {
+    title: 'WUI share of designation (%)',
+    titleFont: 'DM Sans',
+    titleFontSize: 10,
+    titleColor: '#9b9590',
+    titleAngle: -90,
+    titleX: -48,
+    format: '.0f'
+  };
   return {
     $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
     width: 'container',
-    height: WF.compactChartHeight(),
+    height: WF.secondaryChartHeight(),
     config: WF.chartConfig,
-    data: { values: rows },
-    mark: {
-      type: 'line',
-      color: '#1a4a7a',
-      strokeWidth: 2.5,
-      point: { filled: true, fill: 'white', stroke: '#1a4a7a', strokeWidth: 2, size: 55 }
-    },
-    encoding: {
-      x: {
-        field: 'fiscal_year',
-        type: 'ordinal',
-        title: 'Federal fiscal year',
-        titleFont: 'DM Sans',
-        titleFontSize: 9,
-        titleColor: '#9b9590',
-        axis: { labelAngle: -45, labelExpr: "toNumber(datum.label) % 2 == 0 ? datum.label : ''" }
+    layer: [
+      {
+        data: { values: [{ y: medPct, label: 'Median ≈ ' + Math.round(medPct) + '%' }] },
+        mark: { type: 'rule', color: '#d4cfc8', strokeDash: [5, 4], strokeWidth: 1 },
+        encoding: {
+          y: { field: 'y', type: 'quantitative', scale: { domain: [45, 75] }, axis: null },
+          tooltip: [{ field: 'label', title: 'Median FY 2003-2021' }]
+        }
       },
-      y: {
-        field: 'wui_pct',
-        type: 'quantitative',
-        scale: { domain: [45, 75] },
-        title: 'WUI share of designation (%)',
-        titleFont: 'DM Sans',
-        titleFontSize: 10,
-        titleColor: '#9b9590',
-        titleAngle: -90,
-        titleX: -42,
-        axis: { format: '.0f' }
-      },
-      tooltip: [
-        { field: 'fiscal_year', title: 'Fiscal year' },
-        { field: 'wui_pct', title: 'WUI share of designation', format: '.1f' }
-      ]
-    }
+      {
+        data: { values: rows },
+        mark: {
+          type: 'line',
+          color: '#1a4a7a',
+          strokeWidth: 2.5,
+          point: { filled: true, fill: 'white', stroke: '#1a4a7a', strokeWidth: 2, size: 55 }
+        },
+        encoding: {
+          x: {
+            field: 'fiscal_year',
+            type: 'ordinal',
+            axis: {
+              title: 'Federal fiscal year (Oct 1 start)',
+              titleFont: 'DM Sans',
+              titleFontSize: 9,
+              titleColor: '#9b9590',
+              labelAngle: -45,
+              labelExpr: "toNumber(datum.label) % 2 == 0 ? datum.label : ''"
+            }
+          },
+          y: {
+            field: 'wui_pct',
+            type: 'quantitative',
+            scale: { domain: [45, 75] },
+            axis: yAxis
+          },
+          tooltip: [
+            { field: 'fiscal_year', title: 'Fiscal year' },
+            { field: 'wui_pct', title: 'WUI share of designation', format: '.1f' }
+          ]
+        }
+      }
+    ]
   };
 };
 
@@ -461,11 +489,13 @@ WF.buildProxyRankBarSpec = function (data) {
         field: 'r',
         type: 'quantitative',
         scale: { domain: [0, 1], nice: false },
-        title: 'Pearson r (exploratory, 2010-2025)',
-        titleFont: 'DM Sans',
-        titleFontSize: 10,
-        titleColor: '#9b9590',
-        axis: { format: '.2f' }
+        axis: {
+          title: 'Pearson r (exploratory, 2010-2025)',
+          titleFont: 'DM Sans',
+          titleFontSize: 10,
+          titleColor: '#9b9590',
+          format: '.2f'
+        }
       },
       color: {
         field: 'tier',
@@ -611,10 +641,23 @@ WF.buildTreatmentAcresDualSpec = function (data, yearBasis) {
 };
 
 WF.buildWesternAcresSpec = function (data) {
-  const { westernAcresSeries } = data;
-  const yMax = Math.max(
-    ...westernAcresSeries.map(d => d.western),
-    ...westernAcresSeries.map(d => d.national).filter(v => v !== null)
+  const rows = (data.westernAcresSeries || []).map(d => {
+    const hasNational = d.national !== null && d.national !== undefined;
+    const westShare = (hasNational && d.national > 0)
+      ? Math.round((d.western / d.national) * 1000) / 10
+      : null;
+    return {
+      year: d.year,
+      national: hasNational ? d.national : null,
+      western: d.western,
+      west_share_pct: westShare,
+      geo_note: d.geo_note
+    };
+  });
+  const withNational = rows.filter(d => d.national !== null);
+  const yMax = rows.reduce(
+    (m, d) => Math.max(m, d.national || 0, d.western || 0),
+    0
   );
   const yAxis = {
     title: 'Million acres burned',
@@ -622,8 +665,9 @@ WF.buildWesternAcresSpec = function (data) {
     titleFontSize: 10,
     titleColor: '#9b9590',
     titleAngle: -90,
-    titleX: -42
+    titlePadding: 8
   };
+  const xAxis = WF.yearAxis({ title: 'Calendar year', every: 2 });
 
   return {
     $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
@@ -632,17 +676,10 @@ WF.buildWesternAcresSpec = function (data) {
     config: WF.chartConfig,
     layer: [
       {
-        data: { values: westernAcresSeries.filter(d => d.national !== null) },
-        mark: {
-          type: 'line',
-          color: '#c94a1a',
-          strokeWidth: 1.5,
-          strokeDash: [6, 3],
-          opacity: 0.45,
-          point: { filled: true, fill: 'white', stroke: '#c94a1a', strokeWidth: 1, size: 30, opacity: 0.45 }
-        },
+        data: { values: withNational },
+        mark: { type: 'bar', color: '#e8c4b4', size: 18, cornerRadiusEnd: 1 },
         encoding: {
-          x: { field: 'year', type: 'ordinal', axis: WF.yearAxis() },
+          x: { field: 'year', type: 'ordinal', axis: xAxis },
           y: {
             field: 'national',
             type: 'quantitative',
@@ -651,18 +688,15 @@ WF.buildWesternAcresSpec = function (data) {
           },
           tooltip: [
             { field: 'year', title: 'Year' },
-            { field: 'national', title: 'National acres (M)', format: '.2f' }
+            { field: 'national', title: 'National NIFC (M)', format: '.2f' },
+            { field: 'western', title: 'Western GACC (M)', format: '.2f' },
+            { field: 'west_share_pct', title: 'West as % of national', format: '.1f' }
           ]
         }
       },
       {
-        data: { values: westernAcresSeries },
-        mark: {
-          type: 'line',
-          color: '#e87c2a',
-          strokeWidth: 2.5,
-          point: { filled: true, fill: 'white', stroke: '#e87c2a', strokeWidth: 2, size: 55 }
-        },
+        data: { values: rows },
+        mark: { type: 'bar', color: '#e87c2a', size: 10, cornerRadiusEnd: 1 },
         encoding: {
           x: { field: 'year', type: 'ordinal' },
           y: {
@@ -673,7 +707,9 @@ WF.buildWesternAcresSpec = function (data) {
           },
           tooltip: [
             { field: 'year', title: 'Year' },
-            { field: 'western', title: 'Western GACC acres (M)', format: '.2f' },
+            { field: 'western', title: 'Western GACC (M)', format: '.2f' },
+            { field: 'national', title: 'National NIFC (M)', format: '.2f' },
+            { field: 'west_share_pct', title: 'West as % of national', format: '.1f' },
             { field: 'geo_note', title: 'Scope' }
           ]
         }
@@ -684,35 +720,31 @@ WF.buildWesternAcresSpec = function (data) {
 
 WF.buildRegionalShareSpec = function (data) {
   const values = data.regionalShareSeries || [];
-  const westOnly = values.filter(d => d.region === 'West');
   const storyMarks = (data.regionalStoryMarks || []).map(m => ({
     year: m.year,
-    share_pct: m.share_pct,
+    share_y: 1,
     label: m.label
   }));
   const layers = [{
     data: { values },
-    mark: {
-      type: 'area',
-      line: { strokeWidth: 1 },
-      opacity: 0.85
-    },
+    mark: { type: 'bar' },
     encoding: {
       x: {
         field: 'year',
         type: 'ordinal',
-        axis: WF.yearAxis(),
-        title: null
+        axis: WF.yearAxis({ title: 'Calendar year', every: 5 })
       },
       y: {
         field: 'share_pct',
         type: 'quantitative',
         stack: 'normalize',
-        title: 'Share of GACC acres burned',
         axis: {
+          title: 'Share of GACC acres burned',
           titleFont: 'DM Sans',
           titleFontSize: 10,
           titleColor: '#9b9590',
+          titleAngle: -90,
+          titleX: -52,
           format: '.0%'
         }
       },
@@ -742,7 +774,7 @@ WF.buildRegionalShareSpec = function (data) {
       ]
     }
   }];
-  const storyLayer = WF.storyYearTextLayer(storyMarks, 'year', 'share_pct', -4);
+  const storyLayer = WF.storyYearTextLayer(storyMarks, 'year', 'share_y', -0.04);
   if (storyLayer) layers.push(storyLayer);
 
   return {
@@ -793,14 +825,22 @@ WF.buildScatterSpec = function (data, acreMode, driverMode) {
         x: {
           field: 'driver', type: 'quantitative',
           scale: { domain: driverDomain, nice: false, zero: false },
-          title: xTitle,
-          titleFont: 'DM Sans', titleFontSize: 10, titleColor: '#9a6b3a'
+          axis: {
+            title: xTitle,
+            titleFont: 'DM Sans',
+            titleFontSize: 10,
+            titleColor: '#9a6b3a'
+          }
         },
         y: {
           field: 'acres', type: 'quantitative',
           scale: { domain: acreDomain, nice: false, zero: false },
-          title: yTitle,
-          titleFont: 'DM Sans', titleFontSize: 10, titleColor: '#c94a1a'
+          axis: {
+            title: yTitle,
+            titleFont: 'DM Sans',
+            titleFontSize: 10,
+            titleColor: '#c94a1a'
+          }
         },
         color: {
           field: 'year', type: 'ordinal',
@@ -862,11 +902,22 @@ WF.buildLagSpec = function (data) {
       {
         mark: { type: 'line', strokeWidth: 2, point: { filled: true, size: 50 } },
         encoding: {
-          x: { field: 'plot_year', type: 'ordinal', title: 'Driver year (VPD)', axis: WF.yearAxis() },
+          x: {
+            field: 'plot_year',
+            type: 'ordinal',
+            axis: WF.yearAxis({ title: 'Driver year (VPD)', every: 5 })
+          },
           y: {
-            field: 'norm', type: 'quantitative',
-            title: 'Normalized 0-1 (separate scales)',
-            titleFont: 'DM Sans', titleFontSize: 10, titleColor: '#9b9590'
+            field: 'norm',
+            type: 'quantitative',
+            axis: {
+              title: 'Normalized 0-1 (separate scales)',
+              titleFont: 'DM Sans',
+              titleFontSize: 10,
+              titleColor: '#9b9590',
+              titleAngle: -90,
+              titleX: -48
+            }
           },
           color: {
             field: 'series', type: 'nominal',
@@ -916,27 +967,31 @@ WF.buildMayVpdScatterSpec = function (data) {
           x: {
             field: 'vpd_may',
             type: 'quantitative',
-            title: 'May western VPD (kPa)',
-            titleFont: 'DM Sans',
-            titleFontSize: 10,
-            titleColor: '#9a6b3a',
             scale: {
               domain: [Math.min(...vpdVals) - vpdPad, Math.max(...vpdVals) + vpdPad],
               nice: false,
               zero: false
+            },
+            axis: {
+              title: 'May western VPD (kPa)',
+              titleFont: 'DM Sans',
+              titleFontSize: 10,
+              titleColor: '#9a6b3a'
             }
           },
           y: {
             field: 'acres',
             type: 'quantitative',
-            title: 'Western GACC acres (M, calendar year)',
-            titleFont: 'DM Sans',
-            titleFontSize: 10,
-            titleColor: '#c94a1a',
             scale: {
               domain: [Math.max(0, Math.min(...acreVals) - acrePad), Math.max(...acreVals) + acrePad],
               nice: false,
               zero: false
+            },
+            axis: {
+              title: 'Western GACC acres (M, calendar year)',
+              titleFont: 'DM Sans',
+              titleFontSize: 10,
+              titleColor: '#c94a1a'
             }
           },
           tooltip: [
@@ -972,13 +1027,24 @@ WF.buildIgnitionCauseSpec = function (data) {
     data: { values: rows },
     mark: { type: 'bar' },
     encoding: {
-      x: { field: 'year', type: 'ordinal', axis: WF.yearAxis(), title: null },
+      x: {
+        field: 'year',
+        type: 'ordinal',
+        axis: WF.yearAxis({ title: 'Calendar year', every: 2 })
+      },
       y: {
         field: 'share',
         type: 'quantitative',
         stack: 'normalize',
-        title: 'Share of NICC cause acres',
-        axis: { format: '.0%' }
+        axis: {
+          title: 'Share of NICC cause acres',
+          titleFont: 'DM Sans',
+          titleFontSize: 10,
+          titleColor: '#9b9590',
+          titleAngle: -90,
+          titleX: -48,
+          format: '.0%'
+        }
       },
       color: {
         field: 'cause',
@@ -1027,12 +1093,14 @@ WF.buildTreatmentPerAcreSpec = function (data) {
         field: 'ratio',
         type: 'quantitative',
         scale: { domain: [0, yMax || 3] },
-        title: 'Treatment acres per acre burned',
-        titleFont: 'DM Sans',
-        titleFontSize: 10,
-        titleColor: '#9b9590',
-        titleAngle: -90,
-        titleX: -48
+        axis: {
+          title: 'Treatment acres per acre burned',
+          titleFont: 'DM Sans',
+          titleFontSize: 10,
+          titleColor: '#9b9590',
+          titleAngle: -90,
+          titleX: -48
+        }
       },
       tooltip: [
         { field: 'year', title: 'Year label' },
@@ -1059,13 +1127,21 @@ WF.buildPolicyScatterSpec = function (data) {
     encoding: {
       x: {
         field: 'treatment', type: 'quantitative',
-        title: 'FS treatment acres (M, year t)',
-        titleFont: 'DM Sans', titleFontSize: 10, titleColor: '#2a6b4a'
+        axis: {
+          title: 'FS treatment acres (M, year t)',
+          titleFont: 'DM Sans',
+          titleFontSize: 10,
+          titleColor: '#2a6b4a'
+        }
       },
       y: {
         field: 'acres', type: 'quantitative',
-        title: 'National acres burned (M, year t+1)',
-        titleFont: 'DM Sans', titleFontSize: 10, titleColor: '#c94a1a'
+        axis: {
+          title: 'National acres burned (M, year t+1)',
+          titleFont: 'DM Sans',
+          titleFontSize: 10,
+          titleColor: '#c94a1a'
+        }
       },
       color: { field: 'outcome_year', type: 'ordinal', legend: { title: 'Outcome year' } },
       opacity: { condition: { test: 'datum.partial', value: 0.5 }, value: 1 },

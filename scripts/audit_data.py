@@ -92,11 +92,11 @@ def main() -> int:
     else:
         ok("Regional CSV 2010-2012 have all_gaccs (EA/SA/AK in legacy extract)")
 
-    if set(regional["year"]) & {2008, 2009}:
-        fail("2008-2009 should be absent from regional-acres (extract gap)")
+    if (set(regional["year"]) & {2008, 2009}) != {2008, 2009}:
+        fail("Expected 2008-2009 hand-OCR GACC acres in regional-acres-annual.csv")
         errors += 1
     else:
-        ok("Regional CSV omits 2008-2009 (NICC extract gap)")
+        ok("Regional CSV includes 2008-2009 (hand-OCR lightning+human)")
 
     if regional["year"].min() > 2003:
         fail(f"Expected regional acres from 2003, got min year {regional.year.min()}")

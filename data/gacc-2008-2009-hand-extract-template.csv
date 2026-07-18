@@ -1,0 +1,23 @@
+year,gacc,acres,source_report,extract_method,notes
+2008,NW,282959,annual_report_2008_508.pdf,hand_from_ocr_pages,lightning 183253 + human 99706
+2008,NR,229389,annual_report_2008_508.pdf,hand_from_ocr_pages,lightning 123755 + human 105634
+2008,EB,145712,annual_report_2008_508.pdf,hand_from_ocr_pages,lightning 25321 + human 120391; pre-GB merge
+2008,WB,71930,annual_report_2008_508.pdf,hand_from_ocr_pages,lightning 54161 + human 17769; pre-GB merge
+2008,RM,228701,annual_report_2008_508.pdf,hand_from_ocr_pages,lightning 111147 + human 117554
+2008,SW,573532,annual_report_2008_508.pdf,hand_from_ocr_pages,lightning 234331 + human 339201
+2008,NO,943155,annual_report_2008_508.pdf,hand_from_ocr_pages,lightning 852133 + human 91022
+2008,SO,480389,annual_report_2008_508.pdf,hand_from_ocr_pages,lightning 26140 + human 454249
+2008,EA,69816,annual_report_2008_508.pdf,hand_from_ocr_pages,lightning 420 + human 69396
+2008,SA,2204237,annual_report_2008_508.pdf,hand_from_ocr_pages,lightning 191025 + human 2013212
+2008,AK,62648,annual_report_2008_508.pdf,hand_from_ocr_pages,lightning 60791 + human 1857
+2009,NW,177920,annual_report_2009_508.pdf,hand_from_ocr_pages,lightning 148328 + human 29592
+2009,NR,69016,annual_report_2009_508.pdf,hand_from_ocr_pages,lightning 36365 + human 32651
+2009,EB,136970,annual_report_2009_508.pdf,hand_from_ocr_pages,lightning 119995 + human 16975; pre-GB merge
+2009,WB,33365,annual_report_2009_508.pdf,hand_from_ocr_pages,lightning 7319 + human 26046; pre-GB merge
+2009,RM,107188,annual_report_2009_508.pdf,hand_from_ocr_pages,lightning 30346 + human 76842
+2009,SW,686078,annual_report_2009_508.pdf,hand_from_ocr_pages,lightning 475436 + human 210642
+2009,NO,107411,annual_report_2009_508.pdf,hand_from_ocr_pages,lightning 49414 + human 57997
+2009,SO,305974,annual_report_2009_508.pdf,hand_from_ocr_pages,lightning 9545 + human 296429
+2009,EA,118657,annual_report_2009_508.pdf,hand_from_ocr_pages,lightning 427 + human 118230
+2009,SA,1227610,annual_report_2009_508.pdf,hand_from_ocr_pages,lightning 64155 + human 1163455
+2009,AK,2951597,annual_report_2009_508.pdf,hand_from_ocr_pages,lightning 2907710 + human 43887

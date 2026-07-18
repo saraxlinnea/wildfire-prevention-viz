@@ -32,7 +32,7 @@ python ../../scripts/build_western_acres.py
 
 Derived products checked into git: `../western-acres-annual.csv`, `../regional-acres-annual.csv`, `../nicc-gacc-acres-source.csv`.
 
-**Pre-2010 notes:** 2003-2006 and 2010-2012 use lightning+human tables; 2007 uses multi-year text totals; **2008-2009 are skipped** (no extractable GACC table). See `../pre2010-acres-notes.md`.
+**Pre-2010 notes:** 2003-2006 and 2010-2012 use lightning+human tables; 2007 uses multi-year text totals; **2008-2009 use hand OCR** of chart pages (`../gacc-2008-2009-hand-extract-template.csv`). See `../pre2010-acres-notes.md`.
 
 Regenerate regional totals without PDFs:
 

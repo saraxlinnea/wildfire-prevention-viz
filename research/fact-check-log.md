@@ -1,7 +1,150 @@
 # Fact-check log
 
-**Run date:** 2026-07-13 (monthly VPD + HFR WUI research)  
-**Summary:** gridMET May/Mar-May VPD 2010-2025; correlation notes written; HFR WUI share median 59.0%; audit PASS.
+**Run date:** 2026-07-17 (2008-2009 GACC hand fill)  
+**Prior run:** 2026-07-16 (finish + Phase 2 scaffold)  
+**Claims checked (this pass):** C-R06, C-R07, C-M07  
+**Summary:** 3 PASS · 0 FAIL
+
+---
+
+## 2008-2009 GACC hand fill (2026-07-17)
+
+| Claim ID | Result | Method | Notes |
+|---|---|---|---|
+| C-R07 | PASS | hand CSV + rebuild | 2008 national GACC 5.292M ≈ NIFC 5.3; 2009 5.922M ≈ NIFC 5.9 |
+| C-R06 | PASS | `regional-acres-annual.csv` | Continuous 2003-2025; gray gap layers removed from chart |
+| C-M07 | PASS (derived) | median `western_share_of_gacc` | 0.6033 ≈ 60% (n=23); page updated from 64% |
+
+---
+
+**Run date:** 2026-07-16 (finish + Phase 2 scaffold)  
+**Prior run:** 2026-07-16 (west bars + Start here + axis padding)  
+**Claims checked (this pass):** C-P2-01, C-P2-02, C-P2-03 (registry)  
+**Summary:** 3 PASS (structure/Excluded) · 0 FAIL
+
+---
+
+## Finish + Phase 2 scaffold (2026-07-16)
+
+| Claim ID | Result | Method | Notes |
+|---|---|---|---|
+| C-P2-01 | PASS (Excluded) | registry | Monthly burn scaffolded; not on page |
+| C-P2-02 | PASS (Excluded) | registry | State/ecoregion scaffolded; regional share is shipped alternative |
+| C-P2-03 | PASS | notes | Ignition 2007-2009 gap documented; n=7 supplementary unchanged |
+| — | note | tooling | `export_nicc_gap_pages.py` renders gap PNGs; acres template blank until human OCR |
+
+---
+
+**Run date:** 2026-07-16 (west bars + Start here + axis padding)  
+**Prior run:** 2026-07-16 (readability / narrative template)  
+**Claims checked (this pass):** C-M07  
+**Summary:** 1 PASS (derived/copy) · 0 FAIL
+
+---
+
+## West bars + Start here (2026-07-16)
+
+| Claim ID | Result | Method | Notes |
+|---|---|---|---|
+| C-M07 | PASS (derived) | `regional-acres-annual.csv` | Median western_share_of_gacc = 0.638 (≈ 64%) for n=21 all_gaccs years; page briefing + Start here use 64% |
+
+---
+
+**Run date:** 2026-07-16 (readability / narrative template)  
+**Prior run:** 2026-07-16 (NIFC YTD + DSCI refresh)  
+**Claims checked (this pass):** C-F11, C-D02 (copy)  
+**Summary:** 2 PASS (copy) · 0 FAIL
+
+---
+
+## Readability / narrative template (2026-07-16)
+
+| Claim ID | Result | Method | Notes |
+|---|---|---|---|
+| C-F11 | PASS (copy) | page dek | “Peak western fire season is underway (historically concentrated in July–September)” — no longer “ahead” |
+| C-D02 | PASS (copy) | page | Plain sentence: DSCI annual = YTD/full-year average of weekly readings (Drivers terms + dryness + glossary) |
+
+---
+
+**Run date:** 2026-07-16 (NIFC YTD + DSCI refresh)  
+**Prior run:** 2026-07-14 (Outcomes west-vs-nation narrative copy)  
+**Tier A audit:** PASS (`scripts/audit_data.py`)  
+**Claims checked (this pass):** C-F01–C-F04, C-D02  
+**Summary:** 5 PASS · 0 FAIL
+
+---
+
+## NIFC YTD + DSCI refresh (2026-07-16)
+
+| Claim ID | Result | Method | Notes |
+|---|---|---|---|
+| C-F01 | PASS | NIFC NFN Jul 16 | 3,674,911 acres; CSV `3.7`; page 3.7M / “more than 3.6 million” |
+| C-F02 | PASS | derived | 3,674,911 vs 10-yr same-date avg 2,845,121 → 29% above (NFN avg cell blank; sum of 2016-2025 rows / 10) |
+| C-F03 | PASS | derived | 129% of same-date 10-yr avg |
+| C-F04 | PASS | NIFC table | Rank 3rd behind 2022 (5,238,977) and 2017 (4,371,963) |
+| C-D02 | PASS | USDM API | National 169.9 / western 156.0; 28 weeks through 2026-07-14 |
+
+---
+
+**Run date:** 2026-07-14 (Outcomes west-vs-nation narrative copy)  
+**Prior run:** 2026-07-13 (housekeeping + epistemic polish)  
+**Claims checked (this pass):** C-M07, C-M06  
+**Summary:** 2 PASS (derived/copy) · 0 FAIL
+
+---
+
+## Narrative copy (2026-07-14)
+
+| Claim ID | Result | Method | Notes |
+|---|---|---|---|
+| C-M07 | PASS (derived) | `regional-acres-annual.csv` | 2020 west share 0.921; 2021 0.868; 2004 Alaska 0.811; 2019 Alaska 0.536. Caption uses these year beats. |
+| C-M06 | PASS (copy) | page | National DSCI details: local reading first; Coupling handoff only as “why next” |
+
+---
+
+**Run date:** 2026-07-13 (housekeeping + epistemic polish)  
+**Prior run:** 2026-07-16 (tiers A-C UI + docs + Stateline re-verify)  
+**Tier A audit:** PASS (`scripts/audit_data.py` exit 0, 2026-07-13)  
+**Claims checked (this pass):** C-RS01/02 rename, C-R10 placement, C-R06 gap viz, registry disambiguation  
+**Summary:** 4 PASS (copy/structure) · 0 WARN added · 0 FAIL
+
+---
+
+## Housekeeping (2026-07-13)
+
+| Claim ID | Result | Method | Notes |
+|---|---|---|---|
+| C-RS01 | PASS (recheck) | Stateline | Renamed from policy C-R01; 57 of 77 stations unchanged |
+| C-RS02 | PASS (copy) | page | Softened to Stateline attribution; prior qualitative WARN cleared |
+| C-R10 | PASS (structure) | page | Ignition chart moved to Coupling supplementary |
+| C-R06 | PASS (copy) | page + chart | 2008-2009 gap annotated on regional share chart |
+
+---
+
+**Run date:** 2026-07-16 (tiers A-C UI + docs + Stateline re-verify)  
+**Prior run:** 2026-07-13 (monthly VPD + HFR WUI research)  
+**Tier A audit:** PASS (`scripts/audit_data.py` exit 0, 2026-07-16)  
+**Claims checked (this pass):** 12 delta + C-R01 re-verify  
+**Summary:** 10 PASS · 2 PASS (copy) · 1 PASS (derived) · 1 WARN (qualitative) · 0 FAIL
+
+---
+
+## Tiers A-C + docs delta (2026-07-16)
+
+| Claim ID | Result | Method | Source / evidence | Notes |
+|---|---|---|---|---|
+| C-P03 | PASS (copy) | page | Drivers `federal-context-strip`; 35% removed from Outcomes callouts and header dek | Moved per story rebalance; still C-P01/C-P02 derived |
+| C-F02 | PASS (copy) | NIFC + page | Outcomes callout "2nd highest YTD since 2022 (~3.1M same date)" | Replaces 163% duplicate callout |
+| C-F11 | PASS (copy) | seasonal framing | Outcomes "Jul–Sep peak season" callout | Qualitative; see existing WARN |
+| C-F08 | PASS (copy) | AccuWeather | Forecast callout retained; muted styling | Still Speculative |
+| C-R10 | PASS (derived) | `scripts/extract_ignition_cause.py` | 7 years (2003-2006, 2010-2012); median lightning share 61.0% | 2007 percent-only tables; 2008-2009 image-only |
+| C-R11 | PASS (derived) | `correlation-sensitivity.csv` | Western ERC r 0.821/0.833/0.773 by window; VPD 0.808/0.765/0.778 | Supplementary table on Coupling tab |
+| C-R08 | PASS (recheck) | repo | May VPD scatter in Coupling supplementary; boot CSV `vpd-monthly-annual.csv` | Unchanged findings |
+| C-R09 | PASS (recheck) | page + HFR | WUI share chart on Drivers (not repository-only) | Median 59% FY 2003-2021 |
+| C-M07 | PASS (copy) | page | Western acres chart on Outcomes + Coupling | Geography before correlation |
+| C-X05 | PASS (method) | page | Coupling methods box (n=16, collinearity, geography) | Reinforces exploratory framing |
+| C-X06 | PASS (copy) | page | How to read: Start here + dataset gaps panel | Editorial structure |
+| C-RS01 | PASS | live fetch Stateline | [Stateline Apr 17 2026](https://stateline.org/2026/04/17/forest-service-plan-to-close-research-stations-stokes-fear-as-wildfire-season-approaches/) | "close 57 of its 77 research stations"; prior WARN cleared; renamed C-RS01 2026-07-13 |
 
 ---
 
@@ -219,13 +362,13 @@ Run when `python scripts/audit_data.py` unavailable:
 
 ## Warnings (no action required)
 
-1. **C-R01 / C-R02** - Stateline article did not fully load in automated fetch. Claims match cited URL and README; re-verify before next major share push.
+1. **Live NIFC drift** - Page snapshot is NIFC NFN July 16, 2026 (3,674,911 YTD acres). Later daily NFN updates will diverge; re-freeze when refreshing the page.
 
-2. **Live NIFC drift** - Current NIFC NFN (Jul 4, 2026) reports 3,264,379 YTD acres. Page intentionally uses Jun 18 snapshot (2,627,549). Not a defect.
+2. **C-F11 / C-D03** - Qualitative panel/dek statements; not quantitatively verified.
 
-3. **Tier A env** - Fix local pandas/numpy mismatch to restore `audit_data.py` (`pip install --upgrade pandas numpy` or fresh venv).
+3. **C-R10 window** - Ignition cause chart n=7 in Coupling supplementary; 2007-2009 not machine-extractable from NICC PDFs in repo (documented in `ignition-cause-notes.md`).
 
-4. **C-F11 / C-D03** - Qualitative panel/dek statements; not quantitatively verified.
+4. **C-F02 average** - NFN “10-year average Year-to-Date” cell was blank on Jul 16 fetch; page uses mean of the published 2016-2025 same-date acre rows.
 
 ---
 

@@ -157,7 +157,8 @@
   function renderOutcomes(d) {
     const tasks = [
       embedChart('#chart-fire', WF.buildFireSpec(d, fireMode), 'fire'),
-      embedChart('#chart-western-acres-outcomes', WF.buildWesternAcresSpec(d), 'westernAcresOutcomes')
+      embedChart('#chart-western-acres-outcomes', WF.buildWesternAcresSpec(d), 'westernAcresOutcomes'),
+      embedChart('#chart-regional-share-outcomes', WF.buildRegionalShareSpec(d), 'regionalShareOutcomes')
     ];
     return Promise.all(tasks);
   }
@@ -178,10 +179,15 @@
     updatePolicyYearCopy();
     const tasks = [
       embedChart('#chart-policy', WF.buildPolicySpec(d, policyMode, policyYearBasis), 'policy'),
-      embedChart('#chart-treatment-acres', WF.buildTreatmentAcresDualSpec(d, policyYearBasis), 'treatmentAcres'),
       embedChart('#chart-wui-share', WF.buildWuiShareSpec(d), 'wuiShare'),
       embedChart('#chart-atmosphere', WF.buildAtmosphericSpec(d, atmosDrynessMode), 'atmosphere')
     ];
+    const overlapDetails = document.querySelector('details.drivers-overlap-details');
+    if (overlapDetails && overlapDetails.open) {
+      tasks.push(
+        embedChart('#chart-treatment-acres', WF.buildTreatmentAcresDualSpec(d, policyYearBasis), 'treatmentAcres')
+      );
+    }
     const treatmentResearch = document.querySelector('details.drivers-research-details');
     if (treatmentResearch && treatmentResearch.open) {
       tasks.push(
@@ -290,11 +296,6 @@
       embedChart('#chart-western-acres', WF.buildWesternAcresSpec(d), 'westernAcres'),
       embedChart('#chart-regional-share', WF.buildRegionalShareSpec(d), 'regionalShare')
     ];
-    if (d.ignitionCauseSeries && d.ignitionCauseSeries.length) {
-      tasks.push(
-        embedChart('#chart-ignition-cause', WF.buildIgnitionCauseSpec(d), 'ignitionCause')
-      );
-    }
     const supplementary = document.querySelector('details.coupling-supplementary-details');
     if (supplementary && supplementary.open) {
       updateLagCopy(d.lagPearsonVpdNational, d.lagRows);
@@ -304,6 +305,11 @@
         embedChart('#chart-may-vpd', WF.buildMayVpdScatterSpec(d), 'mayVpd')
       );
       fillSensitivityTable(d.sensitivitySeries);
+      if (d.ignitionCauseSeries && d.ignitionCauseSeries.length) {
+        tasks.push(
+          embedChart('#chart-ignition-cause', WF.buildIgnitionCauseSpec(d), 'ignitionCause')
+        );
+      }
     }
     const policyDetails = document.querySelector('details.coupling-policy-details');
     if (policyDetails && policyDetails.open) {
@@ -558,6 +564,15 @@
   });
 
   document.querySelectorAll('details.drivers-research-details').forEach(el => {
+    el.addEventListener('toggle', () => {
+      if (el.open && cache) {
+        renderedTabs.delete('drivers');
+        renderTabCharts('drivers', true);
+      }
+    });
+  });
+
+  document.querySelectorAll('details.drivers-overlap-details').forEach(el => {
     el.addEventListener('toggle', () => {
       if (el.open && cache) {
         renderedTabs.delete('drivers');

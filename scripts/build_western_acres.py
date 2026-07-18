@@ -32,6 +32,7 @@ SRC_DIR = ROOT / "data" / "nicc-source"
 OUT_GACC = ROOT / "data" / "nicc-gacc-acres-source.csv"
 OUT_WESTERN = ROOT / "data" / "western-acres-annual.csv"
 OUT_REGIONAL = ROOT / "data" / "regional-acres-annual.csv"
+HAND_EXTRACT = ROOT / "data" / "gacc-2008-2009-hand-extract-template.csv"
 
 WESTERN_MODERN = ["NW", "NR", "GB", "RM", "SW", "NO", "SO"]
 WESTERN_LEGACY = ["NW", "NR", "EB", "WB", "RM", "SW", "NO", "SO"]
@@ -136,6 +137,21 @@ def extract_multiyear_text_gacc(pdf_path: Path, report_year: int) -> dict[str, i
         nums = [int(x.replace(",", "")) for x in re.findall(r"[\d,]+", m.group(1))]
         if col < len(nums):
             out[gacc] = nums[col]
+    return out
+
+
+def load_hand_extract() -> dict[int, dict[str, int]]:
+    """Load filled 2008-2009 GACC totals (lightning+human) from OCR page transcription."""
+    if not HAND_EXTRACT.exists():
+        return {}
+    out: dict[int, dict[str, int]] = {}
+    with HAND_EXTRACT.open(newline="") as f:
+        for row in csv.DictReader(f):
+            acres = (row.get("acres") or "").strip()
+            if not acres:
+                continue
+            yr = int(row["year"])
+            out.setdefault(yr, {})[row["gacc"]] = int(acres.replace(",", ""))
     return out
 
 
@@ -316,6 +332,8 @@ def main() -> None:
                 merged_gacc[yr][gacc] = by_year[yr]
             sources[yr] = pdf.name
 
+    hand_by_year = load_hand_extract()
+
     for report_year, pdf, legacy in LEGACY_LIGHTNING_HUMAN:
         if not pdf.exists():
             raise FileNotFoundError(pdf)
@@ -325,6 +343,9 @@ def main() -> None:
             source_suffix = "multiyear-text-total"
         else:
             source_suffix = "lightning+human"
+        if not year_data and report_year in hand_by_year:
+            year_data = hand_by_year[report_year]
+            source_suffix = "hand-ocr-pages lightning+human"
         if not year_data:
             print(f"WARN {report_year}: no GACC acres extracted from {pdf.name}")
             continue

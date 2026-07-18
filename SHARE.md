@@ -8,13 +8,15 @@ Ready-to-use text for LinkedIn and email. Link: https://saraxlinnea.github.io/wi
 
 An Ounce of Prevention: U.S. Wildfire Data
 
-I put together a sourced look at U.S. wildfire data (1983-2026). Five tabs: outcomes with YTD callouts, drivers (federal treatment back to 2003 plus atmosphere), exploratory coupling (western ERC/VPD vs western acres, r ≈ 0.82/0.81), and how to read.
+I put together a sourced look at U.S. wildfire data (1983-2026). Four tabs: fire outcomes (including where acres burned), federal treatment and western dryness, exploratory coupling (western ERC vs western acres, r ≈ 0.82), and how to read.
 
-As of June 18, 2026:
-- 2.6 million acres burned nationally, about 63% above the 10-year average to date
-- 2026 is second for year-to-date acres (2022 was higher), not a record, but well above normal
-- The Forest Service treated 35% fewer acres for wildfire risk in 2025 than in 2024
-- Peak fire season is still ahead
+As of July 16, 2026:
+- 3.7 million acres burned nationally, about 29% above the 10-year average to date
+- Third on NIFC’s same-date table (behind 2022 ~5.2M and 2017 ~4.4M)
+- Peak western fire season (July–September) is underway
+- AccuWeather projects 5.5–8M acres for the full year (speculative forecast)
+
+Federal context (Drivers tab, not a fire outcome): the Forest Service treated 35% fewer acres for wildfire risk in 2025 than in 2024.
 
 I am not claiming prevention cuts caused the 2026 season. The charts show what was happening at the same time.
 
@@ -34,14 +36,14 @@ Subject: U.S. wildfire data page (sourced, reproducible)
 
 Hi [name],
 
-I published a data page on U.S. wildfire outcomes and federal hazardous fuels treatment, with western fire-season dryness (ERC, VPD, and DSCI). The Outcomes tab shows national acres burned with a rolling 10-year baseline band (not a flat CRS reference line).
+I published a data page on U.S. wildfire outcomes, federal hazardous fuels treatment, and western fire-season dryness (ERC, VPD, DSCI).
 
-- **Outcomes:** NIFC annual statistics, 1983-2026; rolling 10-yr band; 2026 YTD through June 18
-- **Drivers:** HFR joint FS+DOI treatment FY 2003-2021 plus page-verified 2022-2025; dual-axis treatment vs national acres; western ERC/VPD + western DSCI z-score overlay
-- **Coupling** (exploratory): western GACC acres vs western ERC r ≈ 0.82 and vs western VPD r ≈ 0.81 (2010-2025, n=16); regional GACC share 2003-2007 + 2010-2025; repository research on monthly VPD timing and HFR WUI designation (not on main charts)
-- **How to read:** framing, scientific limits, methodology and sources
+- **Outcomes:** NIFC national acres 1983-2026; rolling 10-yr band; western vs national GACC acres; 2026 YTD through July 16
+- **Drivers:** HFR joint FS+DOI treatment FY 2003-2021; WUI designation share; dual-axis treatment vs burn acres; western ERC/VPD toggle; FS 35% YoY decline framed as policy context
+- **Coupling** (exploratory): literature-ranked proxies; western ERC/VPD vs western GACC acres (r ≈ 0.82/0.81, n=16); regional share; ignition cause (n=7) in supplementary details; sensitivity windows in supplementary details
+- **How to read:** Start here tour, dataset gaps, scientific limits, claim registry
 
-CSVs, notebooks, and correlation analysis are in the repo. The Coupling tab shows exploratory overlap only; correlation is not presented as causation.
+CSVs, notebooks, and correlation analysis are in the repo. Correlation is not presented as causation.
 
 Live: https://saraxlinnea.github.io/wildfire-prevention-viz/
 Repo: https://github.com/saraxlinnea/wildfire-prevention-viz

@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import csv
 import re
+import statistics
 from pathlib import Path
 
 from pypdf import PdfReader
@@ -70,17 +71,37 @@ def pdf_text(pdf_path: Path) -> str:
     return "\n".join((p.extract_text() or "") for p in reader.pages)
 
 
+def skip_reason(text: str, year: int) -> str | None:
+    """Explain why a year cannot be extracted (documented gaps)."""
+    if year == 2007:
+        if "Lightning Caused Acres Burned by Geographic Area - 2007" in text:
+            if "GACC AK NW" not in text and "TOTAL" not in text.split("Number of Lightning Caused Acres Burned")[1][:400]:
+                return "percent-only cause tables (no GACC Total row in PDF text)"
+    if year in (2008, 2009):
+        if "Number of Lightning Caused Acres Burned" in text:
+            tail = text.split("Number of Lightning Caused Acres Burned", 1)[1][:200]
+            if not re.search(r"[\d,]{5,}", tail):
+                return "cause acres table image-only (no numeric row in PDF text)"
+    return None
+
+
 def main() -> int:
     rows: list[dict] = []
+    skipped: list[tuple[int, str]] = []
     for year, pdf in REPORTS:
         if not pdf.exists():
             print(f"Skip {year}: missing {pdf.name}")
+            skipped.append((year, "missing PDF"))
             continue
         text = pdf_text(pdf)
+        reason = skip_reason(text, year)
         lightning = parse_total_acres_after_section(text, SECTIONS["lightning"])
         human = parse_total_acres_after_section(text, SECTIONS["human"])
         if not lightning or not human:
-            print(f"Skip {year}: lightning={lightning} human={human}")
+            if not reason:
+                reason = f"lightning={lightning} human={human}"
+            print(f"Skip {year}: {reason}")
+            skipped.append((year, reason))
             continue
         total = lightning + human
         rows.append({
@@ -103,7 +124,8 @@ def main() -> int:
         w.writeheader()
         w.writerows(rows)
 
-    med_l = sum(r["lightning_share"] for r in rows) / len(rows)
+    med_l = statistics.median(r["lightning_share"] for r in rows)
+    skip_lines = "\n".join(f"- **{y}:** {reason}" for y, reason in skipped) or "- None"
     NOTES.write_text(
         f"""# Ignition cause acres (exploratory)
 
@@ -111,14 +133,20 @@ National GACC **Total** column from NICC lightning vs human caused acres burned 
 
 ## Window
 
-{rows[0]['year']}-{rows[-1]['year']}, n = {len(rows)} calendar years
+{rows[0]['year']}-{rows[-1]['year']}, n = {len(rows)} calendar years (non-contiguous)
 
 ## Median lightning share
 
 {med_l:.1%}
 
+## Skipped years
+
+{skip_lines}
+
 ## Limitations
 
+- **2007:** PDF text has percent-of-national cause tables only; no absolute GACC Total row (unlike 2003-2006).
+- **2008-2009:** Cause acres tables are image-only in NICC PDFs (same class of gap as regional GACC extract).
 - 2013+ reports in this repo lack the same text blocks; not included.
 - GACC totals may differ from NIFC national acres series.
 - Initial cause classification only.

@@ -1,56 +1,75 @@
 # QA audit report
 
-**Date:** June 2026 (updated 2026-07-04)  
-**Run:** `python scripts/audit_data.py`  
-**Claim-level fact-check:** [`research/fact-check-log.md`](../research/fact-check-log.md) (2026-07-04: 0 fail, 6 warn)
+**Date:** 2026-07-13 (refreshed for four-tab layout)  
+**Automated:** `python scripts/audit_data.py` · `python scripts/verify_local.py`  
+**Claim-level fact-check:** [`research/fact-check-log.md`](../research/fact-check-log.md) (2026-07-13 housekeeping pass)  
+**Visual checklist:** [`research/visual-qa-checklist.md`](../research/visual-qa-checklist.md)
 
-## Local QA
+## Automated checks
+
+| Check | Command | Expected |
+|---|---|---|
+| Data integrity | `python scripts/audit_data.py` | Exit 0 |
+| Boot CSV row counts | `python scripts/verify_local.py` | FILE CHECK: OK |
+| Local HTTP (optional) | `python3 -m http.server 8000` + verify_local | SERVER CHECK: OK |
+
+## Boot CSVs (required)
+
+Loaded by `js/app.js` on page load:
+
+| File | Min rows |
+|---|---|
+| `data/wildfire-data.csv` | 40 calendar years |
+| `data/vpd-annual.csv` | 40 |
+| `data/erc-annual.csv` | 40 |
+| `data/regional-acres-annual.csv` | 18 |
+| `data/hfr-prevention-annual.csv` | 19 fiscal years |
+| `data/vpd-monthly-annual.csv` | 14 |
+
+## Optional CSVs
+
+| File | Used for |
+|---|---|
+| `data/ignition-cause-annual.csv` | Coupling supplementary ignition chart (n=7) |
+| `data/correlation-sensitivity.csv` | Coupling supplementary sensitivity table |
+
+## Chart containers (by tab)
+
+| Tab | Primary chart IDs |
+|---|---|
+| Outcomes | `#chart-fire`, `#chart-western-acres-outcomes` |
+| Drivers | `#chart-policy`, `#chart-wui-share`, `#chart-treatment-acres`, `#chart-atmosphere` |
+| Coupling | `#chart-scatter`, `#chart-western-acres`, `#chart-regional-share` |
+| Coupling supplementary | `#chart-ignition-cause`, `#chart-may-vpd`, `#chart-proxy-rank`, `#chart-lag` |
+| Drivers research details | `#chart-treatment-per-acre` |
+| Atmosphere details | `#chart-atmosphere-national` |
+
+## Data integrity (audit_data.py)
 
 | Check | Result |
 |---|---|
-| `index.html` serves via local HTTP server | Pass |
-| `data/wildfire-data.csv` loads (200) | Pass |
-| `data/vpd-annual.csv` loads (200) | Pass |
-| Four chart containers present (`#chart-fire`, `#chart-prevention`, `#chart-dsci`, `#chart-vpd`) | Pass |
-| Meta / OG tags updated for 1983-2026 range | Pass |
-| Social preview card (`assets/og-card.svg`) | Added |
+| National DSCI vs audit CSV | OK |
+| Western DSCI vs audit CSV | OK |
+| VPD 1979-2025 in range 1.0-2.5 kPa | OK |
+| 2026 partial-year flags | OK |
+| Acres burned span 1983-2025 (+ 2026 YTD) | OK |
+| Required data files present | OK |
 
-## Data integrity
+## Known intentional gaps
 
-| Check | Result |
-|---|---|
-| National DSCI vs `dsci-annual-averages.csv` | Pass |
-| Western DSCI vs `dsci-western-annual.csv` | Pass |
-| VPD values in 1.0-2.5 kPa range | Pass (after fixing 1980, 1982, 1991, 1992 bad OPeNDAP reads) |
-| 2026 partial-year flags | Pass |
-| Acres burned span 1983-2025 (+ 2026 YTD) | Pass |
-| Correlation CSVs regenerated | Pass |
+- **2008-2009** regional GACC acres: filled 2026-07-17 via hand OCR; continuous in `regional-acres-annual.csv`.
+- **2007-2009** ignition cause: supplementary chart only; n=7 years.
+- **2026 YTD:** Jul 16 NIFC snapshot (3,674,911 acres); may drift from later NFN updates.
+- **2026 DSCI:** 28-week averages through Jul 14 (national 169.9; western 156.0).
 
-## Fixes applied during audit
-
-- **VPD 1980, 1982, 1991, 1992:** Restored from verified gridMET OPeNDAP runs (partial reads had produced 0.04-0.75 kPa).
-- **`scripts/extend_vpd.py`:** Now rejects values outside 1.0-2.5 kPa to prevent bad writes.
-- **`scripts/audit_data.py`:** Added for repeatable pre-publish checks.
-
-## Manual checks recommended before share
-
-1. Open `http://localhost:8000` and confirm all four Vega charts render.
-2. Resize browser to mobile width; confirm callouts stack 2x2 and legends wrap.
-3. Hover tooltips on fire bars and prevention lines.
-4. Open footer CSV links and confirm downloads.
-5. Click **CRS Report IF10244 (PDF)** in a browser (crsreports.congress.gov). Congress.gov often blocks automated fetches but works for readers.
-6. Notebook links point to GitHub `blob/main/...` paths. They 404 until the latest repo is pushed.
-7. After GitHub push, test live URL and LinkedIn link preview.
-
-## Link fixes (July 2026)
-
-- CRS ten-year average: primary link is [CRS PDF mirror](https://crsreports.congress.gov/product/pdf/IF/IF10244); Congress.gov kept as secondary.
-- Correlation and methods notebooks: absolute GitHub `blob/main` URLs (not relative `.ipynb` on GitHub Pages).
-- Abatzoglou 2013 DOI linked in methodology for gridMET/VPD.
-
-## Re-run audit
+## Re-run before share
 
 ```bash
+cd "/Users/saralinnea/Desktop/Projects/wildfire analysis"
+pip install -r requirements.txt
 python scripts/audit_data.py
-python scripts/compute_correlations.py
+python scripts/verify_local.py
+python3 -m http.server 8000
 ```
+
+Then complete [`research/visual-qa-checklist.md`](../research/visual-qa-checklist.md).

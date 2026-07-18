@@ -41,6 +41,8 @@ credentials.json
 
 # NICC annual report PDFs (download via data/nicc-source/README.md)
 data/nicc-source/*.pdf
+# Regeneratable PNG renders for hand OCR (scripts/export_nicc_gap_pages.py)
+data/nicc-source/ocr-pages/*.png
 
 # Local agent / Cursor (not for GitHub)
 AGENTS.md
