@@ -172,6 +172,7 @@ def main() -> int:
         "hfr-prevention-annual.csv", "hfr-wui-annual.csv",
         "vpd-monthly-annual.csv", "vpd-monthly-correlation.csv",
         "correlation-matrix.csv",
+        "smoke-pm25-annual.csv",
     ]
     for name in required_files:
         path = ROOT / name

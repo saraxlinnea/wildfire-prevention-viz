@@ -1,5 +1,23 @@
 # Fact-check log
 
+**Run date:** 2026-07-17 (smoke impacts)  
+**Prior run:** 2026-07-17 (2008-2009 GACC hand fill)  
+**Claims checked (this pass):** C-IMP01, C-IMP02, C-IMP03, C-IMP04  
+**Summary:** 4 PASS · 0 FAIL
+
+---
+
+## Smoke impacts (2026-07-17)
+
+| Claim ID | Result | Method | Notes |
+|---|---|---|---|
+| C-IMP01 | PASS (literature) | Burke et al. 2023 | 75% states / 25% progress erosion — attributed in prose |
+| C-IMP02 | PASS (literature) | Childs et al. 2022 abstract | ~25M people, 1 day >100 µg/m³ in 2020 |
+| C-IMP03 | PASS | `smoke-pm25-annual.csv` | 15 years 2006-2020; 2020 peak 0.768 µg/m³ |
+| C-IMP04 | PASS (derived) | repo join | r ≈ 0.65 national acres vs smoke (n=15) |
+
+---
+
 **Run date:** 2026-07-17 (2008-2009 GACC hand fill)  
 **Prior run:** 2026-07-16 (finish + Phase 2 scaffold)  
 **Claims checked (this pass):** C-R06, C-R07, C-M07  

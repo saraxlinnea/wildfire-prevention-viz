@@ -11,7 +11,7 @@
   let atmosDrynessMode = 'erc';
   let activeTab = 'outcomes';
   const renderedTabs = new Set();
-  const CHART_TABS = ['outcomes', 'drivers', 'coupling'];
+  const CHART_TABS = ['outcomes', 'drivers', 'coupling', 'interpret'];
 
   function escapeHtml(s) {
     return String(s)
@@ -126,7 +126,8 @@
       cache.hfrRows,
       cache.vpdMonthlyRows,
       cache.ignitionRows,
-      cache.sensitivityRows
+      cache.sensitivityRows,
+      cache.smokeRows
     );
   }
 
@@ -320,6 +321,18 @@
     return Promise.all(tasks);
   }
 
+  function fillSmokeProse(d) {
+    const el = document.getElementById('smoke-acres-r-text');
+    if (!el || d.pearsonSmokeAcres == null) return;
+    const r = d.pearsonSmokeAcres.toFixed(2);
+    el.textContent = `Exploratory check: national acres burned and this smoke series correlate at r ≈ ${r} (n=15, 2006-2020). That is temporal overlap, not proof that acres caused exposure.`;
+  }
+
+  function renderInterpret(d) {
+    fillSmokeProse(d);
+    return embedChart('#chart-smoke-pm25', WF.buildSmokePm25Spec(d), 'smokePm25');
+  }
+
   function renderTabCharts(tabId, force) {
     if (!cache) return;
     const key = layoutKey();
@@ -356,6 +369,9 @@
       finalizeChart('mayVpd');
       finalizeChart('policyScatter');
       promise = renderCoupling(d);
+    } else if (tabId === 'interpret') {
+      finalizeChart('smokePm25');
+      promise = renderInterpret(d);
     } else {
       return;
     }
@@ -382,17 +398,17 @@
     }
   }
 
-  function renderCharts(wildfireRows, vpdRows, ercRows, regionalAcresRows, hfrRows, vpdMonthlyRows, ignitionRows, sensitivityRows) {
+  function renderCharts(wildfireRows, vpdRows, ercRows, regionalAcresRows, hfrRows, vpdMonthlyRows, ignitionRows, sensitivityRows, smokeRows) {
     cache = {
       wildfireRows, vpdRows, ercRows, regionalAcresRows, hfrRows,
-      vpdMonthlyRows, ignitionRows, sensitivityRows
+      vpdMonthlyRows, ignitionRows, sensitivityRows, smokeRows
     };
     renderedTabs.clear();
     lastLayout = null;
     try {
       fillSensitivityTable(WF.buildDatasets(
         wildfireRows, vpdRows, ercRows, regionalAcresRows, hfrRows,
-        vpdMonthlyRows, ignitionRows, sensitivityRows
+        vpdMonthlyRows, ignitionRows, sensitivityRows, smokeRows
       ).sensitivitySeries);
     } catch (e) { /* table optional until coupling opens */ }
     renderTabCharts(activeTab, true);
@@ -417,9 +433,10 @@
       fetchText('data/hfr-prevention-annual.csv'),
       fetchText('data/vpd-monthly-annual.csv'),
       fetchText('data/ignition-cause-annual.csv'),
-      fetchText('data/correlation-sensitivity.csv')
+      fetchText('data/correlation-sensitivity.csv'),
+      fetchText('data/smoke-pm25-annual.csv')
     ])
-      .then(([wildfireText, vpdText, ercText, regionalAcresText, hfrText, vpdMonthlyText, ignitionText, sensitivityText]) => {
+      .then(([wildfireText, vpdText, ercText, regionalAcresText, hfrText, vpdMonthlyText, ignitionText, sensitivityText, smokeText]) => {
         let wildfireRows;
         let vpdRows;
         let ercRows;
@@ -428,6 +445,7 @@
         let vpdMonthlyRows;
         let ignitionRows;
         let sensitivityRows;
+        let smokeRows;
         try {
           wildfireRows = WF.parseWildfireCSV(wildfireText);
           vpdRows = WF.parseSimpleCSV(vpdText);
@@ -437,6 +455,7 @@
           vpdMonthlyRows = WF.parseSimpleCSV(vpdMonthlyText);
           ignitionRows = WF.parseSimpleCSV(ignitionText);
           sensitivityRows = WF.parseSimpleCSV(sensitivityText);
+          smokeRows = WF.parseSimpleCSV(smokeText);
         } catch (e) {
           e.stage = 'parse CSV';
           throw e;
@@ -459,6 +478,9 @@
         if (!vpdMonthlyRows.length) {
           throw Object.assign(new Error('vpd-monthly-annual.csv parsed to zero year rows'), { stage: 'parse CSV' });
         }
+        if (!smokeRows.length) {
+          throw Object.assign(new Error('smoke-pm25-annual.csv parsed to zero year rows'), { stage: 'parse CSV' });
+        }
         console.info(
           '[wildfire-viz] loaded',
           wildfireRows.length, 'wildfire rows,',
@@ -468,9 +490,10 @@
           hfrRows.length, 'HFR prevention rows,',
           vpdMonthlyRows.length, 'monthly VPD rows,',
           ignitionRows.length, 'ignition cause rows,',
-          sensitivityRows.length, 'sensitivity rows'
+          sensitivityRows.length, 'sensitivity rows,',
+          smokeRows.length, 'smoke PM2.5 rows'
         );
-        renderCharts(wildfireRows, vpdRows, ercRows, regionalAcresRows, hfrRows, vpdMonthlyRows, ignitionRows, sensitivityRows);
+        renderCharts(wildfireRows, vpdRows, ercRows, regionalAcresRows, hfrRows, vpdMonthlyRows, ignitionRows, sensitivityRows, smokeRows);
       })
       .catch(showChartError);
   }

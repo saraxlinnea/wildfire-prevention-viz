@@ -911,6 +911,62 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 
 ---
 
+## Impacts / smoke (How to read)
+
+### C-IMP01 — Wildfire smoke eroding PM2.5 progress (literature)
+
+| Field | Value |
+|---|---|
+| **Normalized statement** | Since at least 2016, wildfire smoke has influenced trends in average annual PM2.5 concentrations in nearly three-quarters of contiguous U.S. states, eroding about 25% of prior multi-decadal PM2.5 progress on average in those states (more than 50% in many western states) |
+| **Display text** | Why smoke matters prose (Burke et al. 2023) |
+| **Page location** | How to read → Why smoke matters |
+| **Status** | Supported (literature attribution) |
+| **Confidence** | High |
+| **Sources** | Burke et al. 2023, *Nature* [doi:10.1038/s41586-023-06522-6](https://doi.org/10.1038/s41586-023-06522-6) |
+| **Limitations** | Not derived from this page's acres or smoke CSV; national/regional policy context only |
+| **Related** | C-IMP03, C-X01 |
+
+### C-IMP02 — Extreme smoke exposure days (literature)
+
+| Field | Value |
+|---|---|
+| **Normalized statement** | Childs et al. (2022) report that the number of people in locations with at least one day of smoke PM2.5 above 100 µg/m³ per year increased sharply over the 2010s, including nearly 25 million people in 2020 alone |
+| **Display text** | Why smoke matters prose (Childs et al. 2022) |
+| **Page location** | How to read → Why smoke matters |
+| **Status** | Supported (literature attribution) |
+| **Confidence** | High |
+| **Sources** | Childs et al. 2022, *Environ. Sci. Technol.* [doi:10.1021/acs.est.2c02934](https://doi.org/10.1021/acs.est.2c02934) |
+| **Limitations** | Population exposure metric; not on-page chart |
+| **Related** | C-IMP03 |
+
+### C-IMP03 — CONUS smoke PM2.5 annual chart (2006-2020)
+
+| Field | Value |
+|---|---|
+| **Normalized statement** | Annual chart shows unweighted mean of county-level daily wildfire smoke PM2.5 (µg/m³) across the contiguous U.S., 2006-2020, from Childs et al. county daily predictions (non-smoke days = 0) |
+| **Display text** | `#chart-smoke-pm25` on How to read |
+| **Page location** | How to read → Why smoke matters |
+| **Status** | Supported |
+| **Confidence** | Medium-High |
+| **Sources** | `data/smoke-pm25-annual.csv`; `scripts/build_smoke_annual.py`; Harvard Dataverse [doi:10.7910/DVN/DJVMTV](https://doi.org/10.7910/DVN/DJVMTV) |
+| **Limitations** | CONUS only; not population-weighted; ends 2020; not total PM2.5 from all sources; not 2026 smoke |
+| **Related** | C-IMP01, C-IMP02, C-IMP04, C-X01 |
+
+### C-IMP04 — Exploratory national acres vs smoke PM2.5 (2006-2020)
+
+| Field | Value |
+|---|---|
+| **Normalized statement** | Pearson r between NIFC national acres burned (millions) and CONUS mean daily smoke PM2.5 (µg/m³) is positive for 2006-2020 (n=15); displayed dynamically in Why smoke matters prose |
+| **Display text** | `#smoke-acres-r-text` exploratory sentence |
+| **Page location** | How to read → Why smoke matters |
+| **Status** | Supported (derived, exploratory) |
+| **Confidence** | Medium |
+| **Sources** | `data/wildfire-data.csv` + `data/smoke-pm25-annual.csv` |
+| **Limitations** | n=15; geography mismatch (national acres vs CONUS smoke); correlation ≠ causation; not on Patterns tab |
+| **Related** | C-X05, C-IMP03 |
+
+---
+
 ## Phase 2 backlog (excluded until data)
 
 ### C-P2-01 — Monthly burn acres (deferred)
@@ -990,7 +1046,7 @@ Quick lookup: where each claim appears on `index.html`.
 | Drivers tab | C-P01, C-P02, C-P03, C-P04, C-P05, C-P06, C-P07, C-P08, C-V01, C-V02, C-V03, C-R09 |
 | Coupling tab (main) | C-X05, C-C01, C-C02, C-C03, C-C04, C-Lit01, C-W01, C-W02, C-W03, C-M02, C-M03, C-M06, C-M07, C-V02, C-V03, C-R06, C-R07 |
 | Coupling supplementary | C-R08, C-R10, C-R11 |
-| How to read tab | C-X06, C-F04, C-F09, C-F11, C-P01, C-P02, C-F08, C-RS01, C-RS02, C-X01, C-X02, C-M03, C-M04, C-M05, C-M07 |
+| How to read tab | C-X06, C-F04, C-F09, C-F11, C-P01, C-P02, C-F08, C-RS01, C-RS02, C-X01, C-X02, C-M03, C-M04, C-M05, C-M07, C-IMP01, C-IMP02, C-IMP03, C-IMP04 |
 | How to read methodology | C-F05, C-F06, C-F07, C-P06, C-F08, C-RS01, C-X05 |
 | Meta / OG tags | C-F01, C-F02 (twitter description) |
 
@@ -1012,6 +1068,7 @@ Before updating the live page:
 
 | Date | Change |
 |---|---|
+| 2026-07-17 | Smoke impacts: C-IMP01-04; Why smoke matters + CONUS smoke PM2.5 chart (Childs 2006-2020) on How to read |
 | 2026-07-17 | Closed 2008-2009 GACC gap (hand OCR); C-R06/C-R07/C-M07 updated; median western share ≈ 60% (n=23, 2003-2025) |
 | 2026-07-16 | Phase 2 scaffold: C-P2-01/02/03; GACC hand-extract template + export script; PAPER_REVIEW Jul 16 pass; byline July 2026 |
 | 2026-07-16 | Readability pass: type scale; Outcomes 2+2 callouts; mid-season “underway”; Q→chart→notice→next; Patterns tab label; DSCI YTD-average sentence; collapsed How to read drawers; C-F11 display text |

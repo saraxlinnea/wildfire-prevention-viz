@@ -36,7 +36,8 @@ This page does not claim that cutting prevention in 2025 directly caused the 202
 | May western VPD | gridMET OPeNDAP | 2010-2025 | `data/vpd-monthly-annual.csv`; timing research |
 | Western fire season ERC | [gridMET via OPeNDAP](http://thredds.northwestknowledge.net/thredds/dodsC/MET/erc/) | 1979-2025 | `data/erc-annual.csv` |
 | Western acres burned (GACC) | NICC annual reports | 2003-2025 | 2008-2009 hand OCR of lightning+human pages; `data/western-acres-annual.csv` |
-| Regional GACC acres | NICC annual reports | 2003-2007, 2010-2025 | `data/regional-acres-annual.csv` |
+| Regional GACC acres | NICC annual reports | 2003-2025 | 2008-2009 hand OCR; `data/regional-acres-annual.csv` |
+| Wildfire smoke PM2.5 | Childs et al. 2022 ([Dataverse](https://doi.org/10.7910/DVN/DJVMTV)) | 2006-2020 CONUS | `data/smoke-pm25-annual.csv`; How to read chart only |
 | Ignition cause acres | NICC annual reports | 2003-2012 (n=7) | Lightning vs human GACC totals; gap 2007-2009 extract |
 | Regional gridMET VPD/ERC | gridMET OPeNDAP | 1979-2025 (west); 2010-2025 (south/east) | `data/regional-gridmet-annual.csv` |
 | Ten-year average (CRS) | [CRS Report IF10244](https://crsreports.congress.gov/product/pdf/IF/IF10244) | 2013-2022 | 7.2M reference; chart uses rolling NIFC band |
@@ -45,7 +46,7 @@ This page does not claim that cutting prevention in 2025 directly caused the 202
 
 **Main chart data:** [`data/wildfire-data.csv`](data/wildfire-data.csv) (row 2 is column metadata with source URLs)
 
-**Boot CSVs (required for charts):** `wildfire-data.csv`, `vpd-annual.csv`, `erc-annual.csv`, `regional-acres-annual.csv`, `hfr-prevention-annual.csv`, `vpd-monthly-annual.csv`
+**Boot CSVs (required for charts):** `wildfire-data.csv`, `vpd-annual.csv`, `erc-annual.csv`, `regional-acres-annual.csv`, `hfr-prevention-annual.csv`, `vpd-monthly-annual.csv`, `smoke-pm25-annual.csv`
 
 **Correlations (exploratory):** [`data/correlation-matrix.csv`](data/correlation-matrix.csv), [`data/correlation-sensitivity.csv`](data/correlation-sensitivity.csv), [`data/correlation-notes.md`](data/correlation-notes.md). Default scatter: western GACC acres vs western ERC (r ≈ 0.82, 2010-2025); not causal.
 
@@ -72,6 +73,7 @@ python scripts/compute_correlations.py          # correlation CSVs
 python scripts/compute_sensitivity_correlations.py
 python scripts/extract_ignition_cause.py        # lightning vs human NICC extract
 python scripts/build_western_acres.py           # GACC western + regional acres
+python scripts/build_smoke_annual.py --local    # smoke PM2.5 annual (needs cached county CSV)
 ```
 
 Setup:

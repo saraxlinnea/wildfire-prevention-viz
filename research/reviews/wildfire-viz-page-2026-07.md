@@ -2,7 +2,7 @@
 
 Template: AI-OS `PAPER_REVIEW` (adapted for a public data page).
 
-Prior pass: 2026-07-16. **Update 2026-07-17:** 2008-2009 GACC hand OCR closed; regional share continuous 2003-2025; median western share ≈ 60% (n=23).
+Prior pass: 2026-07-16. **Update 2026-07-17:** 2008-2009 GACC hand OCR closed; regional share continuous 2003-2025; median western share ≈ 60% (n=23). **Update 2026-07-17 (smoke):** Why smoke matters on How to read; CONUS smoke PM2.5 chart 2006-2020 (Childs); literature Burke/Childs (C-IMP01-04).
 
 ---
 
@@ -63,6 +63,7 @@ Claim registry: [`research/claims.md`](../claims.md). Latest fact-check: [`resea
 - Ignition cause chart n=7 in supplementary; 2007-2009 cause split not on chart (C-P2-03)
 - 2008-2009 GACC regional acres filled via hand OCR of lightning+human pages (national 5.29M / 5.92M cross-checks NIFC)
 - Monthly burn and state panels deferred (C-P2-01, C-P2-02)
+- Smoke chart is CONUS modeled PM2.5 (2006-2020 only); not population exposure or 2026 smoke (C-IMP03)
 
 ---
 
@@ -75,6 +76,7 @@ Claim registry: [`research/claims.md`](../claims.md). Latest fact-check: [`resea
 - [x] Jul 16 NIFC YTD + DSCI refresh (C-F01–C-F04, C-D02)
 - [x] Phase 2 backlog scaffolded (claims + export script + templates)
 - [x] 2008-2009 GACC hand fill (lightning+human OCR → regional CSVs; gap bars removed)
+- [x] Why smoke matters + CONUS smoke PM2.5 chart on How to read (C-IMP01-04)
 - [ ] External reviewer read (deferred until press push)
 
 ---

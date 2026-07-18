@@ -1167,5 +1167,63 @@ WF.buildPolicyScatterSpec = function (data) {
   };
 };
 
+WF.buildSmokePm25Spec = function (data) {
+  const series = (data.smokePm25Series || []).map(d => ({
+    year: d.year,
+    smoke_pm25: d.smoke_pm25,
+    scope_note: d.scope_note
+  }));
+  const storyMarks = [{ year: '2020', label: 'Record smoke' }]
+    .map(m => {
+      const pt = series.find(d => d.year === m.year);
+      return pt ? { year: m.year, smoke_pm25: pt.smoke_pm25, label: m.label } : null;
+    })
+    .filter(Boolean);
+  const layers = [
+    {
+      data: { values: series },
+      mark: {
+        type: 'line',
+        color: '#6b5b4f',
+        strokeWidth: 2,
+        point: { filled: true, fill: 'white', stroke: '#6b5b4f', strokeWidth: 1.5, size: 45 }
+      },
+      encoding: {
+        x: { field: 'year', type: 'ordinal', axis: WF.yearAxis({ title: 'Calendar year' }) },
+        y: {
+          field: 'smoke_pm25',
+          type: 'quantitative',
+          axis: {
+            title: 'Mean daily smoke PM2.5 (µg/m³)',
+            titleFont: 'DM Sans',
+            titleFontSize: 10,
+            titleColor: '#9b9590',
+            titleAngle: -90,
+            titleX: -48,
+            labelColor: '#9b9590',
+            labelFont: 'DM Mono, monospace',
+            labelFontSize: 9
+          }
+        },
+        tooltip: [
+          { field: 'year', title: 'Year' },
+          { field: 'smoke_pm25', title: 'Smoke PM2.5', format: '.3f' },
+          { field: 'scope_note', title: 'Scope' }
+        ]
+      }
+    }
+  ];
+  const storyLayer = WF.storyYearTextLayer(storyMarks, 'year', 'smoke_pm25', -0.08);
+  if (storyLayer) layers.push(storyLayer);
+
+  return {
+    $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+    width: 'container',
+    height: WF.secondaryChartHeight(),
+    config: WF.chartConfig,
+    layer: layers
+  };
+};
+
   window.WF = WF;
 })();

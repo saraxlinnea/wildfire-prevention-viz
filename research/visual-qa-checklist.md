@@ -15,7 +15,7 @@ Run after substantive HTML/JS/chart changes. Requires local server (`python3 -m 
 - [ ] Chart questions + plain-read on fire and west-vs-nation
 - [ ] West briefing cites median ≈ 60%; nested bars (national shell + western fill), not dual lines
 - [ ] Regional share has continuous bars 2003-2025 (no gray 2008-2009 gap columns)
-- [ ] Regional share chart on Outcomes (stacked bars + 2008-2009 gap)
+- [ ] Regional share chart on Outcomes (stacked bars, full 2003-2025 span)
 - [ ] Y-axis labels visible (chart left padding)
 - [ ] Callouts are fire-only (no 35% treatment)
 - [ ] Header dek: mid-season “underway / Jul-Sep” (not “ahead”)
@@ -37,13 +37,17 @@ Run after substantive HTML/JS/chart changes. Requires local server (`python3 -m 
 - [ ] Scatter: ERC/VPD and western/national toggles; r note visible
 - [ ] Methods box includes plain-language r sentence
 - [ ] Western acres + regional share charts render
-- [ ] Regional share: stacked **bars** (not blank); gray 2008-2009 gap; calendar-year + share axis titles; caption mentions gap
+- [ ] Regional share: stacked **bars** (not blank); continuous 2003-2025; calendar-year + share axis titles
 - [ ] Research `<details>` closed on first visit
 - [ ] Open supplementary `<details>`: sensitivity table, May VPD, ignition bar, rank bar, matrix, lag
 - [ ] Ignition chart **not** on main path (only inside supplementary)
 
 ## How to read tab
 
+- [ ] Start here mentions Why smoke matters
+- [ ] Why smoke matters prose cites Burke + Childs with limits
+- [ ] Smoke PM2.5 chart renders 2006-2020; 2020 label visible
+- [ ] Exploratory r sentence populates (r ≈ 0.65)
 - [ ] Start here path is 2-3 minutes with full Outcomes / Drivers / Patterns / limits paragraphs
 - [ ] Dataset gaps + glossary collapsed by default
 - [ ] Policy context uses Stateline-attributed fire/smoke wording (not "many")

@@ -1535,6 +1535,7 @@
         <li><strong>Outcomes</strong>: Start with how large the national fire year is. The main chart is calendar-year acres burned since 1983, with a shaded band for the prior ten full years as a rough recent normal. The orange 2026 point is year-to-date only (through July 16), so it is not comparable to full years yet. Below that, nested bars show western acres as a fill inside the national total (median western share ≈ 60% of the GACC sum), then a regional share chart shows who carried each year (West, South, Alaska, East).</li>
         <li><strong>Drivers &amp; context</strong>: Next, what federal agencies reported treating (hazardous-fuels acres, including how much was tagged as WUI) and how dry the western fire season was (toggle ERC or VPD; drought as a dashed line). Treatment is workload on a mostly fiscal calendar. Dryness is western May-September weather. Neither chart is a scorecard for whether prevention “worked.”</li>
         <li><strong>Patterns</strong>: Then ask which dryness measures move with western acres in this dataset (2010-2025). The default scatter is western ERC × western acres, the strongest pairing here. Regional share shows who carried each year’s GACC total. Research drawers stay closed on first visit; open them only if you want sensitivity checks, May VPD, or thin ignition samples.</li>
+        <li><strong>Why smoke matters</strong>: Acres are not the same as air quality. A short section below links wildfire smoke to PM2.5 and health literature, with one CONUS smoke chart (2006-2020 only).</li>
         <li><strong>Scientific limits</strong>: Before drawing conclusions, read geography (national acres ≠ western weather), fiscal vs calendar year, and correlation ≠ causation below. This page shows overlap in the record. It does not claim that treatment cuts caused the 2026 season.</li>
       </ol>
     </div>
@@ -1548,7 +1549,7 @@
           <li><strong>Monthly burn acres</strong>: true May-dry → summer-burn timing needs NIFC monthly or MTBS. See <a href="data/monthly-burn-gap-notes.md">monthly-burn-gap-notes.md</a> (claim C-P2-01).</li>
           <li><strong>Suppression spending / staffing</strong>: crews and aircraft change outcomes within the same weather.</li>
           <li><strong>WUI housing growth</strong>: exposure changes independent of acres burned.</li>
-          <li><strong>Smoke / health impacts</strong>: acres burned ≠ population affected.</li>
+          <li><strong>Smoke / health impacts</strong>: partial smoke PM2.5 chart on How to read (2006-2020 CONUS); not population exposure or 2026 smoke. See <a href="data/smoke-pm25-notes.md">smoke-pm25-notes.md</a>.</li>
           <li><strong>State / ecoregion small multiples</strong>: deferred; see <a href="data/state-ecoregion-research-notes.md">state-ecoregion-research-notes.md</a> (claim C-P2-02).</li>
         </ul>
       </div>
@@ -1586,13 +1587,35 @@
       </div>
     </details>
 
+    <div class="interp-section interp-section--smoke">
+      <div class="interp-heading">Why smoke matters</div>
+      <div class="prose-block">
+        Acres burned describe <em>where</em> fire spread on the landscape. Wildfire smoke describes what people may breathe downwind: fine particles (PM2.5) that can worsen asthma, strain hearts and lungs, and raise premature-death risk in the epidemiology literature. A large burn year does not automatically mean your city had bad air; wind, distance, and fire type all matter.<br><br>
+        Since at least 2016, wildfire smoke has influenced PM2.5 trends in roughly <strong>three-quarters of contiguous U.S. states</strong>, eroding about <strong>25%</strong> of multi-decade air-quality gains in those states on average (more than half in many western states), per Burke et al. (<em>Nature</em>, 2023). Childs et al. (2022) estimate that the number of people exposed to at least one day with smoke PM2.5 above 100 µg/m³ per year rose sharply in the 2010s, including <strong>nearly 25 million people in 2020 alone</strong>.<br><br>
+        <span id="smoke-acres-r-text">Exploratory check: national acres burned and this smoke series move together in 2006-2020 (see chart note).</span> This page does not model smoke for 2026 or map population exposure. For health guidance see <a href="https://www.cdc.gov/wildfires/risk-factors/index.html">CDC wildfire smoke</a> and <a href="https://www.epa.gov/smoke-ready">EPA Smoke Ready</a>.
+      </div>
+      <div class="chart-container chart-container--atmosphere">
+        <div class="signal-tier signal-tier-2">Literature-derived · CONUS smoke PM2.5</div>
+        <p class="chart-question">How much wildfire smoke reached the air people breathe?</p>
+        <p class="plain-read">Annual mean of county-level daily wildfire smoke PM2.5 across the contiguous U.S. (Childs et al. 2022). Non-smoke days count as zero. 2020 peaks with western megafires; this is not total PM2.5 from all sources.</p>
+        <figure class="chart-figure">
+          <div id="chart-smoke-pm25" class="chart-slot" role="img" aria-label="Contiguous U.S. mean daily wildfire smoke PM2.5 by year 2006-2020"></div>
+          <figcaption class="chart-caption-block">
+            <p class="chart-caption">Smoke PM2.5 is modeled exposure, not NIFC acres. Geography is CONUS counties, not western GACC totals on Outcomes.</p>
+            <p class="chart-note"><span class="note-label">Method</span>Unweighted county mean of daily smoke PM2.5; built by <code>scripts/build_smoke_annual.py</code> from Harvard Dataverse county daily file. See <a href="data/smoke-pm25-notes.md">smoke-pm25-notes.md</a>.</p>
+            <span class="chart-source">Source: Childs et al. 2022 · <a href="https://doi.org/10.7910/DVN/DJVMTV">doi:10.7910/DVN/DJVMTV</a> · Burke et al. 2023 <a href="https://doi.org/10.1038/s41586-023-06522-6">Nature</a></span>
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+
     <div class="interp-section">
       <div class="interp-heading">How to read this</div>
       <div class="prose-block">
         <strong>Outcomes</strong> chart national acres burned (NIFC, 1983 onward). That is the acreage that actually burned, regardless of cause. Year-to-date and forecast numbers are incomplete or speculative. The shaded band on the fire chart uses prior full calendar years. Header callouts use NIFC’s same-date ten-year average, which is a different comparison.<br><br>
         <strong>Drivers &amp; context</strong> explain federal treatment work and western fire-season dryness (ERC, VPD, DSCI). Treatment is reported effort. Dryness indices describe conditions that make fires easier to spread once started. They use different geographies and calendars than the national burn total.<br><br>
         <strong>Patterns</strong> asks which dryness measures track western acres best in this dataset (2010 through 2025). ERC and VPD align more closely than drought maps alone. Regional share charts show whether the West, Alaska, or the South carried each year’s total. Research drawers stay collapsed on first visit. None of this proves that one factor caused another.<br><br>
-        <strong>What this page is not.</strong> A fire forecast, a smoke model, or proof that a budget cut caused a fire season. It is a structured look at public data so you can see what moved together and what did not.
+        <strong>What this page is not.</strong> A fire forecast, a full smoke or health model, or proof that a budget cut caused a fire season. It is a structured look at public data so you can see what moved together and what did not.
       </div>
     </div>
 
@@ -1631,6 +1654,7 @@
           <li>Western acres burned: sum of NICC GACC acres for NW, NR, GB, RM, SW, NO, SO (EB+WB before 2015 Great Basin merge), 2010-2025. Built by <code>scripts/build_western_acres.py</code> from NICC annual reports. Excludes Alaska, Eastern, and Southern GACCs.</li>
           <li>2026 forecast: AccuWeather published 2026 wildfire season projection, 5.5 to 8 million acres.</li>
           <li>Research stations: USDA Forest Service reorganization announced March 31, 2026.</li>
+          <li>Smoke PM2.5: county-mean daily wildfire smoke PM2.5, CONUS, 2006-2020 (Childs et al. 2022; <code>scripts/build_smoke_annual.py</code>; <a href="data/smoke-pm25-annual.csv">smoke-pm25-annual.csv</a>). Literature context: Burke et al. 2023 (<em>Nature</em>).</li>
           <li>Correlations: Patterns tab ranks ERC / VPD / drought proxies with literature citations, then shows this page’s exploratory matrix (<a href="data/correlation-matrix.csv">correlation-matrix.csv</a>, <a href="https://github.com/saraxlinnea/wildfire-prevention-viz/blob/main/notebooks/correlation-analysis.ipynb">notebook</a>). Literature and page r values use different methods; not causal evidence.</li>
           <li>Data processing: drought from U.S. Drought Monitor API; western fire-season VPD from gridMET (<a href="https://doi.org/10.1002/joc.3413">Abatzoglou 2013</a>). CSVs and notebooks in the <a href="https://github.com/saraxlinnea/wildfire-prevention-viz">GitHub repository</a>.</li>
         </ul>
@@ -1650,6 +1674,7 @@
       VPD: <a href="http://thredds.northwestknowledge.net/thredds/catalog/MET/vpd/catalog.html">gridMET</a> (<a href="data/vpd-annual.csv">annual averages</a>) ·
       ERC: <a href="http://thredds.northwestknowledge.net/thredds/catalog/MET/erc/catalog.html">gridMET</a> (<a href="data/erc-annual.csv">annual averages</a>) ·
       Western DSCI: <a href="data/dsci-western-annual.csv">NWS Western Region</a> ·
+      Smoke PM2.5: Childs et al. 2022 (<a href="https://doi.org/10.7910/DVN/DJVMTV">Harvard Dataverse</a>) · Burke et al. 2023 (<a href="https://doi.org/10.1038/s41586-023-06522-6">Nature</a>) ·
       Correlations: <a href="https://github.com/saraxlinnea/wildfire-prevention-viz/blob/main/notebooks/correlation-analysis.ipynb">analysis notebook</a> (<a href="data/correlation-matrix.csv">matrix CSV</a>) ·
       2026 forecast: <a href="https://www.accuweather.com/en/press/larger-wildfires-fueled-by-drought-and-heat-expected-across-the-u-s-in-2026/1884295">AccuWeather 2026 Wildfire Season Forecast</a> ·
       Research stations: <a href="https://stateline.org/2026/04/17/forest-service-plan-to-close-research-stations-stokes-fear-as-wildfire-season-approaches/">Stateline, USDA reorganization March 2026</a> ·
@@ -1661,8 +1686,8 @@
 
 </div>
 
-<script src="js/datasets.js?v=20260717gacc"></script>
-<script src="js/charts.js?v=20260717gacc"></script>
-<script src="js/app.js?v=20260717gacc"></script>
+<script src="js/datasets.js?v=20260717smoke"></script>
+<script src="js/charts.js?v=20260717smoke"></script>
+<script src="js/app.js?v=20260717smoke"></script>
 </body>
 </html>

@@ -194,7 +194,7 @@ WF.pearson = function (xs, ys) {
   return denom === 0 ? null : num / denom;
 };
 
-WF.buildDatasets = function (rows, vpdRows, ercRows, regionalAcresRows, hfrRows, vpdMonthlyRows, ignitionRows, sensitivityRows) {
+WF.buildDatasets = function (rows, vpdRows, ercRows, regionalAcresRows, hfrRows, vpdMonthlyRows, ignitionRows, sensitivityRows, smokeRows) {
   const years = rows.map(r => r.year);
   const burnData = rows
     .filter(r => r.acres_burned_millions && r.acres_burned_partial !== 'true')
@@ -616,6 +616,40 @@ WF.buildDatasets = function (rows, vpdRows, ercRows, regionalAcresRows, hfrRows,
     }
   });
 
+  const smokePm25Series = (smokeRows || [])
+    .filter(r => r.smoke_pm25_ug_m3)
+    .map(r => ({
+      year: r.year,
+      smoke_pm25: parseFloat(r.smoke_pm25_ug_m3),
+      scope_note: 'CONUS county-mean daily wildfire smoke PM2.5 (Childs et al. 2022)'
+    }));
+
+  const smokeAcresPairs = smokePm25Series
+    .map(s => {
+      const burn = burnData.find(b => b.year === s.year);
+      return burn ? { year: s.year, acres: burn.acres, smoke: s.smoke_pm25 } : null;
+    })
+    .filter(Boolean);
+
+  let pearsonSmokeAcres = null;
+  if (smokeAcresPairs.length >= 5) {
+    const xs = smokeAcresPairs.map(p => p.acres);
+    const ys = smokeAcresPairs.map(p => p.smoke);
+    const n = xs.length;
+    const mx = xs.reduce((a, b) => a + b, 0) / n;
+    const my = ys.reduce((a, b) => a + b, 0) / n;
+    let num = 0;
+    let dx = 0;
+    let dy = 0;
+    for (let i = 0; i < n; i++) {
+      num += (xs[i] - mx) * (ys[i] - my);
+      dx += (xs[i] - mx) ** 2;
+      dy += (ys[i] - my) ** 2;
+    }
+    const den = Math.sqrt(dx * dy);
+    pearsonSmokeAcres = den ? num / den : null;
+  }
+
   return {
     burnData, burnWithRolling, bandData, partial2026, forecast2026,
     fsData, interiorData, policyCombined, policyLongSeries,
@@ -629,7 +663,8 @@ WF.buildDatasets = function (rows, vpdRows, ercRows, regionalAcresRows, hfrRows,
     lagRows, policyScatter,
     westernAcresSeries, regionalShareSeries, proxyRankBars, treatmentAcresOverlap,
     wuiShareSeries, treatmentPerAcreSeries, mayVpdScatterRows, ignitionCauseSeries,
-    sensitivitySeries, fireStoryMarks, scatterStoryMarks, regionalStoryMarks,
+    sensitivitySeries, smokePm25Series, pearsonSmokeAcres,
+    fireStoryMarks, scatterStoryMarks, regionalStoryMarks,
     pearsonMayVpdWestern,
     years,
     pearsonVpdAcres: 0.625,
