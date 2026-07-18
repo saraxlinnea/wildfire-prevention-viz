@@ -293,13 +293,26 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 | Field | Value |
 |---|---|
 | **Normalized statement** | Dual-axis chart overlays federal hazardous-fuels treatment (HFR FY 2003-2021 plus page-verified totals 2022-2025) and national acres burned (calendar 2003-2025) on shared year labels; shows temporal co-occurrence only, not that treatment caused fire outcomes |
-| **Display text** | Drivers tab "Federal treatment vs national acres burned" panel |
-| **Page location** | Drivers tab research `<details>` `#chart-treatment-acres` (demoted from main path) |
+| **Display text** | Drivers "Do treatment and burn acres move together?" |
+| **Page location** | Drivers tab main path, immediately after treatment total (`#chart-treatment-acres`) |
 | **Status** | Methodological |
 | **Confidence** | High |
 | **Sources** | `data/hfr-prevention-annual.csv`; NIFC national acres in `wildfire-data.csv` |
 | **Limitations** | HFR fiscal years through 2021; page series for 2022-2025; fiscal vs calendar mismatch; weak exploratory r in repository notes is not causal evidence |
-| **Related** | C-P07, C-X01 |
+| **Related** | C-P07, C-P09, C-X01 |
+
+### C-P09 — Treatment vs acres with stacked controls (partial correlations)
+
+| Field | Value |
+|---|---|
+| **Normalized statement** | For HFR combined treatment vs national acres (n=19, FY/calendar label 2003-2021): raw r ≈ −0.135; after western ERC + VPD + linear year + WUI designation share + western GACC share, partial r ≈ −0.101; joint R² with treatment ≈ 0.167 vs ≈ 0.135 without treatment |
+| **Display text** | Drivers dual-axis panel “With controls” table |
+| **Page location** | Drivers tab under `#chart-treatment-acres` |
+| **Status** | Supported (derived, exploratory) |
+| **Confidence** | Medium |
+| **Sources** | `data/correlation-treatment-partial.csv`; `scripts/compute_treatment_partial_correlations.py` |
+| **Limitations** | n=19; fiscal/calendar mismatch; ERC/VPD collinear; still no El Niño/ignitions/suppression/housing; not causal |
+| **Related** | C-P08, C-R09, C-X01, C-X05 |
 
 ---
 
@@ -843,8 +856,8 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 | Field | Value |
 |---|---|
 | **Normalized statement** | HFR-DOI-FS WUI and Non-WUI columns are designation acres from the same prevention tables (FY 2003-2021). Median WUI share of designation acres ≈ 59.0%. Exploratory Pearson r (WUI share vs national acres, same FY label) ≈ 0.202 (n=19); combined WUI acres vs national acres r ≈ 0.003; combined treatment vs national acres r ≈ −0.135 |
-| **Display text** | Drivers WUI share chart; median 59%; FY 2003-2021 |
-| **Page location** | Drivers tab WUI chart; `data/hfr-wui-notes.md` |
+| **Display text** | Drivers WUI share chart; “Why this is important” links large seasons (Outcomes) to community-adjacent designation; median 59%; FY 2003-2021 |
+| **Page location** | Drivers tab WUI chart (after treatment dual-axis); `data/hfr-wui-notes.md` |
 | **Status** | Supported (derived) |
 | **Confidence** | Medium |
 | **Limitations** | WUI designation ≠ homes protected or treatment effectiveness; fiscal vs calendar year mismatch for acres; not causal |
@@ -967,6 +980,47 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 
 ---
 
+### C-C05 — Partial correlations (western acres vs ERC/VPD)
+
+| Field | Value |
+|---|---|
+| **Normalized statement** | For 2010-2025 western GACC acres vs western fire-season ERC/VPD (n=16): raw r ≈ 0.821 / 0.808; partial r after controlling for the other dryness index ≈ 0.299 / 0.176; controlling for linear year barely changes raw r; ERC–VPD collinearity r ≈ 0.944; joint ERC+VPD multiple R² ≈ 0.684 |
+| **Display text** | Patterns supplementary “What changes with controls?” table |
+| **Page location** | Patterns → supplementary details |
+| **Status** | Supported (derived, exploratory) |
+| **Confidence** | Medium |
+| **Sources** | `data/correlation-partial.csv`; `scripts/compute_partial_correlations.py` |
+| **Limitations** | n=16; still no El Niño/ignitions/suppression/housing controls; not causal; collinear predictors make joint coefficients unstable |
+| **Related** | C-W02, C-W03, C-X05, C-Lit01 |
+
+### C-Lit02 — Westerling 2006 season length and snowmelt (literature)
+
+| Field | Value |
+|---|---|
+| **Normalized statement** | Westerling et al. (2006) report that average western U.S. forest wildfire season length increased by about 78 days (64%) comparing 1970–1986 with 1987–2003, and average discovery-to-control duration rose from 7.5 to 37.1 days, associated with warmer springs and earlier snowmelt |
+| **Display text** | Patterns Westerling prose |
+| **Page location** | Patterns tab literature block |
+| **Status** | Supported (literature attribution) |
+| **Confidence** | High |
+| **Sources** | Westerling et al. 2006, *Science* [doi:10.1126/science.1128834](https://doi.org/10.1126/science.1128834) |
+| **Limitations** | Large western forest fires only; not NIFC all-land or GACC totals on this page |
+| **Related** | C-Lit03, C-Lit01 |
+
+### C-Lit03 — Westerling snowmelt tercile shares (literature chart)
+
+| Field | Value |
+|---|---|
+| **Normalized statement** | In Westerling et al. 2006 snowmelt analysis, early-snowmelt years accounted for 56% of large western forest fires and 72% of area burned; late-snowmelt years accounted for 11% of fires and 4% of area burned; middle tercile shares on the page are remainders (33% / 24%) |
+| **Display text** | `#chart-westerling-snowmelt` grouped bars |
+| **Page location** | Patterns tab |
+| **Status** | Supported (literature attribution; middle derived) |
+| **Confidence** | High for early/late; Medium for middle remainder |
+| **Sources** | `data/westerling-snowmelt-tercile.csv`; `data/westerling-2006-notes.md`; Westerling et al. 2006 |
+| **Limitations** | Not a modern SNOTEL time series; middle shares derived; forest-fire population |
+| **Related** | C-Lit02 |
+
+---
+
 ## Phase 2 backlog (excluded until data)
 
 ### C-P2-01 — Monthly burn acres (deferred)
@@ -1042,8 +1096,8 @@ Quick lookup: where each claim appears on `index.html`.
 | Intro block | C-X01, C-X04 |
 | Intro story spine | C-X01 |
 | Outcomes tab | C-F01, C-F02, C-F03, C-F04, C-F08, C-F09, C-F10, C-M01, C-M07 |
-| Drivers tab | C-A01, C-D01, C-D02, C-D03, C-M04, C-M05, C-M06, C-P04, C-P05, C-P07, C-P08, C-V01, C-V02, C-V03 |
-| Drivers tab | C-P01, C-P02, C-P03, C-P04, C-P05, C-P06, C-P07, C-P08, C-V01, C-V02, C-V03, C-R09 |
+| Drivers tab | C-A01, C-D01, C-D02, C-D03, C-M04, C-M05, C-M06, C-P04, C-P05, C-P07, C-P08, C-P09, C-V01, C-V02, C-V03 |
+| Drivers tab | C-P01, C-P02, C-P03, C-P04, C-P05, C-P06, C-P07, C-P08, C-P09, C-V01, C-V02, C-V03, C-R09 |
 | Coupling tab (main) | C-X05, C-C01, C-C02, C-C03, C-C04, C-Lit01, C-W01, C-W02, C-W03, C-M02, C-M03, C-M06, C-M07, C-V02, C-V03, C-R06, C-R07 |
 | Coupling supplementary | C-R08, C-R10, C-R11 |
 | How to read tab | C-X06, C-F04, C-F09, C-F11, C-P01, C-P02, C-F08, C-RS01, C-RS02, C-X01, C-X02, C-M03, C-M04, C-M05, C-M07, C-IMP01, C-IMP02, C-IMP03, C-IMP04 |

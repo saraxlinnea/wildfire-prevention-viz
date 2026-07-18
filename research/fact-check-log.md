@@ -1,5 +1,39 @@
 # Fact-check log
 
+**Run date:** 2026-07-18 (Drivers reorder + treatment partials)  
+**Prior run:** 2026-07-18 (Patterns badge / partial / Westerling)  
+**Claims checked (this pass):** C-P08, C-P09, C-R09  
+**Summary:** 3 PASS · 0 FAIL
+
+---
+
+## Drivers reorder + treatment partials (2026-07-18)
+
+| Claim ID | Result | Method | Notes |
+|---|---|---|---|
+| C-P08 | PASS (copy) | page structure | Dual-axis on main path after treatment total; national acres = Outcomes fire-season measure |
+| C-P09 | PASS (derived) | `correlation-treatment-partial.csv` | raw −0.135; full controls −0.101; R² 0.167 vs 0.135 without treatment; n=19 |
+| C-R09 | PASS (copy) | page | WUI “Why this is important” ties large seasons to community-adjacent designation |
+
+---
+
+**Run date:** 2026-07-18 (Patterns badge / partial / Westerling)  
+**Prior run:** 2026-07-17 (smoke impacts)  
+**Claims checked (this pass):** C-C05, C-Lit02, C-Lit03  
+**Summary:** 3 PASS · 0 FAIL
+
+---
+
+## Patterns badge, partial corr, Westerling (2026-07-18)
+
+| Claim ID | Result | Method | Notes |
+|---|---|---|---|
+| C-C05 | PASS (derived) | `correlation-partial.csv` | raw 0.821/0.808; partial 0.299/0.176; ERC–VPD 0.944; joint R² 0.684; n=16 |
+| C-Lit02 | PASS (literature) | Westerling 2006 abstract/paper | 78 days (64%); 7.5→37.1 discovery–control; forest fires |
+| C-Lit03 | PASS (literature) | `westerling-snowmelt-tercile.csv` | Early 56%/72%; Late 11%/4%; Middle remainder 33%/24% |
+
+---
+
 **Run date:** 2026-07-17 (smoke impacts)  
 **Prior run:** 2026-07-17 (2008-2009 GACC hand fill)  
 **Claims checked (this pass):** C-IMP01, C-IMP02, C-IMP03, C-IMP04  

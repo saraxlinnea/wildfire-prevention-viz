@@ -1225,5 +1225,69 @@ WF.buildSmokePm25Spec = function (data) {
   };
 };
 
+WF.buildWesterlingSnowmeltSpec = function (data) {
+  const values = data.westerlingSnowmeltSeries || [];
+  return {
+    $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+    width: 'container',
+    height: WF.secondaryChartHeight(),
+    config: WF.chartConfig,
+    data: { values },
+    mark: { type: 'bar' },
+    encoding: {
+      x: {
+        field: 'snowmelt_timing',
+        type: 'nominal',
+        sort: ['Early tercile', 'Middle tercile', 'Late tercile'],
+        axis: {
+          title: 'Snowmelt timing (Westerling et al. 2006)',
+          titleFont: 'DM Sans',
+          titleFontSize: 10,
+          titleColor: '#9b9590',
+          labelFont: 'DM Sans',
+          labelFontSize: 10,
+          labelColor: '#6b6560'
+        }
+      },
+      xOffset: { field: 'metric', type: 'nominal' },
+      y: {
+        field: 'share_pct',
+        type: 'quantitative',
+        axis: {
+          title: 'Share (%)',
+          titleFont: 'DM Sans',
+          titleFontSize: 10,
+          titleColor: '#9b9590',
+          titleAngle: -90,
+          titleX: -48,
+          labelColor: '#9b9590',
+          labelFont: 'DM Mono, monospace',
+          labelFontSize: 9
+        }
+      },
+      color: {
+        field: 'metric',
+        type: 'nominal',
+        scale: {
+          domain: ['Share of fires', 'Share of area burned'],
+          range: ['#4a7c9e', '#c94a1a']
+        },
+        legend: {
+          title: null,
+          orient: 'bottom',
+          direction: 'horizontal',
+          labelFontSize: 10
+        }
+      },
+      tooltip: [
+        { field: 'snowmelt_timing', title: 'Snowmelt' },
+        { field: 'metric', title: 'Metric' },
+        { field: 'share_pct', title: 'Share (%)', format: '.0f' },
+        { field: 'notes', title: 'Notes' }
+      ]
+    }
+  };
+};
+
   window.WF = WF;
 })();

@@ -70,6 +70,8 @@ python scripts/verify_local.py                  # boot CSV row counts + optional
 python scripts/extend_vpd.py                    # extend VPD via gridMET
 python scripts/extend_erc.py                    # extend ERC via gridMET
 python scripts/compute_correlations.py          # correlation CSVs
+python scripts/compute_partial_correlations.py   # partial corr (Patterns research)
+python scripts/compute_treatment_partial_correlations.py  # treatment vs acres controls
 python scripts/compute_sensitivity_correlations.py
 python scripts/extract_ignition_cause.py        # lightning vs human NICC extract
 python scripts/build_western_acres.py           # GACC western + regional acres

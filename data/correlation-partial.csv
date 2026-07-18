@@ -1,0 +1,9 @@
+test,control,pearson_r,n,window
+Western acres vs ERC (raw),none,0.821,16,2010-2025
+Western acres vs VPD (raw),none,0.808,16,2010-2025
+Western acres vs ERC | VPD,western fire-season VPD,0.299,16,2010-2025
+Western acres vs VPD | ERC,western fire-season ERC,0.176,16,2010-2025
+Western acres vs ERC | year,linear calendar year,0.823,16,2010-2025
+Western acres vs VPD | year,linear calendar year,0.809,16,2010-2025
+ERC vs VPD (collinearity),none,0.944,16,2010-2025
+Acres ~ ERC + VPD (multiple R²),joint standardized OLS,0.684,16,2010-2025

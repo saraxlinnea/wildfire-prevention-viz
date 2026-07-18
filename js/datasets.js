@@ -45,6 +45,20 @@ WF.parseSimpleCSV = function (text) {
     .filter(row => /^\d{4}$/.test(row.year));
 };
 
+/** Generic table CSV (no year column required). */
+WF.parseTableCSV = function (text) {
+  const lines = text.trim().split('\n');
+  const headers = WF.parseCSVLine(lines[0]);
+  return lines.slice(1)
+    .map(line => {
+      const values = WF.parseCSVLine(line);
+      const row = {};
+      headers.forEach((h, i) => { row[h] = (values[i] || '').trim(); });
+      return row;
+    })
+    .filter(row => Object.values(row).some(v => v !== ''));
+};
+
 /** HFR prevention CSV uses fiscal_year, not year. */
 WF.parseHfrCSV = function (text) {
   const lines = text.trim().split('\n');
@@ -194,7 +208,7 @@ WF.pearson = function (xs, ys) {
   return denom === 0 ? null : num / denom;
 };
 
-WF.buildDatasets = function (rows, vpdRows, ercRows, regionalAcresRows, hfrRows, vpdMonthlyRows, ignitionRows, sensitivityRows, smokeRows) {
+WF.buildDatasets = function (rows, vpdRows, ercRows, regionalAcresRows, hfrRows, vpdMonthlyRows, ignitionRows, sensitivityRows, smokeRows, partialCorrRows, westerlingRows, treatmentPartialCorrRows) {
   const years = rows.map(r => r.year);
   const burnData = rows
     .filter(r => r.acres_burned_millions && r.acres_burned_partial !== 'true')
@@ -594,6 +608,43 @@ WF.buildDatasets = function (rows, vpdRows, ercRows, regionalAcresRows, hfrRows,
     window: r.window
   }));
 
+  const partialCorrSeries = (partialCorrRows || [])
+    .filter(r => r.test && r.pearson_r)
+    .map(r => ({
+      test: r.test,
+      control: r.control || 'none',
+      pearson_r: parseFloat(r.pearson_r),
+      n: parseInt(r.n, 10),
+      window: r.window || '2010-2025'
+    }));
+
+  const treatmentPartialCorrSeries = (treatmentPartialCorrRows || [])
+    .filter(r => r.test && r.pearson_r !== undefined && r.pearson_r !== '')
+    .map(r => ({
+      test: r.test,
+      control: r.control || 'none',
+      pearson_r: parseFloat(r.pearson_r),
+      n: parseInt(r.n, 10),
+      window: r.window || '2003-2021'
+    }));
+
+  const westerlingSnowmeltSeries = (westerlingRows || [])
+    .filter(r => r.snowmelt_timing && r.share_of_fires_pct && r.share_of_area_burned_pct)
+    .flatMap(r => ([
+      {
+        snowmelt_timing: r.snowmelt_timing,
+        metric: 'Share of fires',
+        share_pct: parseFloat(r.share_of_fires_pct),
+        notes: r.notes || ''
+      },
+      {
+        snowmelt_timing: r.snowmelt_timing,
+        metric: 'Share of area burned',
+        share_pct: parseFloat(r.share_of_area_burned_pct),
+        notes: r.notes || ''
+      }
+    ]));
+
   const fireStoryMarks = WF.STORY_YEAR_MARKS.fire
     .map(m => {
       const pt = burnWithRolling.find(d => d.year === m.year);
@@ -663,7 +714,8 @@ WF.buildDatasets = function (rows, vpdRows, ercRows, regionalAcresRows, hfrRows,
     lagRows, policyScatter,
     westernAcresSeries, regionalShareSeries, proxyRankBars, treatmentAcresOverlap,
     wuiShareSeries, treatmentPerAcreSeries, mayVpdScatterRows, ignitionCauseSeries,
-    sensitivitySeries, smokePm25Series, pearsonSmokeAcres,
+    sensitivitySeries, partialCorrSeries, treatmentPartialCorrSeries, westerlingSnowmeltSeries,
+    smokePm25Series, pearsonSmokeAcres,
     fireStoryMarks, scatterStoryMarks, regionalStoryMarks,
     pearsonMayVpdWestern,
     years,

@@ -1,0 +1,10 @@
+test,control,pearson_r,n,window
+Treatment vs national acres (raw),none,-0.135,19,2003-2021
+Treatment vs national acres | ERC,western fire-season ERC,-0.15,19,2003-2021
+Treatment vs national acres | ERC + year,western ERC + linear year,-0.157,19,2003-2021
+Treatment vs national acres | ERC + year + WUI share,western ERC + year + WUI designation share,-0.147,19,2003-2021
+Treatment vs national acres | ERC + year + WUI + west share,western ERC + year + WUI share + western GACC share,-0.191,19,2003-2021
+Treatment vs national acres | ERC + VPD + year + WUI + west share,western ERC + VPD + year + WUI share + western GACC share,-0.101,19,2003-2021
+National acres ~ ERC alone (R²),OLS R²,0.125,19,2003-2021
+National acres ~ treatment + ERC + year + WUI + west share (R²),joint OLS R²,0.167,19,2003-2021
+"National acres ~ ERC + year + WUI + west share, no treatment (R²)",joint OLS R² without treatment,0.135,19,2003-2021

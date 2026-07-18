@@ -127,8 +127,43 @@
       cache.vpdMonthlyRows,
       cache.ignitionRows,
       cache.sensitivityRows,
-      cache.smokeRows
+      cache.smokeRows,
+      cache.partialCorrRows,
+      cache.westerlingRows,
+      cache.treatmentPartialCorrRows
     );
+  }
+
+  function fillPartialCorrTable(rows) {
+    const tbody = document.getElementById('partial-corr-table-body');
+    if (!tbody || !rows || !rows.length) return;
+    tbody.innerHTML = rows.map(r => {
+      const highlight = r.test.indexOf('raw') >= 0 || r.test.indexOf('collinearity') >= 0
+        ? ' class="corr-highlight"'
+        : '';
+      return (
+        `<tr${highlight}><td>${escapeHtml(r.test)}</td>` +
+        `<td>${escapeHtml(r.control)}</td>` +
+        `<td class="num">${Number(r.pearson_r).toFixed(3)}</td>` +
+        `<td class="num">${escapeHtml(String(r.n))}</td></tr>`
+      );
+    }).join('');
+  }
+
+  function fillTreatmentPartialTable(rows) {
+    const tbody = document.getElementById('treatment-partial-table-body');
+    if (!tbody || !rows || !rows.length) return;
+    tbody.innerHTML = rows.map(r => {
+      const highlight = r.test.indexOf('(raw)') >= 0 || r.test.indexOf('no treatment') >= 0
+        ? ' class="corr-highlight"'
+        : '';
+      return (
+        `<tr${highlight}><td>${escapeHtml(r.test)}</td>` +
+        `<td>${escapeHtml(r.control)}</td>` +
+        `<td class="num">${Number(r.pearson_r).toFixed(3)}</td>` +
+        `<td class="num">${escapeHtml(String(r.n))}</td></tr>`
+      );
+    }).join('');
   }
 
   function fillSensitivityTable(rows) {
@@ -180,15 +215,11 @@
     updatePolicyYearCopy();
     const tasks = [
       embedChart('#chart-policy', WF.buildPolicySpec(d, policyMode, policyYearBasis), 'policy'),
+      embedChart('#chart-treatment-acres', WF.buildTreatmentAcresDualSpec(d, policyYearBasis), 'treatmentAcres'),
       embedChart('#chart-wui-share', WF.buildWuiShareSpec(d), 'wuiShare'),
       embedChart('#chart-atmosphere', WF.buildAtmosphericSpec(d, atmosDrynessMode), 'atmosphere')
     ];
-    const overlapDetails = document.querySelector('details.drivers-overlap-details');
-    if (overlapDetails && overlapDetails.open) {
-      tasks.push(
-        embedChart('#chart-treatment-acres', WF.buildTreatmentAcresDualSpec(d, policyYearBasis), 'treatmentAcres')
-      );
-    }
+    fillTreatmentPartialTable(d.treatmentPartialCorrSeries);
     const treatmentResearch = document.querySelector('details.drivers-research-details');
     if (treatmentResearch && treatmentResearch.open) {
       tasks.push(
@@ -288,6 +319,14 @@
         ? `Source: gridMET western ERC (Abatzoglou 2013) · NICC ${west ? 'western GACC' : 'national'} acres · calendar year · r ≈ ${r} · not causal`
         : `Source: gridMET western VPD (Abatzoglou 2013) · NICC ${west ? 'western GACC' : 'national'} acres · calendar year · r ≈ ${r} · not causal`;
     }
+    const rValue = document.getElementById('scatter-r-value');
+    const rMeta = document.getElementById('scatter-r-meta');
+    if (rValue) rValue.textContent = `r = ${r}`;
+    if (rMeta) {
+      rMeta.textContent = west
+        ? `n = 16 · 2010–2025 · ${driverLabel} × western acres · exploratory · not causal`
+        : `n = 16 · 2010–2025 · ${driverLabel} × national acres · exploratory · not causal`;
+    }
   }
 
   function renderCoupling(d) {
@@ -295,7 +334,8 @@
     const tasks = [
       embedChart('#chart-scatter', WF.buildScatterSpec(d, scatterMode, scatterDriverMode), 'scatter'),
       embedChart('#chart-western-acres', WF.buildWesternAcresSpec(d), 'westernAcres'),
-      embedChart('#chart-regional-share', WF.buildRegionalShareSpec(d), 'regionalShare')
+      embedChart('#chart-regional-share', WF.buildRegionalShareSpec(d), 'regionalShare'),
+      embedChart('#chart-westerling-snowmelt', WF.buildWesterlingSnowmeltSpec(d), 'westerlingSnowmelt')
     ];
     const supplementary = document.querySelector('details.coupling-supplementary-details');
     if (supplementary && supplementary.open) {
@@ -306,6 +346,7 @@
         embedChart('#chart-may-vpd', WF.buildMayVpdScatterSpec(d), 'mayVpd')
       );
       fillSensitivityTable(d.sensitivitySeries);
+      fillPartialCorrTable(d.partialCorrSeries);
       if (d.ignitionCauseSeries && d.ignitionCauseSeries.length) {
         tasks.push(
           embedChart('#chart-ignition-cause', WF.buildIgnitionCauseSpec(d), 'ignitionCause')
@@ -363,6 +404,7 @@
       finalizeChart('scatter');
       finalizeChart('westernAcres');
       finalizeChart('regionalShare');
+      finalizeChart('westerlingSnowmelt');
       finalizeChart('ignitionCause');
       finalizeChart('proxyRank');
       finalizeChart('lag');
@@ -398,18 +440,23 @@
     }
   }
 
-  function renderCharts(wildfireRows, vpdRows, ercRows, regionalAcresRows, hfrRows, vpdMonthlyRows, ignitionRows, sensitivityRows, smokeRows) {
+  function renderCharts(wildfireRows, vpdRows, ercRows, regionalAcresRows, hfrRows, vpdMonthlyRows, ignitionRows, sensitivityRows, smokeRows, partialCorrRows, westerlingRows, treatmentPartialCorrRows) {
     cache = {
       wildfireRows, vpdRows, ercRows, regionalAcresRows, hfrRows,
-      vpdMonthlyRows, ignitionRows, sensitivityRows, smokeRows
+      vpdMonthlyRows, ignitionRows, sensitivityRows, smokeRows,
+      partialCorrRows, westerlingRows, treatmentPartialCorrRows
     };
     renderedTabs.clear();
     lastLayout = null;
     try {
-      fillSensitivityTable(WF.buildDatasets(
+      const built = WF.buildDatasets(
         wildfireRows, vpdRows, ercRows, regionalAcresRows, hfrRows,
-        vpdMonthlyRows, ignitionRows, sensitivityRows, smokeRows
-      ).sensitivitySeries);
+        vpdMonthlyRows, ignitionRows, sensitivityRows, smokeRows,
+        partialCorrRows, westerlingRows, treatmentPartialCorrRows
+      );
+      fillSensitivityTable(built.sensitivitySeries);
+      fillPartialCorrTable(built.partialCorrSeries);
+      fillTreatmentPartialTable(built.treatmentPartialCorrSeries);
     } catch (e) { /* table optional until coupling opens */ }
     renderTabCharts(activeTab, true);
   }
@@ -434,9 +481,12 @@
       fetchText('data/vpd-monthly-annual.csv'),
       fetchText('data/ignition-cause-annual.csv'),
       fetchText('data/correlation-sensitivity.csv'),
-      fetchText('data/smoke-pm25-annual.csv')
+      fetchText('data/smoke-pm25-annual.csv'),
+      fetchText('data/correlation-partial.csv'),
+      fetchText('data/westerling-snowmelt-tercile.csv'),
+      fetchText('data/correlation-treatment-partial.csv')
     ])
-      .then(([wildfireText, vpdText, ercText, regionalAcresText, hfrText, vpdMonthlyText, ignitionText, sensitivityText, smokeText]) => {
+      .then(([wildfireText, vpdText, ercText, regionalAcresText, hfrText, vpdMonthlyText, ignitionText, sensitivityText, smokeText, partialText, westerlingText, treatmentPartialText]) => {
         let wildfireRows;
         let vpdRows;
         let ercRows;
@@ -446,6 +496,9 @@
         let ignitionRows;
         let sensitivityRows;
         let smokeRows;
+        let partialCorrRows;
+        let westerlingRows;
+        let treatmentPartialCorrRows;
         try {
           wildfireRows = WF.parseWildfireCSV(wildfireText);
           vpdRows = WF.parseSimpleCSV(vpdText);
@@ -454,8 +507,11 @@
           hfrRows = WF.parseHfrCSV(hfrText);
           vpdMonthlyRows = WF.parseSimpleCSV(vpdMonthlyText);
           ignitionRows = WF.parseSimpleCSV(ignitionText);
-          sensitivityRows = WF.parseSimpleCSV(sensitivityText);
+          sensitivityRows = WF.parseTableCSV(sensitivityText);
           smokeRows = WF.parseSimpleCSV(smokeText);
+          partialCorrRows = WF.parseTableCSV(partialText);
+          westerlingRows = WF.parseTableCSV(westerlingText);
+          treatmentPartialCorrRows = WF.parseTableCSV(treatmentPartialText);
         } catch (e) {
           e.stage = 'parse CSV';
           throw e;
@@ -481,6 +537,15 @@
         if (!smokeRows.length) {
           throw Object.assign(new Error('smoke-pm25-annual.csv parsed to zero year rows'), { stage: 'parse CSV' });
         }
+        if (!partialCorrRows.length) {
+          throw Object.assign(new Error('correlation-partial.csv parsed to zero rows'), { stage: 'parse CSV' });
+        }
+        if (!westerlingRows.length) {
+          throw Object.assign(new Error('westerling-snowmelt-tercile.csv parsed to zero rows'), { stage: 'parse CSV' });
+        }
+        if (!treatmentPartialCorrRows.length) {
+          throw Object.assign(new Error('correlation-treatment-partial.csv parsed to zero rows'), { stage: 'parse CSV' });
+        }
         console.info(
           '[wildfire-viz] loaded',
           wildfireRows.length, 'wildfire rows,',
@@ -491,9 +556,16 @@
           vpdMonthlyRows.length, 'monthly VPD rows,',
           ignitionRows.length, 'ignition cause rows,',
           sensitivityRows.length, 'sensitivity rows,',
-          smokeRows.length, 'smoke PM2.5 rows'
+          smokeRows.length, 'smoke PM2.5 rows,',
+          partialCorrRows.length, 'partial corr rows,',
+          westerlingRows.length, 'Westerling snowmelt rows,',
+          treatmentPartialCorrRows.length, 'treatment partial corr rows'
         );
-        renderCharts(wildfireRows, vpdRows, ercRows, regionalAcresRows, hfrRows, vpdMonthlyRows, ignitionRows, sensitivityRows, smokeRows);
+        renderCharts(
+          wildfireRows, vpdRows, ercRows, regionalAcresRows, hfrRows,
+          vpdMonthlyRows, ignitionRows, sensitivityRows, smokeRows,
+          partialCorrRows, westerlingRows, treatmentPartialCorrRows
+        );
       })
       .catch(showChartError);
   }
@@ -587,15 +659,6 @@
   });
 
   document.querySelectorAll('details.drivers-research-details').forEach(el => {
-    el.addEventListener('toggle', () => {
-      if (el.open && cache) {
-        renderedTabs.delete('drivers');
-        renderTabCharts('drivers', true);
-      }
-    });
-  });
-
-  document.querySelectorAll('details.drivers-overlap-details').forEach(el => {
     el.addEventListener('toggle', () => {
       if (el.open && cache) {
         renderedTabs.delete('drivers');

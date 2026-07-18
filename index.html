@@ -366,6 +366,36 @@
       font-weight: 500;
     }
 
+    .scatter-r-badge {
+      display: inline-flex;
+      flex-wrap: wrap;
+      gap: 6px 12px;
+      align-items: baseline;
+      margin: 10px 0 8px;
+      padding: 8px 12px;
+      background: #fdf8f2;
+      border: 1px solid var(--rule);
+      border-left: 3px solid var(--dsci);
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      color: var(--ink);
+      line-height: 1.4;
+    }
+
+    .scatter-r-badge .r-value {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--dsci);
+      letter-spacing: 0.02em;
+    }
+
+    .scatter-r-badge .r-meta {
+      font-size: 10px;
+      color: #9b9590;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
     .chart-container--fire { border-left: 3px solid var(--fire); }
     .chart-container--atmosphere {
       border-left: 3px solid var(--vpd);
@@ -966,7 +996,7 @@
       <figcaption class="chart-caption-block">
         <p class="chart-caption">Big national years like 2006, 2015, 2017, 2020, and 2021 often line up with hot, dry western summers, but Alaska, the Southeast, and other regions can move the total too. Mid-July 2026 is already above the usual same-date pace, but it is not comparable to full years yet.</p>
         <p class="chart-note"><span class="note-label">Two different “10-year” ideas</span>Header callouts use NIFC’s same-date YTD average. The chart band uses prior full calendar years. They answer different questions.</p>
-        <p class="chart-note"><span class="note-label">Why this matters next</span>National totals hide regional stories. The next chart separates West from nation.</p>
+        <p class="chart-note"><span class="note-label">Why this matters next</span>National totals hide regional stories. The next chart separates West from nation. Drivers later asks whether federal treatment moved with this burn total, and how much of that work was tagged near communities.</p>
         <span class="chart-source">Source: NIFC annual statistics · calendar year · national total</span>
       </figcaption>
       </figure>
@@ -1096,44 +1126,16 @@
       <div id="chart-policy" class="chart-slot" role="img" aria-label="Federal hazardous fuels treatment acres 2003 to 2025"></div>
       <figcaption class="chart-caption-block">
         <p class="chart-caption">Federal treatment often ran about 3-6 million acres per year in the HFR era, with peaks near 2009 and 2016. The 2025 Forest Service total (2.6M) is the lowest in the recent page-verified window. Interior totals follow fiscal years, so they do not line up perfectly with calendar-year fire statistics.</p>
-        <p class="chart-note"><span class="note-label">Why this matters next</span>Where agencies categorize work (WUI vs remote) is a different question from the national total. That is the next chart.</p>
+        <p class="chart-note"><span class="note-label">Why this matters next</span>The next chart puts that treatment total next to national acres burned (the same measure as Outcomes’ “how large is this fire season”) so you can see whether the two lines rise and fall together.</p>
         <span class="chart-source">Source: HFR-DOI-FS NFPORS FY 2003-2021 · NPR/USFS FACTS 2023-2025 · DOI fuels program fiscal 2018-2024</span>
       </figcaption>
       </figure>
     </div>
 
-    <div class="chart-container chart-container--policy chart-container--wui">
-      <div class="signal-tier signal-tier-2">WUI designation (HFR)</div>
-      <p class="chart-question">How much of that designation was tagged near communities?</p>
-      <p class="plain-read">HFR reports how much of each year’s <em>designation</em> acres were tagged WUI vs non-WUI: where agencies categorized work, not homes protected. WUI share rose from about 55% in the early 2000s to roughly 64% by FY 2020-2021.</p>
-      <figure class="chart-figure">
-      <div class="legend-row">
-        <div class="legend-item">
-          <div class="ls-line" style="background:#1a4a7a;"></div>
-          <span>WUI share of designation acres</span>
-        </div>
-        <div class="legend-item">
-          <div class="ls-line-dashed" style="border-color:#d4cfc8;"></div>
-          <span>Median FY 2003-2021 (dashed)</span>
-        </div>
-      </div>
-      <div id="chart-wui-share" class="chart-slot" role="img" aria-label="WUI share of HFR designation acres by fiscal year"></div>
-      <figcaption class="chart-caption-block">
-        <p class="chart-caption">Median WUI share of designation acres was about 59% across FY 2003-2021. Recent fiscal years cluster near 62-64%.</p>
-        <p class="chart-note"><span class="note-label">Why this matters next</span>Western dryness (below) is the other half of the context story. An exploratory dual-axis of treatment vs burn acres is collapsed under Research (not causal).</p>
-        <span class="chart-source">Source: HFR-DOI-FS NFPORS FY 2003-2021 · <a href="data/hfr-wui-notes.md">hfr-wui-notes.md</a></span>
-      </figcaption>
-      </figure>
-    </div>
-    </div>
-
-    <details class="methodology-details drivers-overlap-details">
-      <summary>Research: treatment and burn acres on one timeline (not causal)</summary>
-      <div class="methodology-body">
     <div class="chart-container chart-container--policy chart-container--overlap" id="chart-treatment-acres-section">
       <div class="signal-tier signal-tier-2">Same years, two measures</div>
       <p class="chart-question">Do treatment and burn acres move together?</p>
-      <p class="plain-read">Green = federal treatment (left axis). Orange = national acres burned (right axis). Treatment is planned workload; burn acres are weather, fuels, ignitions, and suppression. High on both often means a severe fire year that also demanded emergency spending, not proof prevention failed. Same-year labels only; lag pairings in this repo are weaker and stay off the main path.</p>
+      <p class="plain-read">Green = federal treatment (left axis). Orange = national acres burned (right axis)—the same national burn total as Outcomes. Treatment is planned workload; burn acres are weather, fuels, ignitions, and suppression. High on both often means a severe fire year that also demanded emergency spending, not proof prevention failed. Same-year labels only; lag pairings in this repo are weaker and stay off the main path.</p>
       <figure class="chart-figure">
       <div class="chart-toggle" role="group" aria-label="Treatment year basis (dual axis)">
         <button type="button" class="toggle-btn active" data-policy-year="fiscal">Federal fiscal year</button>
@@ -1153,13 +1155,51 @@
       <div id="chart-treatment-acres" class="chart-slot" role="img" aria-label="Dual axis chart of federal treatment and national acres burned 2003 to 2025"></div>
       <figcaption class="chart-caption-block">
         <p class="chart-caption">Years like 2006, 2015, and 2020 show large national burn totals while treatment was not necessarily at its low point. This chart only shows both series on the same clock.</p>
-        <p class="chart-note"><span class="note-label">Why this matters next</span>It does not prove the 2025 Forest Service cut caused 2026 fires.</p>
+        <p class="chart-note"><span class="note-label">Why this matters next</span>Even after controlling for dryness, year trend, WUI share, and western share (table below), treatment and burn acres still barely co-move. That is not proof the 2025 Forest Service cut caused 2026 fires.</p>
         <span class="chart-source">Source: HFR + page treatment series · NIFC national acres · calendar year · not causal</span>
       </figcaption>
       </figure>
+      <div class="panel-label" style="margin-top:14px;">With controls: does treatment still track burn acres?</div>
+      <p class="panel-note">Exploratory partial correlations for HFR combined treatment vs national acres burned (FY label = calendar year, n = 19, 2003-2021). Controls use the annual series already on this page. Still not causal; still no El Niño, ignitions, suppression effort, or housing growth. See <a href="data/correlation-treatment-partial-notes.md">correlation-treatment-partial-notes.md</a>.</p>
+      <table class="corr-table" aria-label="Partial correlations for treatment versus national acres burned">
+        <thead>
+          <tr>
+            <th scope="col">Test</th>
+            <th scope="col">Control</th>
+            <th scope="col">r / R²</th>
+            <th scope="col">n</th>
+          </tr>
+        </thead>
+        <tbody id="treatment-partial-table-body">
+          <tr><td>Treatment vs national acres (raw)</td><td>none</td><td class="num">−0.135</td><td class="num">19</td></tr>
+        </tbody>
+      </table>
     </div>
+
+    <div class="chart-container chart-container--policy chart-container--wui">
+      <div class="signal-tier signal-tier-2">WUI designation (HFR)</div>
+      <p class="chart-question">How much of that designation was tagged near communities?</p>
+      <p class="plain-read"><span class="note-label">Why this is important</span> When a fire season is large (Outcomes), risk to people concentrates where homes meet wildland fuels. HFR reports how much of each year’s <em>designation</em> acres were tagged WUI vs non-WUI: where agencies categorized work, not homes protected. WUI share rose from about 55% in the early 2000s to roughly 64% by FY 2020-2021.</p>
+      <figure class="chart-figure">
+      <div class="legend-row">
+        <div class="legend-item">
+          <div class="ls-line" style="background:#1a4a7a;"></div>
+          <span>WUI share of designation acres</span>
+        </div>
+        <div class="legend-item">
+          <div class="ls-line-dashed" style="border-color:#d4cfc8;"></div>
+          <span>Median FY 2003-2021 (dashed)</span>
+        </div>
       </div>
-    </details>
+      <div id="chart-wui-share" class="chart-slot" role="img" aria-label="WUI share of HFR designation acres by fiscal year"></div>
+      <figcaption class="chart-caption-block">
+        <p class="chart-caption">Median WUI share of designation acres was about 59% across FY 2003-2021. Recent fiscal years cluster near 62-64%.</p>
+        <p class="chart-note"><span class="note-label">Why this matters next</span>Western dryness (below) is the other half of the context story for how large a western season can get.</p>
+        <span class="chart-source">Source: HFR-DOI-FS NFPORS FY 2003-2021 · <a href="data/hfr-wui-notes.md">hfr-wui-notes.md</a></span>
+      </figcaption>
+      </figure>
+    </div>
+    </div>
 
     <details class="methodology-details drivers-research-details">
       <summary>Research: treatment per acre burned (exploratory ratio)</summary>
@@ -1283,8 +1323,8 @@
       <ul>
         <li><strong>n = 16</strong> full calendar years (2010-2025); partial 2026 excluded.</li>
         <li><strong>Geography:</strong> western ERC/VPD paired with western GACC acres is the fair match; national acres dilutes the signal.</li>
-        <li><strong>ERC and VPD are collinear</strong> here (r ≈ 0.94); do not treat them as independent predictors.</li>
-        <li><strong>No controls</strong> for El Niño, ignitions, suppression, or housing growth. Exploratory co-movement only.</li>
+        <li><strong>ERC and VPD are collinear</strong> here (r ≈ 0.94); do not treat them as independent predictors. Partial correlations in the research drawer show each adds little after the other.</li>
+        <li><strong>Limited controls</strong> only: the other dryness index, or a linear year trend. Still no El Niño, ignitions, suppression, or housing growth. Exploratory co-movement only.</li>
       </ul>
     </div>
 
@@ -1297,6 +1337,10 @@
       <div class="chart-toggle" role="group" aria-label="Acres geography for scatter" style="margin-top:8px;">
         <button type="button" class="toggle-btn active" data-scatter-mode="western">Western acres</button>
         <button type="button" class="toggle-btn" data-scatter-mode="national">National acres</button>
+      </div>
+      <div class="scatter-r-badge" id="scatter-r-badge" aria-live="polite">
+        <span class="r-value" id="scatter-r-value">r = 0.82</span>
+        <span class="r-meta" id="scatter-r-meta">n = 16 · 2010–2025 · exploratory · not causal</span>
       </div>
       <p class="plain-read" id="scatter-panel-note">Each dot is one year, 2010-2025. Horizontal: western fire-season dryness (ERC or VPD). Vertical: acres burned. Upper-right = dry, dangerous season with more acres. Strong for western acres × western dryness; weaker if you mix western weather with a national total.</p>
       <figure class="chart-figure">
@@ -1345,9 +1389,45 @@
       </figure>
     </div>
 
+    <div class="chart-container chart-container--coupling chart-panel-secondary">
+      <div class="signal-tier signal-tier-3">Literature · western forest wildfire</div>
+      <p class="chart-question">Did earlier snowmelt years burn more forest?</p>
+      <p class="plain-read">Westerling et al. (<em>Science</em>, 2006) linked a mid-1980s jump in large western U.S. <em>forest</em> wildfires to warmer springs and earlier snowmelt. Average fire-season length rose by about <strong>78 days (64%)</strong> comparing 1970-1986 with 1987-2003, and average discovery-to-control time rose from 7.5 to 37.1 days. This is forest-fire history, not the all-land NIFC/GACC acres charts above.</p>
+      <figure class="chart-figure">
+        <div id="chart-westerling-snowmelt" class="chart-slot" role="img" aria-label="Share of large western forest fires and area burned by snowmelt timing tercile"></div>
+        <figcaption class="chart-caption-block">
+          <p class="chart-caption">Early-snowmelt years accounted for most large western forest fires (56%) and most area burned (72%). Late-snowmelt years accounted for only 11% of fires and 4% of area burned.</p>
+          <p class="chart-note"><span class="note-label">Method</span>Literature-attributed bars from Westerling et al. 2006. Middle tercile shares are the remainder after reported early and late shares. Not a modern SNOTEL time series. See <a href="data/westerling-2006-notes.md">westerling-2006-notes.md</a>.</p>
+          <span class="chart-source">Source: Westerling et al. 2006 · <a href="https://doi.org/10.1126/science.1128834">doi:10.1126/science.1128834</a> · large western forest wildfires</span>
+        </figcaption>
+      </figure>
+    </div>
+
     <details class="methodology-details coupling-supplementary-details">
       <summary>Supplementary: sensitivity windows, May VPD, ignition cause, ranked r, lag proxy</summary>
       <div class="methodology-body">
+    <div class="chart-container chart-container--coupling chart-panel-secondary">
+      <div class="panel-label">What changes with controls? (partial correlations)</div>
+      <p class="panel-note">Western acres vs ERC/VPD after removing the other dryness index or a linear year trend (n = 16, 2010-2025). Partial r drops sharply when ERC and VPD control for each other because they are nearly the same signal (collinear r ≈ 0.94). Controlling for year barely changes the raw r. Exploratory only; still not causal. See <a href="data/correlation-partial-notes.md">correlation-partial-notes.md</a>.</p>
+      <table class="corr-table" aria-label="Partial correlations for western acres versus ERC and VPD">
+        <thead>
+          <tr>
+            <th scope="col">Test</th>
+            <th scope="col">Control</th>
+            <th scope="col">r / R²</th>
+            <th scope="col">n</th>
+          </tr>
+        </thead>
+        <tbody id="partial-corr-table-body">
+          <tr><td>Western acres vs ERC (raw)</td><td>none</td><td class="num">0.821</td><td class="num">16</td></tr>
+        </tbody>
+      </table>
+      <div class="chart-caption-block">
+        <p class="chart-caption">Raw acres–ERC ≈ 0.82; after controlling for VPD ≈ 0.30. Joint ERC+VPD multiple R² ≈ 0.68, barely above ERC alone.</p>
+        <span class="chart-source">Source: <a href="data/correlation-partial.csv">correlation-partial.csv</a> · <code>scripts/compute_partial_correlations.py</code></span>
+      </div>
+    </div>
+
     <div class="chart-container chart-container--coupling chart-panel-secondary">
       <div class="panel-label">Initial cause: lightning vs human (NICC, 2003-2012)</div>
       <p class="panel-note">Share of NICC-reported cause acres from annual GACC tables. Adds the “spark” leg of the fire triangle. n = 7 non-contiguous years; 2007-2009 not parsed from PDFs. Kept in supplementary because of the thin sample.</p>
@@ -1533,7 +1613,7 @@
       <div class="interp-heading">Start here (2-3 minutes)</div>
       <ol>
         <li><strong>Outcomes</strong>: Start with how large the national fire year is. The main chart is calendar-year acres burned since 1983, with a shaded band for the prior ten full years as a rough recent normal. The orange 2026 point is year-to-date only (through July 16), so it is not comparable to full years yet. Below that, nested bars show western acres as a fill inside the national total (median western share ≈ 60% of the GACC sum), then a regional share chart shows who carried each year (West, South, Alaska, East).</li>
-        <li><strong>Drivers &amp; context</strong>: Next, what federal agencies reported treating (hazardous-fuels acres, including how much was tagged as WUI) and how dry the western fire season was (toggle ERC or VPD; drought as a dashed line). Treatment is workload on a mostly fiscal calendar. Dryness is western May-September weather. Neither chart is a scorecard for whether prevention “worked.”</li>
+        <li><strong>Drivers &amp; context</strong>: Next, what federal agencies reported treating (hazardous-fuels acres), whether that total moved with national acres burned (same measure as Outcomes), how much designation was tagged near communities (WUI), and how dry the western fire season was (toggle ERC or VPD; drought as a dashed line). Treatment is workload on a mostly fiscal calendar. Dryness is western May-September weather. Neither chart is a scorecard for whether prevention “worked.”</li>
         <li><strong>Patterns</strong>: Then ask which dryness measures move with western acres in this dataset (2010-2025). The default scatter is western ERC × western acres, the strongest pairing here. Regional share shows who carried each year’s GACC total. Research drawers stay closed on first visit; open them only if you want sensitivity checks, May VPD, or thin ignition samples.</li>
         <li><strong>Why smoke matters</strong>: Acres are not the same as air quality. A short section below links wildfire smoke to PM2.5 and health literature, with one CONUS smoke chart (2006-2020 only).</li>
         <li><strong>Scientific limits</strong>: Before drawing conclusions, read geography (national acres ≠ western weather), fiscal vs calendar year, and correlation ≠ causation below. This page shows overlap in the record. It does not claim that treatment cuts caused the 2026 season.</li>
@@ -1686,8 +1766,8 @@
 
 </div>
 
-<script src="js/datasets.js?v=20260717smoke"></script>
-<script src="js/charts.js?v=20260717smoke"></script>
-<script src="js/app.js?v=20260717smoke"></script>
+<script src="js/datasets.js?v=20260718drv"></script>
+<script src="js/charts.js?v=20260718drv"></script>
+<script src="js/app.js?v=20260718drv"></script>
 </body>
 </html>

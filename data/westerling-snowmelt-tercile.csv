@@ -1,0 +1,4 @@
+snowmelt_timing,share_of_fires_pct,share_of_area_burned_pct,notes,source
+Early tercile,56,72,Reported in Westerling et al. 2006,"Westerling et al. Science 2006; DOI 10.1126/science.1128834"
+Middle tercile,33,24,Remainder after early+late shares (100−56−11 fires; 100−72−4 area),"Derived from Westerling et al. 2006 reported early/late shares"
+Late tercile,11,4,Reported in Westerling et al. 2006,"Westerling et al. Science 2006; DOI 10.1126/science.1128834"

@@ -23,24 +23,29 @@ Run after substantive HTML/JS/chart changes. Requires local server (`python3 -m 
 ## Drivers tab
 
 - [ ] 35% FS context strip visible
-- [ ] Chart questions on treatment / WUI / dual-axis / dryness
+- [ ] Chart questions on treatment / dual-axis / WUI / dryness
+- [ ] Order: treatment total → dual-axis (+ controls table) → WUI → dryness
+- [ ] Dual-axis on main path (not inside Research `<details>`)
+- [ ] Treatment partial-corr table fills (raw ≈ −0.14; full controls ≈ −0.10)
+- [ ] WUI prose has “Why this is important” linking large seasons to communities
 - [ ] DSCI plain sentence: YTD weekly average (terms + dryness note)
 - [ ] Treatment chart full width; fiscal/calendar + combined/breakdown toggles work
-- [ ] WUI chart full width below treatment (not side-by-side smush)
-- [ ] Dual-axis treatment vs acres is inside Research `<details>` (not main path); opens and embeds
+- [ ] WUI chart full width below dual-axis (not side-by-side smush)
 - [ ] ERC/VPD dryness toggle updates chart and legend text (keep as **lines**, not bars)
 - [ ] Open treatment-per-acre `<details>`; chart embeds
 
 ## Patterns tab (was Coupling)
 
 - [ ] Tab label reads **Patterns**
-- [ ] Scatter: ERC/VPD and western/national toggles; r note visible
-- [ ] Methods box includes plain-language r sentence
+- [ ] Scatter: ERC/VPD and western/national toggles; dynamic r badge updates (r / n / window)
+- [ ] Methods box includes plain-language r sentence + limited controls + ERC/VPD collinearity
 - [ ] Western acres + regional share charts render
 - [ ] Regional share: stacked **bars** (not blank); continuous 2003-2025; calendar-year + share axis titles
+- [ ] Westerling snowmelt tercile bars render (Early/Middle/Late; literature attribution)
 - [ ] Research `<details>` closed on first visit
-- [ ] Open supplementary `<details>`: sensitivity table, May VPD, ignition bar, rank bar, matrix, lag
+- [ ] Open supplementary `<details>`: partial-corr table, sensitivity table, May VPD, ignition bar, rank bar, matrix, lag
 - [ ] Ignition chart **not** on main path (only inside supplementary)
+- [ ] No ERC × VPD redundancy scatter on page
 
 ## How to read tab
 

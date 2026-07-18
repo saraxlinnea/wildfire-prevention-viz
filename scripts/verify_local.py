@@ -28,11 +28,19 @@ BOOT_CSVS: list[tuple[str, str, int, bool]] = [
     ("data/regional-acres-annual.csv", "year", 18, False),
     ("data/hfr-prevention-annual.csv", "fiscal_year", 19, False),
     ("data/vpd-monthly-annual.csv", "year", 14, False),
+    ("data/smoke-pm25-annual.csv", "year", 14, False),
+]
+
+# Non-year table CSVs required by js/app.js boot
+BOOT_TABLE_CSVS: list[tuple[str, int]] = [
+    ("data/correlation-sensitivity.csv", 5),
+    ("data/correlation-partial.csv", 6),
+    ("data/westerling-snowmelt-tercile.csv", 3),
+    ("data/correlation-treatment-partial.csv", 7),
 ]
 
 OPTIONAL_CSVS: list[tuple[str, int]] = [
     ("data/ignition-cause-annual.csv", 4),
-    ("data/correlation-sensitivity.csv", 5),
 ]
 
 
@@ -62,6 +70,15 @@ def check_files() -> list[str]:
         n = count_csv_rows(path, year_col, skip_meta)
         if n < min_rows:
             errors.append(f"{rel}: expected >={min_rows} {year_col} rows, got {n}")
+    for rel, min_rows in BOOT_TABLE_CSVS:
+        path = ROOT / rel
+        if not path.is_file():
+            errors.append(f"Missing boot CSV: {rel}")
+            continue
+        with path.open(newline="", encoding="utf-8") as f:
+            n = sum(1 for _ in csv.DictReader(f))
+        if n < min_rows:
+            errors.append(f"{rel}: expected >={min_rows} data rows, got {n}")
     return errors
 
 
@@ -93,6 +110,10 @@ def main() -> int:
     for rel, year_col, min_rows, _ in BOOT_CSVS:
         n = count_csv_rows(ROOT / rel, year_col, rel.endswith("wildfire-data.csv"))
         print(f"  - {rel}: {n} rows ({year_col})")
+    for rel, min_rows in BOOT_TABLE_CSVS:
+        with (ROOT / rel).open(newline="", encoding="utf-8") as f:
+            n = sum(1 for _ in csv.DictReader(f))
+        print(f"  - {rel}: {n} data rows [OK]")
     for rel, min_rows in OPTIONAL_CSVS:
         path = ROOT / rel
         if path.is_file():
