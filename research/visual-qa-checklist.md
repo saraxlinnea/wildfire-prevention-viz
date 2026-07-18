@@ -61,7 +61,9 @@ Run after substantive HTML/JS/chart changes. Requires local server (`python3 -m 
 
 - [ ] Tab bar wraps; active tab visible
 - [ ] Legends wrap; chart heights acceptable
+- [ ] Callouts stack to one column
 - [ ] No horizontal scroll on body
+- [ ] Page still readable at ~1180px desktop width (prose capped, charts full-bleed in panels)
 
 ## Tooltips
 
