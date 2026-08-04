@@ -163,12 +163,31 @@ def main() -> int:
     else:
         ok(f"Acres burned span {burn_years.min()}-{burn_years.max()}")
 
+    if "fires_count" not in wf.columns:
+        fail("wildfire-data.csv missing fires_count")
+        errors += 1
+    else:
+        fires = pd.to_numeric(burn["fires_count"], errors="coerce")
+        if fires.isna().any():
+            fail("fires_count missing for one or more full years")
+            errors += 1
+        elif int(fires[burn["year"] == 2025].iloc[0]) != 77850:
+            fail("2025 fires_count expected 77850 (NIFC)")
+            errors += 1
+        else:
+            y2026_fires = wf.loc[wf["year"] == 2026, "fires_count"]
+            if pd.notna(y2026_fires.iloc[0]) and str(y2026_fires.iloc[0]).strip() != "":
+                fail("2026 fires_count should be blank (YTD not locked)")
+                errors += 1
+            else:
+                ok("fires_count present 1983-2025; 2026 blank")
+
     required_files = [
         "wildfire-data.csv", "vpd-annual.csv", "erc-annual.csv",
         "dsci-annual-averages.csv", "dsci-western-annual.csv",
         "western-acres-annual.csv", "regional-acres-annual.csv",
         "regional-gridmet-annual.csv", "regional-correlation-rank.csv",
-        "regional-dsci-annual.csv", "south-fm100-annual.csv",
+        "regional-dsci-annual.csv", "south-fm100-annual.csv", "south-kbdi-annual.csv",
         "hfr-prevention-annual.csv", "hfr-wui-annual.csv",
         "vpd-monthly-annual.csv", "vpd-monthly-correlation.csv",
         "correlation-matrix.csv",
@@ -176,6 +195,7 @@ def main() -> int:
         "correlation-partial.csv",
         "westerling-snowmelt-tercile.csv",
         "correlation-treatment-partial.csv",
+        "gacc-regions.geojson",
     ]
     for name in required_files:
         path = ROOT / name
@@ -183,6 +203,59 @@ def main() -> int:
             fail(f"Missing {name}")
             errors += 1
     ok("Required data files present")
+
+    geo_path = ROOT / "gacc-regions.geojson"
+    if geo_path.exists():
+        import json
+        geo = json.loads(geo_path.read_text(encoding="utf-8"))
+        regions = sorted({
+            f.get("properties", {}).get("region")
+            for f in geo.get("features", [])
+            if f.get("properties", {}).get("region")
+        })
+        expected = ["Alaska", "East", "South", "West"]
+        n = len(geo.get("features") or [])
+        if regions != expected:
+            fail(f"gacc-regions.geojson regions {regions} != {expected}")
+            errors += 1
+        elif n < 48:
+            fail(f"gacc-regions.geojson expected per-state features (>=48), got {n}")
+            errors += 1
+        else:
+            ok(f"gacc-regions.geojson has {n} state features covering {regions}")
+            states = {
+                f.get("properties", {}).get("state")
+                for f in geo.get("features", [])
+            }
+            for need in ("California", "Washington", "Texas", "Alaska"):
+                if need not in states:
+                    fail(f"gacc-regions.geojson missing state {need}")
+                    errors += 1
+                else:
+                    ok(f"gacc-regions.geojson includes {need}")
+
+    wfigs_path = ROOT / "wfigs-ytd-snapshot.geojson"
+    if not wfigs_path.exists():
+        fail("Missing wfigs-ytd-snapshot.geojson (optional on page; required for audit after Phase 3)")
+        errors += 1
+    else:
+        import json
+        wfigs = json.loads(wfigs_path.read_text(encoding="utf-8"))
+        props = wfigs.get("properties") or {}
+        n = len(wfigs.get("features") or [])
+        if n < 1:
+            fail("wfigs-ytd-snapshot.geojson has zero features")
+            errors += 1
+        elif not props.get("fetched_at_utc"):
+            fail("wfigs-ytd-snapshot.geojson missing properties.fetched_at_utc")
+            errors += 1
+        else:
+            ok(f"wfigs-ytd-snapshot.geojson n={n} fetched {props.get('fetched_at_utc')}")
+            if wfigs_path.stat().st_size > 5_000_000:
+                fail(f"wfigs-ytd-snapshot.geojson too large ({wfigs_path.stat().st_size} bytes); re-run fetch with stronger simplify")
+                errors += 1
+            else:
+                ok("wfigs-ytd-snapshot.geojson under 5 MB")
 
     print(f"\nAudit complete: {errors} error(s)")
     return 1 if errors else 0

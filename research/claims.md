@@ -3,9 +3,10 @@
 Tracks every empirical and editorial statement on the public visualization.  
 Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/main/CORE/CLAIM_TRACKING_LAYER.md) and [Evidence Standard](https://github.com/saraxlinnea/AI-OS/blob/main/CORE/EVIDENCE_STANDARD.md).
 
-**Live page:** [saraxlinnea.github.io/wildfire-prevention-viz](https://saraxlinnea.github.io/wildfire-prevention-viz)  
-**Last audited against:** 2026-07-13 fact-check pass ([`fact-check-log.md`](fact-check-log.md))  
-**Update rule:** Any new copy on `index.html` must get a claim ID here before publish.
+**Live page:** [saraxlinnea.github.io/wildfire-prevention-viz](https://saraxlinnea.github.io/wildfire-prevention-viz) (home) · [explore.html](https://saraxlinnea.github.io/wildfire-prevention-viz/explore.html)  
+**Title:** Wildfire Season Briefing  
+**Last audited against:** 2026-08-03 August YTD refresh ([`fact-check-log.md`](fact-check-log.md))  
+**Update rule:** Any new factual copy on `index.html` or `explore.html` must get a claim ID here before publish.
 
 ---
 
@@ -30,13 +31,13 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 
 | Field | Value |
 |---|---|
-| **Normalized statement** | U.S. national acres burned from Jan 1 through July 16, 2026 equals 3,674,911 acres |
-| **Display text** | "more than **3.6 million acres**" / callout **3.7M** |
-| **Page location** | Header dek; Outcomes callouts; How to read methodology |
+| **Normalized statement** | U.S. national acres burned from Jan 1 through August 3, 2026 equals 5,154,596 acres |
+| **Display text** | Callout **5.2M** · “U.S. acres burned so far in 2026 through August 3 (year-to-date only)” |
+| **Page location** | Header dek; Overview callouts; Methods tab |
 | **Status** | Supported |
 | **Confidence** | High |
 | **Evidence strength** | Strong (agency operational reporting) |
-| **Sources** | [NIFC National Fire News, July 16 2026](https://www.nifc.gov/fire-information/nfn); `data/wildfire-data.csv` row 2026 |
+| **Sources** | [NIFC National Fire News, August 3 2026](https://www.nifc.gov/fire-information/nfn); `data/wildfire-data.csv` row 2026 |
 | **Limitations** | Partial calendar year only; not comparable to full-year bars |
 
 ---
@@ -45,14 +46,14 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 
 | Field | Value |
 |---|---|
-| **Normalized statement** | 2026 YTD acres burned through July 16 is approximately 29% above the 10-year YTD average for the same date (10-yr avg ≈ 2,845,121 acres from NIFC 2016-2025 same-date rows) |
-| **Display text** | "**29% above the 10-year average** to date" |
-| **Page location** | Header dek; Outcomes callout |
+| **Normalized statement** | 2026 YTD acres burned through August 3 is approximately 37% above the 10-year YTD average for the same date (10-yr avg = 3,759,429 acres from NIFC 2016-2025 same-date cell) |
+| **Display text** | Callout **+37%** · “About 37% more acres than a typical early August over the last 10 years (NIFC same-date average, not a full-year comparison)” |
+| **Page location** | Overview callouts; Home stats |
 | **Status** | Supported |
 | **Confidence** | High |
-| **Evidence strength** | Strong (NIFC published same-date table; average derived from listed years) |
-| **Sources** | NIFC National Fire News, July 16 2026 |
-| **Limitations** | Comparison is YTD-to-YTD, not full-year; NFN 10-year average cell was blank on fetch—computed from published year rows |
+| **Evidence strength** | Strong (NIFC published same-date table and 10-year average cell) |
+| **Sources** | NIFC National Fire News, August 3 2026 |
+| **Limitations** | Comparison is YTD-to-YTD, not full-year |
 
 ---
 
@@ -60,14 +61,14 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 
 | Field | Value |
 |---|---|
-| **Normalized statement** | 2026 YTD acres burned is about 129% of the 10-year average YTD acres burned (same date, July 16) |
+| **Normalized statement** | 2026 YTD acres burned is about 137% of the 10-year average YTD acres burned (same date, August 3) |
 | **Display text** | (not on callouts; equivalent to C-F02) |
 | **Page location** | Claim registry / derived from C-F02 |
 | **Status** | Supported |
 | **Confidence** | High |
 | **Evidence strength** | Strong |
-| **Sources** | NIFC National Fire News, July 16 2026 |
-| **Notes** | 129% of average ≡ 29% above average (C-F02); both from same NIFC table |
+| **Sources** | NIFC National Fire News, August 3 2026 |
+| **Notes** | 137% of average ≡ 37% above average (C-F02); both from same NIFC table |
 
 ---
 
@@ -75,13 +76,13 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 
 | Field | Value |
 |---|---|
-| **Normalized statement** | 2026 YTD acres burned through July 16 ranks third in NIFC's same-date comparison table; 2022 same-date YTD was about 5.2 million acres (highest) and 2017 about 4.4 million (second) |
-| **Display text** | "3rd" / "behind 2022 (~5.2M) and 2017 (~4.4M)" |
-| **Page location** | Outcomes callouts; How to read policy context |
+| **Normalized statement** | 2026 YTD acres burned through August 3 ranks third in NIFC's same-date comparison table; 2022 same-date YTD was about 5.8 million acres (highest) and 2017 about 5.7 million (second) |
+| **Display text** | Callout **3rd** · “3rd-highest early-August acres in NIFC’s same-date table (behind 2022 ~5.8M and 2017 ~5.7M). Not a full-year ranking.” |
+| **Page location** | Overview callouts; How to read policy context |
 | **Status** | Supported |
 | **Confidence** | High |
 | **Evidence strength** | Strong |
-| **Sources** | NIFC National Fire News YTD table, July 16 2026 |
+| **Sources** | NIFC National Fire News YTD table, August 3 2026 |
 
 ---
 
@@ -91,7 +92,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 |---|---|
 | **Normalized statement** | NIFC national acres-burned statistics are comparable from calendar year 1983 onward |
 | **Display text** | "National acres burned start in 1983" / "Standardized reporting from 1983" |
-| **Page location** | Intro block; Interpretation tab methodology |
+| **Page location** | Intro block; Methods tab |
 | **Status** | Supported |
 | **Confidence** | High |
 | **Evidence strength** | Strong (documented NIFC methodology) |
@@ -105,7 +106,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 |---|---|
 | **Normalized statement** | NIFC acres-burned figures before 1983 use non-comparable reporting methods |
 | **Display text** | "pre-1983 figures are not comparable" |
-| **Page location** | Interpretation tab methodology |
+| **Page location** | Methods tab |
 | **Status** | Supported |
 | **Confidence** | High |
 | **Evidence strength** | Strong |
@@ -132,9 +133,9 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 
 | Field | Value |
 |---|---|
-| **Normalized statement** | For each calendar year with ten prior full years of NIFC data, the fire chart shows the min-to-max range of acres burned in those ten prior years; band begins in 1993 |
-| **Display text** | "Prior 10-year range" / "Shaded band shows the min-to-max range of the prior ten full calendar years" |
-| **Page location** | Fire tab legend, panel note; Interpretation tab methodology |
+| **Normalized statement** | For each calendar year with ten prior full years of NIFC data, the fire chart shows the min-to-max range of acres burned in those ten prior years; band begins in 1993. The trailing 10-year mean of national acres rose from about 2.7M (window ending before 1993) to about 7.5M (window ending before 2025). |
+| **Display text** | "Prior 10-year range" / acres-mode plain-read and caption on Overview fire chart |
+| **Page location** | Overview `#chart-fire` legend, plain-read, caption; Methods tab |
 | **Status** | Methodological |
 | **Confidence** | High |
 | **Evidence strength** | Computed from NIFC annual statistics in `data/wildfire-data.csv` |
@@ -143,18 +144,35 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 
 ---
 
-### C-F10 — Percent deviation from rolling ten-year average
+### C-F10 — Percent deviation from rolling ten-year average (retired from UI)
 
 | Field | Value |
 |---|---|
-| **Normalized statement** | Chart toggle shows each year's acres burned as percent above or below the mean of the ten prior full calendar years |
-| **Display text** | "% from 10-yr avg" toggle |
-| **Page location** | Fire tab chart toggle |
-| **Status** | Methodological |
+| **Normalized statement** | Chart JavaScript can still compute each year's acres burned as percent above or below the mean of the ten prior full calendar years (same window as C-F09). This toggle was removed from the live Overview chart in favor of acres vs fire-count views (C-F12). |
+| **Display text** | (retired from page; was "% from 10-yr avg") |
+| **Page location** | Repository / `computeRollingBaseline` only; not a live toggle |
+| **Status** | Methodological (off-page) |
 | **Confidence** | High |
 | **Evidence strength** | Derived from same rolling window as C-F09 |
-| **Sources** | Chart JavaScript |
-| **Limitations** | Full-year acres only; 2026 YTD point uses 2016–2025 window for comparison |
+| **Sources** | Chart JavaScript; `data/wildfire-data.csv` |
+| **Limitations** | Easy to misread as a raw acres trend; distinct from C-F02 |
+| **Related** | C-F09, C-F02, C-F12 |
+
+---
+
+### C-F12 — National wildland fire counts (1983-2025)
+
+| Field | Value |
+|---|---|
+| **Normalized statement** | NIFC Total Wildfires and Acres lists national wildland fire counts by calendar year from 1983 through 2025 (e.g. 2025 = 77,850 fires; 2020 = 58,950; 1983 = 18,229). Overview fire chart toggle “Number of fires” plots these counts; 2026 YTD fire count is blank on the page (not locked to the Aug 3 acres snapshot; NFN lists 44,722 fires YTD for reference only). |
+| **Display text** | Overview “Number of fires” toggle; plain-read that counts ≠ acres |
+| **Page location** | Overview `#chart-fire`; `data/wildfire-data.csv` column `fires_count` |
+| **Status** | Supported |
+| **Confidence** | High |
+| **Evidence strength** | Strong (NIFC published annual table) |
+| **Sources** | [NIFC Wildfires and Acres](https://www.nifc.gov/fire-information/statistics/wildfires) |
+| **Limitations** | Counts and acres diverge; 1983–1984 NIFC counts (~18k–20k) jump to ~83k in 1985 while early ICS reporting was still ramping (EPA/USFS: parallel Smokey Bear counts were higher those years); not a measure of season size; 2026 YTD count not shown on chart |
+| **Related** | C-F05, C-F09, C-F01 |
 
 ---
 
@@ -163,8 +181,8 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 | Field | Value |
 |---|---|
 | **Normalized statement** | AccuWeather projects 5.5 to 8.0 million U.S. acres burned in calendar year 2026 if current conditions hold |
-| **Display text** | "**5.5-8M**" / "AccuWeather projects 5.5 to 8 million acres" |
-| **Page location** | Fire tab legend; Interpretation tab callouts, prose, methodology |
+| **Display text** | Callout **5.5-8M** · “AccuWeather projected full-year acres if the season stays severe. Speculative forecast, not observed NIFC data.” |
+| **Page location** | Overview fire chart legend + Notes; Methods (forecast language); AccuWeather not on Home |
 | **Status** | Speculative |
 | **Confidence** | Low |
 | **Evidence strength** | Speculative (commercial forecast, conditional language) |
@@ -196,7 +214,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 |---|---|
 | **Normalized statement** | U.S. Forest Service treated 2.6 million acres for wildfire risk in calendar year 2025 |
 | **Display text** | "treated 2.6 million acres for wildfire risk" (2025) |
-| **Page location** | Interpretation tab policy context |
+| **Page location** | Methods tab (policy context) |
 | **Status** | Supported |
 | **Confidence** | High |
 | **Evidence strength** | Moderate (journalistic analysis of agency database) |
@@ -211,7 +229,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 |---|---|
 | **Normalized statement** | U.S. Forest Service treated 4.1 million acres for wildfire risk in calendar year 2024 |
 | **Display text** | "down from 4.1 million the year before" |
-| **Page location** | Interpretation tab policy context |
+| **Page location** | Methods tab (policy context) |
 | **Status** | Supported |
 | **Confidence** | High |
 | **Evidence strength** | Moderate |
@@ -225,7 +243,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 |---|---|
 | **Normalized statement** | Forest Service wildfire-risk treatment acres decreased from 4.1M to 2.6M (2024→2025), a ~36.6% decline, displayed as 35% |
 | **Display text** | "**35% fewer acres**" / federal-context strip on Drivers |
-| **Page location** | Drivers tab `federal-context-strip` (moved off Outcomes, 2026-07-16); Interpretation policy context |
+| **Page location** | Context tab `federal-context-strip` (moved off Outcomes, 2026-07-16); Methods tab (policy context) |
 | **Status** | Supported |
 | **Confidence** | High |
 | **Evidence strength** | Moderate |
@@ -240,7 +258,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 |---|---|
 | **Normalized statement** | Forest Service treatment figures on this page are consistently reported only from calendar year 2023 |
 | **Display text** | "Forest Service figures from 2023" / "Consistent figures from 2023 onward only" |
-| **Page location** | Policy tab panel note; Interpretation tab methodology |
+| **Page location** | Policy tab panel note; Methods tab |
 | **Status** | Methodological |
 | **Confidence** | High |
 | **Sources** | NPR methodology note; page author decision |
@@ -253,7 +271,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 |---|---|
 | **Normalized statement** | Interior Department hazardous fuels treatment is reported on a federal fiscal year basis (Oct 1 start), not calendar year |
 | **Display text** | "Interior fuels work is reported from 2018 (fiscal year)" / panel note |
-| **Page location** | Policy tab panel note; Interpretation tab methodology |
+| **Page location** | Policy tab panel note; Methods tab |
 | **Status** | Methodological |
 | **Confidence** | High |
 | **Sources** | [DOI fuels management program](https://www.doi.gov/wildlandfire/fuels) |
@@ -266,7 +284,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 |---|---|
 | **Normalized statement** | Interior treatment figures cover BLM, NPS, BIA, and FWS lands, fiscal years 2018–2024 |
 | **Display text** | methodology bullet |
-| **Page location** | Interpretation tab methodology |
+| **Page location** | Methods tab |
 | **Status** | Supported |
 | **Confidence** | High |
 | **Sources** | DOI fuels program |
@@ -278,8 +296,8 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 | Field | Value |
 |---|---|
 | **Normalized statement** | USDA FS and DOI hazardous fuels treatment totals from the joint HFR-DOI-FS NFPORS report span fiscal years 2003-2021; combined treatment acres FY 2003 ≈ 3.21M, FY 2021 ≈ 5.26M |
-| **Display text** | Drivers tab treatment chart (combined total); Coupling research accordion |
-| **Page location** | Drivers tab `#chart-policy`; `data/hfr-prevention-annual.csv`; Coupling tab research `<details>` |
+| **Display text** | Context tab treatment chart (combined total); Coupling research accordion |
+| **Page location** | Context tab `#chart-policy`; `data/hfr-prevention-annual.csv`; Context tab research `<details>` |
 | **Status** | Supported |
 | **Confidence** | High |
 | **Sources** | [HFR-DOI-FS Accomplishments 2003-2021](https://www.forestsandrangelands.gov/documents/resources/reports/2021/HFR-DOI-FS-Accomplishments2003-2021.pdf); `scripts/extract_hfr_prevention.py` |
@@ -294,7 +312,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 |---|---|
 | **Normalized statement** | Dual-axis chart overlays federal hazardous-fuels treatment (HFR FY 2003-2021 plus page-verified totals 2022-2025) and national acres burned (calendar 2003-2025) on shared year labels; shows temporal co-occurrence only, not that treatment caused fire outcomes |
 | **Display text** | Drivers "Do treatment and burn acres move together?" |
-| **Page location** | Drivers tab main path, immediately after treatment total (`#chart-treatment-acres`) |
+| **Page location** | Context tab main path, immediately after treatment total (`#chart-treatment-acres`) |
 | **Status** | Methodological |
 | **Confidence** | High |
 | **Sources** | `data/hfr-prevention-annual.csv`; NIFC national acres in `wildfire-data.csv` |
@@ -307,7 +325,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 |---|---|
 | **Normalized statement** | For HFR combined treatment vs national acres (n=19, FY/calendar label 2003-2021): raw r ≈ −0.135; after western ERC + VPD + linear year + WUI designation share + western GACC share, partial r ≈ −0.101; joint R² with treatment ≈ 0.167 vs ≈ 0.135 without treatment |
 | **Display text** | Drivers dual-axis panel “With controls” table |
-| **Page location** | Drivers tab under `#chart-treatment-acres` |
+| **Page location** | Context tab under `#chart-treatment-acres` |
 | **Status** | Supported (derived, exploratory) |
 | **Confidence** | Medium |
 | **Sources** | `data/correlation-treatment-partial.csv`; `scripts/compute_treatment_partial_correlations.py` |
@@ -349,12 +367,12 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 
 | Field | Value |
 |---|---|
-| **Normalized statement** | 2026 DSCI values are 28-week averages through July 14, 2026 (national 169.9; western 156.0); annual DSCI on this page is a year-to-date (or full-year) average of weekly USDM readings |
-| **Display text** | Drivers glossary / dryness plain-read: “year-to-date average of weekly… readings”; methodology: 28-week averages through July 14 |
+| **Normalized statement** | 2026 DSCI values are 30-week averages through July 28, 2026 (national 168.8; western 158.7); annual DSCI on this page is a year-to-date (or full-year) average of weekly USDM readings |
+| **Display text** | Drivers glossary / dryness plain-read: “year-to-date average of weekly… readings”; methodology: 30-week averages through July 28 |
 | **Page location** | Drivers tab terms + dryness chart; How to read glossary/methodology |
 | **Status** | Supported |
 | **Confidence** | High |
-| **Sources** | `data/dsci-annual-averages.csv`, `data/dsci-western-annual.csv`; USDM API pulls 2026-07-16 |
+| **Sources** | `data/dsci-annual-averages.csv`, `data/dsci-western-annual.csv`; USDM API pulls 2026-08-03 |
 
 ---
 
@@ -379,7 +397,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 |---|---|
 | **Normalized statement** | Western U.S. mean fire-season VPD is computed for May–September, west of 100°W, from gridMET, years 1979–2025; on the Drivers tab VPD is defined as atmospheric “thirst” (temperature + humidity), not a fire model |
 | **Display text** | Drivers tab definition list; VPD panel note and methodology |
-| **Page location** | Drivers tab; Interpretation tab methodology |
+| **Page location** | Context tab; Methods tab |
 | **Status** | Supported |
 | **Confidence** | High |
 | **Evidence strength** | Strong (published dataset + peer-reviewed gridMET paper) |
@@ -393,7 +411,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 |---|---|
 | **Normalized statement** | Western U.S. mean fire-season ERC (Energy Release Component) is computed for May–September, west of 100°W, from gridMET NFDRS fuel model G, years 1979–2025; on the Drivers tab ERC is defined as potential energy release given fuel dryness (no wind/slope) |
 | **Display text** | Drivers tab definition list; ERC panel toggle, methodology, Coupling scatter |
-| **Page location** | Drivers tab atmosphere chart; Coupling tab; methodology |
+| **Page location** | Drivers tab atmosphere chart; Drivers tab; methodology |
 | **Status** | Supported |
 | **Confidence** | High |
 | **Evidence strength** | Strong (gridMET derived fire-danger index; Abatzoglou 2013) |
@@ -407,8 +425,8 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 | Field | Value |
 |---|---|
 | **Normalized statement** | Published western U.S. fire–climate studies treat short-term fire-danger indices (especially ERC) and fire-season VPD as stronger annual burned-area proxies than longer-timescale drought indices such as PDSI; the page ranks ERC, then VPD, then DSCI/drought accordingly and does not claim literature r equals this repository’s Pearson r |
-| **Display text** | Coupling tab “Proxy ranking (literature → this page)” table |
-| **Page location** | Coupling tab |
+| **Display text** | Drivers scatter caption + reliability table lit column when expanded; ERC ≳ VPD ≫ drought ordering |
+| **Page location** | Drivers tab (scatter + expandable reliability table) |
 | **Status** | Supported |
 | **Confidence** | High |
 | **Evidence strength** | Strong for relative ordering; methods differ across papers |
@@ -424,7 +442,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 |---|---|
 | **Normalized statement** | Pearson correlation between western fire-season ERC and western GACC acres burned for 2010-2025 is approximately 0.82 (repository value 0.821) |
 | **Display text** | "Western acres burned vs western ERC" r = 0.82; scatter default ERC driver |
-| **Page location** | Coupling tab correlation table and scatter |
+| **Page location** | Drivers tab correlation table and scatter |
 | **Status** | Supported |
 | **Confidence** | High |
 | **Evidence strength** | High for this bivariate window (exploratory only) |
@@ -454,7 +472,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 |---|---|
 | **Normalized statement** | The page does not assert that any chart series caused any other chart series |
 | **Display text** | "This page does not claim one line caused another" / methodology closing |
-| **Page location** | Intro block; Interpretation tab methodology closing |
+| **Page location** | Intro block; Methods tab closing |
 | **Status** | Excluded (explicit non-claim) |
 | **Confidence** | High |
 | **AI-OS note** | Prevents upgrade of temporal co-occurrence to causation per Evidence Standard §7 |
@@ -467,7 +485,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 |---|---|
 | **Normalized statement** | The page does not assert that reduced 2025 Forest Service treatment caused 2026 fire outcomes |
 | **Display text** | "not claiming that cutting prevention in 2025 caused the 2026 fire season" |
-| **Page location** | Interpretation tab methodology closing |
+| **Page location** | Methods tab closing |
 | **Status** | Excluded (explicit non-claim) |
 | **Related rejected claim** | See C-X03 |
 
@@ -502,9 +520,9 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 
 | Field | Value |
 |---|---|
-| **Normalized statement** | Pairwise correlation and lag-aligned views appear on the Coupling tab as exploratory coupling; they are not presented as causal findings |
+| **Normalized statement** | Pairwise correlation and lag-aligned views appear on the Drivers tab as exploratory coupling; they are not presented as causal findings |
 | **Display text** | "Exploratory coupling views. Correlation is not causation." / methodology correlations bullet |
-| **Page location** | Coupling tab intro; scatter, lag, and policy scatter charts; How to read methodology |
+| **Page location** | Drivers tab scatter and lag; Context tab policy scatter; Methods tab |
 | **Status** | Methodological |
 | **Sources** | `notebooks/correlation-analysis.ipynb`, `data/correlation-matrix.csv`, `data/correlation-notes.md` |
 | **Related** | C-C01, C-C02, C-C03 |
@@ -517,7 +535,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 |---|---|
 | **Normalized statement** | Pearson correlation between western fire-season VPD and national acres burned for full calendar years 2010-2025 is approximately 0.63 (repository value 0.625) |
 | **Display text** | "Pearson r ≈ 0.63" / chart annotation "Pearson r ≈ 0.63 (exploratory)" |
-| **Page location** | Coupling tab correlation table and scatter panel note |
+| **Page location** | Drivers tab correlation table and scatter panel note |
 | **Status** | Supported (derived) |
 | **Confidence** | High |
 | **Sources** | `data/correlation-matrix.csv`; `scripts/compute_correlations.py` |
@@ -530,8 +548,8 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 | Field | Value |
 |---|---|
 | **Normalized statement** | Pearson r for key pairs in 2010-2025 window: western acres vs western ERC 0.82 (0.821); western acres vs western VPD 0.81 (0.808); national acres vs western ERC 0.53 (0.532); national acres vs western VPD 0.63 (0.625); acres vs national DSCI 0.10 (0.097); western acres vs western DSCI 0.08 (0.075); western VPD vs ERC 0.94 (0.944); western VPD vs national DSCI 0.56 (0.560); national vs western DSCI 0.73 (0.734) |
-| **Display text** | Coupling tab correlation table |
-| **Page location** | Coupling tab |
+| **Display text** | Drivers tab correlation table |
+| **Page location** | Context tab |
 | **Status** | Supported (derived) |
 | **Confidence** | High |
 | **Sources** | `data/correlation-matrix.csv` |
@@ -545,7 +563,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 |---|---|
 | **Normalized statement** | Lag view aligns western VPD in year t with national acres burned in year t+1; annual resolution cannot resolve sub-seasonal lag |
 | **Display text** | "Annual data cannot resolve sub-seasonal lag." |
-| **Page location** | Coupling tab supplementary `<details>` lag chart panel note |
+| **Page location** | Methods → Dataset gaps (lag bullet); `data/correlation-notes.md` |
 | **Status** | Methodological |
 | **Confidence** | High |
 
@@ -557,7 +575,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 |---|---|
 | **Normalized statement** | Forest Service treatment vs following-year acres burned scatter has at most three year pairs (2023-2025 treatment years); 2026 outcome may be partial |
 | **Display text** | "FS figures comparable from 2023 only (three pairs)" / "n = 3 FS year pairs (2023-2025)" |
-| **Page location** | Coupling tab collapsible policy scatter |
+| **Page location** | Context tab collapsible policy scatter |
 | **Status** | Methodological |
 | **Confidence** | High |
 | **Related** | C-P04, C-X01 |
@@ -570,7 +588,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 |---|---|
 | **Normalized statement** | Western VPD and western DSCI are shown on a common z-score axis for overlapping years 2000-2025; 2026 partial DSCI excluded from z-scores |
 | **Display text** | Atmosphere tab panel note |
-| **Page location** | Drivers tab primary chart |
+| **Page location** | Context tab primary chart |
 | **Status** | Methodological |
 | **Confidence** | High |
 | **Related** | C-V01, C-D01 |
@@ -598,7 +616,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 |---|---|
 | **Normalized statement** | USDA announced plans in March 2026 to close 57 of 77 Forest Service research stations |
 | **Display text** | prose block / methodology |
-| **Page location** | How to read tab policy context, methodology |
+| **Page location** | Methods tab (policy context), methodology |
 | **Status** | Supported |
 | **Confidence** | Medium |
 | **Evidence strength** | Moderate (news reporting of agency plan) |
@@ -614,7 +632,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 |---|---|
 | **Normalized statement** | Stateline reports that affected Forest Service research stations include work on fire behavior and smoke forecasting |
 | **Display text** | "Stateline reports that affected stations include work on fire behavior and smoke forecasting" |
-| **Page location** | How to read tab policy context |
+| **Page location** | Methods tab (policy context) |
 | **Status** | Partially supported |
 | **Confidence** | Medium |
 | **Sources** | [Stateline, April 17 2026](https://stateline.org/2026/04/17/forest-service-plan-to-close-research-stations-stokes-fear-as-wildfire-season-approaches/) |
@@ -642,8 +660,8 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 | Field | Value |
 |---|---|
 | **Normalized statement** | The page presents observed series on mismatched geographies and calendars; temporal overlap is not presented as causal evidence |
-| **Display text** | "What this is" / "What it is not" / "How to compare" (How to read tab) |
-| **Page location** | How to read tab, How to read this |
+| **Display text** | Methods “How to read this”: Overview = U.S. acres burned + regional share; Drivers = dryness; Context = treatment; Impacts = smoke; not causal |
+| **Page location** | Methods tab (How to read this); Home lede; Explore header lede; Overview / Drivers / Context / Impacts deks |
 | **Status** | Methodological |
 | **Confidence** | High |
 | **Related** | C-X01, C-X02, C-F09 vs C-F02 distinction in fire tab note |
@@ -658,7 +676,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 |---|---|
 | **Normalized statement** | Early-season (YTD) acres burned are not a reliable predictor of the full calendar-year total |
 | **Display text** | "Early-season acres do not predict the full-year total" |
-| **Page location** | Outcomes tab fire chart caption (In context) |
+| **Page location** | Overview fire chart caption (In context) |
 | **Status** | Methodological |
 | **Confidence** | High |
 | **Related** | C-F04 (2022 YTD highest, not necessarily full-year record) |
@@ -670,8 +688,8 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 | Field | Value |
 |---|---|
 | **Normalized statement** | Pearson r ≈ 0.81 between western VPD and western GACC acres burned implies roughly 65% of variance explained (r² ≈ 0.65); national acres pairing remains r ≈ 0.63 / r² ≈ 0.39 |
-| **Display text** | Coupling tab correlation "In context" (western acres r² ≈ 0.65) |
-| **Page location** | Coupling tab correlation table caption |
+| **Display text** | Drivers tab correlation "In context" (western acres r² ≈ 0.65) |
+| **Page location** | Drivers tab correlation table caption |
 | **Status** | Methodological |
 | **Confidence** | High |
 | **Evidence strength** | Mathematical derivation from C-W02 / C-C01 |
@@ -683,9 +701,9 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 
 | Field | Value |
 |---|---|
-| **Normalized statement** | Pairwise Pearson correlations on the Coupling tab use n = 16 full calendar years (2010–2025); partial 2026 excluded |
+| **Normalized statement** | Pairwise Pearson correlations on the Drivers tab use n = 16 full calendar years (2010–2025); partial 2026 excluded |
 | **Display text** | "n = 16 full calendar years" / "Sixteen full calendar years (2010-2025)" |
-| **Page location** | Coupling tab dek, correlation panel note |
+| **Page location** | Drivers tab dek, correlation panel note |
 | **Status** | Methodological |
 | **Confidence** | High |
 | **Sources** | `data/correlation-matrix.csv`, `scripts/compute_correlations.py` |
@@ -712,7 +730,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 |---|---|
 | **Normalized statement** | Federal hazardous-fuels acres treated are a measure of reported work, not proven reduction in fire risk or outcomes; effects can lag and depend on location and treatment type |
 | **Display text** | "Acres treated are not the same as risk reduced" / policy chart In context |
-| **Page location** | Drivers tab intro; policy chart caption |
+| **Page location** | Context tab intro; policy chart caption |
 | **Status** | Methodological |
 | **Confidence** | High |
 | **Related** | C-P07, C-X01, C-X02 |
@@ -725,7 +743,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 |---|---|
 | **Normalized statement** | Contiguous-U.S. DSCI averages drought nationally, which can dilute western fire-season extremes; weaker correlation with national acres (r ≈ 0.10) vs western VPD (r ≈ 0.63) is consistent with western concentration of fire activity |
 | **Display text** | National DSCI details caption: drought useful for water/veg stress; weaker acres match than ERC/VPD; Coupling ranks pairings next |
-| **Page location** | Drivers tab national DSCI `<details>`; Coupling tab |
+| **Page location** | Drivers tab national DSCI `<details>`; Drivers tab |
 | **Status** | Partially supported |
 | **Confidence** | Medium |
 | **Evidence strength** | Moderate (correlation pattern + geographic reasoning) |
@@ -739,7 +757,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 |---|---|
 | **Normalized statement** | Western acres burned are the sum of NICC Geographic Area Coordination Center (GACC) acres for NW, NR, GB, RM, SW, NO, and SO; for 2010-2012 EB and WB replace GB (pre-merge). Series spans calendar years 2010-2025. |
 | **Display text** | Western acres / western GACC acres in Coupling scatter toggle and correlation table |
-| **Page location** | Coupling tab; Outcomes western vs national chart |
+| **Page location** | Context tab; Overview western vs national chart |
 | **Status** | Supported |
 | **Confidence** | High |
 | **Evidence strength** | High (NICC annual report tables) |
@@ -754,7 +772,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 |---|---|
 | **Normalized statement** | Regional NICC GACC acres burned are summed by group: West (NW, NR, GB, RM, SW, NO, SO; EB+WB pre-2015), East (EA), South (SA), Alaska (AK), and national total (all ten GACCs when present). Years 2003-2012 from legacy PDF extracts plus 2008-2009 hand OCR; 2013+ from text tables. |
 | **Display text** | Coupling regional accordion (shares); full series in repository CSVs |
-| **Page location** | `data/regional-acres-annual.csv`; Coupling tab regional `<details>`; built by `scripts/build_western_acres.py` |
+| **Page location** | `data/regional-acres-annual.csv`; Drivers tab regional `<details>`; built by `scripts/build_western_acres.py` |
 | **Status** | Supported |
 | **Confidence** | High |
 | **Evidence strength** | High (NICC annual report tables; national GACC sum ≈ NIFC national acres 2013-2025 within ~0.04M) |
@@ -783,13 +801,27 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 
 | Field | Value |
 |---|---|
-| **Normalized statement** | Exploratory Pearson r between regional GACC acres and regional drivers for 2013-2025 (n=13): west acres vs ERC 0.83, vs VPD 0.77, vs DSCI −0.01; south vs VPD 0.36, vs fm100 −0.18, vs ERC 0.17, vs DSCI −0.14; east vs DSCI 0.81, vs VPD 0.49, vs ERC 0.17; Alaska acres vs DSCI 0.51 (gridMET unavailable) |
-| **Display text** | Coupling tab accordion "Regional GACC breakdown (research extension, n = 13)" |
-| **Page location** | Coupling tab `<details>` regional table; `data/regional-correlation-rank.csv`; `scripts/compute_regional_correlations.py` |
+| **Normalized statement** | Exploratory Pearson r between regional GACC acres and regional drivers for 2013-2025 (n=13): west acres vs ERC 0.83, vs VPD 0.77, vs DSCI −0.01; south vs VPD 0.36, vs KBDI 0.20, vs fm100 −0.18, vs ERC 0.17, vs DSCI −0.14; east vs DSCI 0.81, vs VPD 0.49, vs ERC 0.17; Alaska acres vs DSCI 0.51 (gridMET unavailable) |
+| **Display text** | Drivers regional Bars \| Table (West/South/East chips; table includes Alaska) |
+| **Page location** | Drivers `#chart-regional-top-drivers` / `#regional-drivers-summary-table`; `data/regional-correlation-rank.csv`; `scripts/compute_regional_correlations.py` |
 | **Status** | Supported (derived) |
 | **Confidence** | Medium |
 | **Limitations** | n=13; exploratory; east acres small share (~1.5% median); Alaska without gridMET; not causal |
-| **Related** | C-R01, C-R02, C-R04, C-X05 |
+| **Related** | C-R01, C-R02, C-R04, C-R13, C-X05 |
+
+---
+
+### C-R13 — Southeast KBDI (Jan-May, gridMET-derived)
+
+| Field | Value |
+|---|---|
+| **Normalized statement** | Southeast Jan-May mean Keetch-Byram Drought Index computed from gridMET daily tmax and precip for SE bbox lon −106 to −81, lat 25–36 (2010-2025). Exploratory Pearson r vs southern GACC acres (2013-2025, n=13) ≈ 0.20; does not beat south Jan-Apr VPD (≈ 0.36). KBDI is a classic Southern Area operational drought index; gridMET does not publish KBDI directly |
+| **Display text** | Drivers South chip caption + top bars; Table view; Methods glossary; reliability table South×KBDI row |
+| **Page location** | `data/south-kbdi-annual.csv`; `data/south-kbdi-notes.md`; `scripts/extend_kbdi.py`; Drivers `#chart-regional-top-drivers` / reliability table |
+| **Status** | Supported (derived) |
+| **Confidence** | Medium |
+| **Limitations** | Exploratory; n=13; spatial-mean weather then one KBDI path; not a live SACC product; not causal; weak annual climate-acre link expected in SE |
+| **Related** | C-R03, C-R05, C-R02 |
 
 ---
 
@@ -827,13 +859,43 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 | Field | Value |
 |---|---|
 | **Normalized statement** | Stacked 100% chart of NICC GACC regional shares of national GACC acres burned: West, South, Alaska, East for years with `gacc_coverage=all_gaccs` (2003-2025 continuous; 2008-2009 from hand OCR) |
-| **Display text** | Patterns / Outcomes "Who carried the national total?" regional share chart |
-| **Page location** | Outcomes tab `#chart-regional-share-outcomes`; Patterns `#chart-regional-share`; `data/regional-acres-annual.csv` |
+| **Display text** | Where geography panel “Four regions” view; removed from Context; geography on Overview; repository CSVs |
+| **Page location** | Overview `#geo-story-section` / `#chart-regional-share-outcomes`; removed from Context; geography on Overview; `data/regional-acres-annual.csv` |
 | **Status** | Supported |
 | **Confidence** | High |
 | **Sources** | `data/regional-acres-annual.csv`; NICC annual reports; `data/gacc-2008-2009-hand-extract-template.csv` |
 | **Limitations** | GACC sum ≈ NIFC national when all ten GACCs present; 2008-2009 hand transcription |
-| **Related** | C-R01, C-M07, C-R07 |
+| **Related** | C-R01, C-M07, C-R07, C-R12 |
+
+---
+
+### C-R12 — GACC regional share choropleth (year control)
+
+| Field | Value |
+|---|---|
+| **Normalized statement** | Outcomes Leaflet map dual-encodes four state-approximate GACC rollup regions (West, South, Alaska, East): colored outlines mark region membership; red fill intensity encodes each region’s share of the selected calendar year’s national GACC acre sum (near-white at low share → dark red at high share). All states in a region share the same fill because totals are regional, not per-state. Shares match `regional-acres-annual.csv` for that year. Default is the latest full year (2025 in current data: West ≈ 56.8%, South ≈ 18.9%, Alaska ≈ 19.6%, East ≈ 4.7%). Year select covers all `all_gaccs` years; story chips highlight 2004, 2009, 2015, 2019, 2020, and latest |
+| **Display text** | Where “Where did the burned acres come from?” geography panel: West vs nation / Four regions / Map by year toggles; map view year select + story chips |
+| **Page location** | Overview `#geo-story-section` map view `#chart-gacc-choropleth`; `data/gacc-regions.geojson`; `js/wfigs-map.js` `renderGaccChoroplethMap`; `scripts/build_gacc_regions_geojson.py` |
+| **Status** | Supported (derived) |
+| **Confidence** | Medium |
+| **Sources** | Same NICC regional shares as C-R06; [NICC Predictive Services / Intelligence](https://www.nifc.gov/nicc/predictive-services/intelligence); state polygons tagged to page rollups (not official GACC boundaries) |
+| **Limitations** | Geometry is state-approximate for literacy only; GACC lines cut through some states; Hawaii omitted; fill is regional share, not state-level acres or fire counts |
+| **Related** | C-R06, C-M07, C-R01, C-WFIGS01 |
+
+---
+
+### C-WFIGS01 — WFIGS YTD perimeter snapshot (ops context)
+
+| Field | Value |
+|---|---|
+| **Normalized statement** | Overview Ops snapshot shows a static NIFC WFIGS Year-to-Date fire perimeter snapshot (GIS acres ≥ 100), labeled as an operational map as of the fetch timestamp; perimeter acre sums are not the NIFC National Fire News YTD total and are not mixed into Overview callout math |
+| **Display text** | Overview Ops details: "Where have mapped fires burned so far this year?" `#map-wfigs-ytd` |
+| **Page location** | Overview `#wfigs-map-section` (Ops snapshot details); Home WFIGS map; `data/wfigs-ytd-snapshot.geojson`; `data/wfigs-ytd-notes.md`; `scripts/fetch_wfigs_ytd.py` |
+| **Status** | Supported (snapshot provenance) / Editorial (ops framing) |
+| **Confidence** | Medium |
+| **Sources** | NIFC WFIGS Interagency Perimeters YearToDate FeatureServer; Open Data portal |
+| **Limitations** | Static file (not live); incomplete coverage; lags fire front; small fires omitted; geometry simplified for page weight; do not equate perimeter sum with NIFC YTD acres |
+| **Related** | C-F01, C-F04, C-X01, C-R12 |
 
 ---
 
@@ -842,8 +904,8 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 | Field | Value |
 |---|---|
 | **Normalized statement** | gridMET western May and March-May mean VPD (2010-2025, n=16) vs calendar-year acres: May VPD vs western GACC acres Pearson r ≈ 0.496; Mar-May vs western acres r ≈ 0.544; fire-season VPD vs western acres r ≈ 0.808 (same window); May VPD year t vs western acres t+1 r ≈ −0.54 (n=15). Outcome is still calendar-year burn totals, not summer-only acres |
-| **Display text** | Coupling research accordion row; `data/vpd-monthly-correlation-notes.md` |
-| **Page location** | Repository only (not main charts); `data/vpd-monthly-annual.csv`; `scripts/extend_vpd_monthly.py`; `scripts/compute_vpd_monthly_correlations.py` |
+| **Display text** | Drivers scatter May VPD toggle; reliability “more pairings”; Context HFR research notes |
+| **Page location** | Drivers `#chart-scatter` (May VPD driver); `data/vpd-monthly-annual.csv`; `scripts/extend_vpd_monthly.py`; `scripts/compute_vpd_monthly_correlations.py` |
 | **Status** | Supported (derived) |
 | **Confidence** | Medium |
 | **Limitations** | Exploratory; May and fire-season VPD highly correlated; no monthly burn data for true summer-acres test; not causal |
@@ -856,8 +918,8 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 | Field | Value |
 |---|---|
 | **Normalized statement** | HFR-DOI-FS WUI and Non-WUI columns are designation acres from the same prevention tables (FY 2003-2021). Median WUI share of designation acres ≈ 59.0%. Exploratory Pearson r (WUI share vs national acres, same FY label) ≈ 0.202 (n=19); combined WUI acres vs national acres r ≈ 0.003; combined treatment vs national acres r ≈ −0.135 |
-| **Display text** | Drivers WUI share chart; “Why this is important” links large seasons (Outcomes) to community-adjacent designation; median 59%; FY 2003-2021 |
-| **Page location** | Drivers tab WUI chart (after treatment dual-axis); `data/hfr-wui-notes.md` |
+| **Display text** | Context WUI share chart; Overview large-season link; median 59%; FY 2003-2021 |
+| **Page location** | Context tab WUI chart; `data/hfr-wui-notes.md` |
 | **Status** | Supported (derived) |
 | **Confidence** | Medium |
 | **Limitations** | WUI designation ≠ homes protected or treatment effectiveness; fiscal vs calendar year mismatch for acres; not causal |
@@ -870,12 +932,44 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 | Field | Value |
 |---|---|
 | **Normalized statement** | NICC annual report GACC Total columns for lightning vs human caused acres burned extracted for 2003-2006, 2010-2012 (n=7 on ignition chart); median lightning share ≈ 61%; 2007 has percent-only cause tables; 2008-2009 lightning+human pages were hand-read for regional GACC totals but ignition chart remains n=7 (cause share series not extended) |
-| **Display text** | Coupling supplementary ignition stacked bar; median lightning share ≈ 61% |
-| **Page location** | Coupling tab supplementary `<details>`; `data/ignition-cause-notes.md` |
+| **Display text** | Methods gaps + `ignition-cause-notes.md` / CSV (not charted on Drivers main path) |
+| **Page location** | Methods → Dataset gaps; `data/ignition-cause-notes.md`; `data/ignition-cause-annual.csv` |
 | **Status** | Supported (derived) |
 | **Confidence** | Medium |
-| **Limitations** | Initial cause only; GACC totals may differ from NIFC national series; incomplete year window; not causal |
-| **Related** | C-X05 |
+| **Limitations** | Initial cause only; GACC totals may differ from NIFC national series; incomplete year window; acres metric ≠ national start counts in C-R14; not causal |
+| **Related** | C-X05, C-R14, C-R15, C-E03 |
+
+---
+
+### C-R14 — Human share of U.S. wildfire starts (~84–85%)
+
+| Field | Value |
+|---|---|
+| **Normalized statement** | Roughly 84–85% of U.S. wildfire ignitions (starts) are human-caused; Balch et al. (2017) report 84% of wildfires human-started (1992–2012); NPS summarizes nearly 85%. Examples of human causes include power lines, equipment, debris burning, arson, and campfires (illustrative, not national subtype shares) |
+| **Display text** | Methods gaps: “About 84–85% of U.S. wildfire starts are human-caused…”; Drivers main-path lede stays unquantified (“Many starts are human-caused”) |
+| **Page location** | Methods → Dataset gaps (ignition bullet); Drivers regional plain-read (unquantified) |
+| **Status** | Supported |
+| **Confidence** | High |
+| **Evidence strength** | High (peer-reviewed national ignition database analysis; agency summary) |
+| **Sources** | [Balch et al. 2017, PNAS](https://www.pnas.org/doi/10.1073/pnas.1617394114); [NPS Wildfire Causes and Evaluations](https://www.nps.gov/articles/wildfire-causes-and-evaluation.htm) |
+| **Limitations** | Starts ≠ acres burned; window and agency coverage differ from NICC GACC acres chart (C-R10); not a 2026 statistic |
+| **Related** | C-R10, C-R15, C-E03 |
+
+---
+
+### C-R15 — Starts vs acres: lightning can dominate burned area
+
+| Field | Value |
+|---|---|
+| **Normalized statement** | Lightning accounts for a minority of U.S. wildfire starts but can represent a large share of area burned; Balch et al. (2017) attribute ~44% of total area burned to human-started fires (implying lightning a large share of the remainder) and find lightning-started fires dominant mainly in sparsely populated mountainous western areas |
+| **Display text** | Drivers regional plain-read: lightning can still drive a large share of acres burned; Methods gaps expand Balch starts-vs-acres contrast |
+| **Page location** | Drivers section 1 plain-read; Methods → Dataset gaps |
+| **Status** | Supported |
+| **Confidence** | High |
+| **Evidence strength** | High for national starts-vs-area contrast (Balch); Medium for “remote western forests” geographic gloss |
+| **Sources** | [Balch et al. 2017, PNAS](https://www.pnas.org/doi/10.1073/pnas.1617394114) |
+| **Limitations** | National study window 1992–2012; not the same as C-R10 NICC n=7 acres shares; suppression response speed not claimed |
+| **Related** | C-R14, C-R10, C-E03 |
 
 ---
 
@@ -884,8 +978,8 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 | Field | Value |
 |---|---|
 | **Normalized statement** | Alternate Pearson r windows for western acres vs ERC/VPD: 2010-2025 (r ≈ 0.821 / 0.808, n=16); 2013-2025 (r ≈ 0.833 / 0.765, n=13); excl. 2020 (r ≈ 0.773 / 0.778, n=15) |
-| **Display text** | Coupling supplementary sensitivity table |
-| **Page location** | Coupling tab supplementary details; `data/correlation-sensitivity.csv` |
+| **Display text** | Drivers reliability Diagnostics → sensitivity table |
+| **Page location** | Drivers `#reliability-diagnostics` / `#sensitivity-table-body`; `data/correlation-sensitivity.csv` |
 | **Status** | Methodological |
 | **Confidence** | High |
 | **Related** | C-W02, C-W03, C-X05 |
@@ -898,7 +992,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 |---|---|
 | **Normalized statement** | Pearson correlation between western fire-season VPD and western GACC acres burned for 2010-2025 is approximately 0.81 (repository value 0.808) |
 | **Display text** | "Western acres burned vs western VPD" r = 0.81; scatter default western mode |
-| **Page location** | Coupling tab correlation table and scatter |
+| **Page location** | Drivers tab correlation table and scatter |
 | **Status** | Supported |
 | **Confidence** | High |
 | **Evidence strength** | High for this bivariate window (exploratory only) |
@@ -913,8 +1007,8 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 | Field | Value |
 |---|---|
 | **Normalized statement** | In most years the majority of U.S. GACC acres burned occur in western GACCs (median western share ≈ 60% of the national GACC sum for 2003-2025, n=23); western-led national years include 2020 and 2021 (western share ≈ 92% and 87%); Alaska-heavy years include 2004, 2009, and 2019 (Alaska ≈ 81%, 50%, and 54% of national GACC acres) so national totals rose while western acres stayed lower |
-| **Display text** | Outcomes briefing + nested bars (national shell, western fill); median western share ≈ 60%; 2020/2021 both high; 2004/2009/2019 national rises with western lower |
-| **Page location** | Outcomes tab `#chart-western-acres-outcomes`; Patterns western acres + regional share; How to read Start here |
+| **Display text** | Where geography panel “West vs nation” view; median western share ≈ 60%; 2020/2021 both high; 2004/2009/2019 national rises with western lower |
+| **Page location** | Overview `#geo-story-section` / `#chart-western-acres-outcomes`; Overview geography; Methods how to read |
 | **Status** | Supported |
 | **Confidence** | High |
 | **Evidence strength** | High (quantified via NICC GACC sums in `data/regional-acres-annual.csv`) |
@@ -932,7 +1026,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 |---|---|
 | **Normalized statement** | Since at least 2016, wildfire smoke has influenced trends in average annual PM2.5 concentrations in nearly three-quarters of contiguous U.S. states, eroding about 25% of prior multi-decadal PM2.5 progress on average in those states (more than 50% in many western states) |
 | **Display text** | Why smoke matters prose (Burke et al. 2023) |
-| **Page location** | How to read → Why smoke matters |
+| **Page location** | Impacts → Why smoke matters |
 | **Status** | Supported (literature attribution) |
 | **Confidence** | High |
 | **Sources** | Burke et al. 2023, *Nature* [doi:10.1038/s41586-023-06522-6](https://doi.org/10.1038/s41586-023-06522-6) |
@@ -945,7 +1039,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 |---|---|
 | **Normalized statement** | Childs et al. (2022) report that the number of people in locations with at least one day of smoke PM2.5 above 100 µg/m³ per year increased sharply over the 2010s, including nearly 25 million people in 2020 alone |
 | **Display text** | Why smoke matters prose (Childs et al. 2022) |
-| **Page location** | How to read → Why smoke matters |
+| **Page location** | Impacts → Why smoke matters |
 | **Status** | Supported (literature attribution) |
 | **Confidence** | High |
 | **Sources** | Childs et al. 2022, *Environ. Sci. Technol.* [doi:10.1021/acs.est.2c02934](https://doi.org/10.1021/acs.est.2c02934) |
@@ -957,8 +1051,8 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 | Field | Value |
 |---|---|
 | **Normalized statement** | Annual chart shows unweighted mean of county-level daily wildfire smoke PM2.5 (µg/m³) across the contiguous U.S., 2006-2020, from Childs et al. county daily predictions (non-smoke days = 0) |
-| **Display text** | `#chart-smoke-pm25` on How to read |
-| **Page location** | How to read → Why smoke matters |
+| **Display text** | `#chart-smoke-pm25` on Impacts |
+| **Page location** | Impacts → Why smoke matters |
 | **Status** | Supported |
 | **Confidence** | Medium-High |
 | **Sources** | `data/smoke-pm25-annual.csv`; `scripts/build_smoke_annual.py`; Harvard Dataverse [doi:10.7910/DVN/DJVMTV](https://doi.org/10.7910/DVN/DJVMTV) |
@@ -971,11 +1065,11 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 |---|---|
 | **Normalized statement** | Pearson r between NIFC national acres burned (millions) and CONUS mean daily smoke PM2.5 (µg/m³) is positive for 2006-2020 (n=15); displayed dynamically in Why smoke matters prose |
 | **Display text** | `#smoke-acres-r-text` exploratory sentence |
-| **Page location** | How to read → Why smoke matters |
+| **Page location** | Impacts → Why smoke matters |
 | **Status** | Supported (derived, exploratory) |
 | **Confidence** | Medium |
 | **Sources** | `data/wildfire-data.csv` + `data/smoke-pm25-annual.csv` |
-| **Limitations** | n=15; geography mismatch (national acres vs CONUS smoke); correlation ≠ causation; not on Patterns tab |
+| **Limitations** | n=15; geography mismatch (national acres vs CONUS smoke); correlation ≠ causation; on Impacts tab |
 | **Related** | C-X05, C-IMP03 |
 
 ---
@@ -985,8 +1079,8 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 | Field | Value |
 |---|---|
 | **Normalized statement** | For 2010-2025 western GACC acres vs western fire-season ERC/VPD (n=16): raw r ≈ 0.821 / 0.808; partial r after controlling for the other dryness index ≈ 0.299 / 0.176; controlling for linear year barely changes raw r; ERC–VPD collinearity r ≈ 0.944; joint ERC+VPD multiple R² ≈ 0.684 |
-| **Display text** | Patterns supplementary “What changes with controls?” table |
-| **Page location** | Patterns → supplementary details |
+| **Display text** | Drivers reliability table → Diagnostics (partials) |
+| **Page location** | Drivers `#reliability-diagnostics` / `#partial-corr-table-body` |
 | **Status** | Supported (derived, exploratory) |
 | **Confidence** | Medium |
 | **Sources** | `data/correlation-partial.csv`; `scripts/compute_partial_correlations.py` |
@@ -998,8 +1092,8 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 | Field | Value |
 |---|---|
 | **Normalized statement** | Westerling et al. (2006) report that average western U.S. forest wildfire season length increased by about 78 days (64%) comparing 1970–1986 with 1987–2003, and average discovery-to-control duration rose from 7.5 to 37.1 days, associated with warmer springs and earlier snowmelt |
-| **Display text** | Patterns Westerling prose |
-| **Page location** | Patterns tab literature block |
+| **Display text** | Drivers Westerling prose |
+| **Page location** | Drivers literature block (Westerling) |
 | **Status** | Supported (literature attribution) |
 | **Confidence** | High |
 | **Sources** | Westerling et al. 2006, *Science* [doi:10.1126/science.1128834](https://doi.org/10.1126/science.1128834) |
@@ -1012,7 +1106,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 |---|---|
 | **Normalized statement** | In Westerling et al. 2006 snowmelt analysis, early-snowmelt years accounted for 56% of large western forest fires and 72% of area burned; late-snowmelt years accounted for 11% of fires and 4% of area burned; middle tercile shares on the page are remainders (33% / 24%) |
 | **Display text** | `#chart-westerling-snowmelt` grouped bars |
-| **Page location** | Patterns tab |
+| **Page location** | Drivers `#chart-westerling-snowmelt` |
 | **Status** | Supported (literature attribution; middle derived) |
 | **Confidence** | High for early/late; Medium for middle remainder |
 | **Sources** | `data/westerling-snowmelt-tercile.csv`; `data/westerling-2006-notes.md`; Westerling et al. 2006 |
@@ -1029,7 +1123,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 |---|---|
 | **Normalized statement** | True May-dry → summer-burn tests require monthly (or summer-only) burn acres; this page does not yet publish that series |
 | **Display text** | How to read gaps; `monthly-burn-gap-notes.md` |
-| **Page location** | How to read dataset gaps; Phase 2 backlog |
+| **Page location** | Methods dataset gaps; Phase 2 backlog |
 | **Status** | Excluded |
 | **Confidence** | n/a |
 | **Sources** | Planned: NIFC monthly / MTBS |
@@ -1041,7 +1135,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 |---|---|
 | **Normalized statement** | State or ecoregion small multiples are not on the live page; regional GACC share is the shipped geography alternative |
 | **Display text** | How to read gaps; `state-ecoregion-research-notes.md` |
-| **Page location** | How to read; Phase 2 backlog |
+| **Page location** | Methods gaps; Phase 2 backlog |
 | **Status** | Excluded |
 | **Confidence** | n/a |
 | **Related** | C-R06, C-M07 |
@@ -1051,8 +1145,8 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 | Field | Value |
 |---|---|
 | **Normalized statement** | NICC ignition cause acres for the supplementary chart remain n=7 (2003-2006, 2010-2012); 2007 percent-only; 2008-2009 pages were used for regional GACC totals but cause-share series was not extended onto the ignition chart |
-| **Display text** | Coupling/Patterns supplementary; `ignition-cause-notes.md` |
-| **Page location** | Patterns supplementary; Phase 2 backlog |
+| **Display text** | Methods gaps; `ignition-cause-notes.md` |
+| **Page location** | Methods → Dataset gaps; Phase 2 backlog |
 | **Status** | Supported (as a gap statement) |
 | **Confidence** | High |
 | **Related** | C-R10 |
@@ -1086,23 +1180,33 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 
 ---
 
+### C-E03 — Dryness conditions amplify ignitions (framing)
+
+| Field | Value |
+|---|---|
+| **Statement** | Heat, drought, low humidity, and wind set conditions that turn ordinary ignitions into large fires; the page shows co-movement with dryness indices, not proof that climate or any single factor caused a given fire season |
+| **Display text** | Drivers framing: dryness makes large fires more likely once a fire is going (dek + regional plain-read) |
+| **Page location** | Drivers dek / section 1 plain-read |
+| **Status** | Editorial |
+| **Depends on** | C-R14, C-R15, C-Lit01, C-X01 |
+| **Notes** | Aligns with fuel-aridity literature framing; must not imply 2025 treatment cuts caused 2026 |
+
+---
+
 ## Page location index
 
-Quick lookup: where each claim appears on `index.html`.
+Quick lookup: where each claim appears on `explore.html` / `index.html`.
 
 | Location | Claim IDs |
 |---|---|
-| Header dek | C-F01, C-F02, C-F11 |
-| Intro block | C-X01, C-X04 |
-| Intro story spine | C-X01 |
-| Outcomes tab | C-F01, C-F02, C-F03, C-F04, C-F08, C-F09, C-F10, C-M01, C-M07 |
-| Drivers tab | C-A01, C-D01, C-D02, C-D03, C-M04, C-M05, C-M06, C-P04, C-P05, C-P07, C-P08, C-P09, C-V01, C-V02, C-V03 |
-| Drivers tab | C-P01, C-P02, C-P03, C-P04, C-P05, C-P06, C-P07, C-P08, C-P09, C-V01, C-V02, C-V03, C-R09 |
-| Coupling tab (main) | C-X05, C-C01, C-C02, C-C03, C-C04, C-Lit01, C-W01, C-W02, C-W03, C-M02, C-M03, C-M06, C-M07, C-V02, C-V03, C-R06, C-R07 |
-| Coupling supplementary | C-R08, C-R10, C-R11 |
-| How to read tab | C-X06, C-F04, C-F09, C-F11, C-P01, C-P02, C-F08, C-RS01, C-RS02, C-X01, C-X02, C-M03, C-M04, C-M05, C-M07, C-IMP01, C-IMP02, C-IMP03, C-IMP04 |
-| How to read methodology | C-F05, C-F06, C-F07, C-P06, C-F08, C-RS01, C-X05 |
-| Meta / OG tags | C-F01, C-F02 (twitter description) |
+| Home (`index.html`) | C-F01, C-F02, C-X06, C-WFIGS01 |
+| Explore header | C-X06 (lede); kicker Updated August 2026 |
+| Overview | C-F01, C-F02, C-F03, C-F04, C-F08, C-F09, C-F12, C-M01, C-M07, C-R06, C-R12, C-WFIGS01 |
+| Drivers | C-Lit01, C-Lit02, C-Lit03, C-W02, C-W03, C-R03, C-R08, C-R13, C-C05, C-R11, C-E03, C-R15, C-V01–C-V03, C-D01–C-D03 |
+| Context | C-P01–C-P09, C-R09, C-A01, treatment / WUI charts |
+| Impacts | C-IMP01–C-IMP04, C-X01 |
+| Methods | C-X05, C-X06, C-F05–C-F07, C-P06, C-RS01, C-R10, C-R14, C-C02, C-P2-01–C-P2-03, glossary |
+| Meta / OG tags | C-F01, C-F02 |
 
 ---
 
@@ -1110,7 +1214,7 @@ Quick lookup: where each claim appears on `index.html`.
 
 Before updating the live page:
 
-1. [x] Every new sentence in `index.html` maps to a claim ID or is marked Editorial
+1. [x] Every new sentence on `index.html` / `explore.html` maps to a claim ID or is marked Editorial
 2. [x] Numeric claims match `data/wildfire-data.csv` after data refresh
 3. [x] Forecast claims (C-F08) remain labeled Speculative in copy
 4. [x] No claim upgraded to causal without new identification evidence
@@ -1122,7 +1226,13 @@ Before updating the live page:
 
 | Date | Change |
 |---|---|
-| 2026-07-17 | Smoke impacts: C-IMP01-04; Why smoke matters + CONUS smoke PM2.5 chart (Childs 2006-2020) on How to read |
+| 2026-08-04 | Home: drop rank + AccuWeather peer tiles (keep 5.2M / +37%); remove LTE / “An Ounce of Prevention” origin wording from README |
+| 2026-08-04 | Pre-publish: README August byline + Overview wording; claims page-location index synced to Home/Overview/Drivers/Context/Impacts/Methods; C-WFIGS01 / C-Lit03 locations; QA audit report tab map |
+| 2026-08-04 | Drivers flow polish: merge section 0; chip-aware handoff; nest reliability; Westerling retitled; ignition/lag → Methods gaps; claim locations updated |
+| 2026-08-04 | Ignition research-checks copy: C-R14 (~84–85% starts), C-R15 (starts vs acres), C-E03 (dryness framing); later moved to Methods gaps |
+| 2026-08-03 | Rename to Wildfire Season Briefing; home (`index.html`) + explore (`explore.html`) |
+| 2026-08-03 | Refresh 2026 YTD to NIFC Aug 3 (C-F01–C-F04: 5.2M, +37%, still 3rd); DSCI partial through Jul 28, 30 weeks (C-D02); WFIGS snapshot n=962 |
+| 2026-07-17 | Smoke impacts: C-IMP01-04; Why smoke matters + CONUS smoke PM2.5 chart (Childs 2006-2020) on Impacts |
 | 2026-07-17 | Closed 2008-2009 GACC gap (hand OCR); C-R06/C-R07/C-M07 updated; median western share ≈ 60% (n=23, 2003-2025) |
 | 2026-07-16 | Phase 2 scaffold: C-P2-01/02/03; GACC hand-extract template + export script; PAPER_REVIEW Jul 16 pass; byline July 2026 |
 | 2026-07-16 | Readability pass: type scale; Outcomes 2+2 callouts; mid-season “underway”; Q→chart→notice→next; Patterns tab label; DSCI YTD-average sentence; collapsed How to read drawers; C-F11 display text |
@@ -1130,7 +1240,7 @@ Before updating the live page:
 | 2026-07-16 | Tiers A-C UI: story rebalance, ignition chart (C-R10), sensitivity table (C-R11), Start here, dataset gaps; C-P03 moved to Drivers; Stateline C-RS01 re-verified |
 | 2026-07-12 | HFR prevention FY 2003-2021 (C-P07); pre-2010 GACC acres 2003-2007 (C-R07); 2008-2009 gap documented |
 | 2026-07-12 | Extended chart windows: lag 1979-2024; regional share 2003-2025; treatment HFR 2003-2021 + page 2022-2025; western acres chart 2003-2025 |
-| 2026-07-12 | Story spine in header; Coupling tab trimmed (scatter first; bar/matrix/lag in supplementary details); dual-axis HFR treatment vs acres on Drivers (C-P08) |
+| 2026-07-12 | Story spine in header; Context tab trimmed (scatter first; bar/matrix/lag in supplementary details); dual-axis HFR treatment vs acres on Drivers (C-P08) |
 | 2026-07-11 | Southeast fm100 (C-R05); regional GACC share chart (C-R06); south fm100 does not beat VPD |
 | 2026-07-11 | Regional Phase 3: NWS regional DSCI (C-R04); Coupling regional accordion (C-R03) |
 | 2026-07-11 | Regional Phase 2: C-R02/C-R03; regional gridMET + correlation rank CSVs |
@@ -1145,3 +1255,8 @@ Before updating the live page:
 | 2026-07-04 | Copy fixes C-F04 (2022 ~3.1M), C-D02 (DSCI through June 16); tighter page margins |
 | 2026-07-04 | Structured fact-check pass; see [`fact-check-log.md`](fact-check-log.md) (0 fail, 4 warn) |
 | 2026-07-03 | Initial registry from live page (four panels, June 18 YTD) |
+| 2026-08-03 | Named-subject copy: Home/Overview/Drivers/Context/Impacts deks and questions lead with U.S. acres burned (or treatment/smoke); C-X06 display text synced |
+| 2026-08-03 | Drivers open: multi-factor prose + regional top-2 correlation bars (West/South/East); C-R03 page location → Drivers main path |
+| 2026-08-03 | South KBDI: `extend_kbdi.py` + `south-kbdi-annual.csv`; r ≈ 0.20 vs SA acres (n=13); does not beat VPD; C-R13 |
+
+| 2026-08-03 | Tab IA: Overview · Drivers · Context · Impacts + Methods; page locations remapped (Where→Overview; dryness/coupling→Drivers; treatment stays Context) |

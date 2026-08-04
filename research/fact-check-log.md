@@ -1,5 +1,233 @@
 # Fact-check log
 
+**Run date:** 2026-08-04 (Home stats trim + LTE wording)  
+**Summary:** PASS (UI/docs). Home keeps 5.2M / +37% only; dropped 3rd and AccuWeather peer tiles. C-F04 / C-F08 remain on Overview (and Methods for forecast). Removed “An Ounce of Prevention” / LTE origin line from README. No figure changes to observed YTD.
+
+---
+
+**Run date:** 2026-08-04 (Pre-publish doc sync)  
+**Summary:** PASS (docs). README August byline + Overview fires toggle wording. Claims page-location index remapped to Home / Overview / Drivers / Context / Impacts / Methods. C-WFIGS01 and C-Lit03 locations fixed. `qa-audit-report.md` tab map refreshed. No figure changes.
+
+---
+
+**Run date:** 2026-08-04 (Explore header chrome)  
+**Summary:** PASS (UI/copy). Restored Explore kicker (Updated August 2026), linked title → Home, project lede (same framing as Home / C-X06). No figure changes. Removed separate Home link.
+
+---
+
+**Run date:** 2026-08-04 (Visual + structure polish)  
+**Summary:** PASS (UI). Explore muted site-wide photo bg + cream scrim; visible h1; dropped numbered section labels and handoff-only Next notes; Context treatment limits compacted with Methods link. No figure changes. Geo/Drivers clocks and West-share facts kept inside captions/Limits via JS.
+
+---
+
+**Run date:** 2026-08-04 (Drivers flow polish)  
+**Summary:** PASS (UI). Merge section 0 into regional frame; chip-aware Next handoff; nest reliability under scatter; Westerling retitled as literature; ignition/lag charts removed from Drivers → Methods gaps. Figures unchanged. Claim locations for C-R10, C-R14, C-R15, C-E03, C-C02, C-P2-03 updated.
+
+---
+
+**Run date:** 2026-08-04 (Ignition starts vs acres copy)  
+**Claims checked:** C-R14, C-R15, C-E03, C-R10, C-P2-03  
+**Summary:** PASS (copy). ~84–85% human *starts* (Balch 2017 / NPS); lightning can dominate *acres*. Later moved quantified starts copy to Methods gaps; Drivers main path stays unquantified.
+
+---
+
+**Run date:** 2026-08-04 (Drivers trim)  
+**Summary:** PASS (UI). Five-beat Drivers path; Bars|Table regional; May on scatter; expandable reliability table; HFR notes moved to Context. No figure changes. Claims C-Lit01, C-R03, C-R08, C-R13, C-C05 page locations updated.
+
+---
+
+**Run date:** 2026-08-03 (South KBDI)  
+**Summary:** PASS (derived). Jan-May SE KBDI from gridMET tmmx+pr; r ≈ 0.20 vs SA acres (n=13); does not beat VPD 0.36. C-R13. Drivers South copy + glossary updated.
+
+---
+
+**Run date:** 2026-08-03 (Drivers regional top bars)  
+**Summary:** PASS (UI + derived). Drivers open prose + West/South/East top-2 bars from regional-correlation-rank.csv. C-R03 figures unchanged. No invented ignition %.
+
+---
+
+**Run date:** 2026-08-03 (named-subject copy)  
+**Summary:** PASS (copy only). Ledes/deks/questions name U.S. acres burned (not “how large is this season”). Figures unchanged (5.2M / +37% / 3rd / Aug 3).
+
+---
+
+**Run date:** 2026-08-03 (Methods utility tab)  
+**Summary:** PASS (UI only). Methods is right-aligned utility tab; story tabs remain left. Tour still 4 steps.
+
+---
+
+**Run date:** 2026-08-03 (Impacts tab clean-up)  
+**Prior run:** 2026-08-03 (UX IA hybrid)  
+**Claims checked (this pass):** C-IMP01–04, C-X01, C-X06 (location/UI only)  
+**Summary:** PASS (no figure changes; smoke stays on Impacts; methods → About the data; Restart guide removed)
+
+---
+
+## Impacts tab clean-up (2026-08-03)
+
+| Claim ID | Result | Method | Notes |
+|---|---|---|---|
+| C-IMP01–04 | PASS | UI | Smoke prose + chart on Impacts; not 2026 forecast |
+| C-X01 | PASS | About the data | Non-causation closing retained |
+| C-X06 | PASS | About the data | How to read framing moved off Impacts main path |
+
+---
+
+
+**Run date:** 2026-08-03 (UX IA hybrid: tab rename + AccuWeather demotion)  
+**Prior run:** 2026-08-03 (August YTD + DSCI + WFIGS refresh)  
+**Claims checked (this pass):** C-F01, C-F02, C-F04, C-F08, C-R12, C-WFIGS01 (location/UI only)  
+**Summary:** 6 PASS · 0 FAIL (figures unchanged from Aug 3 refresh; AccuWeather no longer a peer callout)
+
+---
+
+## UX IA hybrid + polish (2026-08-03)
+
+| Claim ID | Result | Method | Notes |
+|---|---|---|---|
+| C-F01 | PASS | Page + CSV | Still 5.2M / Aug 3; lives on Overview |
+| C-F02 | PASS | Page | +37% same-date; Overview |
+| C-F04 | PASS | Page | 3rd secondary callout only |
+| C-F08 | PASS | UI | AccuWeather 5.5-8M on fire chart legend + Notes; not peer callout |
+| C-R12 | PASS | Where tab | Geography panel; regions default |
+| C-WFIGS01 | PASS | Where Ops details | Deferred fetch; soft-fail unchanged |
+
+---
+
+**Run date:** 2026-08-03 (August YTD + DSCI + WFIGS refresh)  
+**Prior run:** 2026-08-03 (Outcomes callouts + geography toggles)  
+**Claims checked (this pass):** C-F01, C-F02, C-F03, C-F04, C-D02, C-WFIGS01  
+**Summary:** 6 PASS · 0 FAIL
+
+---
+
+## August YTD + DSCI + WFIGS refresh (2026-08-03)
+
+| Claim ID | Result | Method | Notes |
+|---|---|---|---|
+| C-F01 | PASS | NIFC NFN Aug 3 | 5,154,596 acres; CSV `5.2`; page 5.2M |
+| C-F02 | PASS | NFN 10-yr YTD cell | 5,154,596 vs 3,759,429 → +37.1% (~+37%) |
+| C-F03 | PASS | derived | ~137% of same-date 10-yr avg |
+| C-F04 | PASS | NFN same-date table | 3rd behind 2022 (~5.80M) and 2017 (~5.73M) |
+| C-D02 | PASS | USDM API | National 168.8 / western 158.7; 30 weeks through 2026-07-28 |
+| C-WFIGS01 | PASS | `wfigs-ytd-snapshot.geojson` | n=962; ~6.11M perimeter acres sum; ops label only |
+
+---
+
+**Run date:** 2026-08-03 (Outcomes callouts + geography toggles)  
+**Prior run:** 2026-08-03 (acres / fires chart toggle)  
+**Claims checked (this pass):** C-F01, C-F02, C-F04, C-F08, C-R12, C-M07, C-R06  
+**Summary:** 7 PASS · 0 FAIL (superseded by August YTD refresh above for C-F01/02/04)
+
+---
+
+## Outcomes callouts + geography toggles (2026-08-03)
+
+| Claim ID | Result | Method | Notes |
+|---|---|---|---|
+| C-F01 | PASS | Callout label | YTD through July 16 spelled out (later refreshed to Aug 3) |
+| C-F02 | PASS | Callout label | Same-date mid-July, not full year (later refreshed) |
+| C-F04 | PASS | Callout label | 3rd-highest mid-July; not full-year worst (later refreshed) |
+| C-F08 | PASS | Callout label | AccuWeather speculative forecast |
+| C-R12 / C-M07 / C-R06 | PASS | `#geo-story-section` | Three views retained: west / regions / map |
+
+---
+
+**Run date:** 2026-08-03 (acres / fires chart toggle)  
+**Prior run:** 2026-08-03 (fire chart mode-specific copy)  
+**Claims checked (this pass):** C-F12, C-F10, C-F09  
+**Summary:** 3 PASS · 0 FAIL
+
+---
+
+## Acres / fires chart toggle (2026-08-03)
+
+| Claim ID | Result | Method | Notes |
+|---|---|---|---|
+| C-F12 | PASS | NIFC wildfires table vs `fires_count` | 2025 = 77,850; 2020 = 58,950; 1983 = 18,229; 2026 blank |
+| C-F10 | PASS (off-page) | UI | % toggle removed; rolling % still computable in JS |
+| C-F09 | PASS | Acres mode band | Band still on Million acres view only; starts 1993 |
+
+---
+
+**Run date:** 2026-08-03 (fire chart mode-specific copy)  
+**Prior run:** 2026-08-03 (GACC dual-encoding map)  
+**Claims checked (this pass):** C-F09, C-F10, C-F02  
+**Summary:** 3 PASS · 0 FAIL
+
+---
+
+## Fire chart mode-specific copy (2026-08-03)
+
+| Claim ID | Result | Method | Notes |
+|---|---|---|---|
+| C-F09 | PASS | `wildfire-data.csv` rolling windows | Trailing mean ≈ 2.69M before 1993; ≈ 7.55M before 2025 (display ≈ 2.7M / 7.5M) |
+| C-F10 | PASS | UI toggle + `updateFireChartCopy` | % mode plain-read/caption warn against downward-trend misread; acres not fire counts |
+| C-F02 | PASS | Distinction in % caption | Header +29% remains YTD same-date; chart % is full-year trailing mean |
+
+---
+
+**Run date:** 2026-08-03 (GACC dual-encoding map)  
+**Prior run:** 2026-08-03 (Phase 3 WFIGS snapshot)  
+**Claims checked (this pass):** C-R12  
+**Summary:** 1 PASS · 0 FAIL
+
+---
+
+## GACC dual-encoding map (2026-08-03)
+
+| Claim ID | Result | Method | Notes |
+|---|---|---|---|
+| C-R12 | PASS (derived) | `regional-acres-annual.csv` + Leaflet style | Outline = region; red fill = regional share; plain-read defines GACC acres; NICC intelligence + CSV linked; 2025 West ≈ 57% |
+
+---
+
+**Run date:** 2026-08-03 (Phase 3 WFIGS snapshot)  
+**Prior run:** 2026-08-03 (Phase 2 GACC year control)  
+**Claims checked (this pass):** C-WFIGS01  
+**Summary:** 1 PASS · 0 FAIL
+
+---
+
+## Phase 3 WFIGS YTD snapshot (2026-08-03)
+
+| Claim ID | Result | Method | Notes |
+|---|---|---|---|
+| C-WFIGS01 | PASS | `wfigs-ytd-snapshot.geojson` props + page copy | n=961 features ≥100 GIS acres; ~6.07M perimeter acres sum; labeled ops snapshot; soft-fail boot; not mixed into 3.7M NFN callout |
+
+---
+
+**Run date:** 2026-08-03 (Phase 2 GACC year control)  
+**Prior run:** 2026-08-03 (Phase 1 GACC choropleth)  
+**Claims checked (this pass):** C-R12  
+**Summary:** 1 PASS · 0 FAIL
+
+---
+
+## Phase 2 GACC year control (2026-08-03)
+
+| Claim ID | Result | Method | Notes |
+|---|---|---|---|
+| C-R12 | PASS (derived) | `regional-acres-annual.csv` + UI | Year select + story chips; 2004 Alaska share ≈ 81%; 2025 West ≈ 57%; map re-renders without blocking Outcomes |
+
+---
+
+**Run date:** 2026-08-03 (Phase 1 GACC choropleth)  
+**Prior run:** 2026-07-18 (Drivers reorder + treatment partials)  
+**Claims checked (this pass):** C-R12, C-R06  
+**Summary:** 2 PASS · 0 FAIL
+
+---
+
+## Phase 1 GACC choropleth (2026-08-03)
+
+| Claim ID | Result | Method | Notes |
+|---|---|---|---|
+| C-R12 | PASS (derived) | `regional-acres-annual.csv` 2025 + `gacc-regions.geojson` | West 56.8%, South 18.9%, Alaska 19.6%, East 4.7%; Outcomes `#chart-gacc-choropleth` |
+| C-R06 | PASS (copy) | page | Regional share “why next” now points to choropleth; stacked chart unchanged |
+
+---
+
 **Run date:** 2026-07-18 (Drivers reorder + treatment partials)  
 **Prior run:** 2026-07-18 (Patterns badge / partial / Westerling)  
 **Claims checked (this pass):** C-P08, C-P09, C-R09  
@@ -414,13 +642,13 @@ Run when `python scripts/audit_data.py` unavailable:
 
 ## Warnings (no action required)
 
-1. **Live NIFC drift** - Page snapshot is NIFC NFN July 16, 2026 (3,674,911 YTD acres). Later daily NFN updates will diverge; re-freeze when refreshing the page.
+1. **Live NIFC drift** - Page snapshot is NIFC NFN August 3, 2026 (5,154,596 YTD acres). Later daily NFN updates will diverge; re-freeze when refreshing the page.
 
 2. **C-F11 / C-D03** - Qualitative panel/dek statements; not quantitatively verified.
 
 3. **C-R10 window** - Ignition cause chart n=7 in Coupling supplementary; 2007-2009 not machine-extractable from NICC PDFs in repo (documented in `ignition-cause-notes.md`).
 
-4. **C-F02 average** - NFN “10-year average Year-to-Date” cell was blank on Jul 16 fetch; page uses mean of the published 2016-2025 same-date acre rows.
+4. **C-F02 average** - Aug 3 NFN publishes a 10-year average YTD cell (3,759,429 acres); page uses that cell for +37%.
 
 ---
 

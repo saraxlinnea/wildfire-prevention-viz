@@ -10,6 +10,7 @@ REGIONAL_ACRES = ROOT / "data" / "regional-acres-annual.csv"
 REGIONAL_GRIDMET = ROOT / "data" / "regional-gridmet-annual.csv"
 REGIONAL_DSCI = ROOT / "data" / "regional-dsci-annual.csv"
 SOUTH_FM100 = ROOT / "data" / "south-fm100-annual.csv"
+SOUTH_KBDI = ROOT / "data" / "south-kbdi-annual.csv"
 OUT_RANK = ROOT / "data" / "regional-correlation-rank.csv"
 OUT_MATRIX = ROOT / "data" / "regional-correlation-matrix.csv"
 OUT_NOTES = ROOT / "data" / "regional-correlation-notes.md"
@@ -35,10 +36,12 @@ REGION_SPECS = [
         "vpd_col": "south_vpd_kpa",
         "erc_col": "south_erc",
         "fm100_col": "south_fm100_pct",
+        "kbdi_col": "south_kbdi",
         "dsci_col": "south_dsci",
         "driver_geo": "gridMET SE bbox, Jan-Apr",
         "dsci_geo": "USDM NWS Southern Region (SR)",
         "fm100_geo": "gridMET SE bbox, Jan-Apr 100-hr fuel moisture",
+        "kbdi_geo": "gridMET-derived KBDI SE bbox, Jan-May mean",
         "acres_geo": "NICC SA GACC",
     },
     {
@@ -69,6 +72,7 @@ def main() -> None:
     grid = pd.read_csv(REGIONAL_GRIDMET)
     dsci = pd.read_csv(REGIONAL_DSCI)
     fm100 = pd.read_csv(SOUTH_FM100) if SOUTH_FM100.exists() else None
+    kbdi = pd.read_csv(SOUTH_KBDI) if SOUTH_KBDI.exists() else None
     acres["year"] = acres["year"].astype(int)
     grid["year"] = grid["year"].astype(int)
     dsci["year"] = dsci["year"].astype(int)
@@ -77,6 +81,9 @@ def main() -> None:
     if fm100 is not None:
         fm100["year"] = fm100["year"].astype(int)
         df = df.merge(fm100.rename(columns={"fm100_pct": "south_fm100_pct"}), on="year", how="left")
+    if kbdi is not None:
+        kbdi["year"] = kbdi["year"].astype(int)
+        df = df.merge(kbdi.rename(columns={"kbdi": "south_kbdi"}), on="year", how="left")
     df = df[(df["year"] >= WINDOW_START) & (df["year"] <= WINDOW_END)]
     df = df[df["gacc_coverage"] == "all_gaccs"].copy()
 
@@ -92,6 +99,7 @@ def main() -> None:
         "east_vpd_kpa",
         "east_erc",
         "south_fm100_pct",
+        "south_kbdi",
         "west_dsci",
         "east_dsci",
         "south_dsci",
@@ -110,6 +118,8 @@ def main() -> None:
             pairs.append(("erc", spec["erc_col"], spec["driver_geo"]))
         if spec.get("fm100_col"):
             pairs.append(("fm100", spec["fm100_col"], spec["fm100_geo"]))
+        if spec.get("kbdi_col") and spec["kbdi_col"] in df.columns:
+            pairs.append(("kbdi", spec["kbdi_col"], spec["kbdi_geo"]))
         if spec["dsci_col"]:
             pairs.append(("dsci", spec["dsci_col"], spec["dsci_geo"]))
 
@@ -157,6 +167,9 @@ def main() -> None:
         if spec.get("fm100_col") and spec["fm100_col"] in df.columns:
             matrix_cols.append(spec["fm100_col"])
             rename[spec["fm100_col"]] = f"{spec['region']}_fm100"
+        if spec.get("kbdi_col") and spec["kbdi_col"] in df.columns:
+            matrix_cols.append(spec["kbdi_col"])
+            rename[spec["kbdi_col"]] = f"{spec['region']}_kbdi"
         if spec["dsci_col"]:
             matrix_cols.append(spec["dsci_col"])
             rename[spec["dsci_col"]] = f"{spec['region']}_dsci"
@@ -178,23 +191,25 @@ Exploratory only. Notebook/repository analysis; Coupling tab has a summary accor
 ## Geography
 
 - **West:** NICC western GACCs vs gridMET west of 100°W May-Sep + USDM NWS WR DSCI
-- **South:** NICC SA GACC vs gridMET SE bbox Jan-Apr (VPD/ERC/fm100) + USDM NWS SR DSCI
+- **South:** NICC SA GACC vs gridMET SE bbox Jan-Apr (VPD/ERC/fm100), gridMET-derived KBDI Jan-May, + USDM NWS SR DSCI
 - **East:** NICC EA GACC vs gridMET Mid-Atlantic/NE bbox Mar-Jun + USDM NWS ER DSCI
 - **Alaska:** NICC AK GACC vs USDM NWS AR DSCI only (gridMET lat max ~49.4°N)
 
 ## Files
 
-- `regional-correlation-rank.csv`: acres vs VPD/ERC/DSCI ranked within each region
+- `regional-correlation-rank.csv`: acres vs VPD/ERC/DSCI/fm100/KBDI ranked within each region
 - `regional-correlation-matrix.csv`: Pearson matrix for regional series
 - `regional-gridmet-annual.csv`: regional driver series (`scripts/extend_regional_indices.py`)
 - `regional-dsci-annual.csv`: NWS regional DSCI (`scripts/fetch_regional_dsci.py`)
 - `south-fm100-annual.csv`: Southeast Jan-Apr 100-hr fuel moisture (`scripts/extend_fm100.py`)
+- `south-kbdi-annual.csv`: Southeast Jan-May mean KBDI from gridMET tmmx+pr (`scripts/extend_kbdi.py`)
 
 ## Reproduce
 
 ```bash
 python scripts/fetch_regional_dsci.py
 python scripts/extend_fm100.py --start 2010 --end 2025
+python scripts/extend_kbdi.py --start 2010 --end 2025
 python scripts/extend_regional_indices.py --start 2010 --end 2025
 python scripts/compute_regional_correlations.py
 ```

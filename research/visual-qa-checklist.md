@@ -4,78 +4,63 @@ Run after substantive HTML/JS/chart changes. Requires local server (`python3 -m 
 
 ## Setup
 
-- [ ] Open `http://localhost:8000/` (not `file://`)
-- [ ] Hard refresh (`Cmd+Shift+R`)
+- [x] Open `http://localhost:8000/explore.html` (not `file://`)
+- [x] Hard refresh (`Cmd+Shift+R`)
+- [x] Clear `localStorage.wf-guide-seen` once to re-test welcome card
 
-## Outcomes tab
+## Overview
 
-- [ ] Fire chart renders (acres + % toggle)
-- [ ] Rolling band, 2026 YTD point, forecast range visible in acres mode
-- [ ] Primary callouts: 3.7M + +29%; secondary: 3rd + AccuWeather
-- [ ] Chart questions + plain-read on fire and west-vs-nation
-- [ ] West briefing cites median ≈ 60%; nested bars (national shell + western fill), not dual lines
-- [ ] Regional share has continuous bars 2003-2025 (no gray 2008-2009 gap columns)
-- [ ] Regional share chart on Outcomes (stacked bars, full 2003-2025 span)
-- [ ] Y-axis labels visible (chart left padding)
-- [ ] Callouts are fire-only (no 35% treatment)
-- [ ] Header dek: mid-season “underway / Jul-Sep” (not “ahead”)
+- [x] Callouts: 5.2M + +37%; secondary 3rd only (no AccuWeather peer callout)
+- [x] Fire chart renders (acres + fires toggle)
+- [x] Default: Map by year
+- [x] West vs nation and Four regions work
+- [x] Ops snapshot details defer-loads WFIGS
+- [x] No Explore Where bridge CTA; no separate Where tab
 
-## Drivers tab
+## Drivers
 
-- [ ] 35% FS context strip visible
-- [ ] Chart questions on treatment / dual-axis / WUI / dryness
-- [ ] Order: treatment total → dual-axis (+ controls table) → WUI → dryness
-- [ ] Dual-axis on main path (not inside Research `<details>`)
-- [ ] Treatment partial-corr table fills (raw ≈ −0.14; full controls ≈ −0.10)
-- [ ] WUI prose has “Why this is important” linking large seasons to communities
-- [ ] DSCI plain sentence: YTD weekly average (terms + dryness note)
-- [ ] Treatment chart full width; fiscal/calendar + combined/breakdown toggles work
-- [ ] WUI chart full width below dual-axis (not side-by-side smush)
-- [ ] ERC/VPD dryness toggle updates chart and legend text (keep as **lines**, not bars)
-- [ ] Open treatment-per-acre `<details>`; chart embeds
+- [x] Opening prose: multi-factor; starts vs large-acre conditions; vary by region; South mentions KBDI
+- [x] Top-2 regional bars with West / South / East chips (East caveat; South may show VPD + KBDI)
+- [x] South caption: operational KBDI + weak annual r honesty
+- [x] Dryness chart (ERC/VPD toggle) + national DSCI details
+- [x] Literature rank in details; scatter + Westerling on main path
+- [x] Terms: ERC / VPD / DSCI; Methods glossary includes KBDI
+- [x] No treatment / WUI charts on this tab
+- [x] Supplementary research drawers open and fill charts/tables
 
-## Patterns tab (was Coupling)
+## Context
 
-- [ ] Tab label reads **Patterns**
-- [ ] Scatter: ERC/VPD and western/national toggles; dynamic r badge updates (r / n / window)
-- [ ] Methods box includes plain-language r sentence + limited controls + ERC/VPD collinearity
-- [ ] Western acres + regional share charts render
-- [ ] Regional share: stacked **bars** (not blank); continuous 2003-2025; calendar-year + share axis titles
-- [ ] Westerling snowmelt tercile bars render (Early/Middle/Late; literature attribution)
-- [ ] Research `<details>` closed on first visit
-- [ ] Open supplementary `<details>`: partial-corr table, sensitivity table, May VPD, ignition bar, rank bar, matrix, lag
-- [ ] Ignition chart **not** on main path (only inside supplementary)
-- [ ] No ERC × VPD redundancy scatter on page
+- [x] Federal 35% strip + treatment limits + treatment chart + WUI
+- [x] Dual-axis + treatment-per-acre + policy-scatter inside Research details
+- [x] No dryness scatter / ERC chart on this tab
+- [x] Prescribed-burn photo present
 
-## How to read tab
+## Impacts
 
-- [ ] Start here mentions Why smoke matters
-- [ ] Why smoke matters prose cites Burke + Childs with limits
-- [ ] Smoke PM2.5 chart renders 2006-2020; 2020 label visible
-- [ ] Exploratory r sentence populates (r ≈ 0.65)
-- [ ] Start here path is 2-3 minutes with full Outcomes / Drivers / Patterns / limits paragraphs
-- [ ] Dataset gaps + glossary collapsed by default
-- [ ] Policy context uses Stateline-attributed fire/smoke wording (not "many")
+- [x] Tab label **Impacts**
+- [x] Smoke prose + `#chart-smoke-pm25`
+- [x] “Not on this page yet” lists structures / suppression cost / evacuations (no invented numbers)
+- [x] No Restart guide button
 
-## Mobile (~375px width)
+## Methods (right utility tab)
 
-- [ ] Tab bar wraps; active tab visible
-- [ ] Legends wrap; chart heights acceptable
-- [ ] Callouts stack to one column
-- [ ] No horizontal scroll on body
-- [ ] Page still readable at ~1180px desktop width (prose capped, charts full-bleed in panels)
+- [x] Methods sits on the right of the tab bar; story tabs on the left
+- [x] Opens how to read, scientific limits, policy context, gaps, glossary, sources
+- [x] TOC anchors work; footer Methods link switches tab
+- [x] How to read names Overview / Drivers / Context / Impacts
+- [x] Not included as a tour step
 
-## Tooltips
+## Tour / welcome
 
-- [ ] Fire, treatment, scatter, regional share show year + values on hover
-
-## Footer / links
-
-- [ ] CSV download works
-- [ ] Stateline, NIFC, gridMET links open
+- [x] Welcome: Guide me / Skip; restart copy mentions header Tour
+- [x] Guide me: 4 steps Overview → Drivers → Context → Impacts
+- [x] Header Tour always available
+- [x] No `#restart-guide-btn`
+- [x] `?tab=season` and `?tab=where` resolve to Overview
 
 ## Sign-off
 
 | Date | Pass? | Notes |
 |---|---|---|
-| | | |
+| 2026-08-04 | **Pass (structure)** | Visual polish: Explore muted site-wide photo bg + cream scrim; visible h1; dropped numbered section labels and handoff-only Next notes; Context limits → Methods link. AccuWeather still notes-only; WFIGS still Ops details; research drawers not promoted. Hard-refresh with `?v=20260804visual`. |
+| 2026-08-03 | **Pass** | Headless Chrome on `localhost:8000`: Home + Explore (Overview · Drivers · Context · Impacts · Methods). Hard refresh + cleared `wf-guide-seen`. Tour once Overview→Drivers→Context→Impacts. South chip shows KBDI caption (r ≈ 0.20, does not beat VPD). Removed dead CSS for retired Where tab. AccuWeather remains chart legend/notes only (not a peer callout). |

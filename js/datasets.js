@@ -110,7 +110,7 @@ WF.computeRollingBaseline = function (burnData) {
     }
     if (window.length < 10) {
       return {
-        year: d.year, acres: d.acres,
+        year: d.year, acres: d.acres, fires: d.fires,
         rolling_min: null, rolling_max: null, rolling_mean: null,
         pct_dev: null, pct_min: null, pct_max: null
       };
@@ -120,7 +120,7 @@ WF.computeRollingBaseline = function (burnData) {
     const rolling_mean = window.reduce((a, b) => a + b, 0) / 10;
     const pct_dev = ((d.acres - rolling_mean) / rolling_mean) * 100;
     return {
-      year: d.year, acres: d.acres,
+      year: d.year, acres: d.acres, fires: d.fires,
       rolling_min, rolling_max, rolling_mean,
       pct_dev,
       pct_min: ((rolling_min - rolling_mean) / rolling_mean) * 100,
@@ -212,9 +212,14 @@ WF.buildDatasets = function (rows, vpdRows, ercRows, regionalAcresRows, hfrRows,
   const years = rows.map(r => r.year);
   const burnData = rows
     .filter(r => r.acres_burned_millions && r.acres_burned_partial !== 'true')
-    .map(r => ({ year: r.year, acres: parseFloat(r.acres_burned_millions) }));
+    .map(r => ({
+      year: r.year,
+      acres: parseFloat(r.acres_burned_millions),
+      fires: r.fires_count ? parseFloat(r.fires_count) : null
+    }));
   const burnWithRolling = WF.computeRollingBaseline(burnData);
   const bandData = burnWithRolling.filter(d => d.rolling_min !== null);
+  const fireCountData = burnData.filter(d => Number.isFinite(d.fires));
   const partial2026 = rows
     .filter(r => r.acres_burned_partial === 'true')
     .map(r => {
@@ -505,6 +510,52 @@ WF.buildDatasets = function (rows, vpdRows, ercRows, regionalAcresRows, hfrRows,
     });
   regionalShareSeries.sort((a, b) => parseInt(a.year, 10) - parseInt(b.year, 10));
 
+  const gaccChoroplethByYear = {};
+  const gaccChoroplethYears = [];
+  let gaccChoroplethDefaultYear = null;
+  const regionDefs = [
+    { region: 'West', shareKey: 'western_share_of_gacc', acresKey: 'western_acres_millions' },
+    { region: 'South', shareKey: 'southern_share_of_gacc', acresKey: 'southern_acres_millions' },
+    { region: 'Alaska', shareKey: 'alaska_share_of_gacc', acresKey: 'alaska_acres_millions' },
+    { region: 'East', shareKey: 'eastern_share_of_gacc', acresKey: 'eastern_acres_millions' }
+  ];
+  (regionalAcresRows || [])
+    .filter(r => r.gacc_coverage === 'all_gaccs')
+    .forEach(r => {
+      const year = r.year;
+      const rows = [];
+      regionDefs.forEach(({ region, shareKey, acresKey }) => {
+        const share = parseFloat(r[shareKey]);
+        const acres = parseFloat(r[acresKey]);
+        if (!Number.isFinite(share)) return;
+        rows.push({
+          region,
+          year,
+          share_pct: Math.round(share * 1000) / 10,
+          acres_millions: Number.isFinite(acres) ? Math.round(acres * 100) / 100 : null,
+          geo_note: 'NICC GACC acres share · state-approximate region map'
+        });
+      });
+      if (rows.length === 4) {
+        gaccChoroplethByYear[year] = rows;
+        gaccChoroplethYears.push(year);
+      }
+    });
+  gaccChoroplethYears.sort((a, b) => parseInt(a, 10) - parseInt(b, 10));
+  if (gaccChoroplethYears.length) {
+    gaccChoroplethDefaultYear = gaccChoroplethYears[gaccChoroplethYears.length - 1];
+  }
+  const gaccChoroplethYear = gaccChoroplethDefaultYear;
+  const gaccChoroplethRows = gaccChoroplethDefaultYear
+    ? gaccChoroplethByYear[gaccChoroplethDefaultYear]
+    : [];
+  /** Story chips for map year control (extreme / recent years called out in Outcomes copy). */
+  const gaccChoroplethStoryYears = ['2004', '2009', '2015', '2019', '2020']
+    .filter(y => gaccChoroplethByYear[y]);
+  if (gaccChoroplethDefaultYear && !gaccChoroplethStoryYears.includes(gaccChoroplethDefaultYear)) {
+    gaccChoroplethStoryYears.push(gaccChoroplethDefaultYear);
+  }
+
   const proxyRankBars = [
     {
       label: 'Western ERC → western acres',
@@ -575,22 +626,37 @@ WF.buildDatasets = function (rows, vpdRows, ercRows, regionalAcresRows, hfrRows,
   }
 
   const mayVpdScatterRows = [];
+  const mayVpdScatterRowsNational = [];
   const vpdMayByYear = Object.fromEntries(
     (vpdMonthlyRows || []).map(r => [r.year, parseFloat(r.vpd_kpa_may)])
   );
   for (let y = 2010; y <= 2025; y++) {
     const year = String(y);
-    if (vpdMayByYear[year] !== undefined && westernBurnByYear[year] !== undefined) {
+    if (vpdMayByYear[year] === undefined) continue;
+    if (westernBurnByYear[year] !== undefined) {
       mayVpdScatterRows.push({
         year,
+        driver: vpdMayByYear[year],
         vpd_may: vpdMayByYear[year],
         acres: westernBurnByYear[year],
         geo_note: 'May western VPD vs calendar-year western GACC acres'
       });
     }
+    if (burnByYear[year] !== undefined) {
+      mayVpdScatterRowsNational.push({
+        year,
+        driver: vpdMayByYear[year],
+        vpd_may: vpdMayByYear[year],
+        acres: burnByYear[year],
+        geo_note: 'May western VPD vs calendar-year national acres (geography mismatch)'
+      });
+    }
   }
   const pearsonMayVpdWestern = mayVpdScatterRows.length >= 2
     ? WF.pearson(mayVpdScatterRows.map(d => d.vpd_may), mayVpdScatterRows.map(d => d.acres))
+    : null;
+  const pearsonMayVpdNational = mayVpdScatterRowsNational.length >= 2
+    ? WF.pearson(mayVpdScatterRowsNational.map(d => d.vpd_may), mayVpdScatterRowsNational.map(d => d.acres))
     : null;
 
   const ignitionCauseSeries = (ignitionRows || []).map(r => ({
@@ -702,7 +768,7 @@ WF.buildDatasets = function (rows, vpdRows, ercRows, regionalAcresRows, hfrRows,
   }
 
   return {
-    burnData, burnWithRolling, bandData, partial2026, forecast2026,
+    burnData, burnWithRolling, bandData, fireCountData, partial2026, forecast2026,
     fsData, interiorData, policyCombined, policyLongSeries,
     hfrFsData, hfrInteriorData, policyInteriorBreakdown, policyFsBreakdown,
     dsciFull, dsciPartial, dsciBridge,
@@ -712,12 +778,16 @@ WF.buildDatasets = function (rows, vpdRows, ercRows, regionalAcresRows, hfrRows,
     scatterRowsNationalVpd, scatterRowsWesternVpd,
     scatterRowsNationalErc, scatterRowsWesternErc,
     lagRows, policyScatter,
-    westernAcresSeries, regionalShareSeries, proxyRankBars, treatmentAcresOverlap,
-    wuiShareSeries, treatmentPerAcreSeries, mayVpdScatterRows, ignitionCauseSeries,
+    westernAcresSeries, regionalShareSeries,
+    gaccChoroplethYear, gaccChoroplethRows, gaccChoroplethByYear, gaccChoroplethYears,
+    gaccChoroplethDefaultYear, gaccChoroplethStoryYears,
+    proxyRankBars, treatmentAcresOverlap,
+    wuiShareSeries, treatmentPerAcreSeries, mayVpdScatterRows, mayVpdScatterRowsNational,
+    ignitionCauseSeries,
     sensitivitySeries, partialCorrSeries, treatmentPartialCorrSeries, westerlingSnowmeltSeries,
     smokePm25Series, pearsonSmokeAcres,
     fireStoryMarks, scatterStoryMarks, regionalStoryMarks,
-    pearsonMayVpdWestern,
+    pearsonMayVpdWestern, pearsonMayVpdNational,
     years,
     pearsonVpdAcres: 0.625,
     pearsonVpdWesternAcres: 0.808,

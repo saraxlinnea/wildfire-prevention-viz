@@ -25,4 +25,4 @@ year,weeks,dsci_avg,partial,source
 2023,52,111.1,False,USDM API USStatistics/GetDSCI aoi=conus
 2024,52,94.1,False,USDM API USStatistics/GetDSCI aoi=conus
 2025,52,124.1,False,USDM API USStatistics/GetDSCI aoi=conus
-2026,28,169.9,True,USDM API USStatistics/GetDSCI aoi=conus partial through 7/14/2026
+2026,30,168.8,True,USDM API USStatistics/GetDSCI aoi=conus partial through 7/28/2026

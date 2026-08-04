@@ -1,23 +1,23 @@
-# An Ounce of Prevention: U.S. Wildfire Data
+# Wildfire Season Briefing
 
-U.S. wildfire data visualization, 1983-2026. Four tabs: outcomes, drivers and context, exploratory coupling, and how to read.
+Sourced U.S. wildfire data, 1983-2026. Home page with season highlights and a YTD perimeter map; explore view with four tabs plus Methods.
 
-**[View live](https://saraxlinnea.github.io/wildfire-prevention-viz)**
+**[View live](https://saraxlinnea.github.io/wildfire-prevention-viz)** · [Enter the briefing](https://saraxlinnea.github.io/wildfire-prevention-viz/explore.html)
 
 ---
 
 ## What This Shows
 
-The page uses four tabs:
+- **Home (`index.html`):** season callouts (YTD acres, % vs same-date average) and a WFIGS year-to-date perimeter map; CTAs into the briefing or a short tour
+- **Overview:** How many U.S. acres burned (rolling 10-year band; 2026 YTD); where those acres landed (GACC map / west / regions); optional WFIGS ops snapshot
+- **Drivers:** How dry was the West in years with large western acreage; exploratory pairing charts
+- **Context:** How many hazardous-fuels acres agencies reported; WUI designation; treatment vs acres research
+- **Impacts:** Acres burned are not the same as smoke people breathe
+- **Methods:** how to read, limits, glossary, sources
 
-- **Outcomes:** national acres burned with rolling 10-year baseline band; western vs national GACC acres; 2026 YTD and forecast callouts (fire metrics only)
-- **Drivers & context:** federal treatment (HFR 2003-2021 + page series), WUI designation share, treatment vs acres dual-axis, western ERC/VPD z-score overlay; 35% FS YoY context lives here (not on Outcomes)
-- **Coupling** (exploratory): literature proxy ranking, ERC/VPD scatter, regional GACC share; lightning vs human cause (n=7) in supplementary details; sensitivity and May VPD in supplementary details
-- **How to read:** Start here path, dataset gaps, glossary, scientific limits, methodology
+As of August 3, 2026, about 5.2 million acres have already burned nationally, about 37% above the 10-year average to date. Peak fire season runs July through September in the West.
 
-As of July 16, 2026, more than 3.6 million acres have already burned nationally, about 29% above the 10-year average to date. Peak fire season runs July through September in the West.
-
-This page does not claim that cutting prevention in 2025 directly caused the 2026 fire season. It shows what moved together in the record and leaves conclusions to you.
+This site does not claim that cutting prevention in 2025 directly caused the 2026 fire season. It shows what moved together in the record and leaves conclusions to you.
 
 ---
 
@@ -26,7 +26,8 @@ This page does not claim that cutting prevention in 2025 directly caused the 202
 | Dataset | Source | Years | Notes |
 |---|---|---|---|
 | Total U.S. acres burned | [NIFC Total Wildfires and Acres](https://www.nifc.gov/fire-information/statistics) | 1983-2025 | Calendar year; standardized reporting from 1983 |
-| 2026 YTD acres burned | [NIFC National Fire News, July 16 2026](https://www.nifc.gov/fire-information/nfn) | Jan-Jul 16 2026 | 3,674,911 acres; ~129% of 10-year YTD avg |
+| Total U.S. wildfire counts | [NIFC Wildfires and Acres](https://www.nifc.gov/fire-information/statistics/wildfires) | 1983-2025 | `fires_count` in `wildfire-data.csv`; Overview chart toggle |
+| 2026 YTD acres burned | [NIFC National Fire News, August 3 2026](https://www.nifc.gov/fire-information/nfn) | Jan-Aug 3 2026 | 5,154,596 acres; ~137% of 10-year YTD avg |
 | Forest Service treatment | [NPR analysis of USFS FACTS database, May 4 2026](https://www.npr.org/2026/05/04/nx-s1-5801475/) | 2023-2025 | Cross-checked by Center for Western Priorities |
 | HFR federal treatment | HFR-DOI-FS NFPORS | FY 2003-2021 | Joint FS+DOI; `data/hfr-prevention-annual.csv` |
 | Interior Dept treatment | [DOI fuels management program](https://www.doi.gov/wildlandfire/fuels) | 2018-2024 | Fiscal year Oct 1 start |
@@ -117,7 +118,7 @@ See [`data/qa-audit-report.md`](data/qa-audit-report.md) and [`research/fact-che
 - Interior treatment is fiscal year; burn acres and DSCI are calendar year
 - FS treatment comparable from 2023 onward only (NPR/USFS FACTS)
 - ERC, VPD, western DSCI are regional; national burn acres include all land types
-- 2026 partial year through July 16 (acres) and July 14 (DSCI)
+- 2026 partial year through August 3 (acres) and July 28 (DSCI)
 - Continuous 2003-2025 regional GACC acres (2008-2009 hand OCR); ignition cause n=7 (see `ignition-cause-notes.md`)
 
 ---
@@ -141,4 +142,4 @@ python3 -m http.server 8000
 
 ---
 
-*Sara Bower · San Francisco · July 2026*
+*Sara Bower · San Francisco · August 2026*

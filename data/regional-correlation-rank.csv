@@ -3,9 +3,10 @@ west,western_acres_millions,vpd,west_vpd_kpa,0.765,13,2013-2025,NICC western GAC
 west,western_acres_millions,erc,west_erc,0.833,13,2013-2025,NICC western GACCs (7),"gridMET west of 100°W, May-Sep",1,True
 west,western_acres_millions,dsci,west_dsci,-0.014,13,2013-2025,NICC western GACCs (7),USDM NWS Western Region (WR),3,False
 south,southern_acres_millions,vpd,south_vpd_kpa,0.361,13,2013-2025,NICC SA GACC,"gridMET SE bbox, Jan-Apr",1,True
-south,southern_acres_millions,erc,south_erc,0.167,13,2013-2025,NICC SA GACC,"gridMET SE bbox, Jan-Apr",3,False
-south,southern_acres_millions,fm100,south_fm100_pct,-0.179,13,2013-2025,NICC SA GACC,"gridMET SE bbox, Jan-Apr 100-hr fuel moisture",2,False
-south,southern_acres_millions,dsci,south_dsci,-0.141,13,2013-2025,NICC SA GACC,USDM NWS Southern Region (SR),4,False
+south,southern_acres_millions,erc,south_erc,0.167,13,2013-2025,NICC SA GACC,"gridMET SE bbox, Jan-Apr",4,False
+south,southern_acres_millions,fm100,south_fm100_pct,-0.179,13,2013-2025,NICC SA GACC,"gridMET SE bbox, Jan-Apr 100-hr fuel moisture",3,False
+south,southern_acres_millions,kbdi,south_kbdi,0.199,13,2013-2025,NICC SA GACC,"gridMET-derived KBDI SE bbox, Jan-May mean",2,False
+south,southern_acres_millions,dsci,south_dsci,-0.141,13,2013-2025,NICC SA GACC,USDM NWS Southern Region (SR),5,False
 east,eastern_acres_millions,vpd,east_vpd_kpa,0.485,13,2013-2025,NICC EA GACC,"gridMET Mid-Atlantic/NE bbox, Mar-Jun",2,False
 east,eastern_acres_millions,erc,east_erc,0.167,13,2013-2025,NICC EA GACC,"gridMET Mid-Atlantic/NE bbox, Mar-Jun",3,False
 east,eastern_acres_millions,dsci,east_dsci,0.81,13,2013-2025,NICC EA GACC,USDM NWS Eastern Region (ER),1,True

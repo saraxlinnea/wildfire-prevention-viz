@@ -1,8 +1,8 @@
 # QA audit report
 
-**Date:** 2026-07-13 (refreshed for four-tab layout)  
+**Date:** 2026-08-04 (Home + Explore briefing)  
 **Automated:** `python scripts/audit_data.py` · `python scripts/verify_local.py`  
-**Claim-level fact-check:** [`research/fact-check-log.md`](../research/fact-check-log.md) (2026-07-13 housekeeping pass)  
+**Claim-level fact-check:** [`research/fact-check-log.md`](../research/fact-check-log.md)  
 **Visual checklist:** [`research/visual-qa-checklist.md`](../research/visual-qa-checklist.md)
 
 ## Automated checks
@@ -15,52 +15,56 @@
 
 ## Boot CSVs (required)
 
-Loaded by `js/app.js` on page load:
+Loaded by `js/app.js` on Explore load:
 
-| File | Min rows |
+| File | Min rows / notes |
 |---|---|
 | `data/wildfire-data.csv` | 40 calendar years |
 | `data/vpd-annual.csv` | 40 |
 | `data/erc-annual.csv` | 40 |
-| `data/regional-acres-annual.csv` | 18 |
+| `data/regional-acres-annual.csv` | 18+ |
 | `data/hfr-prevention-annual.csv` | 19 fiscal years |
 | `data/vpd-monthly-annual.csv` | 14 |
+| `data/gacc-regions.geojson` | 50 state features (Overview map) |
+| `data/wfigs-ytd-snapshot.geojson` | Ops snapshot (deferred fetch) |
+| `data/south-kbdi-annual.csv` | South KBDI (Drivers) |
 
 ## Optional CSVs
 
 | File | Used for |
 |---|---|
-| `data/ignition-cause-annual.csv` | Coupling supplementary ignition chart (n=7) |
-| `data/correlation-sensitivity.csv` | Coupling supplementary sensitivity table |
+| `data/ignition-cause-annual.csv` | Still fetched; ignition chart off main path (Methods gaps notes, n=7) |
+| `data/correlation-sensitivity.csv` | Drivers reliability diagnostics |
+| `data/correlation-partial.csv` | Drivers reliability / research |
+| `data/westerling-snowmelt-tercile.csv` | Drivers Westerling chart |
 
 ## Chart containers (by tab)
 
-| Tab | Primary chart IDs |
+| Tab | Primary chart / map IDs |
 |---|---|
-| Outcomes | `#chart-fire`, `#chart-western-acres-outcomes` |
-| Drivers | `#chart-policy`, `#chart-wui-share`, `#chart-treatment-acres`, `#chart-atmosphere` |
-| Coupling | `#chart-scatter`, `#chart-western-acres`, `#chart-regional-share` |
-| Coupling supplementary | `#chart-ignition-cause`, `#chart-may-vpd`, `#chart-proxy-rank`, `#chart-lag` |
-| Drivers research details | `#chart-treatment-per-acre` |
-| Atmosphere details | `#chart-atmosphere-national` |
+| Home | `#map-wfigs-ytd` (via `js/home.js`) |
+| Overview | `#chart-fire`, geo panel (`#chart-gacc-choropleth`, `#chart-western-acres-outcomes`, `#chart-regional-share-outcomes`), `#map-wfigs-ytd` (Ops details) |
+| Drivers | `#chart-regional-top-drivers`, `#chart-atmosphere`, `#chart-scatter`, `#chart-westerling-snowmelt`; details `#chart-atmosphere-national` |
+| Context | `#chart-policy`, `#chart-wui-share`; research `#chart-treatment-acres`, `#chart-treatment-per-acre`, `#chart-policy-scatter` |
+| Impacts | `#chart-smoke-pm25` |
+| Methods | Reference only (no primary Vega charts) |
 
 ## Data integrity (audit_data.py)
 
 | Check | Result |
 |---|---|
-| National DSCI vs audit CSV | OK |
-| Western DSCI vs audit CSV | OK |
-| VPD 1979-2025 in range 1.0-2.5 kPa | OK |
-| 2026 partial-year flags | OK |
-| Acres burned span 1983-2025 (+ 2026 YTD) | OK |
-| Required data files present | OK |
+| National / western DSCI vs audit CSV | OK (last run 2026-08-04) |
+| Western / regional acres continuity (incl. 2008-2009) | OK |
+| VPD / ERC / regional gridMET | OK |
+| 2026 partial-year flags; fires_count 1983-2025 | OK |
+| gacc-regions.geojson + wfigs snapshot | OK |
 
 ## Known intentional gaps
 
 - **2008-2009** regional GACC acres: filled 2026-07-17 via hand OCR; continuous in `regional-acres-annual.csv`.
-- **2007-2009** ignition cause: supplementary chart only; n=7 years.
-- **2026 YTD:** Jul 16 NIFC snapshot (3,674,911 acres); may drift from later NFN updates.
-- **2026 DSCI:** 28-week averages through Jul 14 (national 169.9; western 156.0).
+- **2007-2009** ignition cause share series: not on main path; n=7 in notes.
+- **2026 YTD:** Aug 3 NIFC snapshot (5,154,596 acres); may drift from later NFN updates.
+- **2026 DSCI:** 30-week averages through Jul 28 (national 168.8; western 158.7).
 
 ## Re-run before share
 

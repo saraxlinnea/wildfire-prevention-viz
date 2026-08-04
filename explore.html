@@ -1,0 +1,2458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wildfire Season Briefing · Explore</title>
+  <meta name="description" content="Explore U.S. wildfire data 1983-2026: U.S. acres burned, where those acres landed, dryness, federal treatment, and smoke.">
+  <meta property="og:title" content="Wildfire Season Briefing · Explore">
+  <meta property="og:description" content="U.S. acres burned, where those acres landed, dryness, federal treatment, and smoke. Sourced U.S. wildfire data, 1983-2026.">
+  <meta property="og:url" content="https://saraxlinnea.github.io/wildfire-prevention-viz/explore.html">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://saraxlinnea.github.io/wildfire-prevention-viz/assets/og-card.svg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Wildfire Season Briefing · Explore">
+  <meta name="twitter:description" content="U.S. acres burned, where those acres landed, dryness, federal treatment, and smoke. Sourced U.S. wildfire data, 1983-2026.">
+  <meta name="twitter:image" content="https://saraxlinnea.github.io/wildfire-prevention-viz/assets/og-card.svg">
+  <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+  <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap');
+
+    :root {
+      --bg: #f5f1ea;
+      --bg-deep: #ebe4d8;
+      --surface: #fffcf8;
+      --surface-muted: #faf6f0;
+      --ink: #1c1a17;
+      --ink-soft: #3d3833;
+      --ink-light: #57534e;
+      --rule: rgba(28,26,23,0.11);
+      --rule-strong: rgba(28,26,23,0.16);
+      --shadow: 0 1px 2px rgba(28, 26, 23, 0.04), 0 8px 24px rgba(28, 26, 23, 0.05);
+      --radius: 6px;
+      --fire: #c94a1a;
+      --fs: #2a6b4a;
+      --interior: #1a4a7a;
+      --dsci: #7b5ea7;
+      --vpd: #9a6b3a;
+      --prose-width: 42rem;
+      --chart-prose-width: 50rem;
+      --page-pad: 28px;
+      --section-gap: clamp(1.35rem, 3vw, 2.1rem);
+      --block-gap: 1.15rem;
+      --focus-ring: 2px solid rgba(201, 74, 26, 0.45);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: #d8cfc3;
+      background-image:
+        linear-gradient(
+          180deg,
+          rgba(245, 241, 234, 0.94) 0%,
+          rgba(245, 241, 234, 0.91) 45%,
+          rgba(245, 241, 234, 0.9) 100%
+        ),
+        url('media/home-snoqualmie-smoke.jpg');
+      background-size: cover;
+      background-position: center 28%;
+      background-attachment: scroll;
+      background-repeat: no-repeat;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15.5px;
+      color: var(--ink);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 32px var(--page-pad) 56px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page { width: 100%; max-width: 1180px; }
+
+    .file-protocol-banner {
+      display: none;
+      background: #fff8e6;
+      border: 1px solid #e6c84a;
+      border-radius: 6px;
+      padding: 12px 14px;
+      margin-bottom: 16px;
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--ink);
+    }
+
+    html.file-protocol .file-protocol-banner {
+      display: block;
+    }
+
+    .file-protocol-banner code {
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+    }
+
+    .file-protocol-banner a {
+      color: var(--interior);
+    }
+
+    .page-header-band {
+      background:
+        linear-gradient(165deg, rgba(201, 74, 26, 0.08) 0%, transparent 48%),
+        linear-gradient(180deg, #efe6da 0%, #f4ece3 50%, transparent 100%);
+      margin: 0 0 28px;
+      padding: 36px 28px 28px;
+      border: 1px solid var(--rule);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    header {
+      margin-bottom: 16px;
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .page-header-band .intro-block {
+      margin-bottom: 0;
+      max-width: var(--prose-width);
+    }
+
+    .kicker {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--fire);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .flame-mark {
+      width: 14px;
+      height: 16px;
+      flex-shrink: 0;
+      opacity: 0.9;
+    }
+
+    .flame-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin: 18px 0 14px;
+      color: var(--ink-light);
+      opacity: 0.45;
+    }
+
+    .flame-divider::before,
+    .flame-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--rule);
+    }
+
+    .flame-divider .flame-mark {
+      width: 12px;
+      height: 14px;
+      opacity: 0.55;
+    }
+
+    h1 {
+      font-family: 'Libre Baskerville', serif;
+      font-size: clamp(28px, 3.2vw, 36px);
+      font-weight: 700;
+      line-height: 1.18;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+
+    .h1-sub {
+      font-family: 'Libre Baskerville', serif;
+      font-size: clamp(16px, 1.8vw, 20px);
+      font-weight: 400;
+      font-style: italic;
+      color: var(--ink-light);
+      margin-bottom: 20px;
+    }
+
+    .dek {
+      font-size: 16px;
+      color: var(--ink-soft);
+      line-height: 1.7;
+      font-weight: 300;
+      max-width: var(--prose-width);
+    }
+
+    .dek strong { color: var(--ink); font-weight: 500; }
+
+    .intro-block {
+      font-size: 15px;
+      color: var(--ink-soft);
+      line-height: 1.75;
+      font-weight: 300;
+      margin-bottom: 14px;
+      max-width: var(--prose-width);
+    }
+
+    .chart-container {
+      background: var(--surface);
+      border: 1px solid var(--rule);
+      border-radius: var(--radius);
+      padding: 22px 24px 18px;
+      margin-bottom: var(--block-gap);
+      box-shadow: var(--shadow);
+    }
+
+    .chart-panel-secondary {
+      padding: 20px 24px 16px;
+    }
+
+    .chart-date-badge {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      margin-bottom: 14px;
+      opacity: 0.8;
+    }
+
+    .panel-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink);
+      margin-bottom: 10px;
+      font-weight: 500;
+    }
+
+    .chart-question {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 1.2rem;
+      font-weight: 400;
+      line-height: 1.35;
+      color: var(--ink);
+      margin: 0 0 12px;
+      max-width: none;
+    }
+
+    .panel-note {
+      font-size: 13px;
+      color: var(--ink-light);
+      line-height: 1.55;
+      margin-bottom: 10px;
+      font-weight: 300;
+      max-width: none;
+    }
+
+    .panel-note--method {
+      font-size: 12px;
+      max-width: none;
+    }
+
+    .legend-row {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    .legend-group-title {
+      font-family: 'DM Mono', monospace;
+      font-size: 8px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      width: 100%;
+      margin-bottom: 4px;
+      opacity: 0.7;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 12px;
+      color: var(--ink-light);
+    }
+
+    .ls-bar { width: 12px; height: 12px; border-radius: 2px; }
+    .ls-line { width: 18px; height: 2.5px; border-radius: 2px; }
+    .ls-line-dashed {
+      width: 18px; height: 0;
+      border-top: 2.5px dashed #1a4a7a;
+    }
+    .ls-dashed { width: 18px; height: 0; border-top: 2px dashed #b8b2a9; }
+    .ls-range {
+      width: 12px; height: 12px; border-radius: 2px;
+      border: 1.5px dashed #e87c2a;
+      background: rgba(232,124,42,0.1);
+    }
+
+    .chart-slot { width: 100%; min-height: 260px; }
+    .chart-slot--map { min-height: 300px; }
+    .gacc-year-toolbar {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin: 0 0 12px;
+    }
+    .gacc-year-select-row {
+      align-items: center;
+      gap: 10px;
+    }
+    .gacc-year-select-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+    }
+    .gacc-year-select {
+      font-family: 'DM Mono', monospace;
+      font-size: 13px;
+      color: var(--ink);
+      background: var(--surface);
+      border: 1px solid var(--rule-strong);
+      border-radius: 4px;
+      padding: 6px 10px;
+      min-width: 5.5rem;
+    }
+    .gacc-year-select:focus {
+      outline: 2px solid rgba(201, 74, 26, 0.35);
+      outline-offset: 1px;
+    }
+    #map-wfigs-ytd {
+      width: 100%;
+      height: 360px;
+      border-radius: 4px;
+      border: 1px solid var(--rule);
+      background: #ece7e0;
+      z-index: 0;
+    }
+    #chart-gacc-choropleth.leaflet-container,
+    #chart-gacc-choropleth.chart-slot--map {
+      height: 360px;
+      min-height: 360px;
+      border-radius: 4px;
+      border: 1px solid var(--rule);
+      background: #ece7e0;
+      z-index: 0;
+    }
+    .gacc-leaflet-legend {
+      margin: 0 0 10px;
+      max-width: 100%;
+    }
+    .gacc-leaflet-legend-title {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 10px;
+      color: #9b9590;
+      margin-bottom: 6px;
+    }
+    .gacc-legend-ramp {
+      margin: 0 0 12px;
+      max-width: 280px;
+    }
+    .gacc-legend-ramp-bar {
+      display: block;
+      height: 10px;
+      border-radius: 2px;
+      background: linear-gradient(90deg, #fbf9f6, #e8a090, #c94a1a, #7a1c0d);
+      border: 1px solid rgba(0, 0, 0, 0.06);
+    }
+    .gacc-legend-ramp-ticks {
+      display: flex;
+      justify-content: space-between;
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      color: #9b9590;
+      margin-top: 2px;
+    }
+    .gacc-legend-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 14px;
+    }
+    .gacc-legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--ink-soft);
+    }
+    .gacc-legend-swatch {
+      width: 12px;
+      height: 12px;
+      border-radius: 2px;
+      flex: 0 0 auto;
+    }
+    .gacc-legend-swatch--outline {
+      background: transparent;
+      border: 2.5px solid #999;
+      box-sizing: border-box;
+    }
+    .wfigs-fallback {
+      padding: 24px 16px;
+      font-size: 14px;
+      color: var(--ink-soft);
+      line-height: 1.55;
+    }
+    .wfigs-fallback a { color: var(--fire); }
+    .signal-tier-ops {
+      color: #6b4a2e;
+      background: rgba(154, 107, 58, 0.12);
+    }
+    .plain-read {
+      font-size: 16.5px;
+      line-height: 1.65;
+      color: var(--ink-soft);
+      margin: 0 0 16px;
+      max-width: var(--chart-prose-width);
+    }
+    .plain-read strong { color: var(--ink); font-weight: 600; }
+
+    .tab-btn:focus-visible,
+    .toggle-btn:focus-visible,
+    .text-link-btn:focus-visible,
+    .geo-bridge-cta:focus-visible,
+    .guide-btn:focus-visible,
+    .gacc-year-select:focus-visible {
+      outline: var(--focus-ring);
+      outline-offset: 2px;
+    }
+
+    .text-link-btn {
+      font: inherit;
+      color: var(--fire);
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    .header-path {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px 24px;
+      margin-top: 18px;
+      padding-top: 16px;
+      border-top: 1px solid var(--rule);
+      max-width: var(--prose-width);
+    }
+    .header-path-list {
+      margin: 0;
+      padding: 0 0 0 18px;
+      font-size: 14px;
+      line-height: 1.55;
+      color: var(--ink-soft);
+    }
+    .header-path-list li { margin-bottom: 4px; }
+    .header-tour-btn {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .geo-bridge {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px 20px;
+      margin: 8px 0 4px;
+      padding: 16px 18px;
+      background: var(--surface);
+      border: 1px solid var(--rule);
+      border-left: 3px solid var(--fire);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      box-shadow: var(--shadow);
+    }
+    .geo-bridge-stat {
+      flex: 1 1 16rem;
+      margin: 0;
+      font-size: 15px;
+      line-height: 1.55;
+      color: var(--ink-soft);
+      max-width: var(--chart-prose-width);
+    }
+    .geo-bridge-cta {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 10px 14px;
+      border: 1px solid var(--fire);
+      background: rgba(201, 74, 26, 0.06);
+      color: var(--fire);
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .geo-bridge-cta:hover {
+      background: rgba(201, 74, 26, 0.12);
+    }
+
+    .chart-notes-details {
+      margin: 8px 0 10px;
+      max-width: var(--chart-prose-width);
+      font-size: 13.5px;
+      color: var(--ink-light);
+    }
+    .chart-notes-details summary {
+      cursor: pointer;
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink);
+      list-style: none;
+    }
+    .chart-notes-details summary::-webkit-details-marker { display: none; }
+    .chart-notes-details[open] summary { margin-bottom: 8px; }
+
+    .chart-slot--loading {
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+      min-height: 260px;
+      padding: 24px 8px 12px;
+    }
+    .chart-slot--loading .skel-bar {
+      flex: 1;
+      background: linear-gradient(180deg, rgba(201, 74, 26, 0.08), rgba(201, 74, 26, 0.2));
+      border-radius: 2px 2px 0 0;
+      animation: skel-pulse 1.2s ease-in-out infinite;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .chart-slot--loading .skel-bar { animation: none; }
+      .guide-spotlight { transition: none !important; }
+    }
+    @keyframes skel-pulse {
+      0%, 100% { opacity: 0.55; }
+      50% { opacity: 1; }
+    }
+
+    .guide-dialog {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: rgba(28, 26, 23, 0.42);
+    }
+    .guide-dialog[hidden],
+    .guide-tour[hidden] { display: none !important; }
+    .guide-dialog-card,
+    .guide-tour-card {
+      background: var(--surface);
+      border: 1px solid var(--rule);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 22px 24px;
+      max-width: 26rem;
+      width: 100%;
+    }
+    .guide-dialog-title {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 20px;
+      font-weight: 700;
+      margin: 0 0 8px;
+      color: var(--ink);
+    }
+    .guide-dialog-dek {
+      margin: 0 0 12px;
+      font-size: 14px;
+      color: var(--ink-light);
+      line-height: 1.5;
+    }
+    .guide-welcome-list {
+      margin: 0 0 18px 18px;
+      padding: 0;
+      font-size: 14.5px;
+      line-height: 1.55;
+      color: var(--ink-soft);
+    }
+    .guide-welcome-list li { margin-bottom: 6px; }
+    .guide-dialog-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+    .guide-btn {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 9px 14px;
+      border-radius: 4px;
+      cursor: pointer;
+      border: 1px solid var(--rule-strong);
+      background: var(--surface);
+      color: var(--ink-soft);
+    }
+    .guide-btn-primary {
+      border-color: var(--fire);
+      background: rgba(201, 74, 26, 0.1);
+      color: var(--fire);
+    }
+    .guide-tour {
+      position: fixed;
+      inset: 0;
+      z-index: 10001;
+      pointer-events: none;
+    }
+    .guide-spotlight {
+      position: absolute;
+      border: 2px solid var(--fire);
+      border-radius: 8px;
+      box-shadow: 0 0 0 9999px rgba(28, 26, 23, 0.45);
+      pointer-events: none;
+      transition: top 0.2s ease, left 0.2s ease, width 0.2s ease, height 0.2s ease;
+    }
+    .guide-tour-card {
+      position: absolute;
+      left: 50%;
+      bottom: 24px;
+      transform: translateX(-50%);
+      pointer-events: auto;
+      z-index: 1;
+    }
+    .guide-step-meta {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      margin: 0 0 6px;
+    }
+    .guide-tour-body {
+      margin: 0 0 16px;
+      font-size: 14.5px;
+      line-height: 1.55;
+      color: var(--ink-soft);
+    }
+    .guide-restart-row {
+      margin: 0 0 10px;
+    }
+
+    .tab-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 4px 8px;
+      margin: 0;
+      padding: 2px 10px 0;
+      background: rgba(255, 252, 248, 0.9);
+      border: 1px solid var(--rule);
+      border-top: none;
+      border-bottom: 1px solid var(--rule-strong);
+      border-radius: 0;
+      box-shadow: none;
+    }
+
+    .tab-bar-primary,
+    .tab-bar-utility {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2px;
+      align-items: flex-end;
+    }
+
+    .tab-bar-primary {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+
+    .tab-bar-utility {
+      flex: 0 0 auto;
+      margin-left: auto;
+    }
+
+    .tab-btn--utility {
+      color: var(--ink-light);
+      font-size: 13.5px;
+      font-weight: 400;
+      opacity: 0.9;
+    }
+
+    .tab-btn {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      font-size: 14.5px;
+      font-weight: 400;
+      letter-spacing: 0;
+      text-transform: none;
+      color: var(--ink-light);
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      padding: 12px 14px;
+      cursor: pointer;
+      margin-bottom: -1px;
+      border-radius: 0;
+      transition: color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .tab-btn:hover {
+      color: var(--ink);
+      background: transparent;
+    }
+
+    .tab-btn[aria-selected="true"] {
+      font-weight: 500;
+      color: var(--ink);
+    }
+
+    .tab-btn[data-tab="season"][aria-selected="true"] {
+      color: var(--fire);
+      background: transparent;
+      border-bottom-color: var(--fire);
+    }
+
+    .tab-btn[data-tab="context"][aria-selected="true"] {
+      color: var(--vpd);
+      background: transparent;
+      border-bottom-color: var(--vpd);
+    }
+
+    .tab-btn[data-tab="impacts"][aria-selected="true"] {
+      color: var(--ink);
+      background: transparent;
+      border-bottom-color: #8a847c;
+    }
+
+    .tab-btn[data-tab="methods"][aria-selected="true"] {
+      color: var(--ink-soft);
+      background: transparent;
+      border-bottom-color: var(--ink-light);
+    }
+
+    .tab-panel { display: none; }
+
+    .tab-panel.active {
+      display: block;
+      border-radius: 0 0 var(--radius) var(--radius);
+      padding: 14px 20px 16px;
+      margin: 0 0 28px;
+      border: 1px solid var(--rule);
+      border-top: none;
+      background: rgba(255, 252, 248, 0.92);
+      box-shadow: var(--shadow);
+    }
+
+    .tab-panel--overview.active { background: rgba(255, 252, 248, 0.94); }
+    .tab-panel--drivers.active { background: rgba(255, 252, 248, 0.94); }
+    .tab-panel--context.active { background: rgba(255, 252, 248, 0.94); }
+    .tab-panel--impacts.active { background: rgba(253, 248, 242, 0.95); }
+    .tab-panel--methods.active { background: rgba(250, 247, 242, 0.96); }
+
+    .methods-lede {
+      max-width: var(--chart-prose-width);
+      margin-bottom: 18px;
+    }
+
+    .methods-toc {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 14px;
+      margin: 0 0 20px;
+      max-width: var(--chart-prose-width);
+    }
+
+    .methods-toc a {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    .tab-dek {
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--ink-soft);
+      margin: 0 0 18px;
+      font-weight: 300;
+      max-width: none;
+    }
+
+    .coupling-badge {
+      display: inline-block;
+      font-family: 'DM Mono', monospace;
+      font-size: 8px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border: 1px solid rgba(123, 94, 167, 0.35);
+      color: var(--dsci);
+      border-radius: 2px;
+      margin-left: 6px;
+      vertical-align: middle;
+      font-weight: 500;
+    }
+
+    .scatter-r-badge {
+      display: inline-flex;
+      flex-wrap: wrap;
+      gap: 6px 14px;
+      align-items: baseline;
+      margin: 12px 0 12px;
+      padding: 10px 14px;
+      background: var(--surface-muted);
+      border: 1px solid var(--rule);
+      border-left: 3px solid var(--dsci);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      color: var(--ink);
+      line-height: 1.4;
+    }
+
+    .scatter-r-badge .r-value {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--dsci);
+      letter-spacing: 0.02em;
+    }
+
+    .scatter-r-badge .r-meta {
+      font-size: 10px;
+      color: #9b9590;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .chart-container--fire { border-top: 3px solid var(--fire); }
+    .chart-container--atmosphere {
+      border-top: 3px solid var(--vpd);
+      background: var(--surface);
+    }
+    .chart-container--policy {
+      border-top: 3px solid var(--fs);
+      background: var(--surface);
+    }
+    .chart-container--coupling { border-top: 3px solid var(--dsci); }
+    .chart-container--coupling-alt { border-top: 3px solid rgba(123, 94, 167, 0.45); }
+
+    .chart-figure { margin: 0; }
+
+    .chart-caption-block {
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid var(--rule);
+    }
+
+    .chart-caption {
+      font-size: 16px;
+      line-height: 1.65;
+      color: var(--ink-soft);
+      margin: 0 0 10px;
+      font-weight: 400;
+      max-width: var(--chart-prose-width);
+    }
+
+    .chart-note {
+      font-size: 14px;
+      line-height: 1.65;
+      color: var(--ink-light);
+      margin: 0 0 10px;
+      font-weight: 400;
+      max-width: var(--chart-prose-width);
+    }
+
+    .note-label {
+      display: block;
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink);
+      margin-bottom: 4px;
+      opacity: 0.85;
+    }
+
+    .chart-source {
+      display: block;
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      margin-top: 4px;
+      opacity: 0.78;
+      letter-spacing: 0.02em;
+    }
+
+    .chart-source a {
+      color: inherit;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    .drivers-divider {
+      border: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .corr-table tr.corr-highlight td {
+      background: rgba(154, 107, 58, 0.1);
+    }
+
+    .corr-table tr.corr-highlight td:first-child {
+      border-left: 3px solid var(--vpd);
+    }
+
+    .corr-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: 'DM Mono', monospace;
+      font-size: 11.5px;
+      margin-bottom: 14px;
+      overflow: hidden;
+      border-radius: var(--radius);
+    }
+
+    .corr-table th,
+    .corr-table td {
+      border: 1px solid var(--rule);
+      padding: 9px 12px;
+      text-align: left;
+      vertical-align: top;
+      line-height: 1.45;
+    }
+
+    .corr-table th {
+      font-weight: 500;
+      color: var(--ink);
+      background: var(--surface-muted);
+    }
+
+    .corr-table td.num { text-align: right; white-space: nowrap; }
+
+    .outcomes-callouts {
+      margin-bottom: 16px;
+    }
+
+    .drivers-section-label {
+      display: none;
+    }
+
+    .reliability-block {
+      margin: 8px 0 28px;
+      padding: 14px 16px 12px;
+      background: var(--surface);
+      border: 1px solid var(--rule);
+      border-radius: var(--radius);
+      max-width: var(--chart-prose-width);
+    }
+
+    .reliability-block--nested {
+      margin: 16px 0 0;
+      padding: 12px 14px 10px;
+      background: rgba(248, 246, 242, 0.85);
+      border: 1px dashed var(--rule);
+      box-shadow: none;
+      max-width: none;
+    }
+
+    .reliability-block--nested .panel-label {
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      opacity: 0.85;
+    }
+
+    .reliability-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px 18px;
+      margin: 10px 0 4px;
+    }
+
+    .reliability-table th.reliability-lit-col,
+    .reliability-table td.reliability-lit-col {
+      min-width: 8rem;
+    }
+
+    #regional-top-drivers-table-wrap {
+      overflow-x: auto;
+      margin-top: 8px;
+    }
+
+    .drivers-intro {
+      margin-bottom: 20px;
+      padding: 16px 18px;
+      background: var(--surface);
+      border: 1px solid var(--rule);
+      border-left: 3px solid var(--vpd);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      box-shadow: var(--shadow);
+    }
+
+    .def-list {
+      display: grid;
+      gap: 14px;
+      margin: 12px 0 0;
+    }
+
+    .def-item {
+      padding: 0;
+      border: none;
+    }
+
+    .def-item dt {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--ink);
+      margin-bottom: 4px;
+      font-weight: 500;
+    }
+
+    .def-item dd {
+      margin: 0;
+      font-size: 13px;
+      line-height: 1.55;
+      color: var(--ink-light);
+      font-weight: 300;
+      max-width: none;
+    }
+
+    .def-item dd .def-plain {
+      color: var(--ink);
+      font-weight: 400;
+    }
+
+    .treatment-limits-box {
+      background: var(--surface-muted);
+      border: 1px solid var(--rule);
+      border-top: 3px solid #9b9590;
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      margin-bottom: 18px;
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--ink);
+    }
+
+    .treatment-limits-box strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 13.5px;
+    }
+
+    .treatment-limits-box ul {
+      margin: 0 0 0 18px;
+      color: var(--ink-light);
+    }
+
+    .treatment-limits-box li { margin-bottom: 5px; }
+
+    .year-basis-note {
+      font-size: 12px;
+      color: var(--ink-light);
+      margin: 10px 0 0;
+      line-height: 1.5;
+    }
+
+    .rank-table th.rank-col,
+    .rank-table td.rank-col {
+      width: 2.2em;
+      text-align: center;
+    }
+
+    .rank-table td.cite {
+      font-size: 9px;
+      line-height: 1.35;
+      color: var(--ink-light);
+      max-width: 14em;
+    }
+
+    .rank-table a {
+      color: var(--ink);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    .chart-container + .chart-container { margin-top: 0; }
+
+    .signal-tier {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      margin-bottom: 8px;
+      opacity: 0.8;
+    }
+
+    .signal-tier-1 { border-left: 3px solid var(--fire); padding-left: 10px; }
+    .signal-tier-2 { border-left: 3px solid var(--dsci); padding-left: 10px; }
+    .signal-tier-3 { border-left: 3px solid #b8b2a9; padding-left: 10px; }
+
+    .chart-toggle {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+
+    .toggle-btn {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 7px 12px;
+      border: 1px solid var(--rule);
+      background: var(--surface);
+      color: var(--ink-light);
+      cursor: pointer;
+      border-radius: 4px;
+      transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+    }
+
+    .toggle-btn:hover {
+      color: var(--ink);
+      border-color: var(--rule-strong);
+    }
+
+    .toggle-btn.active {
+      border-color: var(--fire);
+      color: var(--fire);
+      background: rgba(201,74,26,0.06);
+    }
+
+    .toggle-btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    .ls-band {
+      width: 12px;
+      height: 12px;
+      border-radius: 2px;
+      background: rgba(201,74,26,0.15);
+    }
+
+    .interp-section {
+      margin-bottom: 22px;
+    }
+
+    .interp-heading {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink);
+      margin-bottom: 10px;
+      font-weight: 500;
+    }
+
+    .callouts {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      background: transparent;
+      border: none;
+      margin: 18px 0 18px;
+    }
+
+    .callouts--secondary {
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      margin: 0 0 16px;
+      opacity: 0.95;
+    }
+
+    .callouts--secondary .callout {
+      padding: 14px 16px;
+    }
+
+    .callouts--secondary .callout-num {
+      font-size: 20px;
+    }
+
+    .callout {
+      background: var(--surface);
+      padding: 18px 20px;
+      border: 1px solid var(--rule);
+      border-top: 3px solid var(--rule);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .callout--fire { border-top-color: rgba(201, 74, 26, 0.55); }
+    .callout--forecast { border-top-color: rgba(232, 124, 42, 0.45); opacity: 0.95; }
+    .callout--forecast .callout-label::after {
+      content: ' · projection';
+      font-family: 'DM Mono', monospace;
+      font-size: 8px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+    }
+
+    .federal-context-strip {
+      margin: 0 0 18px;
+      padding: 14px 16px;
+      background: rgba(42, 107, 74, 0.08);
+      border: 1px solid rgba(42, 107, 74, 0.22);
+      border-top: 3px solid var(--fs);
+      border-radius: var(--radius);
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--ink-soft);
+      max-width: none;
+    }
+
+    .federal-context-strip strong { color: var(--ink); }
+
+    .start-here {
+      margin-bottom: 20px;
+      padding: 18px 20px;
+      background: var(--surface);
+      border: 1px solid var(--rule);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .start-here ol {
+      margin: 10px 0 0 18px;
+      padding: 0;
+      font-size: 14px;
+      line-height: 1.65;
+      color: var(--ink-soft);
+      max-width: none;
+    }
+
+    .start-here li { margin-bottom: 8px; }
+
+    .methods-box {
+      margin: 0 0 18px;
+      padding: 14px 16px;
+      background: var(--surface);
+      border: 1px solid rgba(123, 94, 167, 0.22);
+      border-left: 3px solid var(--dsci);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      font-size: 13.5px;
+      line-height: 1.6;
+      color: var(--ink-soft);
+      box-shadow: var(--shadow);
+    }
+
+    .methods-box ul {
+      margin: 10px 0 0 18px;
+      padding: 0;
+    }
+
+    .drivers-multiple {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .drivers-multiple .chart-container + .chart-container {
+      margin-top: 12px;
+    }
+
+    .section-num {
+      font-family: 'DM Mono', monospace;
+      font-size: 8px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      margin-right: 6px;
+    }
+
+    .exploratory-badge {
+      display: inline-block;
+      font-family: 'DM Mono', monospace;
+      font-size: 8px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border: 1px solid rgba(42, 107, 74, 0.3);
+      color: var(--fs);
+      border-radius: 2px;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+    .callout--policy { border-top-color: rgba(42, 107, 74, 0.35); }
+
+    .callout-num {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 26px;
+      font-weight: 700;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .callout-num.fire { color: var(--fire); }
+    .callout-num.fs { color: var(--fs); }
+    .callout-num.forecast { color: #e87c2a; }
+    .callout-num.interior { color: var(--interior); }
+
+    .callout-label {
+      font-size: 13px;
+      color: var(--ink-soft);
+      line-height: 1.5;
+      font-weight: 400;
+    }
+
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .geo-view {
+      margin-top: 8px;
+    }
+
+    .prose-block {
+      font-size: 15px;
+      line-height: 1.75;
+      color: var(--ink-soft);
+      font-weight: 300;
+      margin-bottom: 16px;
+      max-width: none;
+    }
+
+    .prose-block strong {
+      color: var(--ink);
+      font-weight: 500;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .drivers-open-prose {
+      margin-bottom: 20px;
+    }
+
+    .methodology-details {
+      background: var(--surface-muted);
+      border: 1px solid var(--rule);
+      border-radius: var(--radius);
+      margin-bottom: 16px;
+      font-size: 13px;
+      line-height: 1.65;
+      color: var(--ink-light);
+    }
+
+    .methodology-details summary {
+      padding: 14px 18px;
+      cursor: pointer;
+      font-weight: 500;
+      color: var(--ink);
+      list-style: none;
+    }
+
+    .methodology-details summary::-webkit-details-marker { display: none; }
+
+    .methodology-details summary::after {
+      content: '+';
+      float: right;
+      font-family: 'DM Mono', monospace;
+      font-weight: 400;
+      color: var(--ink-light);
+    }
+
+    .methodology-details[open] summary::after { content: '−'; }
+
+    .methodology-body {
+      padding: 0 18px 16px;
+      border-top: 1px solid var(--rule);
+    }
+
+    .methodology-body ul {
+      margin: 12px 0 12px 18px;
+      padding: 0;
+    }
+
+    .methodology-body li {
+      margin-bottom: 6px;
+    }
+
+    .methodology-body .closing {
+      margin-top: 12px;
+      font-style: italic;
+    }
+
+    footer {
+      border-top: 1px solid var(--rule);
+      padding-top: 22px;
+      margin-top: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .sources {
+      font-family: 'DM Mono', monospace;
+      font-size: 9.5px;
+      color: var(--ink-light);
+      line-height: 1.85;
+      opacity: 0.7;
+      max-width: 52rem;
+    }
+
+    .sources a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+
+    .byline {
+      font-family: 'DM Mono', monospace;
+      font-size: 9.5px;
+      color: var(--fire);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      opacity: 0.75;
+    }
+
+    @media (max-width: 900px) {
+      :root { --page-pad: 20px; }
+      body { padding: 28px var(--page-pad) 40px; }
+      .page-header-band:not(.explore-header-slim) { padding: 28px 20px 22px; }
+      .tab-panel.active { padding: 18px 14px 12px; }
+      .chart-container { padding: 18px 16px 14px; }
+    }
+
+    @media (max-width: 600px) {
+      :root { --page-pad: 14px; }
+      body { padding: 18px var(--page-pad) 32px; font-size: 15px; }
+      .page-header-band:not(.explore-header-slim) {
+        margin: 0 0 18px;
+        padding: 22px 16px 16px;
+      }
+      .tab-bar { padding: 2px 2px 0; }
+      h1 { font-size: 24px; }
+      .h1-sub { font-size: 15px; }
+      .dek, .intro-block { font-size: 14.5px; }
+      .chart-container { padding: 16px 12px 12px; margin-bottom: 12px; }
+      .chart-slot { min-height: 220px; }
+      .legend-row { gap: 10px; }
+      .legend-item { font-size: 11px; }
+      .tab-btn { font-size: 13.5px; padding: 11px 10px; }
+      .tab-bar-utility { width: 100%; justify-content: flex-end; }
+      .tab-panel.active { margin: 0 0 18px; padding: 14px 10px 8px; }
+      .chart-caption { font-size: 14px; }
+      .chart-note { font-size: 13px; }
+      .plain-read { font-size: 14.5px; }
+      .chart-question { font-size: 16px; }
+      .callouts,
+      .callouts--secondary { grid-template-columns: 1fr; gap: 10px; }
+      .callout { padding: 14px 16px; }
+      .callout-num { font-size: 22px; }
+      .callout-label { font-size: 12px; }
+      .prose-block { font-size: 14px; }
+      .methodology-details { font-size: 12.5px; }
+      .corr-table { font-size: 10.5px; display: block; overflow-x: auto; }
+      footer { flex-direction: column; gap: 12px; }
+      .sources { font-size: 8.5px; }
+      .byline { white-space: normal; }
+    }
+
+    .impacts-roadmap {
+      margin: 8px 0 16px;
+      padding: 16px 18px;
+      background: var(--surface);
+      border: 1px solid var(--rule);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      max-width: var(--chart-prose-width);
+    }
+    .impacts-roadmap-list {
+      margin: 8px 0 0 18px;
+      padding: 0;
+      font-size: 14.5px;
+      line-height: 1.55;
+      color: var(--ink-soft);
+    }
+    .impacts-roadmap-list li { margin-bottom: 6px; }
+    .about-data {
+      margin: 8px 0 24px;
+    }
+    .about-data-lede {
+      max-width: var(--chart-prose-width);
+    }
+    .about-data-body .interp-section {
+      margin-top: 18px;
+    }
+
+    .explore-lede-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px 20px;
+      flex-wrap: wrap;
+    }
+    .explore-page-title {
+      margin: 0 0 8px;
+      font-family: 'Libre Baskerville', Georgia, serif;
+      font-size: clamp(1.65rem, 3.2vw, 2.15rem);
+      font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+    }
+    .explore-page-title a {
+      color: var(--ink);
+      text-decoration: none;
+      border-bottom: none;
+    }
+    .explore-page-title a:hover {
+      color: var(--fire);
+    }
+    .explore-header-lede {
+      font-size: 15px;
+      line-height: 1.55;
+      color: var(--ink-soft);
+      font-weight: 300;
+      max-width: var(--prose-width);
+      margin: 0;
+      flex: 1 1 16rem;
+      min-width: 0;
+    }
+    .explore-header-slim.page-header-band {
+      padding: 20px 22px 12px;
+      margin-bottom: 0;
+      background:
+        linear-gradient(165deg, rgba(201, 74, 26, 0.1) 0%, transparent 52%),
+        linear-gradient(180deg, #fff9f3 0%, rgba(255, 252, 248, 0.96) 55%, rgba(255, 252, 248, 0.92) 100%);
+      border: 1px solid var(--rule);
+      box-shadow: var(--shadow);
+      border-radius: var(--radius) var(--radius) 0 0;
+    }
+    .explore-header-slim .kicker {
+      margin-bottom: 8px;
+      letter-spacing: 0.14em;
+    }
+    .explore-header-slim .header-tour-btn {
+      margin-top: 0;
+      flex: 0 0 auto;
+      align-self: flex-start;
+      padding-top: 2px;
+    }
+    .flame-divider {
+      margin: var(--section-gap) 0;
+    }
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .photo-band {
+      position: relative;
+      margin: 14px 0 20px;
+      min-height: 200px;
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: none;
+      box-shadow: none;
+      background-color: #d8d0c4;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+    .photo-band--context {
+      min-height: 190px;
+      background-image: url('media/context-prescribed-burn.jpg');
+      background-position: center 32%;
+    }
+    .photo-band--impacts {
+      min-height: 220px;
+      max-width: none;
+      background-image:
+        linear-gradient(
+          100deg,
+          rgba(255, 252, 248, 0.94) 0%,
+          rgba(255, 252, 248, 0.8) 48%,
+          rgba(255, 252, 248, 0.32) 100%
+        ),
+        url('media/impacts-yosemite-smoke.jpg');
+      background-position: center 55%;
+    }
+    .photo-band-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 34rem;
+      padding: 22px 20px 18px;
+    }
+    .photo-band--context .photo-band-inner {
+      margin: 16px;
+      max-width: 32rem;
+      padding: 14px 16px;
+      background: rgba(255, 252, 248, 0.96);
+      border: 1px solid rgba(28, 26, 23, 0.12);
+      border-radius: var(--radius);
+      box-shadow: 0 1px 3px rgba(28, 26, 23, 0.06);
+    }
+    .photo-band-text {
+      margin: 0;
+      font-size: 14.5px;
+      line-height: 1.5;
+      color: var(--ink);
+    }
+    .photo-band--context .photo-band-text {
+      color: var(--ink);
+      font-weight: 400;
+    }
+    .photo-band-credit {
+      display: block;
+      margin-top: 10px;
+      font-family: 'DM Sans', system-ui, sans-serif;
+      font-size: 11px;
+      line-height: 1.4;
+      color: var(--ink-light);
+    }
+    .photo-band--context .photo-band-credit {
+      color: var(--ink-soft);
+    }
+    .photo-band-credit a {
+      color: var(--ink-soft);
+      text-decoration: none;
+      border-bottom: 1px solid var(--rule);
+    }
+    @media (max-width: 600px) {
+      .photo-band--impacts {
+        background-image:
+          linear-gradient(
+            180deg,
+            rgba(255, 252, 248, 0.95) 0%,
+            rgba(255, 252, 248, 0.88) 55%,
+            rgba(255, 252, 248, 0.7) 100%
+          ),
+          url('media/impacts-yosemite-smoke.jpg');
+      }
+      .photo-band--context .photo-band-inner {
+        margin: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+<script>
+  if (window.location.protocol === 'file:') {
+    document.documentElement.classList.add('file-protocol');
+  }
+</script>
+<div class="page">
+
+  <div class="file-protocol-banner" role="status">
+    <strong>Charts cannot load from a saved file path.</strong>
+    Browsers block CSV requests on <code>file://</code> URLs. From this project folder run
+    <code>python3 -m http.server 8000</code>, then open
+    <a href="http://localhost:8000/explore.html">http://localhost:8000/explore.html</a> in the browser (including Cursor’s Simple Browser).
+  </div>
+
+  <div class="page-header-band explore-header-slim">
+    <p class="kicker">
+      <img src="assets/flame-mark.svg" alt="" class="flame-mark" width="14" height="16" aria-hidden="true">
+      U.S. wildfire data · 1983-2026 · Updated August 2026
+    </p>
+    <h1 class="explore-page-title">
+      <a href="index.html">Wildfire Season Briefing</a>
+    </h1>
+    <div class="explore-lede-row">
+      <p class="explore-header-lede">
+        How many U.S. acres have burned so far in 2026, where those acres landed by region, and what dryness, federal treatment, and smoke look like in the same public record.
+      </p>
+      <button type="button" class="text-link-btn header-tour-btn" id="header-tour-btn">Tour</button>
+    </div>
+  </div>
+
+  <!-- Guide welcome + tour host -->
+  <div id="guide-welcome" class="guide-dialog" role="dialog" aria-modal="true" aria-labelledby="guide-welcome-title" hidden>
+    <div class="guide-dialog-card">
+      <h2 id="guide-welcome-title" class="guide-dialog-title">Tour the briefing</h2>
+      <p class="guide-dialog-dek">About 30 seconds across four tabs. Skip anytime; restart from Tour in the header.</p>
+      <ul class="guide-welcome-list">
+        <li>Overview: U.S. acres burned, and where those acres landed.</li>
+        <li>Drivers: complex factors; top pairings by region.</li>
+        <li>Context: federal treatment; Impacts: smoke.</li>
+      </ul>
+      <div class="guide-dialog-actions">
+        <button type="button" class="guide-btn guide-btn-primary" id="guide-welcome-start">Guide me</button>
+        <button type="button" class="guide-btn guide-btn-secondary" id="guide-welcome-skip">Skip</button>
+      </div>
+    </div>
+  </div>
+  <div id="guide-tour" class="guide-tour" hidden>
+    <div class="guide-spotlight" id="guide-spotlight" aria-hidden="true"></div>
+    <div class="guide-tour-card" role="dialog" aria-modal="true" aria-labelledby="guide-tour-title">
+      <p class="guide-step-meta" id="guide-step-meta">1 / 4</p>
+      <h2 id="guide-tour-title" class="guide-dialog-title">Overview</h2>
+      <p class="guide-tour-body" id="guide-tour-body"></p>
+      <div class="guide-dialog-actions">
+        <button type="button" class="guide-btn guide-btn-secondary" id="guide-tour-back">Back</button>
+        <button type="button" class="guide-btn guide-btn-secondary" id="guide-tour-skip">Skip tour</button>
+        <button type="button" class="guide-btn guide-btn-primary" id="guide-tour-next">Next</button>
+      </div>
+    </div>
+  </div>
+
+    <nav class="tab-bar" role="tablist" aria-label="Wildfire data views">
+    <div class="tab-bar-primary">
+      <button class="tab-btn" role="tab" id="tab-btn-overview" aria-selected="true" aria-controls="tab-overview" data-tab="overview" tabindex="0">Overview</button>
+      <button class="tab-btn" role="tab" id="tab-btn-drivers" aria-selected="false" aria-controls="tab-drivers" data-tab="drivers" tabindex="-1">Drivers</button>
+      <button class="tab-btn" role="tab" id="tab-btn-context" aria-selected="false" aria-controls="tab-context" data-tab="context" tabindex="-1">Context</button>
+      <button class="tab-btn" role="tab" id="tab-btn-impacts" aria-selected="false" aria-controls="tab-impacts" data-tab="impacts" tabindex="-1">Impacts</button>
+    </div>
+    <div class="tab-bar-utility">
+      <button class="tab-btn tab-btn--utility" role="tab" id="tab-btn-methods" aria-selected="false" aria-controls="tab-methods" data-tab="methods" tabindex="-1">Methods</button>
+    </div>
+  </nav>
+
+  <section id="tab-overview" class="tab-panel tab-panel--overview active" role="tabpanel" aria-labelledby="tab-btn-overview">
+    <p class="tab-dek">How many U.S. acres have burned so far in 2026, and which regions carried those acres? Through August 3 is year-to-date, not a full year.</p>
+    <div class="callouts outcomes-callouts">
+      <div class="callout callout--fire">
+        <div class="callout-num fire">5.2M</div>
+        <div class="callout-label">U.S. acres burned so far in 2026 through August 3 (year-to-date only)</div>
+      </div>
+      <div class="callout callout--fire">
+        <div class="callout-num fire">+37%</div>
+        <div class="callout-label">About 37% more acres than a typical early August over the last 10 years (NIFC same-date average, not a full-year comparison)</div>
+      </div>
+    </div>
+
+    <div class="callouts callouts--secondary">
+      <div class="callout callout--fire">
+        <div class="callout-num fire">3rd</div>
+        <div class="callout-label">3rd-highest early-August acres in NIFC’s same-date table (behind 2022 ~5.8M and 2017 ~5.7M). Not a full-year ranking.</div>
+      </div>
+    </div>
+
+    <div class="chart-container chart-container--fire">
+      <div class="chart-date-badge">Data through August 3, 2026 · NIFC National Fire News</div>
+      <div class="signal-tier signal-tier-1">Observed · national acres</div>
+      <p class="chart-question">How many U.S. acres burned each year?</p>
+      <p class="plain-read" id="fire-plain-read">Each point is total U.S. <strong>acres burned</strong> in a calendar year (NIFC), not the number of fires. The shaded band is the min-to-max range of the prior ten <em>complete</em> years; it starts in 1993 once ten comparable years exist. The orange 2026 point is year-to-date only (through August 3).</p>
+      <figure class="chart-figure">
+      <div class="chart-toggle" role="group" aria-label="Fire chart measure">
+        <button type="button" class="toggle-btn active" data-fire-mode="acres">Million acres</button>
+        <button type="button" class="toggle-btn" data-fire-mode="fires">Number of fires</button>
+      </div>
+      <div class="legend-row">
+        <div class="legend-item">
+          <div class="ls-line" style="background:#c94a1a;"></div>
+          <span id="fire-legend-series">Acres burned (full years)</span>
+        </div>
+        <div class="legend-item" id="fire-legend-band-item">
+          <div class="ls-band"></div>
+          <span id="fire-legend-band">Prior 10-year range (acres)</span>
+        </div>
+        <div class="legend-item" id="fire-legend-ytd-item">
+          <div class="ls-line" style="background:#e87c2a; width:8px; height:8px; border-radius:50%;"></div>
+          <span>2026 YTD (Aug 3)</span>
+        </div>
+        <div class="legend-item" id="fire-legend-forecast-item">
+          <div class="ls-range"></div>
+          <span>2026 forecast (AccuWeather)</span>
+        </div>
+      </div>
+      <div id="chart-fire" class="chart-slot" role="img" aria-label="Chart of U.S. wildfire acres burned, 1983 to 2026"></div>
+      <figcaption class="chart-caption-block">
+        <p class="chart-caption" id="fire-caption">Big national years like 2006, 2015, 2017, 2020, and 2021 often line up with hot, dry western summers, but Alaska, the Southeast, and other regions can move the total too. Early August 2026 is already above the usual same-date pace, but it is not comparable to full years yet.</p>
+        <details class="chart-notes-details">
+          <summary>Notes</summary>
+          <p class="chart-note" id="fire-tenyear-note"><span class="note-label">Two different “10-year” ideas</span>Header callouts use NIFC’s same-date YTD average. The chart band uses prior full calendar years. They answer different questions.</p>
+          <p class="chart-note"><span class="note-label">Forecast on chart</span>The dashed AccuWeather range (5.5-8M) is a speculative full-year projection, not observed NIFC data.</p>
+        </details>
+        <span class="chart-source" id="fire-source">Source: <a href="https://www.nifc.gov/fire-information/statistics/wildfires" target="_blank" rel="noopener noreferrer">NIFC Total Wildfires and Acres</a> · calendar year · national acres burned</span>
+      </figcaption>
+      </figure>
+    </div>
+
+<div class="chart-container chart-container--fire chart-panel-secondary" id="geo-story-section">
+      <p class="chart-question">Which regions held the share of burned acres?</p>
+      <p class="plain-read">Most years the West holds most burned acres; Alaska or the South can dominate. Map, West vs nation, and four-region views use NICC GACC acres by calendar year, not the NIFC year-to-date total above. State shapes are approximate.</p>
+      <figure class="chart-figure">
+      <div class="chart-toggle" role="group" aria-label="Geography chart view">
+        <button type="button" class="toggle-btn active" data-geo-view="map" aria-pressed="true">Map by year</button>
+        <button type="button" class="toggle-btn" data-geo-view="west" aria-pressed="false">West vs nation</button>
+        <button type="button" class="toggle-btn" data-geo-view="regions" aria-pressed="false">Four regions</button>
+      </div>
+
+      <div class="geo-view" id="geo-view-map" data-geo-panel="map">
+        <div class="gacc-year-toolbar">
+          <div class="chart-toggle gacc-year-select-row" role="group" aria-label="GACC map calendar year">
+            <label class="gacc-year-select-label" for="gacc-choropleth-year">Year</label>
+            <select id="gacc-choropleth-year" class="gacc-year-select" aria-label="Select GACC map year"></select>
+          </div>
+          <div class="chart-toggle" id="gacc-choropleth-story-years" role="group" aria-label="Story years for GACC map"></div>
+        </div>
+        <div id="gacc-choropleth-legend" class="gacc-leaflet-legend" aria-hidden="false"></div>
+        <div id="chart-gacc-choropleth" class="chart-slot chart-slot--map" role="img" aria-label="Map of GACC regional share of acres burned"></div>
+        <span id="gacc-choropleth-year-label" class="visually-hidden">2025</span>
+      </div>
+
+      <div class="geo-view" id="geo-view-west" data-geo-panel="west" hidden>
+        <div class="legend-row">
+          <div class="legend-item">
+            <div class="ls-bar" style="background:#e8c4b4;"></div>
+            <span>National total (NIFC)</span>
+          </div>
+          <div class="legend-item">
+            <div class="ls-bar" style="background:#e87c2a;"></div>
+            <span>Western share (GACC fill)</span>
+          </div>
+        </div>
+        <div id="chart-western-acres-outcomes" class="chart-slot" role="img" aria-label="Western GACC acres as fill within national total"></div>
+      </div>
+
+      <div class="geo-view" id="geo-view-regions" data-geo-panel="regions" hidden>
+        <div id="chart-regional-share-outcomes" class="chart-slot" role="img" aria-label="Regional GACC share of acres burned 2003 to 2025"></div>
+      </div>
+
+      <figcaption class="chart-caption-block">
+        <p class="chart-caption" id="geo-caption">Share of that year’s GACC acres by region (NICC; West, South, Alaska, East). State shapes are approximate. Use the year control or story chips for years like 2004, 2015, or 2020. Geography and calendars differ from western dryness (Drivers) and fiscal treatment (Context).</p>
+        <span class="chart-source" id="geo-source">Source: <a href="https://www.nifc.gov/nicc/predictive-services/intelligence" target="_blank" rel="noopener noreferrer">NICC annual GACC reports</a> · <a href="data/regional-acres-annual.csv">regional-acres-annual.csv</a> · state shapes approximate · calendar year</span>
+      </figcaption>
+      </figure>
+    </div>
+  
+    <details class="methodology-details wfigs-ops-details" id="wfigs-ops-details">
+      <summary>Ops snapshot: mapped YTD perimeters (WFIGS)</summary>
+      <div class="methodology-body">
+<div class="chart-container chart-container--fire chart-panel-secondary" id="wfigs-map-section" hidden>
+      <div class="signal-tier signal-tier-ops">Operational snapshot · not annual NIFC totals</div>
+      <p class="chart-question">Where have mapped fires burned so far this year?</p>
+      <p class="plain-read">Orange outlines are NIFC WFIGS year-to-date fire perimeters from a static snapshot (as of <span id="wfigs-as-of">—</span>). This map shows <span id="wfigs-feature-count">—</span> perimeters of at least 100 GIS acres (~<span id="wfigs-acres-sum">—</span> perimeter acres summed). It is not the National Fire News YTD acre total, and not every fire has a public perimeter.</p>
+      <figure class="chart-figure">
+      <div id="map-wfigs-ytd" class="chart-slot chart-slot--map" role="img" aria-label="Map of year-to-date wildfire perimeters from NIFC WFIGS snapshot"></div>
+      <figcaption class="chart-caption-block">
+        <p class="chart-caption">Hover or tap a polygon for incident name and GIS acres. Perimeters lag the fire front and can be incomplete. Use this for geography context only; do not treat the perimeter acre sum as the season total above.</p>
+        <span class="chart-source">Source: NIFC WFIGS YearToDate perimeters · <a href="data/wfigs-ytd-snapshot.geojson">wfigs-ytd-snapshot.geojson</a> · refresh via <code>scripts/fetch_wfigs_ytd.py</code> · <a href="https://data-nifc.opendata.arcgis.com/" target="_blank" rel="noopener noreferrer">NIFC Open Data</a></span>
+      </figcaption>
+      </figure>
+    </div>
+      </div>
+    </details>
+  </section>
+
+  <section id="tab-drivers" class="tab-panel tab-panel--drivers" role="tabpanel" aria-labelledby="tab-btn-drivers" hidden>
+    <p class="tab-dek">What starts a fire is not the same as what lets it run large, and the strongest dryness signals differ by region.</p>
+
+    <div class="chart-container chart-container--coupling" id="regional-top-drivers-section">
+      <div class="signal-tier signal-tier-1">Exploratory · regional pairings</div>
+      <p class="chart-question">Which conditions line up with large acre years by region?</p>
+      <p class="plain-read">Many starts are human-caused; lightning can still drive a large share of acres burned. Charts below focus on conditions that make large fires more likely once a fire is going. West, South, and East do not share the same top pairing here. r is Pearson co-movement from −1 to 1 (not a cause ranking). Bars: top two for the selected region. Table: all regions, including Alaska. Definitions: <button type="button" class="text-link-btn" data-goto-tab="methods">Methods glossary</button>.</p>
+      <figure class="chart-figure">
+      <div class="chart-toggle" role="group" aria-label="Region for top drivers">
+        <button type="button" class="toggle-btn active" data-regional-driver-region="west" aria-pressed="true">West</button>
+        <button type="button" class="toggle-btn" data-regional-driver-region="south" aria-pressed="false">South</button>
+        <button type="button" class="toggle-btn" data-regional-driver-region="east" aria-pressed="false">East</button>
+      </div>
+      <div class="chart-toggle" role="group" aria-label="Regional pairing view" style="margin-top:8px;">
+        <button type="button" class="toggle-btn active" data-regional-driver-view="bars" aria-pressed="true">Bars</button>
+        <button type="button" class="toggle-btn" data-regional-driver-view="table" aria-pressed="false">Table</button>
+      </div>
+      <div id="regional-top-drivers-bars-wrap">
+        <div id="chart-regional-top-drivers" class="chart-slot chart-slot--compact" role="img" aria-label="Top regional driver correlations"></div>
+      </div>
+      <div id="regional-top-drivers-table-wrap" hidden>
+        <table class="corr-table" id="regional-drivers-summary-table" aria-label="Regional correlation ranks 2013 to 2025">
+          <thead>
+            <tr>
+              <th scope="col">Region</th>
+              <th scope="col">Median share</th>
+              <th scope="col">Best driver (r)</th>
+              <th scope="col">2nd (r)</th>
+              <th scope="col">DSCI (r)</th>
+            </tr>
+          </thead>
+          <tbody id="regional-drivers-summary-body"></tbody>
+        </table>
+      </div>
+      <figcaption class="chart-caption-block">
+        <p class="chart-caption" id="regional-top-drivers-caption">Western ERC and VPD track western GACC acres most closely here.</p>
+        <p class="chart-note" id="regional-top-drivers-note"><span class="note-label">Limits</span>Exploratory Pearson r, 2013-2025 (n=13). Not causal. The West usually holds most national GACC acres (median share ≈ 60%), so western dryness is the focus of the charts below.</p>
+        <span class="chart-source">Source: <a href="data/regional-correlation-rank.csv">regional-correlation-rank.csv</a> · <a href="data/regional-correlation-notes.md">notes</a> · n = 13</span>
+      </figcaption>
+      </figure>
+    </div>
+
+    <div class="flame-divider" aria-hidden="true">
+      <img src="assets/flame-mark.svg" alt="" class="flame-mark" width="12" height="14">
+    </div>
+
+    <div class="chart-container chart-container--atmosphere">
+      <div class="signal-tier signal-tier-1">Western fire-season dryness</div>
+      <p class="chart-question">How dry were western fuels and air in the fire season?</p>
+      <div class="chart-toggle" role="group" aria-label="Western dryness index">
+        <button type="button" class="toggle-btn active" data-atmos-dryness="erc">ERC (fire danger)</button>
+        <button type="button" class="toggle-btn" data-atmos-dryness="vpd">VPD (atmosphere)</button>
+      </div>
+      <p class="plain-read" id="atmos-dryness-note">Each year compared to the 2000-2025 western average. Zero ≈ normal; above zero = drier or more fire-stressed. Solid line toggles ERC or VPD. Dashed purple is drought coverage (DSCI). Fire season here: May-September west of the 100th meridian.</p>
+      <figure class="chart-figure">
+      <div class="legend-row">
+        <div class="legend-item">
+          <div class="ls-line" style="background:#9a6b3a;"></div>
+          <span id="atmos-dryness-legend">Western ERC z-score</span>
+        </div>
+        <div class="legend-item">
+          <div class="ls-line" style="background:#9b7ec8; border-top:2px dashed #9b7ec8; height:0; width:18px;"></div>
+          <span>Western DSCI z-score</span>
+        </div>
+      </div>
+      <div id="chart-atmosphere" class="chart-slot" role="img" aria-label="Western VPD and DSCI z-score overlay, 2000 to 2025"></div>
+      <figcaption class="chart-caption-block">
+        <p class="chart-caption" id="atmos-dryness-caption">2020 through 2022 ran drier than the long-term western average on this scale and overlapped several large national fire years. Dry fuels and heat do not start fires by themselves, but they make fires harder to stop once ignited. National DSCI averages often smooth western fire-season extremes; see the note drawer for raw national vs western index.</p>
+        <span class="chart-source" id="atmos-dryness-source">Source: gridMET ERC · USDM western DSCI · western U.S. · not national fire acres</span>
+      </figcaption>
+      </figure>
+    </div>
+
+    <details class="methodology-details atmosphere-national-details">
+      <summary>National vs western DSCI (raw index)</summary>
+      <div class="methodology-body">
+        <p class="panel-note" style="margin-bottom:10px;">Same drought index without z-scoring: contiguous U.S. vs NWS Western Region, 2000 onward. Annual values average weekly DSCI (YTD for partial years).</p>
+        <figure class="chart-figure">
+        <div class="legend-row">
+          <div class="legend-item">
+            <div class="ls-line" style="background:#7b5ea7;"></div>
+            <span>Contiguous U.S. DSCI</span>
+          </div>
+          <div class="legend-item">
+            <div class="ls-line" style="background:#9b7ec8; border-top:2px dashed #9b7ec8; height:0; width:18px;"></div>
+            <span>NWS Western Region DSCI</span>
+          </div>
+        </div>
+        <div id="chart-atmosphere-national" class="chart-slot" role="img" aria-label="National and western DSCI, 2000 to 2026"></div>
+        <figcaption class="chart-caption-block">
+          <p class="chart-caption">On this page ERC and VPD track acres burned more closely than DSCI.</p>
+          <span class="chart-source">Source: U.S. Drought Monitor API · annual average of weekly DSCI</span>
+        </figcaption>
+        </figure>
+      </div>
+    </details>
+
+    <div class="flame-divider" aria-hidden="true">
+      <img src="assets/flame-mark.svg" alt="" class="flame-mark" width="12" height="14">
+    </div>
+
+    <div class="chart-container chart-container--coupling chart-panel-secondary" id="scatter-reliability-section">
+      <p class="chart-question">In dry western years, did more acres burn?</p>
+      <div class="chart-toggle" role="group" aria-label="Fire danger index for scatter">
+        <button type="button" class="toggle-btn active" data-scatter-driver="erc">ERC</button>
+        <button type="button" class="toggle-btn" data-scatter-driver="vpd">VPD</button>
+        <button type="button" class="toggle-btn" data-scatter-driver="may">May VPD</button>
+      </div>
+      <div class="chart-toggle" role="group" aria-label="Acres geography for scatter" style="margin-top:8px;">
+        <button type="button" class="toggle-btn active" data-scatter-mode="western">Western acres</button>
+        <button type="button" class="toggle-btn" data-scatter-mode="national">National acres</button>
+      </div>
+      <div class="scatter-r-badge" id="scatter-r-badge" aria-live="polite">
+        <span class="r-value" id="scatter-r-value">r = 0.82</span>
+        <span class="r-meta" id="scatter-r-meta">n = 16 · 2010–2025</span>
+      </div>
+      <p class="plain-read" id="scatter-panel-note">Each dot is one year. Horizontal: western dryness. Vertical: acres burned. Upper-right = dry season with more acres. Strongest for western acres × fire-season dryness; May VPD is a weaker spring timing check. Labels mark extreme years such as 2012, 2015, and 2020 when the ERC × western view is active.</p>
+      <figure class="chart-figure">
+      <div id="chart-scatter" class="chart-slot" role="img" aria-label="Scatter plot of western fire danger vs acres burned"></div>
+      <figcaption class="chart-caption-block">
+        <p class="chart-caption" id="scatter-caption">In dry western years with high ERC, western acres burned tend to be higher in the same calendar year (r ≈ 0.82 here). A few extreme years pull the pattern.</p>
+        <p class="chart-note" id="scatter-context"><span class="note-label">Geography</span>Western dryness only explains western acres well. See <button type="button" class="text-link-btn" data-goto-tab="overview">Overview</button> for West vs nation and regional share. Literature usually ranks ERC ≳ VPD ≫ drought for western large-fire area.</p>
+        <span class="chart-source" id="scatter-source">Source: gridMET western ERC (Abatzoglou 2013) · NICC western GACC acres · calendar year · r ≈ 0.82</span>
+      </figcaption>
+      </figure>
+
+      <div class="reliability-block reliability-block--nested" id="reliability-block">
+        <div class="panel-label">Numbers for this chart</div>
+        <p class="panel-note">Strongest co-movement in this sample. Matched geography and fire-season indices first. Sorted with caveats, not as a cause ranking.</p>
+        <table class="corr-table reliability-table" aria-label="Primary dryness and acres pairings">
+          <thead>
+            <tr>
+              <th scope="col">Pairing</th>
+              <th scope="col">r</th>
+              <th scope="col">n</th>
+              <th scope="col">Window</th>
+              <th scope="col">Note</th>
+              <th scope="col" class="reliability-lit-col" hidden>Studies usually</th>
+            </tr>
+          </thead>
+          <tbody id="reliability-primary-body"></tbody>
+          <tbody id="reliability-more-body" hidden></tbody>
+        </table>
+        <div class="reliability-actions">
+          <button type="button" class="text-link-btn" id="reliability-expand-more" aria-expanded="false">Show more pairings</button>
+          <button type="button" class="text-link-btn" id="reliability-expand-diag" aria-expanded="false">Diagnostics (partials / windows)</button>
+        </div>
+        <div id="reliability-diagnostics" hidden>
+          <div class="panel-label" style="margin-top:12px;">Partials (western acres vs ERC/VPD)</div>
+          <table class="corr-table" aria-label="Partial correlations">
+            <thead>
+              <tr>
+                <th scope="col">Test</th>
+                <th scope="col">Control</th>
+                <th scope="col">r / R²</th>
+                <th scope="col">n</th>
+              </tr>
+            </thead>
+            <tbody id="partial-corr-table-body">
+              <tr><td>Western acres vs ERC (raw)</td><td>none</td><td class="num">0.821</td><td class="num">16</td></tr>
+            </tbody>
+          </table>
+          <div class="panel-label" style="margin-top:12px;">Sensitivity (alternate windows)</div>
+          <table class="corr-table" aria-label="Correlation sensitivity">
+            <thead>
+              <tr>
+                <th scope="col">Pairing</th>
+                <th scope="col">r</th>
+                <th scope="col">n</th>
+                <th scope="col">Window</th>
+              </tr>
+            </thead>
+            <tbody id="sensitivity-table-body">
+              <tr><td>Western acres vs ERC</td><td class="num">0.821</td><td class="num">16</td><td>2010-2025</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="chart-note" id="reliability-footer"><span class="note-label">Limits</span>Not causal. ERC and VPD are nearly the same signal here (collinear r ≈ 0.94); each adds little after the other. No El Niño, ignitions, suppression, or housing controls.</p>
+      </div>
+    </div>
+
+    <div class="flame-divider" aria-hidden="true">
+      <img src="assets/flame-mark.svg" alt="" class="flame-mark" width="12" height="14">
+    </div>
+
+    <div class="chart-container chart-container--coupling chart-panel-secondary">
+      <div class="signal-tier signal-tier-3">Literature · western forest wildfire · not GACC/NIFC acres</div>
+      <p class="chart-question">Did earlier snowmelt years burn more forest?</p>
+      <p class="plain-read">This block is a published forest-fire history, not the all-land NIFC or GACC acres series above. Westerling et al. (<em>Science</em>, 2006) linked a mid-1980s jump in large western U.S. <em>forest</em> wildfires to warmer springs and earlier snowmelt. Average fire-season length rose by about <strong>78 days (64%)</strong> comparing 1970-1986 with 1987-2003.</p>
+      <figure class="chart-figure">
+        <div id="chart-westerling-snowmelt" class="chart-slot" role="img" aria-label="Share of large western forest fires and area burned by snowmelt timing tercile"></div>
+        <figcaption class="chart-caption-block">
+          <p class="chart-caption">Early-snowmelt years accounted for most large western forest fires (56%) and most area burned (72%). Late-snowmelt years accounted for only 11% of fires and 4% of area burned.</p>
+          <p class="chart-note"><span class="note-label">Method</span>Literature-attributed bars from Westerling et al. 2006. Middle tercile shares are the remainder after reported early and late shares. See <a href="data/westerling-2006-notes.md">westerling-2006-notes.md</a>.</p>
+          <span class="chart-source">Source: Westerling et al. 2006 · <a href="https://doi.org/10.1126/science.1128834">doi:10.1126/science.1128834</a> · large western forest wildfires</span>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+<section id="tab-context" class="tab-panel tab-panel--context" role="tabpanel" aria-labelledby="tab-btn-context" hidden>
+    <p class="tab-dek">How many hazardous-fuels acres did agencies report, and how much was tagged near communities? That series is mostly fiscal year, not the calendar burn total on Overview. See <button type="button" class="text-link-btn" data-goto-tab="methods">Methods</button> for fiscal vs calendar and treatment limits.</p>
+
+<div class="federal-context-strip" role="note">
+      <strong>Federal context:</strong> In 2025 the Forest Service treated <strong>35% fewer acres</strong> for wildfire risk than in 2024 (2.6M vs 4.1M). That is reported hazardous-fuels workload, not a fire-season outcome.
+    </div>
+
+<div
+      class="photo-band photo-band--context"
+      role="img"
+      aria-label="Two firefighters on a prescribed burn; one lights dry grass with a drip torch in a forest clearing"
+    >
+      <div class="photo-band-inner">
+        <p class="photo-band-text">
+          Prescribed fire is one kind of hazardous-fuels work counted in the treatment series below.
+        </p>
+        <span class="photo-band-credit">
+          USDA Forest Service, Coconino National Forest (Brady Smith) · public domain ·
+          <a href="media/SOURCES.md">Sources</a>
+        </span>
+      </div>
+    </div>
+
+    <div class="treatment-limits-box" role="note">
+      <strong>What treatment numbers do not mean</strong>
+      <p class="panel-note" style="margin:8px 0 0; border:none; padding:0;">Reported acres are workload (where work was done), not homes protected, fuel removed, or maintained acres, and not comparable acre-for-acre with burn totals. Full limits: <button type="button" class="text-link-btn" data-goto-tab="methods">Methods</button>.</p>
+    </div>
+
+    <div class="drivers-multiple">
+    <div class="chart-container chart-container--policy">
+      <div class="signal-tier signal-tier-2">Federal prevention work</div>
+      <p class="chart-question">How much fuels treatment did agencies report?</p>
+      <p class="plain-read">Combined acres the Forest Service and Interior (BLM, Park Service, Fish and Wildlife, BIA) say they treated each year: prescribed fire, thinning, pile burning. Long history from the joint HFR report (FY 2003-2021); recent years from agency totals verified for this page.</p>
+      <figure class="chart-figure">
+      <div class="chart-toggle" role="group" aria-label="Treatment year basis">
+        <button type="button" class="toggle-btn active" data-policy-year="fiscal">Federal fiscal year</button>
+        <button type="button" class="toggle-btn" data-policy-year="calendar">Calendar year (aligned)</button>
+      </div>
+      <div class="chart-toggle" role="group" aria-label="Policy chart view">
+        <button type="button" class="toggle-btn active" data-policy-mode="total">Combined total</button>
+        <button type="button" class="toggle-btn" data-policy-mode="breakdown">Agency breakdown</button>
+      </div>
+      <p class="year-basis-note treatment-year-note" id="treatment-year-note">Fiscal view labels treatment by federal fiscal year (Oct 1 start). Acres burned use calendar year on the same tick. The two measures do not share the same reporting window.</p>
+      <div class="legend-row">
+        <div class="legend-item">
+          <div class="ls-line" style="background:#2a6b4a;"></div>
+          <span>Combined total (or Forest Service in breakdown)</span>
+        </div>
+        <div class="legend-item">
+          <div class="ls-line-dashed"></div>
+          <span>Interior / DOI (breakdown view)</span>
+        </div>
+      </div>
+      <div id="chart-policy" class="chart-slot" role="img" aria-label="Federal hazardous fuels treatment acres 2003 to 2025"></div>
+      <figcaption class="chart-caption-block">
+        <p class="chart-caption">Federal treatment often ran about 3-6 million acres per year in the HFR era, with peaks near 2009 and 2016. The 2025 Forest Service total (2.6M) is the lowest in the recent page-verified window. Interior totals follow fiscal years, so they do not line up perfectly with calendar-year fire statistics.</p>
+        <span class="chart-source">Source: HFR-DOI-FS NFPORS FY 2003-2021 · NPR/USFS FACTS 2023-2025 · DOI fuels program fiscal 2018-2024</span>
+      </figcaption>
+      </figure>
+    </div>
+
+        <details class="methodology-details treatment-dual-details" id="treatment-dual-details">
+      <summary>Research: do treatment and burn acres move together? (dual-axis)</summary>
+      <div class="methodology-body">
+<div class="chart-container chart-container--policy chart-container--overlap" id="chart-treatment-acres-section">
+      <div class="signal-tier signal-tier-2">Same years, two measures</div>
+      <p class="chart-question">Do treatment and burn acres move together?</p>
+      <p class="plain-read">Green = federal treatment (left axis). Orange = national acres burned (right axis), the same national burn total as Overview. Same-year labels; fiscal and calendar windows differ (toggle above).</p>
+      <figure class="chart-figure">
+      <div class="chart-toggle" role="group" aria-label="Treatment year basis (dual axis)">
+        <button type="button" class="toggle-btn active" data-policy-year="fiscal">Federal fiscal year</button>
+        <button type="button" class="toggle-btn" data-policy-year="calendar">Calendar year (aligned)</button>
+      </div>
+      <p class="year-basis-note treatment-year-note">Fiscal view labels treatment by federal fiscal year (Oct 1 start). Acres burned always use calendar year.</p>
+      <div class="legend-row">
+        <div class="legend-item">
+          <div class="ls-line" style="background:#2a6b4a;"></div>
+          <span>Federal treatment (left axis)</span>
+        </div>
+        <div class="legend-item">
+          <div class="ls-line" style="background:#c94a1a;"></div>
+          <span>National acres burned (right axis)</span>
+        </div>
+      </div>
+      <div id="chart-treatment-acres" class="chart-slot" role="img" aria-label="Dual axis chart of federal treatment and national acres burned 2003 to 2025"></div>
+      <figcaption class="chart-caption-block">
+        <p class="chart-caption">Years like 2006, 2015, and 2020 show large national burn totals while treatment was not necessarily at its low point. This chart only shows both series on the same clock. Even after controlling for dryness, year trend, WUI share, and western share (table below), treatment and burn acres still barely co-move.</p>
+        <span class="chart-source">Source: HFR + page treatment series · NIFC national acres · calendar year</span>
+      </figcaption>
+      </figure>
+      <div class="panel-label" style="margin-top:14px;">With controls: does treatment still track burn acres?</div>
+      <p class="panel-note">Partial correlations for HFR combined treatment vs national acres burned (FY label = calendar year, n = 19, 2003-2021). Controls use series already on this page. Missing El Niño, ignitions, suppression, and housing growth. See <a href="data/correlation-treatment-partial-notes.md">correlation-treatment-partial-notes.md</a>.</p>
+      <table class="corr-table" aria-label="Partial correlations for treatment versus national acres burned">
+        <thead>
+          <tr>
+            <th scope="col">Test</th>
+            <th scope="col">Control</th>
+            <th scope="col">r / R²</th>
+            <th scope="col">n</th>
+          </tr>
+        </thead>
+        <tbody id="treatment-partial-table-body">
+          <tr><td>Treatment vs national acres (raw)</td><td>none</td><td class="num">−0.135</td><td class="num">19</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    
+      </div>
+    </details>
+
+<div class="chart-container chart-container--policy chart-container--wui">
+      <div class="signal-tier signal-tier-2">WUI designation (HFR)</div>
+      <p class="chart-question">How much of that designation was tagged near communities?</p>
+      <p class="plain-read"><span class="note-label">Why this is important</span> When a fire season is large (Overview), risk to people concentrates where homes meet wildland fuels. HFR reports how much of each year’s <em>designation</em> acres were tagged WUI vs non-WUI. WUI share rose from about 55% in the early 2000s to roughly 64% by FY 2020-2021.</p>
+      <figure class="chart-figure">
+      <div class="legend-row">
+        <div class="legend-item">
+          <div class="ls-line" style="background:#1a4a7a;"></div>
+          <span>WUI share of designation acres</span>
+        </div>
+        <div class="legend-item">
+          <div class="ls-line-dashed" style="border-color:#d4cfc8;"></div>
+          <span>Median FY 2003-2021 (dashed)</span>
+        </div>
+      </div>
+      <div id="chart-wui-share" class="chart-slot" role="img" aria-label="WUI share of HFR designation acres by fiscal year"></div>
+      <figcaption class="chart-caption-block">
+        <p class="chart-caption">Median WUI share of designation acres was about 59% across FY 2003-2021. Recent fiscal years cluster near 62-64%.</p>
+        <span class="chart-source">Source: HFR-DOI-FS NFPORS FY 2003-2021 · <a href="data/hfr-wui-notes.md">hfr-wui-notes.md</a></span>
+      </figcaption>
+      </figure>
+    </div>
+    </div>
+
+    <details class="methodology-details drivers-research-details">
+      <summary>Research: treatment per acre burned (exploratory ratio)</summary>
+      <div class="methodology-body">
+        <p class="panel-note">Federal treatment acres divided by national acres burned for the same year label. Not treatment effectiveness. See <a href="data/treatment-per-acre-notes.md">treatment-per-acre-notes.md</a>.</p>
+        <figure class="chart-figure">
+        <div id="chart-treatment-per-acre" class="chart-slot" role="img" aria-label="Ratio of federal treatment acres to national acres burned"></div>
+        </figure>
+      </div>
+    </details>
+
+<details class="methodology-details context-hfr-research-details">
+      <summary>Research notes: HFR, WUI share, monthly VPD, pre-2010 GACC</summary>
+      <div class="methodology-body">
+        <p class="panel-note">Exploratory repository notes. HFR is fiscal-year NFPORS; burn acres are calendar-year. Negative r is weak co-movement only, not evidence that treatment reduces fire.</p>
+        <table class="corr-table" aria-label="HFR, WUI, monthly VPD research summary">
+          <thead>
+            <tr>
+              <th scope="col">Series</th>
+              <th scope="col">Window</th>
+              <th scope="col">Key finding</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>HFR FS+DOI treatment (fiscal)</td><td>FY 2003-2021</td><td class="num">Exploratory r ≈ −0.27 vs national acres (same-year label; n = 18)</td></tr>
+            <tr><td>HFR lag (FY t → acres t+1)</td><td>FY 2003-2020</td><td class="num">r ≈ −0.17 (n = 19; not causal)</td></tr>
+            <tr><td>HFR WUI share of designation</td><td>FY 2003-2021</td><td>Median WUI share ≈ 59%; exploratory r ≈ 0.20 vs national acres (n = 19)</td></tr>
+            <tr><td>May western VPD vs western acres</td><td>2010-2025</td><td class="num">Same-year r ≈ 0.50 (n = 16); fire-season VPD ≈ 0.81 on same window</td></tr>
+            <tr><td>South KBDI (Jan-May)</td><td>2013-2025</td><td class="num">vs southern acres r ≈ 0.20 (n=13); does not beat VPD 0.36</td></tr>
+            <tr><td>Regional GACC acres</td><td>2003-2025</td><td>2008-2009 from hand OCR of NICC chart pages</td></tr>
+          </tbody>
+        </table>
+        <span class="chart-source">Source: <a href="data/hfr-prevention-annual.csv">hfr-prevention-annual.csv</a> · <a href="data/hfr-correlation-notes.md">hfr notes</a> · <a href="data/vpd-monthly-correlation-notes.md">monthly VPD notes</a></span>
+      </div>
+    </details>
+
+<details class="methodology-details coupling-policy-details">
+      <summary>Treatment vs following-year fire (n = 3, illustrative)</summary>
+      <div class="methodology-body">
+        <p class="panel-note">Forest Service treatment in year t vs national acres burned in year t+1. FS figures comparable from 2023 only. Not causal evidence.</p>
+        <figure class="chart-figure">
+        <div id="chart-policy-scatter" class="chart-slot" role="img" aria-label="Forest Service treatment vs following year acres burned"></div>
+        <figcaption class="chart-caption-block">
+          <p class="chart-caption">Only three FS year pairs exist (2023-2025 treatment years).</p>
+          <p class="chart-note"><span class="note-label">In context</span>Three points cannot support regression or causal claims. Treatment in year t is not isolated from weather in year t+1.</p>
+          <span class="chart-source">Source: NPR/USFS FACTS treatment (2023-2025) · NIFC following-year acres · illustrative only</span>
+        </figcaption>
+        </figure>
+      </div>
+    </details>
+  </section>
+
+<section id="tab-impacts" class="tab-panel tab-panel--impacts" role="tabpanel" aria-labelledby="tab-btn-impacts" hidden>
+    <p class="tab-dek">Acres burned are not the same as smoke people breathe. This tab starts with air quality.</p>
+    <p class="plain-read">National burn totals describe landscape fire. Impacts ask what reached communities: smoke people may breathe, and later (when sourced) homes, costs, and evacuations. Only smoke is charted here today.</p>
+
+<div class="interp-section interp-section--smoke">
+      <div class="interp-heading">Why smoke matters</div>
+      <div class="prose-block">
+        Acres burned describe <em>where</em> fire spread on the landscape. Wildfire smoke describes what people may breathe downwind: fine particles (PM2.5) that can worsen asthma, strain hearts and lungs, and raise premature-death risk in the epidemiology literature. A large burn year does not automatically mean your city had bad air; wind, distance, and fire type all matter.<br><br>
+        Since at least 2016, wildfire smoke has influenced PM2.5 trends in roughly <strong>three-quarters of contiguous U.S. states</strong>, eroding about <strong>25%</strong> of multi-decade air-quality gains in those states on average (more than half in many western states), per Burke et al. (<em>Nature</em>, 2023). Childs et al. (2022) estimate that the number of people exposed to at least one day with smoke PM2.5 above 100 µg/m³ per year rose sharply in the 2010s, including <strong>nearly 25 million people in 2020 alone</strong>.<br><br>
+        <span id="smoke-acres-r-text">Exploratory check: national acres burned and this smoke series move together in 2006-2020 (see chart note).</span> This page does not model smoke for 2026 or map population exposure. For health guidance see <a href="https://www.cdc.gov/wildfires/risk-factors/index.html">CDC wildfire smoke</a> and <a href="https://www.epa.gov/smoke-ready">EPA Smoke Ready</a>.
+      </div>
+
+      <div
+        class="photo-band photo-band--impacts"
+        role="img"
+        aria-label="Green meadow and forest with granite peaks partly hidden by wildfire smoke in Yosemite National Park"
+      >
+        <div class="photo-band-inner">
+          <p class="photo-band-text">
+            Smoke in a valley is one reason acres burned are not the same as air quality. 2023 Pika Fire, Yosemite; not the Childs CONUS PM2.5 series below.
+          </p>
+          <span class="photo-band-credit">
+            Photo:
+            <a href="http://edwardjohnson.com/" target="_blank" rel="noopener noreferrer">G. Edward Johnson</a>
+            ·
+            <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>
+            ·
+            <a href="media/SOURCES.md">Sources</a>
+          </span>
+        </div>
+      </div>
+
+      <div class="chart-container chart-container--atmosphere">
+        <div class="signal-tier signal-tier-2">Literature-derived · CONUS smoke PM2.5</div>
+        <p class="chart-question">How much wildfire smoke reached the air people breathe?</p>
+        <p class="plain-read">Annual mean of county-level daily wildfire smoke PM2.5 across the contiguous U.S. (Childs et al. 2022). Non-smoke days count as zero. 2020 peaks with western megafires; this is not total PM2.5 from all sources.</p>
+        <figure class="chart-figure">
+          <div id="chart-smoke-pm25" class="chart-slot" role="img" aria-label="Contiguous U.S. mean daily wildfire smoke PM2.5 by year 2006-2020"></div>
+          <figcaption class="chart-caption-block">
+            <p class="chart-caption">Smoke PM2.5 is modeled exposure, not NIFC acres. Geography is CONUS counties, not western GACC totals on Overview.</p>
+            <p class="chart-note"><span class="note-label">Method</span>Unweighted county mean of daily smoke PM2.5; built by <code>scripts/build_smoke_annual.py</code> from Harvard Dataverse county daily file. See <a href="data/smoke-pm25-notes.md">smoke-pm25-notes.md</a>.</p>
+            <span class="chart-source">Source: Childs et al. 2022 · <a href="https://doi.org/10.7910/DVN/DJVMTV">doi:10.7910/DVN/DJVMTV</a> · Burke et al. 2023 <a href="https://doi.org/10.1038/s41586-023-06522-6">Nature</a></span>
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <div class="impacts-roadmap" role="note">
+      <div class="interp-heading">Not on this page yet</div>
+      <p class="plain-read">These are high-interest impacts without annual series on this build. No invented figures.</p>
+      <ul class="impacts-roadmap-list">
+        <li><strong>Structures / homes destroyed</strong>: not charted; needs a consistent national structures series.</li>
+        <li><strong>Suppression cost and staffing</strong>: listed as a dataset gap (crews and aircraft change outcomes within the same weather). See <button type="button" class="text-link-btn" data-goto-tab="methods">Methods</button>.</li>
+        <li><strong>Evacuations</strong>: not assembled here.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="tab-methods" class="tab-panel tab-panel--methods" role="tabpanel" aria-labelledby="tab-btn-methods" hidden>
+    <p class="tab-dek">Citations, definitions, known gaps, and how each series was built. Reference for reviewers; not part of the main story path.</p>
+    <p class="plain-read methods-lede">This page shows temporal overlap in public records. It does not claim that cutting prevention in 2025 caused the 2026 fire season. Snapshot dates and rounded YTD figures match the charts on Overview.</p>
+    <nav class="methods-toc" aria-label="Methods sections">
+      <a href="#methods-how">How to read</a>
+      <a href="#methods-limits">Scientific limits</a>
+      <a href="#methods-policy">Policy context</a>
+      <a href="#methods-gaps">Dataset gaps</a>
+      <a href="#methods-glossary">Glossary</a>
+      <a href="#methods-sources">Sources</a>
+    </nav>
+
+<div class="interp-section">
+      <div class="interp-heading" id="methods-how">How to read this</div>
+      <div class="prose-block">
+        <strong>Overview</strong> charts U.S. acres burned (NIFC, 1983 onward) and where those acres landed by region (NICC GACC groups: West, South, Alaska, East). Year-to-date and forecast numbers are incomplete or speculative. The shaded band on the fire chart uses prior full calendar years. Header callouts use NIFC’s same-date ten-year average, which is a different comparison.<br><br>
+        <strong>Drivers</strong> opens with regional dryness pairings (Bars or Table), then western fire-season dryness, a dryness×acres scatter with nested co-movement numbers, and a Westerling forest-literature block (not GACC/NIFC acres).<br><br>
+        <strong>Context</strong> covers federal treatment acres and WUI designation. Treatment is reported work on a mostly fiscal clock, not the same window as calendar burn acres.<br><br>
+        <strong>Impacts</strong> covers smoke and air quality separately from acres burned. <strong>What this page is not.</strong> A fire forecast, a full smoke or health model, or proof that a budget cut caused a fire season. It shows what moved together in public data. None of this proves that one factor caused another.
+      </div>
+    </div>
+
+<div class="interp-section">
+      <div class="interp-heading" id="methods-limits">Scientific limits</div>
+      <div class="prose-block">
+        <strong>Geography.</strong> National acres include every state. ERC, VPD, and western DSCI describe western fire-prone areas. Pairing western dryness with western acres is more consistent than pairing western weather with a national burn total that Alaska or the South may dominate.<br><br>
+        <strong>Calendar.</strong> Burn acres and DSCI use calendar years. Interior treatment uses federal fiscal years starting October 1. Fire season runs from spring through fall, but these charts annualize months into one number.<br><br>
+        <strong>Correlation.</strong> Correlation describes how two lines move together in a short sample. It does not control for El Niño, vegetation recovery, housing growth in fire-prone areas, or how hard crews fought each fire.<br><br>
+        <strong>Policy.</strong> Treatment acres measure work reported, not lives or homes saved. Thinning and prescribed fire can lower intensity near communities when maintained, but extreme weather can overwhelm fuels work.<br><br>
+        <strong>Forecasts.</strong> The AccuWeather 2026 range is a published projection, not observed fire data.
+      </div>
+    </div>
+
+<div class="interp-section">
+      <div class="interp-heading" id="methods-policy">Policy context</div>
+      <div class="prose-block">
+        In 2025 the Forest Service treated 2.6 million acres for wildfire risk, down from 4.1 million in 2024.
+        In March 2026 USDA announced plans to close 57 of 77 Forest Service research stations. Stateline reports that affected stations include work on fire behavior and smoke forecasting.
+        Same date in 2022 saw about 5.8 million acres burned YTD, the highest in NIFC's August 3 table; 2017 was next (~5.7M). 2026 ranks third on that same-date list.
+      </div>
+    </div>
+
+<details class="methodology-details">
+      <summary id="methods-gaps">What this dataset does not include</summary>
+      <div class="methodology-body">
+        <ul>
+          <li><strong>2008-2009 regional GACC acres</strong>: filled via hand transcription of NICC lightning+human chart pages (<a href="data/gacc-2008-2009-hand-extract-template.csv">hand-extract CSV</a> · <a href="data/pre2010-acres-notes.md">pre2010-acres-notes.md</a>). Ignition cause split for those years remains unused (n=7 machine-extractable years only).</li>
+          <li><strong>Ignition cause acres (2003-2012)</strong>: only n=7 years machine-extractable from NICC tables; not charted on the main path. About 84–85% of U.S. wildfire <em>starts</em> are human-caused in national literature, while lightning can still dominate <em>acres</em> in some western years. See <a href="data/ignition-cause-notes.md">ignition-cause-notes.md</a> and <a href="data/ignition-cause-annual.csv">ignition-cause-annual.csv</a>.</li>
+          <li><strong>Annual lag (VPD year t → national acres t+1)</strong>: weak exploratory pairing with geography mismatch; not charted here. See repository lag notes via <a href="data/correlation-notes.md">correlation-notes.md</a>.</li>
+          <li><strong>Monthly burn acres</strong>: true May-dry → summer-burn timing needs NIFC monthly or MTBS. See <a href="data/monthly-burn-gap-notes.md">monthly-burn-gap-notes.md</a> (claim C-P2-01).</li>
+          <li><strong>Suppression spending / staffing</strong>: crews and aircraft change outcomes within the same weather.</li>
+          <li><strong>WUI housing growth</strong>: exposure changes independent of acres burned.</li>
+          <li><strong>Smoke / health impacts</strong>: partial smoke PM2.5 chart on Impacts (2006-2020 CONUS); not population exposure or 2026 smoke. See <a href="data/smoke-pm25-notes.md">smoke-pm25-notes.md</a>.</li>
+          <li><strong>State / ecoregion small multiples</strong>: deferred; see <a href="data/state-ecoregion-research-notes.md">state-ecoregion-research-notes.md</a> (claim C-P2-02).</li>
+          <li><strong>Live fire ops feeds</strong>: Overview shows a static WFIGS YTD perimeter snapshot (≥100 GIS acres) under Ops snapshot, not a live desk. Refresh with <code>scripts/fetch_wfigs_ytd.py</code>; see <a href="data/wfigs-ytd-notes.md">wfigs-ytd-notes.md</a>.</li>
+        </ul>
+      </div>
+    </details>
+
+<details class="methodology-details glossary-details">
+      <summary id="methods-glossary">Glossary (ERC, VPD, DSCI, KBDI, GACC, WUI, fiscal vs calendar year)</summary>
+      <div class="methodology-body">
+        <dl class="def-list">
+          <div class="def-item">
+            <dt>ERC (Energy Release Component)</dt>
+            <dd>Fuel-focused fire danger index from dead and live fuel moisture. Higher ERC in May-September usually means fuels can burn more intensely if ignited.</dd>
+          </div>
+          <div class="def-item">
+            <dt>VPD (Vapor pressure deficit)</dt>
+            <dd>How strongly the atmosphere pulls moisture from plants and soils. High VPD dries fine fuels quickly during the western fire season.</dd>
+          </div>
+          <div class="def-item">
+            <dt>DSCI (Drought Severity Coverage Index)</dt>
+            <dd>Share of land in drought categories on the U.S. Drought Monitor. Annual figures on this page are a year-to-date (or full-year) average of weekly readings, not a single map date. Useful for water supply and long-term stress; weaker match to annual acres burned than ERC or VPD here.</dd>
+          </div>
+          <div class="def-item">
+            <dt>KBDI (Keetch-Byram Drought Index)</dt>
+            <dd>Southern Area drought / deep-drying index for the top soil and duff layer. 0 ≈ saturated; higher values (toward 800) mean drier. Often watched with NFDRS fuel moisture, ERC, and BI. On this page, Southeast Jan-May mean KBDI is computed from gridMET temperature and precip (not a live SACC feed).</dd>
+          </div>
+          <div class="def-item">
+            <dt>GACC (Geographic Area Coordination Center)</dt>
+            <dd>Federal fire-reporting regions (West, South, Alaska, East). NICC sums GACC acres for regional share charts; western GACC totals exclude Alaska and the South.</dd>
+          </div>
+          <div class="def-item">
+            <dt>WUI (Wildland-urban interface)</dt>
+            <dd>In HFR tables, a <em>designation</em> label for where treatment was categorized (near communities vs remote). Not the same as homes protected or risk reduced.</dd>
+          </div>
+          <div class="def-item">
+            <dt>Federal fiscal year vs calendar year</dt>
+            <dd><strong>Fiscal year</strong> runs Oct 1 through Sep 30 (e.g., FY 2021). <strong>Calendar year</strong> is Jan 1 through Dec 31. NIFC burn acres and DSCI use calendar years. Interior and HFR treatment totals use fiscal years. Treatment charts offer a fiscal/calendar toggle; calendar view shifts HFR fiscal data +1 year as an approximate fire-season alignment.</dd>
+          </div>
+        </dl>
+      </div>
+    </details>
+
+<details class="methodology-details">
+      <summary id="methods-sources">On the data and sources</summary>
+      <div class="methodology-body">
+        <ul>
+          <li>Acres burned: total U.S. figures, all land types, calendar year, NIFC annual statistics. Standardized reporting from 1983; pre-1983 figures are not comparable.</li>
+          <li>2026 point: partial year through August 3 only (5,154,596 acres). Not a full-year figure.</li>
+          <li>10-year baseline band: min-to-max of the ten prior calendar years of NIFC acres burned. Computed from chart data, not the CRS flat 7.2M reference.</li>
+          <li>Forest Service treatment: NPR analysis of USFS FACTS database, cross-checked by Center for Western Priorities. Consistent figures from 2023 onward only.</li>
+          <li>Interior Department treatment: BLM, NPS, BIA, and FWS lands, fiscal year starting October 1, doi.gov, 2018-2024.</li>
+          <li>DSCI: annual average of weekly readings, U.S. Drought Monitor API. National (conus) and NWS Western Region (aoi=WR). Available from 2000. 2026 values are 30-week averages through July 28.</li>
+          <li>VPD: western U.S. fire-season mean from gridMET via OPeNDAP (<a href="https://doi.org/10.1002/joc.3413">Abatzoglou 2013</a>). May through September, west of 100°W, 1979-2025.</li>
+          <li>ERC: western fire-season mean Energy Release Component from gridMET (NFDRS fuel model G). Same geography and season as VPD. <code>scripts/extend_erc.py</code>; <a href="data/erc-annual.csv">annual averages</a>.</li>
+          <li>KBDI (South): Jan-May mean Keetch-Byram Drought Index for the SE research bbox, computed from gridMET tmmx and precip (<code>scripts/extend_kbdi.py</code>; <a href="data/south-kbdi-annual.csv">south-kbdi-annual.csv</a>). Classic Southern Area drought index; exploratory r vs SA acres ≈ 0.20 (n=13), weaker than south VPD.</li>
+          <li>Western acres burned: sum of NICC GACC acres for NW, NR, GB, RM, SW, NO, SO (EB+WB before 2015 Great Basin merge), 2010-2025. Built by <code>scripts/build_western_acres.py</code> from NICC annual reports. Excludes Alaska, Eastern, and Southern GACCs.</li>
+          <li>2026 forecast: AccuWeather published 2026 wildfire season projection, 5.5 to 8 million acres.</li>
+          <li>Research stations: USDA Forest Service reorganization announced March 31, 2026.</li>
+          <li>Smoke PM2.5: county-mean daily wildfire smoke PM2.5, CONUS, 2006-2020 (Childs et al. 2022; <code>scripts/build_smoke_annual.py</code>; <a href="data/smoke-pm25-annual.csv">smoke-pm25-annual.csv</a>). Literature context: Burke et al. 2023 (<em>Nature</em>).</li>
+          <li>Correlations: Drivers shows strongest co-movement rows first (expand for more pairings and diagnostics). Literature usually ranks ERC ≳ VPD ≫ drought for western large-fire area; page r values are this repository only (<a href="data/correlation-matrix.csv">correlation-matrix.csv</a>). Not causal evidence.</li>
+          <li>Data processing: drought from U.S. Drought Monitor API; western fire-season VPD from gridMET (<a href="https://doi.org/10.1002/joc.3413">Abatzoglou 2013</a>). CSVs and notebooks in the <a href="https://github.com/saraxlinnea/wildfire-prevention-viz">GitHub repository</a>.</li>
+        </ul>
+        <p class="closing">This page is not claiming that cutting prevention in 2025 caused the 2026 fire season. It shows two things happening at the same time and leaves the conclusion to the reader.</p>
+      </div>
+    </details>
+  </section>
+
+<footer>
+    <div class="sources">
+      Acres burned: <a href="https://www.nifc.gov/fire-information/statistics">NIFC Total Wildfires and Acres</a> ·
+      2026 YTD: <a href="https://www.nifc.gov/fire-information/nfn">NIFC National Fire News, August 3 2026</a> ·<br>
+      Forest Service treatment: <a href="https://www.npr.org/2026/05/04/nx-s1-5801475/">NPR analysis of USFS FACTS database, May 4 2026</a>, cross-checked by <a href="https://westernpriorities.org/2026/05/u-s-forest-service-treated-35-fewer-acres-for-wildfire-risk-in-2025/">Center for Western Priorities, May 27 2026</a> ·<br>
+      Interior treatment: <a href="https://www.doi.gov/wildlandfire/fuels">U.S. Dept of the Interior fuels management program</a> ·
+      Ten-year average (CRS 7.2M, 2013-2022, reference only; chart band is rolling 10-yr min-max from NIFC data): <a href="https://crsreports.congress.gov/product/pdf/IF/IF10244">CRS Report IF10244 (PDF)</a>, <a href="https://www.congress.gov/crs-product/IF10244">Congress.gov</a> ·<br>
+      DSCI: <a href="https://droughtmonitor.unl.edu/DmData/DataDownload/DSCI.aspx">U.S. Drought Monitor</a> (<a href="data/dsci-annual-averages.csv">verified annual averages</a>, <a href="data/dsci-source/">raw weekly files</a>) ·
+      VPD: <a href="http://thredds.northwestknowledge.net/thredds/catalog/MET/vpd/catalog.html">gridMET</a> (<a href="data/vpd-annual.csv">annual averages</a>) ·
+      ERC: <a href="http://thredds.northwestknowledge.net/thredds/catalog/MET/erc/catalog.html">gridMET</a> (<a href="data/erc-annual.csv">annual averages</a>) ·
+      Western DSCI: <a href="data/dsci-western-annual.csv">NWS Western Region</a> ·
+      Smoke PM2.5: Childs et al. 2022 (<a href="https://doi.org/10.7910/DVN/DJVMTV">Harvard Dataverse</a>) · Burke et al. 2023 (<a href="https://doi.org/10.1038/s41586-023-06522-6">Nature</a>) ·
+      Correlations: <a href="https://github.com/saraxlinnea/wildfire-prevention-viz/blob/main/notebooks/correlation-analysis.ipynb">analysis notebook</a> (<a href="data/correlation-matrix.csv">matrix CSV</a>) ·
+      2026 forecast: <a href="https://www.accuweather.com/en/press/larger-wildfires-fueled-by-drought-and-heat-expected-across-the-u-s-in-2026/1884295">AccuWeather 2026 Wildfire Season Forecast</a> ·
+      Research stations: <a href="https://stateline.org/2026/04/17/forest-service-plan-to-close-research-stations-stokes-fear-as-wildfire-season-approaches/">Stateline, USDA reorganization March 2026</a> ·
+      <a href="data/wildfire-data.csv">Download chart data (CSV)</a> ·
+      <a href="#" id="footer-methods-link" data-goto-tab="methods">Methods</a> ·
+      <a href="https://github.com/saraxlinnea/wildfire-prevention-viz#for-technical-reviewers">Methods and audit notes</a>
+    </div>
+    <div class="byline">Sara Bower · San Francisco · August 2026</div>
+  </footer>
+
+</div>
+
+<script src="js/datasets.js?v=20260804visual"></script>
+<script src="js/charts.js?v=20260804visual"></script>
+<script src="js/wfigs-map.js?v=20260804visual"></script>
+<script src="js/app.js?v=20260804visual"></script>
+<script src="js/guide.js?v=20260804visual"></script>
+</body>
+</html>

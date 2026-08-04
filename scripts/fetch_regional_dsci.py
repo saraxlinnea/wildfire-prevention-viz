@@ -22,7 +22,7 @@ WEST_PATH = DATA / "dsci-western-annual.csv"
 
 FULL_YEARS = list(range(2000, 2026))
 PARTIAL_YEAR = 2026
-PARTIAL_END = "7/16/2026"
+PARTIAL_END = "8/4/2026"
 
 REGIONS = {
     "eastern": {"aoi": "ER", "out": DATA / "dsci-eastern-annual.csv"},

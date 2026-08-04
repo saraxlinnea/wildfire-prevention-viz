@@ -15,9 +15,13 @@ BASE = "http://localhost:8000"
 
 STATIC_PATHS = [
     "index.html",
+    "explore.html",
     "js/datasets.js",
     "js/charts.js",
     "js/app.js",
+    "js/home.js",
+    "js/wfigs-map.js",
+    "js/guide.js",
 ]
 
 # Boot CSVs loaded by js/app.js Promise.all (min data rows after parse)

@@ -1,14 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
   <rect width="1200" height="630" fill="#f7f4ef"/>
   <rect x="0" y="0" width="1200" height="8" fill="#c94a1a"/>
-  <text x="80" y="120" font-family="Georgia, serif" font-size="28" fill="#c94a1a" letter-spacing="4">U.S. WILDFIRE DATA</text>
-  <text x="80" y="200" font-family="Georgia, serif" font-size="52" font-weight="bold" fill="#1c1a17">An Ounce of Prevention</text>
-  <text x="80" y="255" font-family="Georgia, serif" font-size="28" font-style="italic" fill="#6b6560">National wildfire activity, 1983-2026</text>
-  <text x="80" y="340" font-family="Arial, sans-serif" font-size="24" fill="#1c1a17">2.6M acres burned YTD &#183; 63% above 10-year average to date</text>
-  <text x="80" y="380" font-family="Arial, sans-serif" font-size="20" fill="#6b6560">Outcomes &#183; Drivers &#183; Coupling &#183; How to read</text>
+  <text x="80" y="120" font-family="Georgia, serif" font-size="28" fill="#c94a1a" letter-spacing="4">U.S. WILDFIRE DATA · 1983-2026</text>
+  <text x="80" y="200" font-family="Georgia, serif" font-size="52" font-weight="bold" fill="#1c1a17">Wildfire Season Briefing</text>
+  <text x="80" y="255" font-family="Georgia, serif" font-size="26" font-style="italic" fill="#6b6560">Overview · Drivers · Context · Impacts</text>
+  <text x="80" y="340" font-family="Arial, sans-serif" font-size="24" fill="#1c1a17">5.2M acres burned YTD · 37% above 10-year average to date</text>
+  <text x="80" y="380" font-family="Arial, sans-serif" font-size="20" fill="#6b6560">Sourced charts · no single-line causation claim</text>
   <rect x="80" y="430" width="180" height="12" rx="2" fill="#c94a1a" opacity="0.75"/>
   <rect x="280" y="430" width="120" height="12" rx="2" fill="#9a6b3a"/>
   <rect x="420" y="430" width="120" height="12" rx="2" fill="#7b5ea7"/>
   <rect x="560" y="430" width="120" height="12" rx="2" fill="#2a6b4a"/>
-  <text x="80" y="490" font-family="Arial, sans-serif" font-size="16" fill="#6b6560">Sara Bower &#183; saraxlinnea.github.io/wildfire-prevention-viz</text>
+  <text x="80" y="490" font-family="Arial, sans-serif" font-size="16" fill="#6b6560">Sara Bower · saraxlinnea.github.io/wildfire-prevention-viz</text>
 </svg>

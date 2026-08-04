@@ -25,4 +25,4 @@ year,weeks,dsci_avg,partial,source
 2023,52,142.9,False,USDM API NWSRegionStatistics GetDSCI aoi=SR
 2024,53,105.9,False,USDM API NWSRegionStatistics GetDSCI aoi=SR
 2025,52,118.9,False,USDM API NWSRegionStatistics GetDSCI aoi=SR
-2026,28,230.1,True,USDM API partial through 7/16/2026
+2026,30,223.1,True,USDM API partial through 20260728

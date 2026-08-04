@@ -54,70 +54,79 @@ WF.yearAxis = function (opts) {
 };
 
 WF.buildFireSpec = function (data, mode) {
-  const { burnWithRolling, bandData, partial2026, forecast2026, fireStoryMarks } = data;
-  const isPct = mode === 'pct';
+  const { burnWithRolling, bandData, fireCountData, partial2026, forecast2026, fireStoryMarks } = data;
+  const isFires = mode === 'fires';
 
   let yDomain;
-  if (isPct) {
-    const pctVals = burnWithRolling.filter(d => d.pct_dev !== null).map(d => d.pct_dev);
-    const partialPct = partial2026.map(d => d.pct_dev).filter(v => v !== null);
-    const all = [...pctVals, ...partialPct, ...bandData.flatMap(d => [d.pct_min, d.pct_max])];
-    const pad = Math.max(10, (Math.max(...all) - Math.min(...all)) * 0.1);
-    yDomain = [Math.min(...all) - pad, Math.max(...all) + pad];
+  let yAxis;
+  let lineY;
+  let lineData;
+  let tooltip;
+
+  if (isFires) {
+    const fireVals = (fireCountData || []).map(d => d.fires).filter(Number.isFinite);
+    const maxF = fireVals.length ? Math.max(...fireVals) : 100000;
+    yDomain = [0, maxF * 1.08];
+    yAxis = {
+      title: 'Number of fires',
+      titleFont: 'DM Sans', titleFontSize: 10, titleColor: '#9b9590',
+      titleAngle: -90, titleX: -44, format: ',.0f'
+    };
+    lineY = 'fires';
+    lineData = (burnWithRolling || []).filter(d => Number.isFinite(d.fires));
+    tooltip = [
+      { field: 'year', title: 'Year' },
+      { field: 'fires', title: 'Fires reported', format: ',.0f' },
+      { field: 'acres', title: 'Acres burned (M)', format: '.1f' }
+    ];
   } else {
     const acreVals = burnWithRolling.map(d => d.acres);
     const forecastHigh = forecast2026.length ? forecast2026[0].high : 0;
     yDomain = [0, Math.max(...acreVals, ...partial2026.map(d => d.acres), forecastHigh) * 1.08];
+    yAxis = {
+      title: 'Million acres',
+      titleFont: 'DM Sans', titleFontSize: 10, titleColor: '#9b9590',
+      titleAngle: -90, titleX: -36
+    };
+    lineY = 'acres';
+    lineData = burnWithRolling;
+    tooltip = [
+      { field: 'year', title: 'Year' },
+      { field: 'acres', title: 'Acres burned (M)', format: '.1f' },
+      { field: 'fires', title: 'Fires reported', format: ',.0f' },
+      { field: 'rolling_mean', title: 'Prior 10-yr avg (M)', format: '.2f' }
+    ];
   }
 
   const yScale = { domain: yDomain };
-  const yAxis = isPct
-    ? {
-        title: '% from 10-yr avg',
-        titleFont: 'DM Sans', titleFontSize: 10, titleColor: '#9b9590',
-        titleAngle: -90, titleX: -44, format: '+.0f'
-      }
-    : {
-        title: 'Million acres',
-        titleFont: 'DM Sans', titleFontSize: 10, titleColor: '#9b9590',
-        titleAngle: -90, titleX: -36
-      };
+  const layers = [];
 
-  const lineY = isPct ? 'pct_dev' : 'acres';
-  const bandY = isPct ? 'pct_min' : 'rolling_min';
-  const bandY2 = isPct ? 'pct_max' : 'rolling_max';
-  const lineData = isPct ? burnWithRolling.filter(d => d.pct_dev !== null) : burnWithRolling;
-
-  const layers = [
-    {
+  if (!isFires) {
+    layers.push({
       data: { values: bandData },
       mark: { type: 'area', color: '#c94a1a', opacity: 0.12 },
       encoding: {
         x: { field: 'year', type: 'ordinal', axis: WF.yearAxis({ title: 'Calendar year' }) },
-        y: { field: bandY, type: 'quantitative', scale: yScale },
-        y2: { field: bandY2 }
+        y: { field: 'rolling_min', type: 'quantitative', scale: yScale },
+        y2: { field: 'rolling_max' }
       }
-    },
-    {
-      data: { values: lineData },
-      mark: {
-        type: 'line', color: '#c94a1a', strokeWidth: 2,
-        point: { filled: true, fill: 'white', stroke: '#c94a1a', strokeWidth: 1.5, size: 40 }
-      },
-      encoding: {
-        x: { field: 'year', type: 'ordinal', axis: WF.yearAxis({ title: 'Calendar year' }) },
-        y: { field: lineY, type: 'quantitative', scale: yScale, axis: yAxis },
-        tooltip: [
-          { field: 'year', title: 'Year' },
-          { field: 'acres', title: 'Acres burned (M)', format: '.1f' },
-          { field: 'pct_dev', title: '% from 10-yr avg', format: '+.0f' },
-          { field: 'rolling_mean', title: '10-yr avg (M)', format: '.2f' }
-        ]
-      }
-    }
-  ];
+    });
+  }
 
-  if (!isPct) {
+  layers.push({
+    data: { values: lineData },
+    mark: {
+      type: 'line', color: '#c94a1a', strokeWidth: 2,
+      point: { filled: true, fill: 'white', stroke: '#c94a1a', strokeWidth: 1.5, size: 40 }
+    },
+    encoding: {
+      x: { field: 'year', type: 'ordinal', axis: WF.yearAxis({ title: 'Calendar year' }) },
+      y: { field: lineY, type: 'quantitative', scale: yScale, axis: yAxis },
+      tooltip: tooltip
+    }
+  });
+
+  if (!isFires) {
     layers.push(
       {
         data: { values: partial2026 },
@@ -127,7 +136,7 @@ WF.buildFireSpec = function (data, mode) {
           y: { field: 'acres', type: 'quantitative', scale: yScale },
           tooltip: [
             { field: 'year', title: 'Year' },
-            { field: 'acres', title: 'Acres burned YTD Jul 16 (M)', format: '.1f' }
+            { field: 'acres', title: 'Acres burned YTD Aug 3 (M)', format: '.1f' }
           ]
         }
       },
@@ -150,22 +159,14 @@ WF.buildFireSpec = function (data, mode) {
         }
       }
     );
-  } else if (partial2026.length && partial2026[0].pct_dev !== null) {
-    layers.push({
-      data: { values: partial2026 },
-      mark: { type: 'point', filled: true, color: '#e87c2a', size: 90, stroke: 'white', strokeWidth: 2 },
-      encoding: {
-        x: { field: 'year', type: 'ordinal' },
-        y: { field: 'pct_dev', type: 'quantitative', scale: yScale },
-        tooltip: [
-          { field: 'year', title: 'Year' },
-          { field: 'pct_dev', title: '% from 10-yr avg (YTD)', format: '+.0f' }
-        ]
-      }
-    }    );
   }
 
-  const storyLayer = WF.storyYearTextLayer(fireStoryMarks, 'year', lineY, isPct ? -8 : -0.15);
+  const storyLayer = WF.storyYearTextLayer(
+    fireStoryMarks,
+    'year',
+    lineY,
+    isFires ? -2500 : -0.15
+  );
   if (storyLayer) layers.push(storyLayer);
 
   return {
@@ -465,6 +466,58 @@ WF.buildWuiShareSpec = function (data) {
         }
       }
     ]
+  };
+};
+
+WF.buildRegionalTopDriverSpec = function (bars) {
+  const rows = bars || [];
+  return {
+    $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+    width: 'container',
+    height: WF.isMobile() ? 120 : 140,
+    config: WF.chartConfig,
+    data: { values: rows },
+    mark: { type: 'bar', cornerRadiusEnd: 2 },
+    encoding: {
+      y: {
+        field: 'label',
+        type: 'nominal',
+        sort: { field: 'r_abs', order: 'descending' },
+        title: null,
+        axis: { labelFontSize: 11, labelLimit: 220 }
+      },
+      x: {
+        field: 'r_abs',
+        type: 'quantitative',
+        scale: { domain: [0, 1], nice: false },
+        axis: {
+          title: '|Pearson r| (exploratory, 2013-2025)',
+          titleFont: 'DM Sans',
+          titleFontSize: 10,
+          titleColor: '#9b9590',
+          format: '.2f'
+        }
+      },
+      color: {
+        field: 'tier',
+        type: 'nominal',
+        scale: {
+          domain: ['strong', 'moderate', 'weak'],
+          range: ['#9a6b3a', '#7b5ea7', '#b8b2a9']
+        },
+        legend: {
+          title: 'Strength (rule of thumb)',
+          orient: 'bottom',
+          direction: 'horizontal',
+          labelFontSize: 9
+        }
+      },
+      tooltip: [
+        { field: 'label', title: 'Driver' },
+        { field: 'r_display', title: 'Pearson r' },
+        { field: 'geo', title: 'Pairing' }
+      ]
+    }
   };
 };
 
@@ -786,9 +839,165 @@ WF.buildRegionalShareSpec = function (data) {
   };
 };
 
+/** GACC share choropleth for one calendar year (same shares as regional stack). */
+WF.buildGaccChoroplethSpec = function (data, geojson) {
+  const year = data.gaccChoroplethYear;
+  const rows = data.gaccChoroplethRows || [];
+  const byRegion = Object.fromEntries(rows.map(r => [r.region, r]));
+  const features = ((geojson && geojson.features) || []).map(f => {
+    const region = f.properties && f.properties.region;
+    const row = byRegion[region] || {};
+    return {
+      type: 'Feature',
+      geometry: f.geometry,
+      properties: {
+        region,
+        state: f.properties && f.properties.state,
+        year: year,
+        share_pct: row.share_pct,
+        acres_millions: row.acres_millions,
+        geo_note: row.geo_note || 'NICC GACC acres share'
+      }
+    };
+  }).filter(f => f.properties.region && Number.isFinite(f.properties.share_pct));
+
+  return {
+    $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+    width: 'container',
+    height: WF.isMobile() ? 240 : 320,
+    config: Object.assign({}, WF.chartConfig, {
+      padding: { left: 8, top: 4, right: 8, bottom: 8 }
+    }),
+    data: { values: features },
+    projection: { type: 'albersUsa' },
+    mark: {
+      type: 'geoshape',
+      stroke: '#fbf9f6',
+      strokeWidth: 0.6
+    },
+    encoding: {
+      color: {
+        field: 'properties.share_pct',
+        type: 'quantitative',
+        scale: {
+          domain: [0, 100],
+          range: ['#f3e6dc', '#e8c4b4', '#e87c2a', '#c94a1a']
+        },
+        legend: {
+          title: `Share of GACC acres (${year || ''})`,
+          orient: 'bottom',
+          direction: 'horizontal',
+          gradientLength: WF.isMobile() ? 120 : 180,
+          format: '.0f',
+          labelFontSize: 9,
+          titleFontSize: 10,
+          titleColor: '#9b9590'
+        }
+      },
+      tooltip: [
+        { field: 'properties.year', title: 'Year' },
+        { field: 'properties.region', title: 'Region' },
+        { field: 'properties.state', title: 'State' },
+        { field: 'properties.share_pct', title: 'Region share (%)', format: '.1f' },
+        { field: 'properties.acres_millions', title: 'Region acres (M)', format: '.2f' },
+        { field: 'properties.geo_note', title: 'Scope' }
+      ]
+    }
+  };
+};
+
 WF.buildScatterSpec = function (data, acreMode, driverMode) {
   const acresKey = acreMode || 'western';
   const driver = driverMode || 'erc';
+  if (driver === 'may') {
+    const scatterRows = acresKey === 'western'
+      ? (data.mayVpdScatterRows || [])
+      : (data.mayVpdScatterRowsNational || []);
+    const r = acresKey === 'western'
+      ? (data.pearsonMayVpdWestern ?? null)
+      : (data.pearsonMayVpdNational ?? null);
+    const yTitle = acresKey === 'western'
+      ? 'Western GACC acres burned (M)'
+      : 'National acres burned (M)';
+    const xTitle = 'May western VPD (kPa)';
+    const rNote = r !== null && r !== undefined
+      ? `Pearson r ≈ ${r.toFixed(2)} (exploratory)`
+      : 'n too small';
+    if (!scatterRows.length) {
+      return {
+        $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+        width: 'container',
+        height: WF.secondaryChartHeight(),
+        data: { values: [{ label: 'No May VPD data' }] },
+        mark: { type: 'text', color: '#9b9590', fontSize: 12 },
+        encoding: { text: { field: 'label' } }
+      };
+    }
+    const driverVals = scatterRows.map(d => d.driver ?? d.vpd_may);
+    const driverMin = Math.min(...driverVals);
+    const driverMax = Math.max(...driverVals);
+    const driverPad = Math.max(0.02, (driverMax - driverMin) * 0.08);
+    const acreVals = scatterRows.map(d => d.acres);
+    const acreMin = Math.min(...acreVals);
+    const acreMax = Math.max(...acreVals);
+    const acrePad = Math.max(0.3, (acreMax - acreMin) * 0.08);
+    return {
+      $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+      width: 'container',
+      height: WF.secondaryChartHeight(),
+      config: WF.chartConfig,
+      layer: [
+        {
+          data: { values: scatterRows.map(d => ({ ...d, driver: d.driver ?? d.vpd_may })) },
+          mark: { type: 'point', filled: true, size: 80 },
+          encoding: {
+            x: {
+              field: 'driver', type: 'quantitative',
+              scale: { domain: [driverMin - driverPad, driverMax + driverPad], nice: false, zero: false },
+              axis: {
+                title: xTitle,
+                titleFont: 'DM Sans',
+                titleFontSize: 10,
+                titleColor: '#9a6b3a'
+              }
+            },
+            y: {
+              field: 'acres', type: 'quantitative',
+              scale: {
+                domain: [Math.max(0, acreMin - acrePad), acreMax + acrePad],
+                nice: false,
+                zero: false
+              },
+              axis: {
+                title: yTitle,
+                titleFont: 'DM Sans',
+                titleFontSize: 10,
+                titleColor: '#c94a1a'
+              }
+            },
+            color: {
+              field: 'year', type: 'ordinal',
+              legend: { title: 'Year', orient: 'right' }
+            },
+            tooltip: [
+              { field: 'year', title: 'Year' },
+              { field: 'driver', title: 'May western VPD (kPa)', format: '.3f' },
+              { field: 'acres', title: 'Acres burned (M)', format: '.2f' },
+              { field: 'geo_note', title: 'Scope' }
+            ]
+          }
+        },
+        {
+          data: { values: [{ label: rNote }] },
+          mark: {
+            type: 'text', align: 'left', baseline: 'top', dx: 4, dy: 4,
+            font: 'DM Mono, monospace', fontSize: 9, color: '#9b9590'
+          },
+          encoding: { text: { field: 'label', type: 'nominal' } }
+        }
+      ]
+    };
+  }
   const rowMap = {
     western: { vpd: 'scatterRowsWesternVpd', erc: 'scatterRowsWesternErc' },
     national: { vpd: 'scatterRowsNationalVpd', erc: 'scatterRowsNationalErc' }
