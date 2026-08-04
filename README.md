@@ -1,4 +1,4 @@
-# Wildfire Season Briefing
+# Wildfire Season in Numbers
 
 Sourced U.S. wildfire data, 1983-2026. Home page with season highlights and a YTD perimeter map; explore view with four tabs plus Methods.
 

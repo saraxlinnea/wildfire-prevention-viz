@@ -2,11 +2,12 @@
 (function () {
   var mapInstance = null;
   var layerGroup = null;
+  var homeLandLayer = null;
   var gaccMapInstance = null;
   var gaccLayerGroup = null;
 
   function formatAcres(n) {
-    if (n == null || !Number.isFinite(n)) return '—';
+    if (n == null || !Number.isFinite(n)) return '-';
     if (n >= 1000000) return (n / 1000000).toFixed(2) + 'M';
     if (n >= 1000) return Math.round(n).toLocaleString('en-US');
     return String(Math.round(n * 10) / 10);
@@ -32,11 +33,11 @@
     if (countEl) {
       countEl.textContent = meta && meta.feature_count != null
         ? String(meta.feature_count)
-        : '—';
+        : '-';
     }
     if (acresEl) {
       var sum = meta && meta.acres_sum;
-      acresEl.textContent = sum != null ? (sum / 1000000).toFixed(1) + 'M' : '—';
+      acresEl.textContent = sum != null ? (sum / 1000000).toFixed(1) + 'M' : '-';
     }
   }
 
@@ -51,6 +52,38 @@
       fillColor: '#c94a1a',
       fillOpacity: fill
     };
+  }
+
+  /** Home poster: dark ink on cream land (no basemap). */
+  function styleFeatureHome(feature) {
+    var acres = feature.properties && feature.properties.acres;
+    var weight = acres >= 50000 ? 1.1 : 0.65;
+    var fill = acres >= 100000 ? 0.88 : acres >= 10000 ? 0.72 : 0.55;
+    return {
+      color: '#1a0c08',
+      weight: weight,
+      opacity: 0.95,
+      fillColor: '#2a100c',
+      fillOpacity: fill
+    };
+  }
+
+  var LAND_STYLE_HOME = {
+    color: 'rgba(28, 26, 23, 0.22)',
+    weight: 0.8,
+    opacity: 1,
+    fillColor: '#fffcf8',
+    fillOpacity: 0.94
+  };
+
+  var GACC_LAND_URL = 'data/gacc-regions.geojson';
+
+  function conusLandFeatures(geojson) {
+    if (!geojson || !geojson.features) return [];
+    return geojson.features.filter(function (f) {
+      var region = f.properties && f.properties.region;
+      return region === 'West' || region === 'South' || region === 'East';
+    });
   }
 
   function onEachFeature(feature, layer) {
@@ -84,6 +117,7 @@
       mapInstance.remove();
       mapInstance = null;
       layerGroup = null;
+      homeLandLayer = null;
     }
   }
 
@@ -108,8 +142,10 @@
   };
 
   var CONUS_BOUNDS = [[24.4, -125.0], [49.5, -66.5]];
-  // Tighter CONUS frame for the WFIGS YTD perimeter map.
+  // Tighter CONUS frame for explore WFIGS YTD map.
   var CONUS_BOUNDS_TIGHT = [[25.5, -123.8], [48.8, -68.2]];
+  // Home hero: tighter CONUS crop for the shorter side-by-side map.
+  var CONUS_BOUNDS_HOME = [[28.0, -121.0], [46.8, -74.5]];
   var BASEMAP_URL = 'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png';
   var BASEMAP_ATTR =
     '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> ' +
@@ -135,7 +171,7 @@
     var order = ['West', 'South', 'Alaska', 'East'];
     var items = order.map(function (region) {
       var row = byRegion[region] || {};
-      var pct = row.share_pct != null ? row.share_pct.toFixed(1) + '%' : '—';
+      var pct = row.share_pct != null ? row.share_pct.toFixed(1) + '%' : '-';
       var stroke = regionColor(region);
       return (
         '<span class="gacc-legend-item">' +
@@ -156,14 +192,27 @@
 
   function fitConus(map, opts) {
     opts = opts || {};
-    var bounds = opts.tight ? CONUS_BOUNDS_TIGHT : CONUS_BOUNDS;
-    var maxZoom = opts.tight ? 6 : 5;
-    var padding = opts.tight ? [4, 4] : [12, 12];
+    var bounds = CONUS_BOUNDS;
+    var maxZoom = 5;
+    var padding = [12, 12];
+    if (opts.home) {
+      bounds = CONUS_BOUNDS_HOME;
+      maxZoom = 8;
+      padding = [0, 0];
+    } else if (opts.tight) {
+      bounds = CONUS_BOUNDS_TIGHT;
+      maxZoom = 6;
+      padding = [4, 4];
+    }
     try {
       map.fitBounds(bounds, { padding: padding, maxZoom: maxZoom });
     } catch (e) {
-      map.setView([39.8, -98.5], opts.tight ? 5 : 4);
+      map.setView([39.5, -97.5], opts.home ? 5 : (opts.tight ? 5 : 4));
     }
+  }
+
+  function isHomePage() {
+    return !!(document.querySelector && document.querySelector('.home'));
   }
 
   /**
@@ -278,37 +327,113 @@
 
     destroy();
     el.innerHTML = '';
+    el.classList.remove('is-ready');
 
+    var home = isHomePage();
     mapInstance = L.map(el, {
       scrollWheelZoom: false,
-      attributionControl: true,
+      attributionControl: !home,
+      zoomControl: !home,
+      dragging: !home,
+      doubleClickZoom: !home,
+      boxZoom: false,
+      keyboard: !home,
       maxBounds: [[5, -170], [75, -40]],
       maxBoundsViscosity: 0.8
     });
-    L.tileLayer(BASEMAP_URL, {
-      attribution: BASEMAP_ATTR + ' · Perimeters: NIFC WFIGS',
-      maxZoom: 12,
-      subdomains: 'abcd'
-    }).addTo(mapInstance);
 
-    layerGroup = L.geoJSON(geojson, {
-      style: styleFeature,
-      onEachFeature: onEachFeature
-    }).addTo(mapInstance);
+    function addFireLayer() {
+      layerGroup = L.geoJSON(geojson, {
+        style: home ? styleFeatureHome : styleFeature,
+        onEachFeature: onEachFeature
+      }).addTo(mapInstance);
+    }
 
-    fitConus(mapInstance, { tight: true });
+    function revealMap() {
+      el.classList.add('is-ready');
+      var top = document.querySelector('.home-top');
+      if (top) {
+        setTimeout(function () {
+          top.classList.add('is-ready');
+        }, 120);
+      }
+    }
 
-    setTimeout(function () {
-      if (mapInstance) mapInstance.invalidateSize();
-    }, 50);
+    function fitOnce(boundsSource) {
+      mapInstance.invalidateSize();
+      if (home && boundsSource && typeof boundsSource.getBounds === 'function') {
+        try {
+          mapInstance.fitBounds(boundsSource.getBounds(), { padding: [6, 6], maxZoom: 6 });
+        } catch (e) {
+          fitConus(mapInstance, { home: true });
+        }
+      } else {
+        fitConus(mapInstance, home ? { home: true } : { tight: true });
+      }
+      if (home) {
+        requestAnimationFrame(revealMap);
+      } else {
+        revealMap();
+      }
+    }
+
+    function finishFit(boundsSource) {
+      // One size settle, then one fit (avoids home map bounce).
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          if (!mapInstance) return;
+          fitOnce(boundsSource);
+        });
+      });
+    }
+
+    if (!home) {
+      L.tileLayer(BASEMAP_URL, {
+        attribution: BASEMAP_ATTR + ' · Perimeters: NIFC WFIGS',
+        maxZoom: 12,
+        subdomains: 'abcd'
+      }).addTo(mapInstance);
+      addFireLayer();
+      finishFit(null);
+      return;
+    }
+
+    // Home: cream CONUS land + dark fires; no ocean tiles (page photo shows through).
+    fetch(GACC_LAND_URL)
+      .then(function (res) {
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return res.json();
+      })
+      .then(function (landGeo) {
+        if (!mapInstance) return;
+        homeLandLayer = L.geoJSON(
+          { type: 'FeatureCollection', features: conusLandFeatures(landGeo) },
+          { style: LAND_STYLE_HOME, interactive: false }
+        ).addTo(mapInstance);
+        addFireLayer();
+        finishFit(homeLandLayer);
+      })
+      .catch(function () {
+        if (!mapInstance) return;
+        addFireLayer();
+        finishFit(null);
+      });
   }
 
   function invalidateIfVisible() {
     if (!mapInstance) return;
     var section = document.getElementById('wfigs-map-section');
-    if (section && !section.hidden) {
-      mapInstance.invalidateSize();
+    if (!section || section.hidden) return;
+    mapInstance.invalidateSize();
+    if (isHomePage() && homeLandLayer) {
+      try {
+        mapInstance.fitBounds(homeLandLayer.getBounds(), { padding: [6, 6], maxZoom: 6 });
+      } catch (e) {
+        fitConus(mapInstance, { home: true });
+      }
+      return;
     }
+    fitConus(mapInstance, isHomePage() ? { home: true } : { tight: true });
   }
 
   window.WF = window.WF || {};

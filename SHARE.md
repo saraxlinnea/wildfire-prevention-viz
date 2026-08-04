@@ -6,7 +6,7 @@ Ready-to-use text for LinkedIn and email. Link: https://saraxlinnea.github.io/wi
 
 ## Short (LinkedIn post)
 
-Wildfire Season Briefing
+Wildfire Season in Numbers
 
 I put together a sourced look at U.S. wildfire data (1983-2026). Home page with this season’s highlights and a mapped-fires snapshot; then a briefing with tabs for Overview, Drivers, Context, and Impacts.
 
@@ -26,13 +26,13 @@ https://saraxlinnea.github.io/wildfire-prevention-viz/
 
 ## One-liner (bio / email signature)
 
-Wildfire Season Briefing: U.S. wildfire data, 1983-2026 → saraxlinnea.github.io/wildfire-prevention-viz
+Wildfire Season in Numbers: U.S. wildfire data, 1983-2026 → saraxlinnea.github.io/wildfire-prevention-viz
 
 ---
 
 ## For journalists / technical contacts
 
-Subject: Wildfire Season Briefing (sourced U.S. wildfire data)
+Subject: Wildfire Season in Numbers (sourced U.S. wildfire data)
 
 Hi [name],
 

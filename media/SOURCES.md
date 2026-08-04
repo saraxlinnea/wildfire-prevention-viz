@@ -1,6 +1,6 @@
 # Media sources
 
-Local photos for Wildfire Season Briefing. Do not hotlink originals at runtime.
+Local photos for Wildfire Season in Numbers. Do not hotlink originals at runtime.
 
 | File | Depicts | License | Credit | Page use | Notes |
 |---|---|---|---|---|---|

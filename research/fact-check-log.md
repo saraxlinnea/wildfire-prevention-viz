@@ -1,5 +1,30 @@
 # Fact-check log
 
+**Run date:** 2026-08-04 (Rename + title polish)  
+**Summary:** PASS (UI/docs). Title → Wildfire Season in Numbers (home, explore, OG, README, SHARE, claims, og-card). Larger H1; soft header scrim; quieter kicker; lede ~33rem / 1.55 lh; stats nums 1.25em; more title→map gap; wider primary CTA; title/lede fade after map settle. Figures unchanged.
+
+---
+
+**Run date:** 2026-08-04 (Home visual polish)  
+**Summary:** PASS (UI). Silent home map (no note chrome); hairline-free inline stats; map ~212px; bounce fixed (one fit + fade-in); primary CTA + text-link tour; lede kept on short viewports (map/stats shrink instead). Footer Unsplash · Methods · WFIGS. Figures unchanged (5.2M / +37% / Aug 3).
+
+---
+
+**Run date:** 2026-08-04 (Home silhouette map)  
+**Summary:** PASS (UI). Home WFIGS: no basemap tiles; cream CONUS land from `gacc-regions.geojson` (West/South/East); dark fire fills; ocean = page background. Footer drops OSM/CARTO (no tiles); keeps NIFC WFIGS. Explore map unchanged. Figures unchanged.
+
+---
+
+**Run date:** 2026-08-04 (Home side-by-side + copy)  
+**Summary:** PASS (UI). Home: stacked stats left of shorter WFIGS map; C-F01/C-F02 home bodies refreshed (5.2M through Aug 3; +37% vs NIFC 10-yr avg; no new figures). Leaflet/OSM/CARTO/WFIGS attribution off map chrome; footer credit retained. Home CONUS bounds tightened.
+
+---
+
+**Run date:** 2026-08-04 (Home reorder + shorter stats)  
+**Summary:** PASS (UI). Home order: title → stats → CTAs → map. C-F01/C-F02 home bodies shortened (no figure change; 5.2M / +37% / Aug 3). Methods link: `explore.html?tab=methods` beside Unsplash credit.
+
+---
+
 **Run date:** 2026-08-04 (Home stats trim + LTE wording)  
 **Summary:** PASS (UI/docs). Home keeps 5.2M / +37% only; dropped 3rd and AccuWeather peer tiles. C-F04 / C-F08 remain on Overview (and Methods for forecast). Removed “An Ounce of Prevention” / LTE origin line from README. No figure changes to observed YTD.
 

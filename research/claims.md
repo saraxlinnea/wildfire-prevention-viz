@@ -4,7 +4,7 @@ Tracks every empirical and editorial statement on the public visualization.
 Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/main/CORE/CLAIM_TRACKING_LAYER.md) and [Evidence Standard](https://github.com/saraxlinnea/AI-OS/blob/main/CORE/EVIDENCE_STANDARD.md).
 
 **Live page:** [saraxlinnea.github.io/wildfire-prevention-viz](https://saraxlinnea.github.io/wildfire-prevention-viz) (home) · [explore.html](https://saraxlinnea.github.io/wildfire-prevention-viz/explore.html)  
-**Title:** Wildfire Season Briefing  
+**Title:** Wildfire Season in Numbers  
 **Last audited against:** 2026-08-03 August YTD refresh ([`fact-check-log.md`](fact-check-log.md))  
 **Update rule:** Any new factual copy on `index.html` or `explore.html` must get a claim ID here before publish.
 
@@ -32,8 +32,8 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 | Field | Value |
 |---|---|
 | **Normalized statement** | U.S. national acres burned from Jan 1 through August 3, 2026 equals 5,154,596 acres |
-| **Display text** | Callout **5.2M** · “U.S. acres burned so far in 2026 through August 3 (year-to-date only)” |
-| **Page location** | Header dek; Overview callouts; Methods tab |
+| **Display text** | Callout **5.2M** · Home: “**5.2M** acres already burned this year through August 3.” · Overview: “U.S. acres burned so far in 2026 through August 3 (year-to-date only)” |
+| **Page location** | Home stats; Overview callouts; Methods tab |
 | **Status** | Supported |
 | **Confidence** | High |
 | **Evidence strength** | Strong (agency operational reporting) |
@@ -47,8 +47,8 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 | Field | Value |
 |---|---|
 | **Normalized statement** | 2026 YTD acres burned through August 3 is approximately 37% above the 10-year YTD average for the same date (10-yr avg = 3,759,429 acres from NIFC 2016-2025 same-date cell) |
-| **Display text** | Callout **+37%** · “About 37% more acres than a typical early August over the last 10 years (NIFC same-date average, not a full-year comparison)” |
-| **Page location** | Overview callouts; Home stats |
+| **Display text** | Callout **+37%** · Home: “**+37%** more than NIFC’s same-date 10-year average.” · Overview: “About 37% more acres than a typical early August over the last 10 years (NIFC same-date average, not a full-year comparison)” |
+| **Page location** | Home stats; Overview callouts |
 | **Status** | Supported |
 | **Confidence** | High |
 | **Evidence strength** | Strong (NIFC published same-date table and 10-year average cell) |
@@ -894,7 +894,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 | **Status** | Supported (snapshot provenance) / Editorial (ops framing) |
 | **Confidence** | Medium |
 | **Sources** | NIFC WFIGS Interagency Perimeters YearToDate FeatureServer; Open Data portal |
-| **Limitations** | Static file (not live); incomplete coverage; lags fire front; small fires omitted; geometry simplified for page weight; do not equate perimeter sum with NIFC YTD acres |
+| **Limitations** | Static file (not live); incomplete coverage; lags fire front; small fires omitted; geometry simplified for page weight; do not equate perimeter sum with NIFC YTD acres; Home map is CONUS land silhouette (no basemap; Alaska/Hawaii not framed) |
 | **Related** | C-F01, C-F04, C-X01, C-R12 |
 
 ---
@@ -1226,6 +1226,11 @@ Before updating the live page:
 
 | Date | Change |
 |---|---|
+| 2026-08-04 | Rename to Wildfire Season in Numbers; larger H1 + header scrim; quieter kicker; title fade after map settle |
+| 2026-08-04 | Home polish: silent silhouette map; inline stats; centered CTA hierarchy; single fit + fade-in; lede kept on short viewports |
+| 2026-08-04 | Home WFIGS: cream CONUS silhouette (no basemap), dark fire fills; OSM/CARTO credit dropped on home (C-WFIGS01 note) |
+| 2026-08-04 | Home: side-by-side stats+map; tighter CONUS zoom; hide Leaflet attribution (credit in footer); C-F01/C-F02 home copy refresh |
+| 2026-08-04 | Home: stats above CTAs; shorter C-F01/C-F02 home bodies; Methods link beside Unsplash credit |
 | 2026-08-04 | Home: drop rank + AccuWeather peer tiles (keep 5.2M / +37%); remove LTE / “An Ounce of Prevention” origin wording from README |
 | 2026-08-04 | Pre-publish: README August byline + Overview wording; claims page-location index synced to Home/Overview/Drivers/Context/Impacts/Methods; C-WFIGS01 / C-Lit03 locations; QA audit report tab map |
 | 2026-08-04 | Drivers flow polish: merge section 0; chip-aware handoff; nest reliability; Westerling retitled; ignition/lag → Methods gaps; claim locations updated |
