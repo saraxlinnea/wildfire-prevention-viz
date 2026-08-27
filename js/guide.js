@@ -17,14 +17,14 @@
     {
       tab: 'context',
       title: 'Context',
-      body: 'How many hazardous-fuels acres did agencies report, and how much was tagged near communities? Different clock from burn totals.',
-      target: '#tab-context .chart-container--policy'
+      body: 'How many hazardous-fuels acres did agencies report, how much federal suppression spending was logged, and how much treatment was tagged near communities? Different clock from burn totals.',
+      target: '#chart-policy, #chart-suppression'
     },
     {
       tab: 'impacts',
       title: 'Impacts',
-      body: 'Acres burned are not the same as smoke people breathe. This tab starts with air quality.',
-      target: '#chart-smoke-pm25, .interp-section--smoke'
+      body: 'Acres burned are not the same as smoke people breathe or structures reported destroyed. Smoke runs 2006-2023 (ECHO v2 beta); structures run 2014-2025; shared years are 2014-2023.',
+      target: '#chart-smoke-pm25, #chart-structures-destroyed, #chart-suppression-impacts'
     }
   ];
 

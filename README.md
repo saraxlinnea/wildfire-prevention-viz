@@ -11,8 +11,8 @@ Sourced U.S. wildfire data, 1983-2026. Home page with season highlights and a YT
 - **Home (`index.html`):** season callouts (YTD acres, % vs same-date average) and a WFIGS year-to-date perimeter map; CTAs into the briefing or a short tour
 - **Overview:** How many U.S. acres burned (rolling 10-year band; 2026 YTD); where those acres landed (GACC map / west / regions); optional WFIGS ops snapshot
 - **Drivers:** How dry was the West in years with large western acreage; exploratory pairing charts
-- **Context:** How many hazardous-fuels acres agencies reported; WUI designation; treatment vs acres research
-- **Impacts:** Acres burned are not the same as smoke people breathe
+- **Context:** How many hazardous-fuels acres agencies reported; federal suppression costs; WUI designation; treatment vs acres research
+- **Impacts:** Smoke PM2.5 (ECHO v2 beta through 2023), national structures destroyed (NICC SIT/209, 2014-2025), and compact federal suppression spend (same NIFC series as Context)
 - **Methods:** how to read, limits, glossary, sources
 
 As of August 3, 2026, about 5.2 million acres have already burned nationally, about 37% above the 10-year average to date. Peak fire season runs July through September in the West.
@@ -38,7 +38,9 @@ This site does not claim that cutting prevention in 2025 directly caused the 202
 | Western fire season ERC | [gridMET via OPeNDAP](http://thredds.northwestknowledge.net/thredds/dodsC/MET/erc/) | 1979-2025 | `data/erc-annual.csv` |
 | Western acres burned (GACC) | NICC annual reports | 2003-2025 | 2008-2009 hand OCR of lightning+human pages; `data/western-acres-annual.csv` |
 | Regional GACC acres | NICC annual reports | 2003-2025 | 2008-2009 hand OCR; `data/regional-acres-annual.csv` |
-| Wildfire smoke PM2.5 | Childs et al. 2022 ([Dataverse](https://doi.org/10.7910/DVN/DJVMTV)) | 2006-2020 CONUS | `data/smoke-pm25-annual.csv`; How to read chart only |
+| Wildfire smoke PM2.5 | Stanford ECHO Lab v2.0 beta ([wildfire_smoke](https://www.stanfordecholab.com/wildfire_smoke)) | 2006-2023 CONUS | Live `data/smoke-pm25-annual.csv`; Impacts. Childs v1 archive `smoke-pm25-v1-annual.csv`; bake-off `smoke-pm25-v2-bakeoff.md`. Preliminary. |
+| Federal suppression costs | [NIFC Suppression Costs](https://www.nifc.gov/fire-information/statistics/suppression-costs) | FY 1985-2023 | FS+DOI; nominal; `data/suppression-cost-annual.csv` |
+| Structures destroyed | NICC annual reports (SIT/ICS-209) | 2014-2025 | National; undercount vs local; `data/structures-destroyed-annual.csv` |
 | Ignition cause acres | NICC annual reports | 2003-2012 (n=7) | Lightning vs human GACC totals; gap 2007-2009 extract |
 | Regional gridMET VPD/ERC | gridMET OPeNDAP | 1979-2025 (west); 2010-2025 (south/east) | `data/regional-gridmet-annual.csv` |
 | Ten-year average (CRS) | [CRS Report IF10244](https://crsreports.congress.gov/product/pdf/IF/IF10244) | 2013-2022 | 7.2M reference; chart uses rolling NIFC band |
@@ -47,7 +49,7 @@ This site does not claim that cutting prevention in 2025 directly caused the 202
 
 **Main chart data:** [`data/wildfire-data.csv`](data/wildfire-data.csv) (row 2 is column metadata with source URLs)
 
-**Boot CSVs (required for charts):** `wildfire-data.csv`, `vpd-annual.csv`, `erc-annual.csv`, `regional-acres-annual.csv`, `hfr-prevention-annual.csv`, `vpd-monthly-annual.csv`, `smoke-pm25-annual.csv`
+**Boot CSVs (required for charts):** `wildfire-data.csv`, `vpd-annual.csv`, `erc-annual.csv`, `regional-acres-annual.csv`, `hfr-prevention-annual.csv`, `vpd-monthly-annual.csv`, `smoke-pm25-annual.csv`, `suppression-cost-annual.csv`, `structures-destroyed-annual.csv`
 
 **Correlations (exploratory):** [`data/correlation-matrix.csv`](data/correlation-matrix.csv), [`data/correlation-sensitivity.csv`](data/correlation-sensitivity.csv), [`data/correlation-notes.md`](data/correlation-notes.md). Default scatter: western GACC acres vs western ERC (r ≈ 0.82, 2010-2025); not causal.
 

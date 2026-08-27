@@ -1,5 +1,35 @@
 # Fact-check log
 
+**Run date:** 2026-08-25 (live smoke → ECHO v2)  
+**Summary:** PASS (data + UI). Wired `#chart-smoke-pm25` to ECHO Lab v2.0 beta annual 2006-2023 (`smoke-pm25-annual.csv`); Childs v1 archived. C-IMP03 → Speculative. Smoke×structures overlap 2014-2023 (C-IMP05; n=10). Spot-check 2023 smoke ≈ 2.447 µg/m³. No EPA PM2.5 stitch. Audit expects live + v1 archive + v2 rebuild CSV.
+
+---
+
+**Run date:** 2026-08-08 (Uncommitted review + soft-fail)  
+**Summary:** PASS (wiring). Suppression (`suppression-cost-annual.csv`) and structures (`structures-destroyed-annual.csv`) are Explore-wired but now optional at boot: missing/empty CSV hides Context/Impacts panels instead of failing the page. Smoke live chart remains Childs v1; ECHO v2 beta remains research-only (bake-off GO, awaiting user OK). WFIGS Overview main path soft-fails if GeoJSON missing. Claims C-SUP*/C-STR*/C-IMP05/C-WFIGS01 already present; soft-fail note added. No figure changes.
+
+---
+
+**Run date:** 2026-08-07 (Impacts priorities 1–3)  
+**Summary:** PASS with gates documented. (1) ECHO v2 bake-off **GO** (annual 2006-2023; RMSE≈0.045 vs v1; ~9% lower); live smoke stays Childs v1 pending user OK. (2) Structures 2005-2009 not extractable; 2010-2013 verified but not shipped (acceptance ≥2006 failed); live 2014-2025. (3) Impacts `#chart-suppression-impacts` reuses NIFC suppression CSV (C-SUP03). No EPA PM2.5 stitch.
+
+---
+
+**Run date:** 2026-08-07 (smoke × structures shared window)  
+**Summary:** PASS (UI/docs). Main smoke (Childs 2006-2020) and structures (NICC 2014-2025) unchanged. Added Impacts research dual-axis for calendar overlap 2014-2020 (C-IMP05). ECHO v2 beta documented in smoke notes; not wired. No new invented smoke years.
+
+---
+
+**Run date:** 2026-08-04 (Response & effects Priority 1)  
+**Summary:** PASS (data + UI). Added NIFC federal suppression costs (C-SUP01/02) on Context `#chart-suppression` and NICC national structures destroyed 2014-2025 (C-STR01/02) on Impacts `#chart-structures-destroyed`. Smoke remains Childs 2006-2020; ECHO v2 beta notes-only. Spot-checks: FY2021 suppression $4.389B; structures 2018=25,790 / 2020=17,904 / 2025=18,385. Audit extended.
+
+---
+
+**Run date:** 2026-08-04 (Overview WFIGS on main path)  
+**Summary:** PASS (UI). WFIGS YTD perimeter map promoted out of `<details>` onto Overview main path. Loads with Overview charts (no drawer gate). Methods gaps copy updated. C-WFIGS01 location note updated. Figures unchanged.
+
+---
+
 **Run date:** 2026-08-04 (Rename + title polish)  
 **Summary:** PASS (UI/docs). Title → Wildfire Season in Numbers (home, explore, OG, README, SHARE, claims, og-card). Larger H1; soft header scrim; quieter kicker; lede ~33rem / 1.55 lh; stats nums 1.25em; more title→map gap; wider primary CTA; title/lede fade after map settle. Figures unchanged.
 

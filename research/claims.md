@@ -660,7 +660,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 | Field | Value |
 |---|---|
 | **Normalized statement** | The page presents observed series on mismatched geographies and calendars; temporal overlap is not presented as causal evidence |
-| **Display text** | Methods “How to read this”: Overview = U.S. acres burned + regional share; Drivers = dryness; Context = treatment; Impacts = smoke; not causal |
+| **Display text** | Methods “How to read this”: Overview = U.S. acres burned + regional share; Drivers = dryness; Context = treatment + suppression; Impacts = smoke + structures (shared window 2014-2020 in research); not causal |
 | **Page location** | Methods tab (How to read this); Home lede; Explore header lede; Overview / Drivers / Context / Impacts deks |
 | **Status** | Methodological |
 | **Confidence** | High |
@@ -889,8 +889,8 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 | Field | Value |
 |---|---|
 | **Normalized statement** | Overview Ops snapshot shows a static NIFC WFIGS Year-to-Date fire perimeter snapshot (GIS acres ≥ 100), labeled as an operational map as of the fetch timestamp; perimeter acre sums are not the NIFC National Fire News YTD total and are not mixed into Overview callout math |
-| **Display text** | Overview Ops details: "Where have mapped fires burned so far this year?" `#map-wfigs-ytd` |
-| **Page location** | Overview `#wfigs-map-section` (Ops snapshot details); Home WFIGS map; `data/wfigs-ytd-snapshot.geojson`; `data/wfigs-ytd-notes.md`; `scripts/fetch_wfigs_ytd.py` |
+| **Display text** | Overview: "Where have mapped fires burned so far this year?" `#map-wfigs-ytd` (main path; soft-fail if GeoJSON missing) |
+| **Page location** | Overview `#wfigs-map-section`; Home WFIGS map; `data/wfigs-ytd-snapshot.geojson`; `data/wfigs-ytd-notes.md`; `scripts/fetch_wfigs_ytd.py` |
 | **Status** | Supported (snapshot provenance) / Editorial (ops framing) |
 | **Confidence** | Medium |
 | **Sources** | NIFC WFIGS Interagency Perimeters YearToDate FeatureServer; Open Data portal |
@@ -1046,31 +1046,109 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 | **Limitations** | Population exposure metric; not on-page chart |
 | **Related** | C-IMP03 |
 
-### C-IMP03 — CONUS smoke PM2.5 annual chart (2006-2020)
+### C-IMP03 — CONUS smoke PM2.5 annual chart (2006-2023, ECHO v2 beta)
 
 | Field | Value |
 |---|---|
-| **Normalized statement** | Annual chart shows unweighted mean of county-level daily wildfire smoke PM2.5 (µg/m³) across the contiguous U.S., 2006-2020, from Childs et al. county daily predictions (non-smoke days = 0) |
+| **Normalized statement** | Annual chart shows unweighted mean of county-level daily wildfire smoke PM2.5 (µg/m³) across the contiguous U.S., 2006-2023, from Stanford ECHO Lab v2.0 beta county daily predictions (non-smoke days = 0); lab labels data preliminary and subject to change |
 | **Display text** | `#chart-smoke-pm25` on Impacts |
 | **Page location** | Impacts → Why smoke matters |
-| **Status** | Supported |
-| **Confidence** | Medium-High |
-| **Sources** | `data/smoke-pm25-annual.csv`; `scripts/build_smoke_annual.py`; Harvard Dataverse [doi:10.7910/DVN/DJVMTV](https://doi.org/10.7910/DVN/DJVMTV) |
-| **Limitations** | CONUS only; not population-weighted; ends 2020; not total PM2.5 from all sources; not 2026 smoke |
+| **Status** | Speculative |
+| **Confidence** | Medium |
+| **Sources** | `data/smoke-pm25-annual.csv`; `scripts/build_smoke_v2_beta_annual.py`; [ECHO wildfire_smoke](https://www.stanfordecholab.com/wildfire_smoke); bake-off `data/smoke-pm25-v2-bakeoff.md` |
+| **Limitations** | CONUS only; not population-weighted; beta / preliminary; ends 2023; not total PM2.5 from all sources; not 2026 smoke; Childs v1 archived as `smoke-pm25-v1-annual.csv` |
 | **Related** | C-IMP01, C-IMP02, C-IMP04, C-X01 |
 
-### C-IMP04 — Exploratory national acres vs smoke PM2.5 (2006-2020)
+### C-IMP04 — Exploratory national acres vs smoke PM2.5 (2006-2023)
 
 | Field | Value |
 |---|---|
-| **Normalized statement** | Pearson r between NIFC national acres burned (millions) and CONUS mean daily smoke PM2.5 (µg/m³) is positive for 2006-2020 (n=15); displayed dynamically in Why smoke matters prose |
+| **Normalized statement** | Pearson r between NIFC national acres burned (millions) and CONUS mean daily smoke PM2.5 (µg/m³) is positive for overlapping years of the live smoke series and national acres (dynamic n / window in Why smoke matters prose) |
 | **Display text** | `#smoke-acres-r-text` exploratory sentence |
 | **Page location** | Impacts → Why smoke matters |
 | **Status** | Supported (derived, exploratory) |
 | **Confidence** | Medium |
 | **Sources** | `data/wildfire-data.csv` + `data/smoke-pm25-annual.csv` |
-| **Limitations** | n=15; geography mismatch (national acres vs CONUS smoke); correlation ≠ causation; on Impacts tab |
+| **Limitations** | Geography mismatch (national acres vs CONUS smoke); correlation ≠ causation; on Impacts tab; smoke beta through 2023 |
 | **Related** | C-X05, C-IMP03 |
+
+### C-IMP05 — Smoke and structures shared window (2014-2023)
+
+| Field | Value |
+|---|---|
+| **Normalized statement** | The live CONUS smoke PM2.5 series (ECHO v2 beta, 2006-2023) and NICC national structures-destroyed series (2014-2025) share calendar years 2014-2023; a dual-axis research panel shows that overlap without claiming causation; 2024-2025 remain structures-only on the structures chart |
+| **Display text** | Impacts research details: smoke × structures 2014-2023 |
+| **Page location** | Impacts `#chart-smoke-structures-overlap` / `details.smoke-structures-overlap-details` |
+| **Status** | Methodological |
+| **Confidence** | High |
+| **Sources** | `data/smoke-pm25-annual.csv`; `data/structures-destroyed-annual.csv`; `data/smoke-pm25-notes.md` |
+| **Limitations** | n=10; CONUS smoke vs national SIT/209 structures; smoke beta ends 2023; structures continue 2024-2025; not causal |
+| **Related** | C-IMP03, C-STR01, C-X01 |
+
+### C-STR01 — National structures destroyed (NICC SIT/209)
+
+| Field | Value |
+|---|---|
+| **Normalized statement** | NICC Wildland Fire Summary annual reports publish national SIT/ICS-209 structures destroyed totals; calendar years 2014–2025 include peaks of 25,790 (2018) and 18,385 (2025) and a low of 963 (2019) |
+| **Display text** | Impacts `#chart-structures-destroyed` |
+| **Page location** | Impacts tab under smoke |
+| **Status** | Supported |
+| **Confidence** | High |
+| **Sources** | NICC annual reports 2014–2025; `data/structures-destroyed-annual.csv`; `data/structures-destroyed-notes.md`; `scripts/extract_nicc_structures.py` |
+| **Limitations** | SIT/209 undercount vs many county/state assessments; mixes residences, minor, and commercial; not causal vs acres |
+| **Related** | C-STR02, C-IMP03 |
+
+### C-STR02 — Structures series undercount and geography limits
+
+| Field | Value |
+|---|---|
+| **Normalized statement** | The structures chart is national NICC SIT/209 reporting, not a complete census of homes lost; totals can differ from state or local damage assessments, and the series is not California-only Cal Fire figures |
+| **Display text** | Impacts structures caption / Methods |
+| **Page location** | Impacts `#chart-structures-destroyed` caption |
+| **Status** | Supported |
+| **Confidence** | High |
+| **Sources** | NICC annual-report SIT/209 disclaimers; Headwaters Economics methods note (FAMAuth undercount) |
+| **Limitations** | No evacuations or fatalities on this page |
+| **Related** | C-STR01 |
+
+### C-SUP01 — Federal suppression costs (NIFC)
+
+| Field | Value |
+|---|---|
+| **Normalized statement** | NIFC publishes fiscal-year federal firefighting costs (suppression only) for Forest Service and DOI agencies; FY 2021 total ≈ $4.389B (highest in the published table through FY 2023); FY 2023 total ≈ $3.166B |
+| **Display text** | Context `#chart-suppression` |
+| **Page location** | Context tab after treatment |
+| **Status** | Supported |
+| **Confidence** | High |
+| **Sources** | [NIFC Suppression Costs](https://www.nifc.gov/fire-information/statistics/suppression-costs); `data/suppression-cost-annual.csv`; `data/suppression-cost-notes.md` |
+| **Limitations** | Fiscal year; federal only; nominal dollars; not preparedness; not state/local; not staffing days |
+| **Related** | C-SUP02, C-P07 |
+
+### C-SUP02 — Suppression chart display limits
+
+| Field | Value |
+|---|---|
+| **Normalized statement** | The Context suppression chart shows nominal federal suppression dollars (chart window FY 2003–2023) beside treatment acres for temporal comparison only; it does not claim that spending caused burn outcomes or that treatment cuts caused cost changes |
+| **Display text** | Context suppression caption |
+| **Page location** | Context `#chart-suppression` |
+| **Status** | Methodological |
+| **Confidence** | High |
+| **Sources** | `data/suppression-cost-notes.md` |
+| **Limitations** | Inflation not adjusted; NIFC costs ≠ CRS appropriations; acres on the NIFC cost table are not used as this page’s burn series |
+| **Related** | C-SUP01, C-X01 |
+
+### C-SUP03 — Impacts compact suppression chart
+
+| Field | Value |
+|---|---|
+| **Normalized statement** | Impacts shows a compact chart of the same NIFC federal FS+DOI suppression cost series as Context (FY 2003–2023 window, nominal); it is not a separate cost source and does not claim causation vs smoke or structures |
+| **Display text** | Impacts `#chart-suppression-impacts` caption |
+| **Page location** | Impacts after structures |
+| **Status** | Methodological |
+| **Confidence** | High |
+| **Sources** | `data/suppression-cost-annual.csv`; C-SUP01/C-SUP02 |
+| **Limitations** | Same limits as C-SUP02; treatment story remains on Context / Methods |
+| **Related** | C-SUP01, C-SUP02, C-STR01, C-IMP03 |
 
 ---
 
@@ -1203,8 +1281,8 @@ Quick lookup: where each claim appears on `explore.html` / `index.html`.
 | Explore header | C-X06 (lede); kicker Updated August 2026 |
 | Overview | C-F01, C-F02, C-F03, C-F04, C-F08, C-F09, C-F12, C-M01, C-M07, C-R06, C-R12, C-WFIGS01 |
 | Drivers | C-Lit01, C-Lit02, C-Lit03, C-W02, C-W03, C-R03, C-R08, C-R13, C-C05, C-R11, C-E03, C-R15, C-V01–C-V03, C-D01–C-D03 |
-| Context | C-P01–C-P09, C-R09, C-A01, treatment / WUI charts |
-| Impacts | C-IMP01–C-IMP04, C-X01 |
+| Context | C-P01–C-P09, C-R09, C-A01, C-SUP01, C-SUP02, treatment / WUI / suppression charts |
+| Impacts | C-IMP01–C-IMP05, C-STR01, C-STR02, C-SUP03, C-X01 |
 | Methods | C-X05, C-X06, C-F05–C-F07, C-P06, C-RS01, C-R10, C-R14, C-C02, C-P2-01–C-P2-03, glossary |
 | Meta / OG tags | C-F01, C-F02 |
 
@@ -1226,10 +1304,16 @@ Before updating the live page:
 
 | Date | Change |
 |---|---|
+| 2026-08-04 | Overview: promote WFIGS ops map out of details onto main path (C-WFIGS01) |
 | 2026-08-04 | Rename to Wildfire Season in Numbers; larger H1 + header scrim; quieter kicker; title fade after map settle |
 | 2026-08-04 | Home polish: silent silhouette map; inline stats; centered CTA hierarchy; single fit + fade-in; lede kept on short viewports |
 | 2026-08-04 | Home WFIGS: cream CONUS silhouette (no basemap), dark fire fills; OSM/CARTO credit dropped on home (C-WFIGS01 note) |
-| 2026-08-04 | Home: side-by-side stats+map; tighter CONUS zoom; hide Leaflet attribution (credit in footer); C-F01/C-F02 home copy refresh |
+| 2026-08-08 | Soft-fail: suppression + structures CSVs optional at boot (hide panels if missing); WFIGS already soft-fails |
+| 2026-08-25 | Live smoke wired to ECHO v2.0 beta (2006-2023; C-IMP03 Speculative); Childs v1 archived; smoke×structures overlap 2014-2023 (C-IMP05); bake-off notes kept |
+| 2026-08-07 | Impacts priorities 1-3: ECHO v2 bake-off gate (research-only; live smoke stays Childs v1); structures pre-2014 probe (keep 2014-2025; 2005-2009 gap); Impacts `#chart-suppression-impacts` (C-SUP03) |
+| 2026-08-07 | Impacts smoke×structures shared window 2014-2020 (C-IMP05); ECHO v2 beta notes-only (no live wire); main smoke/structures series unchanged |
+| 2026-08-04 | Priority 1 Response & effects: C-SUP01/02 (NIFC suppression $), C-STR01/02 (NICC structures 2014-2025); smoke v2 beta notes-only; C-X06 display text updated |
+| 2026-08-04 | Home: rename + title polish; silhouette map; side-by-side stats; Overview WFIGS main path |
 | 2026-08-04 | Home: stats above CTAs; shorter C-F01/C-F02 home bodies; Methods link beside Unsplash credit |
 | 2026-08-04 | Home: drop rank + AccuWeather peer tiles (keep 5.2M / +37%); remove LTE / “An Ounce of Prevention” origin wording from README |
 | 2026-08-04 | Pre-publish: README August byline + Overview wording; claims page-location index synced to Home/Overview/Drivers/Context/Impacts/Methods; C-WFIGS01 / C-Lit03 locations; QA audit report tab map |

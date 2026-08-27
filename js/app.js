@@ -115,6 +115,18 @@
     });
   }
 
+  /** Optional CSV: missing file must not kill the whole page boot. */
+  function fetchOptionalText(url) {
+    return fetchText(url).catch(err => {
+      console.warn('[wildfire-viz] optional CSV failed:', url, err.message || err);
+      return null;
+    });
+  }
+
+  function setSectionHidden(el, hidden) {
+    if (el) el.hidden = !!hidden;
+  }
+
   function layoutKey() {
     return `${WF.isMobile()}-${WF.mainChartHeight()}-${WF.secondaryChartHeight()}-${fireMode}-${geoMode}-${policyMode}-${policyYearBasis}-${scatterMode}-${scatterDriverMode}-${atmosDrynessMode}-${regionalDriverRegion}-${regionalDriverView}-${gaccChoroplethYear || ''}`;
   }
@@ -142,14 +154,20 @@
     });
   }
 
-  function data() {
+  function buildFromCache(extra) {
     if (!cache) return null;
     const built = WF.buildDatasets(
       cache.wildfireRows, cache.vpdRows, cache.ercRows, cache.regionalAcresRows, cache.hfrRows,
       cache.vpdMonthlyRows, cache.ignitionRows, cache.sensitivityRows, cache.smokeRows,
-      cache.partialCorrRows, cache.westerlingRows, cache.treatmentPartialCorrRows
+      cache.partialCorrRows, cache.westerlingRows, cache.treatmentPartialCorrRows,
+      cache.suppressionRows, cache.structuresRows
     );
-    return withGaccYear(built);
+    return extra ? Object.assign(built, extra) : built;
+  }
+
+  function data() {
+    if (!cache) return null;
+    return withGaccYear(buildFromCache());
   }
 
   function finalizeChart(id) {
@@ -372,11 +390,7 @@
 
   function setGaccChoroplethYear(year) {
     if (!cache || !year) return;
-    const built = WF.buildDatasets(
-      cache.wildfireRows, cache.vpdRows, cache.ercRows, cache.regionalAcresRows, cache.hfrRows,
-      cache.vpdMonthlyRows, cache.ignitionRows, cache.sensitivityRows, cache.smokeRows,
-      cache.partialCorrRows, cache.westerlingRows, cache.treatmentPartialCorrRows
-    );
+    const built = buildFromCache();
     if (!built.gaccChoroplethByYear || !built.gaccChoroplethByYear[year]) return;
     gaccChoroplethYear = year;
     const d = withGaccYear(built);
@@ -500,8 +514,6 @@
   }
 
   function renderWfigsIfNeeded() {
-    const details = document.getElementById('wfigs-ops-details');
-    if (details && !details.open) return Promise.resolve();
     return ensureWfigsLoaded().then(geo => {
       if (typeof WF.renderWfigsMap === 'function') {
         WF.renderWfigsMap(geo);
@@ -525,10 +537,18 @@
 
   function renderFederalPart(d) {
     updatePolicyYearCopy();
+    const hasSuppression = (d.suppressionSeries || []).length > 0;
+    setSectionHidden(
+      document.querySelector('#chart-suppression')?.closest('.chart-container'),
+      !hasSuppression
+    );
     const tasks = [
       embedChart('#chart-policy', WF.buildPolicySpec(d, policyMode, policyYearBasis), 'policy'),
       embedChart('#chart-wui-share', WF.buildWuiShareSpec(d), 'wuiShare')
     ];
+    if (hasSuppression) {
+      tasks.push(embedChart('#chart-suppression', WF.buildSuppressionSpec(d), 'suppression'));
+    }
     fillTreatmentPartialTable(d.treatmentPartialCorrSeries);
     const dualDetails = document.querySelector('details.treatment-dual-details');
     if (dualDetails && dualDetails.open) {
@@ -1002,12 +1022,49 @@
     const el = document.getElementById('smoke-acres-r-text');
     if (!el || d.pearsonSmokeAcres == null) return;
     const r = d.pearsonSmokeAcres.toFixed(2);
-    el.textContent = `Exploratory check: national acres burned and this smoke series correlate at r ≈ ${r} (n=15, 2006-2020). That is temporal overlap, not proof that acres caused exposure.`;
+    const years = (d.smokePm25Series || [])
+      .map(s => parseInt(s.year, 10))
+      .filter(y => !Number.isNaN(y));
+    const n = years.length;
+    const lo = n ? Math.min(...years) : null;
+    const hi = n ? Math.max(...years) : null;
+    const window = lo != null && hi != null ? `${lo}-${hi}` : 'available years';
+    el.textContent = `Exploratory check: national acres burned and this smoke series correlate at r ≈ ${r} (n=${n}, ${window}). That is temporal overlap, not proof that acres caused exposure.`;
   }
 
   function renderImpacts(d) {
     fillSmokeProse(d);
-    return embedChart('#chart-smoke-pm25', WF.buildSmokePm25Spec(d), 'smokePm25');
+    const hasStructures = (d.structuresDestroyedSeries || []).length > 0;
+    const hasSuppression = (d.suppressionSeries || []).length > 0;
+    const hasOverlap = (d.smokeStructuresOverlapSeries || []).length > 0;
+    setSectionHidden(document.querySelector('.interp-section--structures'), !hasStructures);
+    setSectionHidden(document.querySelector('.interp-section--suppression-impacts'), !hasSuppression);
+    setSectionHidden(document.querySelector('details.smoke-structures-overlap-details'), !hasOverlap);
+
+    const tasks = [
+      embedChart('#chart-smoke-pm25', WF.buildSmokePm25Spec(d), 'smokePm25')
+    ];
+    if (hasStructures) {
+      tasks.push(
+        embedChart('#chart-structures-destroyed', WF.buildStructuresDestroyedSpec(d), 'structuresDestroyed')
+      );
+    }
+    if (hasSuppression) {
+      tasks.push(
+        embedChart('#chart-suppression-impacts', WF.buildSuppressionSpec(d, { compact: true }), 'suppressionImpacts')
+      );
+    }
+    const overlapDetails = document.querySelector('details.smoke-structures-overlap-details');
+    if (hasOverlap && overlapDetails && overlapDetails.open) {
+      tasks.push(
+        embedChart(
+          '#chart-smoke-structures-overlap',
+          WF.buildSmokeStructuresOverlapSpec(d),
+          'smokeStructuresOverlap'
+        )
+      );
+    }
+    return Promise.all(tasks);
   }
 
   function renderTabCharts(tabId, force) {
@@ -1038,6 +1095,7 @@
       promise = renderDrivers(d);
     } else if (tabId === 'context') {
       finalizeChart('policy');
+      finalizeChart('suppression');
       finalizeChart('treatmentAcres');
       finalizeChart('wuiShare');
       finalizeChart('treatmentPerAcre');
@@ -1045,6 +1103,9 @@
       promise = renderContext(d);
     } else if (tabId === 'impacts') {
       finalizeChart('smokePm25');
+      finalizeChart('structuresDestroyed');
+      finalizeChart('suppressionImpacts');
+      finalizeChart('smokeStructuresOverlap');
       promise = renderImpacts(d);
     } else {
       return;
@@ -1090,11 +1151,13 @@
     window.WF.getActiveTab = function () { return activeTab; };
   }
 
-  function renderCharts(wildfireRows, vpdRows, ercRows, regionalAcresRows, hfrRows, vpdMonthlyRows, ignitionRows, sensitivityRows, smokeRows, partialCorrRows, westerlingRows, treatmentPartialCorrRows, gaccRegionGeojson, regionalCorrRows) {
+  function renderCharts(wildfireRows, vpdRows, ercRows, regionalAcresRows, hfrRows, vpdMonthlyRows, ignitionRows, sensitivityRows, smokeRows, partialCorrRows, westerlingRows, treatmentPartialCorrRows, gaccRegionGeojson, regionalCorrRows, suppressionRows, structuresRows) {
     cache = {
       wildfireRows, vpdRows, ercRows, regionalAcresRows, hfrRows,
       vpdMonthlyRows, ignitionRows, sensitivityRows, smokeRows,
       partialCorrRows, westerlingRows, treatmentPartialCorrRows,
+      suppressionRows: suppressionRows || [],
+      structuresRows: structuresRows || [],
       gaccRegionGeojson: gaccRegionGeojson || null,
       regionalCorrRows: regionalCorrRows || [],
       wfigsYtdGeojson: null
@@ -1102,11 +1165,7 @@
     renderedTabs.clear();
     lastLayout = null;
     try {
-      const built = WF.buildDatasets(
-        wildfireRows, vpdRows, ercRows, regionalAcresRows, hfrRows,
-        vpdMonthlyRows, ignitionRows, sensitivityRows, smokeRows,
-        partialCorrRows, westerlingRows, treatmentPartialCorrRows
-      );
+      const built = buildFromCache();
       fillSensitivityTable(built.sensitivitySeries);
       fillPartialCorrTable(built.partialCorrSeries);
       fillTreatmentPartialTable(built.treatmentPartialCorrSeries);
@@ -1141,12 +1200,14 @@
       fetchText('data/westerling-snowmelt-tercile.csv'),
       fetchText('data/correlation-treatment-partial.csv'),
       fetchText('data/regional-correlation-rank.csv'),
+      fetchOptionalText('data/suppression-cost-annual.csv'),
+      fetchOptionalText('data/structures-destroyed-annual.csv'),
       fetchText('data/gacc-regions.geojson').catch(err => {
         console.warn('[wildfire-viz] gacc-regions.geojson optional load failed:', err.message || err);
         return null;
       })
     ])
-      .then(([wildfireText, vpdText, ercText, regionalAcresText, hfrText, vpdMonthlyText, ignitionText, sensitivityText, smokeText, partialText, westerlingText, treatmentPartialText, regionalCorrText, gaccGeoText]) => {
+      .then(([wildfireText, vpdText, ercText, regionalAcresText, hfrText, vpdMonthlyText, ignitionText, sensitivityText, smokeText, partialText, westerlingText, treatmentPartialText, regionalCorrText, suppressionText, structuresText, gaccGeoText]) => {
         let wildfireRows;
         let vpdRows;
         let ercRows;
@@ -1160,6 +1221,8 @@
         let westerlingRows;
         let treatmentPartialCorrRows;
         let regionalCorrRows;
+        let suppressionRows = [];
+        let structuresRows = [];
         let gaccRegionGeojson = null;
         try {
           wildfireRows = WF.parseWildfireCSV(wildfireText);
@@ -1175,6 +1238,8 @@
           westerlingRows = WF.parseTableCSV(westerlingText);
           treatmentPartialCorrRows = WF.parseTableCSV(treatmentPartialText);
           regionalCorrRows = WF.parseTableCSV(regionalCorrText);
+          if (suppressionText) suppressionRows = WF.parseSimpleCSV(suppressionText);
+          if (structuresText) structuresRows = WF.parseSimpleCSV(structuresText);
           if (gaccGeoText) {
             gaccRegionGeojson = JSON.parse(gaccGeoText);
             if (!gaccRegionGeojson.features || !gaccRegionGeojson.features.length) {
@@ -1215,6 +1280,12 @@
         if (!treatmentPartialCorrRows.length) {
           throw Object.assign(new Error('correlation-treatment-partial.csv parsed to zero rows'), { stage: 'parse CSV' });
         }
+        if (!suppressionRows.length) {
+          console.warn('[wildfire-viz] suppression-cost-annual.csv missing or empty; Context/Impacts suppression charts hidden');
+        }
+        if (!structuresRows.length) {
+          console.warn('[wildfire-viz] structures-destroyed-annual.csv missing or empty; Impacts structures chart hidden');
+        }
         if (!regionalCorrRows.length) {
           console.warn('[wildfire-viz] regional-correlation-rank.csv parsed to zero rows');
         }
@@ -1233,6 +1304,8 @@
           westerlingRows.length, 'Westerling snowmelt rows,',
           treatmentPartialCorrRows.length, 'treatment partial corr rows,',
           regionalCorrRows.length, 'regional correlation rows,',
+          suppressionRows.length, 'suppression cost rows,',
+          structuresRows.length, 'structures destroyed rows,',
           gaccRegionGeojson ? gaccRegionGeojson.features.length + ' GACC region polygons' : 'no GACC choropleth geojson',
           '(WFIGS deferred)'
         );
@@ -1240,7 +1313,7 @@
           wildfireRows, vpdRows, ercRows, regionalAcresRows, hfrRows,
           vpdMonthlyRows, ignitionRows, sensitivityRows, smokeRows,
           partialCorrRows, westerlingRows, treatmentPartialCorrRows,
-          gaccRegionGeojson, regionalCorrRows
+          gaccRegionGeojson, regionalCorrRows, suppressionRows, structuresRows
         );
         try {
           const tabParam = new URLSearchParams(window.location.search).get('tab');
@@ -1306,11 +1379,7 @@
       geoMode = btn.dataset.geoView;
       syncTogglePressed('[data-geo-view]', b => b.dataset.geoView === geoMode);
       if (cache) {
-        const built = WF.buildDatasets(
-          cache.wildfireRows, cache.vpdRows, cache.ercRows, cache.regionalAcresRows, cache.hfrRows,
-          cache.vpdMonthlyRows, cache.ignitionRows, cache.sensitivityRows, cache.smokeRows,
-          cache.partialCorrRows, cache.westerlingRows, cache.treatmentPartialCorrRows
-        );
+        const built = buildFromCache();
         const d = withGaccYear(built);
         syncGeoView(d);
         requestAnimationFrame(() => {
@@ -1441,6 +1510,12 @@
     renderTabCharts('context', true);
   }
 
+  function rerenderImpacts() {
+    if (!cache) return;
+    renderedTabs.delete('impacts');
+    renderTabCharts('impacts', true);
+  }
+
   document.querySelectorAll('details.atmosphere-national-details').forEach(el => {
     el.addEventListener('toggle', () => { if (el.open) rerenderDrivers(); });
   });
@@ -1453,10 +1528,8 @@
   document.querySelectorAll('details.coupling-policy-details').forEach(el => {
     el.addEventListener('toggle', () => { if (el.open) rerenderContext(); });
   });
-  document.querySelectorAll('details.wfigs-ops-details').forEach(el => {
-    el.addEventListener('toggle', () => {
-      if (el.open && cache) renderWfigsIfNeeded();
-    });
+  document.querySelectorAll('details.smoke-structures-overlap-details').forEach(el => {
+    el.addEventListener('toggle', () => { if (el.open) rerenderImpacts(); });
   });
 
   window.addEventListener('resize', () => {

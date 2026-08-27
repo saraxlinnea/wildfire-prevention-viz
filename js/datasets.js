@@ -208,7 +208,7 @@ WF.pearson = function (xs, ys) {
   return denom === 0 ? null : num / denom;
 };
 
-WF.buildDatasets = function (rows, vpdRows, ercRows, regionalAcresRows, hfrRows, vpdMonthlyRows, ignitionRows, sensitivityRows, smokeRows, partialCorrRows, westerlingRows, treatmentPartialCorrRows) {
+WF.buildDatasets = function (rows, vpdRows, ercRows, regionalAcresRows, hfrRows, vpdMonthlyRows, ignitionRows, sensitivityRows, smokeRows, partialCorrRows, westerlingRows, treatmentPartialCorrRows, suppressionRows, structuresRows) {
   const years = rows.map(r => r.year);
   const burnData = rows
     .filter(r => r.acres_burned_millions && r.acres_burned_partial !== 'true')
@@ -738,7 +738,47 @@ WF.buildDatasets = function (rows, vpdRows, ercRows, regionalAcresRows, hfrRows,
     .map(r => ({
       year: r.year,
       smoke_pm25: parseFloat(r.smoke_pm25_ug_m3),
-      scope_note: 'CONUS county-mean daily wildfire smoke PM2.5 (Childs et al. 2022)'
+      scope_note: 'CONUS county-mean daily wildfire smoke PM2.5 (ECHO Lab v2.0 beta; preliminary)'
+    }));
+
+  // Federal suppression $: chart window overlaps treatment era (FY 2003+)
+  const suppressionSeries = (suppressionRows || [])
+    .filter(r => r.total_suppression_usd && parseInt(r.year, 10) >= 2003)
+    .map(r => ({
+      year: r.year,
+      total_billions: parseFloat(r.total_suppression_usd) / 1e9,
+      fs_billions: parseFloat(r.fs_suppression_usd) / 1e9,
+      doi_billions: parseFloat(r.doi_suppression_usd) / 1e9,
+      definition: r.definition || 'NIFC federal suppression only'
+    }));
+
+  const structuresDestroyedSeries = (structuresRows || [])
+    .filter(r => r.structures_destroyed)
+    .map(r => ({
+      year: r.year,
+      structures: parseFloat(r.structures_destroyed),
+      residences: r.residences_destroyed ? parseFloat(r.residences_destroyed) : null,
+      geography: r.geography || 'national',
+      definition: r.definition || 'NICC SIT/ICS-209'
+    }));
+
+  // Shared Impacts window: live smoke ∩ NICC structures (smoke ends 2023; structures continue)
+  const smokeByYear = Object.fromEntries(
+    smokePm25Series.map(s => [String(s.year), s.smoke_pm25])
+  );
+  const smokeYearNums = smokePm25Series.map(s => parseInt(s.year, 10)).filter(y => !Number.isNaN(y));
+  const smokeEndYear = smokeYearNums.length ? Math.max(...smokeYearNums) : 2023;
+  const smokeStructuresOverlapSeries = structuresDestroyedSeries
+    .filter(s => {
+      const y = parseInt(s.year, 10);
+      return y >= 2014 && y <= smokeEndYear && smokeByYear[String(s.year)] != null;
+    })
+    .map(s => ({
+      year: s.year,
+      smoke_pm25: smokeByYear[String(s.year)],
+      structures: s.structures,
+      residences: s.residences,
+      overlap_note: `Shared calendar window 2014-${smokeEndYear} only. Not causal. CONUS smoke vs national SIT/209 structures.`
     }));
 
   const smokeAcresPairs = smokePm25Series
@@ -786,6 +826,7 @@ WF.buildDatasets = function (rows, vpdRows, ercRows, regionalAcresRows, hfrRows,
     ignitionCauseSeries,
     sensitivitySeries, partialCorrSeries, treatmentPartialCorrSeries, westerlingSnowmeltSeries,
     smokePm25Series, pearsonSmokeAcres,
+    suppressionSeries, structuresDestroyedSeries, smokeStructuresOverlapSeries,
     fireStoryMarks, scatterStoryMarks, regionalStoryMarks,
     pearsonMayVpdWestern, pearsonMayVpdNational,
     years,

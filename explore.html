@@ -4,15 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Wildfire Season in Numbers · Explore</title>
-  <meta name="description" content="Explore U.S. wildfire data 1983-2026: U.S. acres burned, where those acres landed, dryness, federal treatment, and smoke.">
+  <meta name="description" content="Explore U.S. wildfire data 1983-2026: U.S. acres burned, where those acres landed, dryness, federal treatment and suppression costs, smoke, and structures destroyed.">
   <meta property="og:title" content="Wildfire Season in Numbers · Explore">
-  <meta property="og:description" content="U.S. acres burned, where those acres landed, dryness, federal treatment, and smoke. Sourced U.S. wildfire data, 1983-2026.">
+  <meta property="og:description" content="U.S. acres burned, where those acres landed, dryness, federal treatment and suppression costs, smoke, and structures destroyed. Sourced U.S. wildfire data, 1983-2026.">
   <meta property="og:url" content="https://saraxlinnea.github.io/wildfire-prevention-viz/explore.html">
   <meta property="og:type" content="website">
   <meta property="og:image" content="https://saraxlinnea.github.io/wildfire-prevention-viz/assets/og-card.svg">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Wildfire Season in Numbers · Explore">
-  <meta name="twitter:description" content="U.S. acres burned, where those acres landed, dryness, federal treatment, and smoke. Sourced U.S. wildfire data, 1983-2026.">
+  <meta name="twitter:description" content="U.S. acres burned, where those acres landed, dryness, federal treatment and suppression costs, smoke, and structures destroyed. Sourced U.S. wildfire data, 1983-2026.">
   <meta name="twitter:image" content="https://saraxlinnea.github.io/wildfire-prevention-viz/assets/og-card.svg">
   <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
@@ -1699,7 +1699,7 @@
       <ul class="guide-welcome-list">
         <li>Overview: U.S. acres burned, and where those acres landed.</li>
         <li>Drivers: complex factors; top pairings by region.</li>
-        <li>Context: federal treatment; Impacts: smoke.</li>
+        <li>Context: federal treatment and suppression spend; Impacts: smoke, structures, and compact suppression.</li>
       </ul>
       <div class="guide-dialog-actions">
         <button type="button" class="guide-btn guide-btn-primary" id="guide-welcome-start">Guide me</button>
@@ -1842,23 +1842,18 @@
       </figure>
     </div>
   
-    <details class="methodology-details wfigs-ops-details" id="wfigs-ops-details">
-      <summary>Ops snapshot: mapped YTD perimeters (WFIGS)</summary>
-      <div class="methodology-body">
-<div class="chart-container chart-container--fire chart-panel-secondary" id="wfigs-map-section" hidden>
+    <div class="chart-container chart-container--fire chart-panel-secondary" id="wfigs-map-section" hidden>
       <div class="signal-tier signal-tier-ops">Operational snapshot · not annual NIFC totals</div>
       <p class="chart-question">Where have mapped fires burned so far this year?</p>
       <p class="plain-read">Orange outlines are NIFC WFIGS year-to-date fire perimeters from a static snapshot (as of <span id="wfigs-as-of">—</span>). This map shows <span id="wfigs-feature-count">—</span> perimeters of at least 100 GIS acres (~<span id="wfigs-acres-sum">—</span> perimeter acres summed). It is not the National Fire News YTD acre total, and not every fire has a public perimeter.</p>
       <figure class="chart-figure">
-      <div id="map-wfigs-ytd" class="chart-slot chart-slot--map" role="img" aria-label="Map of year-to-date wildfire perimeters from NIFC WFIGS snapshot"></div>
-      <figcaption class="chart-caption-block">
-        <p class="chart-caption">Hover or tap a polygon for incident name and GIS acres. Perimeters lag the fire front and can be incomplete. Use this for geography context only; do not treat the perimeter acre sum as the season total above.</p>
-        <span class="chart-source">Source: NIFC WFIGS YearToDate perimeters · <a href="data/wfigs-ytd-snapshot.geojson">wfigs-ytd-snapshot.geojson</a> · refresh via <code>scripts/fetch_wfigs_ytd.py</code> · <a href="https://data-nifc.opendata.arcgis.com/" target="_blank" rel="noopener noreferrer">NIFC Open Data</a></span>
-      </figcaption>
+        <div id="map-wfigs-ytd" class="chart-slot chart-slot--map" role="img" aria-label="Map of year-to-date wildfire perimeters from NIFC WFIGS snapshot"></div>
+        <figcaption class="chart-caption-block">
+          <p class="chart-caption">Hover or tap a polygon for incident name and GIS acres. Perimeters lag the fire front and can be incomplete. Use this for geography context only; do not treat the perimeter acre sum as the season total above.</p>
+          <span class="chart-source">Source: NIFC WFIGS YearToDate perimeters · <a href="data/wfigs-ytd-snapshot.geojson">wfigs-ytd-snapshot.geojson</a> · refresh via <code>scripts/fetch_wfigs_ytd.py</code> · <a href="https://data-nifc.opendata.arcgis.com/" target="_blank" rel="noopener noreferrer">NIFC Open Data</a></span>
+        </figcaption>
       </figure>
     </div>
-      </div>
-    </details>
   </section>
 
   <section id="tab-drivers" class="tab-panel tab-panel--drivers" role="tabpanel" aria-labelledby="tab-btn-drivers" hidden>
@@ -2062,7 +2057,7 @@
   </section>
 
 <section id="tab-context" class="tab-panel tab-panel--context" role="tabpanel" aria-labelledby="tab-btn-context" hidden>
-    <p class="tab-dek">How many hazardous-fuels acres did agencies report, and how much was tagged near communities? That series is mostly fiscal year, not the calendar burn total on Overview. See <button type="button" class="text-link-btn" data-goto-tab="methods">Methods</button> for fiscal vs calendar and treatment limits.</p>
+    <p class="tab-dek">How many hazardous-fuels acres did agencies report, how much federal suppression spending was logged, and how much treatment was tagged near communities? Treatment and suppression are mostly fiscal year, not the calendar burn total on Overview. See <button type="button" class="text-link-btn" data-goto-tab="methods">Methods</button> for fiscal vs calendar and treatment limits.</p>
 
 <div class="federal-context-strip" role="note">
       <strong>Federal context:</strong> In 2025 the Forest Service treated <strong>35% fewer acres</strong> for wildfire risk than in 2024 (2.6M vs 4.1M). That is reported hazardous-fuels workload, not a fire-season outcome.
@@ -2118,6 +2113,26 @@
       <figcaption class="chart-caption-block">
         <p class="chart-caption">Federal treatment often ran about 3-6 million acres per year in the HFR era, with peaks near 2009 and 2016. The 2025 Forest Service total (2.6M) is the lowest in the recent page-verified window. Interior totals follow fiscal years, so they do not line up perfectly with calendar-year fire statistics.</p>
         <span class="chart-source">Source: HFR-DOI-FS NFPORS FY 2003-2021 · NPR/USFS FACTS 2023-2025 · DOI fuels program fiscal 2018-2024</span>
+      </figcaption>
+      </figure>
+    </div>
+
+    <div class="chart-container chart-container--policy">
+      <div class="signal-tier signal-tier-2">Federal suppression spend</div>
+      <p class="chart-question">How much did federal agencies spend fighting wildfires?</p>
+      <p class="plain-read">NIFC fiscal-year federal firefighting costs (suppression only): Forest Service plus DOI agencies, in nominal dollars. Chart window FY 2003-2023 sits next to the treatment series above. This is spend fighting fires, not acres treated, and not state or local costs.</p>
+      <figure class="chart-figure">
+      <div class="legend-row">
+        <div class="legend-item">
+          <div class="ls-line" style="background:#8b3a1a;"></div>
+          <span>FS + DOI suppression total (nominal $)</span>
+        </div>
+      </div>
+      <div id="chart-suppression" class="chart-slot" role="img" aria-label="Federal wildfire suppression costs Forest Service and DOI fiscal 2003 to 2023"></div>
+      <figcaption class="chart-caption-block">
+        <p class="chart-caption">Costs rose into the late 2010s and peaked near FY 2021 (~$4.4B). Fiscal clocks and definitions differ from calendar burn acres. Nominal dollars are not inflation-adjusted. Overlap with treatment acres is temporal only, not proof that spending or treatment caused fire outcomes.</p>
+        <p class="chart-note"><span class="note-label">Limits</span>Federal suppression only; excludes preparedness-only lines and state/local spend; not staffing days. See <a href="data/suppression-cost-notes.md">suppression-cost-notes.md</a>.</p>
+        <span class="chart-source">Source: <a href="https://www.nifc.gov/fire-information/statistics/suppression-costs">NIFC Federal Firefighting Costs (Suppression Only)</a> · FY 1985-2023 table</span>
       </figcaption>
       </figure>
     </div>
@@ -2248,15 +2263,15 @@
   </section>
 
 <section id="tab-impacts" class="tab-panel tab-panel--impacts" role="tabpanel" aria-labelledby="tab-btn-impacts" hidden>
-    <p class="tab-dek">Acres burned are not the same as smoke people breathe. This tab starts with air quality.</p>
-    <p class="plain-read">National burn totals describe landscape fire. Impacts ask what reached communities: smoke people may breathe, and later (when sourced) homes, costs, and evacuations. Only smoke is charted here today.</p>
+    <p class="tab-dek">Acres burned are not the same as smoke people breathe, homes lost, or federal dollars spent fighting fire. Smoke (2006-2023) and structures (2014-2025) use different clocks; their shared window is 2014-2023.</p>
+    <p class="plain-read">National burn totals describe landscape fire. Impacts ask what reached communities: smoke people may breathe, structures reported destroyed, and federal suppression spend (same NIFC series as Context). Evacuations are still not assembled here. Live smoke uses Stanford ECHO Lab v2.0 beta county daily estimates through 2023 (preliminary; subject to change). It is not a 2026 smoke forecast.</p>
 
 <div class="interp-section interp-section--smoke">
       <div class="interp-heading">Why smoke matters</div>
       <div class="prose-block">
         Acres burned describe <em>where</em> fire spread on the landscape. Wildfire smoke describes what people may breathe downwind: fine particles (PM2.5) that can worsen asthma, strain hearts and lungs, and raise premature-death risk in the epidemiology literature. A large burn year does not automatically mean your city had bad air; wind, distance, and fire type all matter.<br><br>
         Since at least 2016, wildfire smoke has influenced PM2.5 trends in roughly <strong>three-quarters of contiguous U.S. states</strong>, eroding about <strong>25%</strong> of multi-decade air-quality gains in those states on average (more than half in many western states), per Burke et al. (<em>Nature</em>, 2023). Childs et al. (2022) estimate that the number of people exposed to at least one day with smoke PM2.5 above 100 µg/m³ per year rose sharply in the 2010s, including <strong>nearly 25 million people in 2020 alone</strong>.<br><br>
-        <span id="smoke-acres-r-text">Exploratory check: national acres burned and this smoke series move together in 2006-2020 (see chart note).</span> This page does not model smoke for 2026 or map population exposure. For health guidance see <a href="https://www.cdc.gov/wildfires/risk-factors/index.html">CDC wildfire smoke</a> and <a href="https://www.epa.gov/smoke-ready">EPA Smoke Ready</a>.
+        <span id="smoke-acres-r-text">Exploratory check: national acres burned and this smoke series move together where both exist (see chart note).</span> This page does not model smoke for 2026 or map population exposure. For health guidance see <a href="https://www.cdc.gov/wildfires/risk-factors/index.html">CDC wildfire smoke</a> and <a href="https://www.epa.gov/smoke-ready">EPA Smoke Ready</a>.
       </div>
 
       <div
@@ -2266,7 +2281,7 @@
       >
         <div class="photo-band-inner">
           <p class="photo-band-text">
-            Smoke in a valley is one reason acres burned are not the same as air quality. 2023 Pika Fire, Yosemite; not the Childs CONUS PM2.5 series below.
+            Smoke in a valley is one reason acres burned are not the same as air quality. 2023 Pika Fire, Yosemite; illustration only, not a chart data point.
           </p>
           <span class="photo-band-credit">
             Photo:
@@ -2280,27 +2295,104 @@
       </div>
 
       <div class="chart-container chart-container--atmosphere">
-        <div class="signal-tier signal-tier-2">Literature-derived · CONUS smoke PM2.5</div>
+        <div class="signal-tier signal-tier-2">ECHO v2 beta · CONUS smoke PM2.5</div>
         <p class="chart-question">How much wildfire smoke reached the air people breathe?</p>
-        <p class="plain-read">Annual mean of county-level daily wildfire smoke PM2.5 across the contiguous U.S. (Childs et al. 2022). Non-smoke days count as zero. 2020 peaks with western megafires; this is not total PM2.5 from all sources.</p>
+        <p class="plain-read">Annual mean of county-level daily wildfire smoke PM2.5 across the contiguous U.S. from Stanford ECHO Lab v2.0 beta (Childs et al., in review). Non-smoke days count as zero. 2021–2023 sit well above earlier years; 2023 is the series high. This is not total PM2.5 from all sources. Preliminary data; subject to change.</p>
         <figure class="chart-figure">
-          <div id="chart-smoke-pm25" class="chart-slot" role="img" aria-label="Contiguous U.S. mean daily wildfire smoke PM2.5 by year 2006-2020"></div>
+          <div id="chart-smoke-pm25" class="chart-slot" role="img" aria-label="Contiguous U.S. mean daily wildfire smoke PM2.5 by year 2006-2023"></div>
           <figcaption class="chart-caption-block">
-            <p class="chart-caption">Smoke PM2.5 is modeled exposure, not NIFC acres. Geography is CONUS counties, not western GACC totals on Overview.</p>
-            <p class="chart-note"><span class="note-label">Method</span>Unweighted county mean of daily smoke PM2.5; built by <code>scripts/build_smoke_annual.py</code> from Harvard Dataverse county daily file. See <a href="data/smoke-pm25-notes.md">smoke-pm25-notes.md</a>.</p>
-            <span class="chart-source">Source: Childs et al. 2022 · <a href="https://doi.org/10.7910/DVN/DJVMTV">doi:10.7910/DVN/DJVMTV</a> · Burke et al. 2023 <a href="https://doi.org/10.1038/s41586-023-06522-6">Nature</a></span>
+            <p class="chart-caption">Smoke PM2.5 is modeled exposure, not NIFC acres. Geography is CONUS counties, not western GACC totals on Overview. Series is ECHO v2.0 beta through 2023 (bake-off vs Childs v1 in notes). Not a 2026 smoke forecast.</p>
+            <p class="chart-note"><span class="note-label">Method</span>Unweighted county mean of daily smoke PM2.5; built by <code>scripts/build_smoke_v2_beta_annual.py</code>. Childs v1 (2006-2020) archived as <code>smoke-pm25-v1-annual.csv</code>. See <a href="data/smoke-pm25-notes.md">smoke-pm25-notes.md</a> and <a href="data/smoke-pm25-v2-bakeoff.md">smoke-pm25-v2-bakeoff.md</a>.</p>
+            <span class="chart-source">Source: Stanford ECHO Lab v2.0 beta · Childs et al. (in review) · <a href="https://www.stanfordecholab.com/wildfire_smoke">ECHO wildfire_smoke</a> · Burke et al. 2023 <a href="https://doi.org/10.1038/s41586-023-06522-6">Nature</a></span>
           </figcaption>
         </figure>
       </div>
     </div>
 
+    <div class="interp-section interp-section--structures">
+      <div class="interp-heading">Structures destroyed</div>
+      <div class="prose-block">
+        Acres burned do not say how many buildings were lost. NICC annual reports tally structures destroyed from Incident Status Summary (ICS-209 / SIT) reporting: residences, minor structures, and commercial buildings. Those totals undercount many county and state damage assessments. Extremes (2018, 2020, 2025) dominate the series.
+      </div>
+
+      <div class="chart-container chart-container--atmosphere">
+        <div class="signal-tier signal-tier-2">National · SIT/ICS-209</div>
+        <p class="chart-question">How many structures were reported destroyed?</p>
+        <p class="plain-read">National calendar-year totals from NICC Wildland Fire Summary annual reports (2014-2025). Default series is all structure types; tooltips also show residences when reported. Overlap with the smoke series above is calendar 2014-2023 only (see research panel).</p>
+        <figure class="chart-figure">
+          <div id="chart-structures-destroyed" class="chart-slot" role="img" aria-label="National structures destroyed by wildfire 2014 to 2025 from NICC annual reports"></div>
+          <figcaption class="chart-caption-block">
+            <p class="chart-caption">2018 (~25,800) and 2025 (~18,400) are extreme loss years; 2019 was under 1,000. SIT/209 figures are a national reporting floor, not a complete census of homes lost. Not causal vs acres burned, treatment, or smoke. Structures continue for 2024-2025 after smoke’s 2023 end.</p>
+            <p class="chart-note"><span class="note-label">Limits</span>Undercount vs many local assessments; mixes structure types. See <a href="data/structures-destroyed-notes.md">structures-destroyed-notes.md</a>.</p>
+            <span class="chart-source">Source: NICC Wildland Fire Summary and Statistics annual reports · <a href="https://www.nifc.gov/fire-information/statistics">NIFC statistics</a></span>
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <div class="interp-section interp-section--suppression-impacts">
+      <div class="interp-heading">Federal suppression spend</div>
+      <div class="prose-block">
+        Fighting fires also has a dollar cost. The same NIFC federal suppression series shown on Context appears here as a compact Impacts view: fiscal Forest Service plus DOI dollars only.
+      </div>
+
+      <div class="chart-container chart-container--atmosphere">
+        <div class="signal-tier signal-tier-2">Federal · fiscal · nominal $</div>
+        <p class="chart-question">How much did federal agencies spend fighting wildfires?</p>
+        <p class="plain-read">NIFC fiscal-year federal firefighting costs (suppression only), Forest Service plus DOI, in nominal dollars. Chart window FY 2003-2023. Same series as Context; treatment story stays on Context / Methods.</p>
+        <figure class="chart-figure">
+          <div class="legend-row">
+            <div class="legend-item">
+              <div class="ls-line" style="background:#8b3a1a;"></div>
+              <span>FS + DOI suppression total (nominal $)</span>
+            </div>
+          </div>
+          <div id="chart-suppression-impacts" class="chart-slot" role="img" aria-label="Federal wildfire suppression costs Forest Service and DOI fiscal 2003 to 2023 compact Impacts view"></div>
+          <figcaption class="chart-caption-block">
+            <p class="chart-caption">Federal suppression only; fiscal year; nominal dollars. Not causal vs smoke or structures on this tab. Full treatment context is on <button type="button" class="text-link-btn" data-goto-tab="context">Context</button> and in <button type="button" class="text-link-btn" data-goto-tab="methods">Methods</button>.</p>
+            <p class="chart-note"><span class="note-label">Limits</span>Excludes preparedness-only lines and state/local spend; not staffing days. See <a href="data/suppression-cost-notes.md">suppression-cost-notes.md</a>.</p>
+            <span class="chart-source">Source: <a href="https://www.nifc.gov/fire-information/statistics/suppression-costs">NIFC Federal Firefighting Costs (Suppression Only)</a> · same CSV as Context</span>
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <details class="methodology-details smoke-structures-overlap-details" id="smoke-structures-overlap-details">
+      <summary>Research: smoke and structures on the same years (2014-2023)</summary>
+      <div class="methodology-body">
+        <div class="chart-container chart-container--atmosphere chart-container--overlap">
+          <div class="signal-tier signal-tier-2">Shared window only</div>
+          <p class="chart-question">Do smoke and structures move together where both series exist?</p>
+          <p class="plain-read">Left axis: CONUS mean daily wildfire smoke PM2.5 (ECHO v2 beta). Right axis: national structures destroyed (NICC SIT/209). Calendar years 2014-2023 only. Smoke continues earlier (2006-2013) and structures continue later (2024-2025) on the main charts above.</p>
+          <figure class="chart-figure">
+            <div class="legend-row">
+              <div class="legend-item">
+                <div class="ls-line" style="background:#6b5b4f;"></div>
+                <span>Smoke PM2.5 (left axis)</span>
+              </div>
+              <div class="legend-item">
+                <div class="ls-line" style="background:#5c4033;"></div>
+                <span>Structures destroyed (right axis)</span>
+              </div>
+            </div>
+            <div id="chart-smoke-structures-overlap" class="chart-slot" role="img" aria-label="Dual axis smoke PM2.5 and structures destroyed 2014 to 2023"></div>
+            <figcaption class="chart-caption-block">
+              <p class="chart-caption">Temporal overlap only. Different geographies (CONUS smoke vs national SIT/209 structures). Not proof that smoke caused structure loss or the reverse. Live smoke ends 2023 (ECHO v2 beta); structures-only years 2024-2025 stay on the structures chart.</p>
+              <p class="chart-note"><span class="note-label">Limits</span>n = 10 years. No Pearson r on this panel. See <a href="data/smoke-pm25-notes.md">smoke-pm25-notes.md</a> and <a href="data/structures-destroyed-notes.md">structures-destroyed-notes.md</a>.</p>
+              <span class="chart-source">Source: ECHO Lab v2.0 beta · NICC annual reports · calendar 2014-2023</span>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </details>
+
     <div class="impacts-roadmap" role="note">
       <div class="interp-heading">Not on this page yet</div>
       <p class="plain-read">These are high-interest impacts without annual series on this build. No invented figures.</p>
       <ul class="impacts-roadmap-list">
-        <li><strong>Structures / homes destroyed</strong>: not charted; needs a consistent national structures series.</li>
-        <li><strong>Suppression cost and staffing</strong>: listed as a dataset gap (crews and aircraft change outcomes within the same weather). See <button type="button" class="text-link-btn" data-goto-tab="methods">Methods</button>.</li>
         <li><strong>Evacuations</strong>: not assembled here.</li>
+        <li><strong>Suppression staffing / aircraft days</strong>: federal dollar costs are charted above and on Context; crew and aircraft effort are not.</li>
+        <li><strong>Fatalities</strong>: not charted.</li>
       </ul>
     </div>
   </section>
@@ -2322,8 +2414,8 @@
       <div class="prose-block">
         <strong>Overview</strong> charts U.S. acres burned (NIFC, 1983 onward) and where those acres landed by region (NICC GACC groups: West, South, Alaska, East). Year-to-date and forecast numbers are incomplete or speculative. The shaded band on the fire chart uses prior full calendar years. Header callouts use NIFC’s same-date ten-year average, which is a different comparison.<br><br>
         <strong>Drivers</strong> opens with regional dryness pairings (Bars or Table), then western fire-season dryness, a dryness×acres scatter with nested co-movement numbers, and a Westerling forest-literature block (not GACC/NIFC acres).<br><br>
-        <strong>Context</strong> covers federal treatment acres and WUI designation. Treatment is reported work on a mostly fiscal clock, not the same window as calendar burn acres.<br><br>
-        <strong>Impacts</strong> covers smoke and air quality separately from acres burned. <strong>What this page is not.</strong> A fire forecast, a full smoke or health model, or proof that a budget cut caused a fire season. It shows what moved together in public data. None of this proves that one factor caused another.
+        <strong>Context</strong> covers federal treatment acres, WUI designation, and federal suppression costs (NIFC, fiscal year, nominal dollars). Treatment and suppression are mostly fiscal clocks, not the same window as calendar burn acres.<br><br>
+        <strong>Impacts</strong> covers smoke PM2.5 (ECHO Lab v2.0 beta, 2006-2023; preliminary), national structures destroyed (NICC SIT/209, 2014-2025), and a compact federal suppression spend chart (same NIFC series as Context). Smoke × structures shared calendar window is 2014-2023 (research panel). <strong>What this page is not.</strong> A fire forecast, a full smoke or health model, or proof that a budget cut caused a fire season. It shows what moved together in public data. None of this proves that one factor caused another.
       </div>
     </div>
 
@@ -2355,11 +2447,12 @@
           <li><strong>Ignition cause acres (2003-2012)</strong>: only n=7 years machine-extractable from NICC tables; not charted on the main path. About 84–85% of U.S. wildfire <em>starts</em> are human-caused in national literature, while lightning can still dominate <em>acres</em> in some western years. See <a href="data/ignition-cause-notes.md">ignition-cause-notes.md</a> and <a href="data/ignition-cause-annual.csv">ignition-cause-annual.csv</a>.</li>
           <li><strong>Annual lag (VPD year t → national acres t+1)</strong>: weak exploratory pairing with geography mismatch; not charted here. See repository lag notes via <a href="data/correlation-notes.md">correlation-notes.md</a>.</li>
           <li><strong>Monthly burn acres</strong>: true May-dry → summer-burn timing needs NIFC monthly or MTBS. See <a href="data/monthly-burn-gap-notes.md">monthly-burn-gap-notes.md</a> (claim C-P2-01).</li>
-          <li><strong>Suppression spending / staffing</strong>: crews and aircraft change outcomes within the same weather.</li>
+          <li><strong>Suppression staffing / aircraft days</strong>: federal suppression <em>dollars</em> are charted on Context (NIFC); crew and aircraft effort are not.</li>
+          <li><strong>Evacuations and fatalities</strong>: not assembled here. Structures destroyed (NICC SIT/209) are on Impacts.</li>
           <li><strong>WUI housing growth</strong>: exposure changes independent of acres burned.</li>
-          <li><strong>Smoke / health impacts</strong>: partial smoke PM2.5 chart on Impacts (2006-2020 CONUS); not population exposure or 2026 smoke. See <a href="data/smoke-pm25-notes.md">smoke-pm25-notes.md</a>.</li>
+          <li><strong>Smoke / health impacts</strong>: CONUS smoke PM2.5 on Impacts (2006-2023, ECHO v2.0 beta; preliminary); bake-off vs Childs v1 in <a href="data/smoke-pm25-v2-bakeoff.md">smoke-pm25-v2-bakeoff.md</a>; not population exposure or 2026 smoke. See <a href="data/smoke-pm25-notes.md">smoke-pm25-notes.md</a>.</li>
           <li><strong>State / ecoregion small multiples</strong>: deferred; see <a href="data/state-ecoregion-research-notes.md">state-ecoregion-research-notes.md</a> (claim C-P2-02).</li>
-          <li><strong>Live fire ops feeds</strong>: Overview shows a static WFIGS YTD perimeter snapshot (≥100 GIS acres) under Ops snapshot, not a live desk. Refresh with <code>scripts/fetch_wfigs_ytd.py</code>; see <a href="data/wfigs-ytd-notes.md">wfigs-ytd-notes.md</a>.</li>
+          <li><strong>Live fire ops feeds</strong>: Overview shows a static WFIGS YTD perimeter snapshot (≥100 GIS acres) on the main path, not a live desk. Refresh with <code>scripts/fetch_wfigs_ytd.py</code>; see <a href="data/wfigs-ytd-notes.md">wfigs-ytd-notes.md</a>.</li>
         </ul>
       </div>
     </details>
@@ -2416,7 +2509,9 @@
           <li>Western acres burned: sum of NICC GACC acres for NW, NR, GB, RM, SW, NO, SO (EB+WB before 2015 Great Basin merge), 2010-2025. Built by <code>scripts/build_western_acres.py</code> from NICC annual reports. Excludes Alaska, Eastern, and Southern GACCs.</li>
           <li>2026 forecast: AccuWeather published 2026 wildfire season projection, 5.5 to 8 million acres.</li>
           <li>Research stations: USDA Forest Service reorganization announced March 31, 2026.</li>
-          <li>Smoke PM2.5: county-mean daily wildfire smoke PM2.5, CONUS, 2006-2020 (Childs et al. 2022; <code>scripts/build_smoke_annual.py</code>; <a href="data/smoke-pm25-annual.csv">smoke-pm25-annual.csv</a>). Literature context: Burke et al. 2023 (<em>Nature</em>).</li>
+          <li>Smoke PM2.5: county-mean daily wildfire smoke PM2.5, CONUS, 2006-2023 (ECHO Lab v2.0 beta; <code>scripts/build_smoke_v2_beta_annual.py</code>; <a href="data/smoke-pm25-annual.csv">smoke-pm25-annual.csv</a>). Childs v1 archive: <a href="data/smoke-pm25-v1-annual.csv">smoke-pm25-v1-annual.csv</a>. Literature context: Burke et al. 2023 (<em>Nature</em>). Bake-off: <a href="data/smoke-pm25-v2-bakeoff.md">smoke-pm25-v2-bakeoff.md</a>.</li>
+          <li>Structures destroyed: NICC SIT/209 national totals 2014-2025 (<code>scripts/extract_nicc_structures.py</code>; <a href="data/structures-destroyed-annual.csv">structures-destroyed-annual.csv</a>). Pre-2010 gap documented in notes.</li>
+          <li>Federal suppression (Impacts compact + Context): NIFC FS+DOI fiscal costs (<a href="data/suppression-cost-annual.csv">suppression-cost-annual.csv</a>).</li>
           <li>Correlations: Drivers shows strongest co-movement rows first (expand for more pairings and diagnostics). Literature usually ranks ERC ≳ VPD ≫ drought for western large-fire area; page r values are this repository only (<a href="data/correlation-matrix.csv">correlation-matrix.csv</a>). Not causal evidence.</li>
           <li>Data processing: drought from U.S. Drought Monitor API; western fire-season VPD from gridMET (<a href="https://doi.org/10.1002/joc.3413">Abatzoglou 2013</a>). CSVs and notebooks in the <a href="https://github.com/saraxlinnea/wildfire-prevention-viz">GitHub repository</a>.</li>
         </ul>
@@ -2436,7 +2531,7 @@
       VPD: <a href="http://thredds.northwestknowledge.net/thredds/catalog/MET/vpd/catalog.html">gridMET</a> (<a href="data/vpd-annual.csv">annual averages</a>) ·
       ERC: <a href="http://thredds.northwestknowledge.net/thredds/catalog/MET/erc/catalog.html">gridMET</a> (<a href="data/erc-annual.csv">annual averages</a>) ·
       Western DSCI: <a href="data/dsci-western-annual.csv">NWS Western Region</a> ·
-      Smoke PM2.5: Childs et al. 2022 (<a href="https://doi.org/10.7910/DVN/DJVMTV">Harvard Dataverse</a>) · Burke et al. 2023 (<a href="https://doi.org/10.1038/s41586-023-06522-6">Nature</a>) ·
+      Smoke PM2.5: Stanford ECHO Lab v2.0 beta (<a href="https://www.stanfordecholab.com/wildfire_smoke">wildfire_smoke</a>) · Childs et al. 2022 v1 archive · Burke et al. 2023 (<a href="https://doi.org/10.1038/s41586-023-06522-6">Nature</a>) ·
       Correlations: <a href="https://github.com/saraxlinnea/wildfire-prevention-viz/blob/main/notebooks/correlation-analysis.ipynb">analysis notebook</a> (<a href="data/correlation-matrix.csv">matrix CSV</a>) ·
       2026 forecast: <a href="https://www.accuweather.com/en/press/larger-wildfires-fueled-by-drought-and-heat-expected-across-the-u-s-in-2026/1884295">AccuWeather 2026 Wildfire Season Forecast</a> ·
       Research stations: <a href="https://stateline.org/2026/04/17/forest-service-plan-to-close-research-stations-stokes-fear-as-wildfire-season-approaches/">Stateline, USDA reorganization March 2026</a> ·
@@ -2449,10 +2544,10 @@
 
 </div>
 
-<script src="js/datasets.js?v=20260804visual"></script>
-<script src="js/charts.js?v=20260804visual"></script>
-<script src="js/wfigs-map.js?v=20260804home8"></script>
-<script src="js/app.js?v=20260804visual"></script>
-<script src="js/guide.js?v=20260804visual"></script>
+<script src="js/datasets.js?v=20260808review"></script>
+<script src="js/charts.js?v=20260808review"></script>
+<script src="js/wfigs-map.js?v=20260808review"></script>
+<script src="js/app.js?v=20260808review"></script>
+<script src="js/guide.js?v=20260808review"></script>
 </body>
 </html>

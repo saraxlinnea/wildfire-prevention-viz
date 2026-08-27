@@ -1376,13 +1376,250 @@ WF.buildPolicyScatterSpec = function (data) {
   };
 };
 
+WF.buildSuppressionSpec = function (data, opts) {
+  opts = opts || {};
+  const compact = !!opts.compact;
+  const series = data.suppressionSeries || [];
+  if (!series.length) {
+    return {
+      $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+      width: 'container',
+      height: compact ? WF.compactChartHeight() : WF.secondaryChartHeight(),
+      data: { values: [{ label: 'Suppression cost data unavailable' }] },
+      mark: { type: 'text', color: '#9b9590', fontSize: 12 },
+      encoding: { text: { field: 'label' } }
+    };
+  }
+  const yMax = Math.ceil((series.reduce((m, d) => Math.max(m, d.total_billions || 0), 0) * 1.12) * 10) / 10 || 5;
+  const storyMarks = [
+    { year: '2017', label: 'High cost' },
+    { year: '2021', label: 'Peak $' }
+  ]
+    .map(m => {
+      const pt = series.find(d => d.year === m.year);
+      return pt ? { year: m.year, total_billions: pt.total_billions, label: m.label } : null;
+    })
+    .filter(Boolean);
+  const layers = [
+    {
+      data: { values: series },
+      mark: {
+        type: 'line',
+        color: '#8b3a1a',
+        strokeWidth: compact ? 2.2 : 2.5,
+        point: { filled: true, fill: 'white', stroke: '#8b3a1a', strokeWidth: 2, size: compact ? 40 : 50 }
+      },
+      encoding: {
+        x: { field: 'year', type: 'ordinal', axis: WF.yearAxisLong('fiscal') },
+        y: {
+          field: 'total_billions',
+          type: 'quantitative',
+          scale: { domain: [0, yMax] },
+          axis: {
+            title: compact ? 'Federal suppression ($B, nominal)' : 'Federal suppression ($ billions, nominal)',
+            titleFont: 'DM Sans',
+            titleFontSize: 10,
+            titleColor: '#9b9590',
+            titleAngle: -90,
+            titleX: -48,
+            labelColor: '#9b9590',
+            labelFont: 'DM Mono, monospace',
+            labelFontSize: 9
+          }
+        },
+        tooltip: [
+          { field: 'year', title: 'Fiscal year' },
+          { field: 'total_billions', title: 'FS+DOI total ($B)', format: '.2f' },
+          { field: 'fs_billions', title: 'Forest Service ($B)', format: '.2f' },
+          { field: 'doi_billions', title: 'DOI ($B)', format: '.2f' },
+          { field: 'definition', title: 'Definition' }
+        ]
+      }
+    }
+  ];
+  if (!compact) {
+    const storyLayer = WF.storyYearTextLayer(storyMarks, 'year', 'total_billions', -0.15);
+    if (storyLayer) layers.push(storyLayer);
+  }
+  return {
+    $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+    width: 'container',
+    height: compact ? WF.compactChartHeight() : WF.secondaryChartHeight(),
+    config: WF.chartConfig,
+    layer: layers
+  };
+};
+
+WF.buildSmokeStructuresOverlapSpec = function (data) {
+  const rows = data.smokeStructuresOverlapSeries || [];
+  if (!rows.length) {
+    return {
+      $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+      width: 'container',
+      height: WF.secondaryChartHeight(),
+      data: { values: [{ label: 'No smoke–structures overlap rows' }] },
+      mark: { type: 'text', color: '#9b9590', fontSize: 12 },
+      encoding: { text: { field: 'label' } }
+    };
+  }
+  const smokeMax = rows.reduce((m, d) => Math.max(m, d.smoke_pm25 || 0), 0);
+  const structMax = rows.reduce((m, d) => Math.max(m, d.structures || 0), 0);
+  return {
+    $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+    width: 'container',
+    height: WF.secondaryChartHeight(),
+    config: WF.chartConfig,
+    resolve: { scale: { y: 'independent' } },
+    layer: [
+      {
+        data: { values: rows },
+        mark: {
+          type: 'line',
+          color: '#6b5b4f',
+          strokeWidth: 2.5,
+          point: { filled: true, fill: 'white', stroke: '#6b5b4f', strokeWidth: 2, size: 50 }
+        },
+        encoding: {
+          x: { field: 'year', type: 'ordinal', axis: WF.yearAxis({ title: 'Calendar year' }) },
+          y: {
+            field: 'smoke_pm25',
+            type: 'quantitative',
+            scale: { domain: [0, Math.max(0.2, Math.ceil(smokeMax * 1.2 * 100) / 100)] },
+            axis: {
+              orient: 'left',
+              title: 'Smoke PM2.5 (µg/m³)',
+              titleFont: 'DM Sans',
+              titleFontSize: 10,
+              titleColor: '#6b5b4f',
+              titleAngle: -90,
+              titleX: -48
+            }
+          },
+          tooltip: [
+            { field: 'year', title: 'Year' },
+            { field: 'smoke_pm25', title: 'Smoke PM2.5', format: '.3f' },
+            { field: 'overlap_note', title: 'Read as' }
+          ]
+        }
+      },
+      {
+        data: { values: rows },
+        mark: {
+          type: 'line',
+          color: '#5c4033',
+          strokeWidth: 2,
+          point: { filled: true, fill: 'white', stroke: '#5c4033', strokeWidth: 1.5, size: 45 }
+        },
+        encoding: {
+          x: { field: 'year', type: 'ordinal' },
+          y: {
+            field: 'structures',
+            type: 'quantitative',
+            scale: { domain: [0, Math.max(1000, Math.ceil(structMax * 1.12))] },
+            axis: {
+              orient: 'right',
+              title: 'Structures destroyed',
+              titleFont: 'DM Sans',
+              titleFontSize: 10,
+              titleColor: '#5c4033',
+              titleAngle: 90,
+              titleX: 48,
+              format: ',.0f'
+            }
+          },
+          tooltip: [
+            { field: 'year', title: 'Year' },
+            { field: 'structures', title: 'Structures destroyed', format: ',.0f' },
+            { field: 'residences', title: 'Residences', format: ',.0f' },
+            { field: 'overlap_note', title: 'Read as' }
+          ]
+        }
+      }
+    ]
+  };
+};
+
+WF.buildStructuresDestroyedSpec = function (data) {
+  const series = data.structuresDestroyedSeries || [];
+  if (!series.length) {
+    return {
+      $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+      width: 'container',
+      height: WF.secondaryChartHeight(),
+      data: { values: [{ label: 'Structures destroyed data unavailable' }] },
+      mark: { type: 'text', color: '#9b9590', fontSize: 12 },
+      encoding: { text: { field: 'label' } }
+    };
+  }
+  const storyMarks = [
+    { year: '2018', label: 'Peak losses' },
+    { year: '2020', label: 'Large loss year' },
+    { year: '2025', label: 'Extreme year' }
+  ]
+    .map(m => {
+      const pt = series.find(d => d.year === m.year);
+      return pt ? { year: m.year, structures: pt.structures, label: m.label } : null;
+    })
+    .filter(Boolean);
+  const layers = [
+    {
+      data: { values: series },
+      mark: {
+        type: 'line',
+        color: '#5c4033',
+        strokeWidth: 2,
+        point: { filled: true, fill: 'white', stroke: '#5c4033', strokeWidth: 1.5, size: 45 }
+      },
+      encoding: {
+        x: { field: 'year', type: 'ordinal', axis: WF.yearAxis({ title: 'Calendar year' }) },
+        y: {
+          field: 'structures',
+          type: 'quantitative',
+          axis: {
+            title: 'Structures destroyed (SIT/209)',
+            titleFont: 'DM Sans',
+            titleFontSize: 10,
+            titleColor: '#9b9590',
+            titleAngle: -90,
+            titleX: -48,
+            labelColor: '#9b9590',
+            labelFont: 'DM Mono, monospace',
+            labelFontSize: 9,
+            format: ',.0f'
+          }
+        },
+        tooltip: [
+          { field: 'year', title: 'Year' },
+          { field: 'structures', title: 'All structures', format: ',.0f' },
+          { field: 'residences', title: 'Residences', format: ',.0f' },
+          { field: 'geography', title: 'Geography' },
+          { field: 'definition', title: 'Definition' }
+        ]
+      }
+    }
+  ];
+  // dy is Vega mark pixels above the point (not data units).
+  const storyLayer = WF.storyYearTextLayer(storyMarks, 'year', 'structures', -14);
+  if (storyLayer) layers.push(storyLayer);
+  return {
+    $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+    width: 'container',
+    height: WF.secondaryChartHeight(),
+    config: WF.chartConfig,
+    layer: layers
+  };
+};
+
 WF.buildSmokePm25Spec = function (data) {
   const series = (data.smokePm25Series || []).map(d => ({
     year: d.year,
     smoke_pm25: d.smoke_pm25,
     scope_note: d.scope_note
   }));
-  const storyMarks = [{ year: '2020', label: 'Record smoke' }]
+  const storyMarks = [
+    { year: '2020', label: '2020 peak' },
+    { year: '2023', label: 'Series high' }
+  ]
     .map(m => {
       const pt = series.find(d => d.year === m.year);
       return pt ? { year: m.year, smoke_pm25: pt.smoke_pm25, label: m.label } : null;
