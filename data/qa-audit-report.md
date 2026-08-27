@@ -26,7 +26,7 @@ Loaded by `js/app.js` on Explore load:
 | `data/hfr-prevention-annual.csv` | 19 fiscal years |
 | `data/vpd-monthly-annual.csv` | 14 |
 | `data/gacc-regions.geojson` | 50 state features (Overview map) |
-| `data/wfigs-ytd-snapshot.geojson` | Ops snapshot (deferred fetch) |
+| `data/wfigs-ytd-snapshot.geojson` | Overview WFIGS map (loads with Overview) |
 | `data/south-kbdi-annual.csv` | South KBDI (Drivers) |
 
 ## Optional CSVs
@@ -45,8 +45,8 @@ Loaded by `js/app.js` on Explore load:
 | Home | `#map-wfigs-ytd` (via `js/home.js`) |
 | Overview | `#chart-fire`, geo panel (`#chart-gacc-choropleth`, `#chart-western-acres-outcomes`, `#chart-regional-share-outcomes`), `#map-wfigs-ytd` (Ops details) |
 | Drivers | `#chart-regional-top-drivers`, `#chart-atmosphere`, `#chart-scatter`, `#chart-westerling-snowmelt`; details `#chart-atmosphere-national` |
-| Context | `#chart-policy`, `#chart-wui-share`; research `#chart-treatment-acres`, `#chart-treatment-per-acre`, `#chart-policy-scatter` |
-| Impacts | `#chart-smoke-pm25` |
+| Context | `#chart-policy`, `#chart-suppression`, `#chart-wui-share`; research `#chart-treatment-acres`, `#chart-treatment-per-acre`, `#chart-policy-scatter` |
+| Impacts | `#chart-smoke-pm25`, `#chart-structures-destroyed`, `#chart-suppression-impacts`; research `#chart-smoke-structures-overlap` (2014-2023) |
 | Methods | Reference only (no primary Vega charts) |
 
 ## Data integrity (audit_data.py)

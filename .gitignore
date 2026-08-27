@@ -41,10 +41,15 @@ credentials.json
 
 # NICC annual report PDFs (download via data/nicc-source/README.md)
 data/nicc-source/*.pdf
+# NICC annual PDFs for structures extract (scripts/extract_nicc_structures.py)
+data/nicc-structures-source/*.pdf
+data/nicc-structures-source/*.txt
 # Regeneratable PNG renders for hand OCR (scripts/export_nicc_gap_pages.py)
 data/nicc-source/ocr-pages/*.png
-# Childs et al. county daily smoke PM2.5 (~75 MB; scripts/build_smoke_annual.py)
-data/smoke-source/*.csv
+# Childs et al. / ECHO county daily smoke PM2.5 (large; scripts/build_smoke_*.py)
+data/smoke-source/**
+!data/smoke-source/.gitkeep
+!data/smoke-source/README.md
 
 # Local agent / Cursor (not for GitHub)
 AGENTS.md

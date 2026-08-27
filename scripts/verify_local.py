@@ -32,7 +32,9 @@ BOOT_CSVS: list[tuple[str, str, int, bool]] = [
     ("data/regional-acres-annual.csv", "year", 18, False),
     ("data/hfr-prevention-annual.csv", "fiscal_year", 19, False),
     ("data/vpd-monthly-annual.csv", "year", 14, False),
-    ("data/smoke-pm25-annual.csv", "year", 14, False),
+    ("data/smoke-pm25-annual.csv", "year", 18, False),
+    ("data/smoke-pm25-v1-annual.csv", "year", 15, False),
+    ("data/smoke-pm25-v2-beta-annual.csv", "year", 18, False),
 ]
 
 # Non-year table CSVs required by js/app.js boot
@@ -43,8 +45,11 @@ BOOT_TABLE_CSVS: list[tuple[str, int]] = [
     ("data/correlation-treatment-partial.csv", 7),
 ]
 
+# Soft-fail optional at page boot (panels hide if missing)
 OPTIONAL_CSVS: list[tuple[str, int]] = [
     ("data/ignition-cause-annual.csv", 4),
+    ("data/suppression-cost-annual.csv", 30),
+    ("data/structures-destroyed-annual.csv", 10),
 ]
 
 

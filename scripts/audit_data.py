@@ -192,6 +192,10 @@ def main() -> int:
         "vpd-monthly-annual.csv", "vpd-monthly-correlation.csv",
         "correlation-matrix.csv",
         "smoke-pm25-annual.csv",
+        "smoke-pm25-v1-annual.csv",
+        "smoke-pm25-v2-beta-annual.csv",
+        "suppression-cost-annual.csv",
+        "structures-destroyed-annual.csv",
         "correlation-partial.csv",
         "westerling-snowmelt-tercile.csv",
         "correlation-treatment-partial.csv",
@@ -256,6 +260,78 @@ def main() -> int:
                 errors += 1
             else:
                 ok("wfigs-ytd-snapshot.geojson under 5 MB")
+
+    # Suppression costs (NIFC)
+    supp_path = ROOT / "suppression-cost-annual.csv"
+    if supp_path.exists():
+        supp = pd.read_csv(supp_path)
+        years = supp["year"].astype(int)
+        if years.min() > 1985 or years.max() < 2023:
+            fail(f"suppression-cost-annual.csv year span unexpected: {years.min()}-{years.max()}")
+            errors += 1
+        else:
+            row_2021 = supp.loc[supp["year"] == 2021].iloc[0]
+            if int(row_2021["total_suppression_usd"]) != 4389000000:
+                fail("suppression FY2021 total expected 4389000000")
+                errors += 1
+            else:
+                ok(f"suppression-cost-annual.csv n={len(supp)} FY{years.min()}-{years.max()}; FY2021 total $4.389B")
+
+    # Structures destroyed (NICC)
+    str_path = ROOT / "structures-destroyed-annual.csv"
+    if str_path.exists():
+        st = pd.read_csv(str_path)
+        years = sorted(st["year"].astype(int).tolist())
+        if len(years) < 10 or years[0] != 2014 or years[-1] != 2025:
+            fail(f"structures-destroyed-annual.csv expected 2014-2025 continuous, got {years}")
+            errors += 1
+        else:
+            by_year = {int(r.year): int(r.structures_destroyed) for r in st.itertuples()}
+            checks = {2018: 25790, 2020: 17904, 2025: 18385}
+            bad = [y for y, v in checks.items() if by_year.get(y) != v]
+            if bad:
+                fail(f"structures-destroyed totals mismatch for {bad}")
+                errors += 1
+            else:
+                ok(f"structures-destroyed-annual.csv n={len(st)} 2014-2025; peak checks OK")
+
+    # Live smoke annual (ECHO v2 beta)
+    smoke_live = ROOT / "smoke-pm25-annual.csv"
+    if smoke_live.exists():
+        sm = pd.read_csv(smoke_live)
+        years = sorted(sm["year"].astype(int).tolist())
+        if years[:1] != [2006] or years[-1:] != [2023] or len(years) != 18:
+            fail(f"smoke-pm25-annual.csv expected 2006-2023 (18 years), got {years[0]}-{years[-1]} n={len(years)}")
+            errors += 1
+        else:
+            peak_2023 = float(sm.loc[sm["year"] == 2023, "smoke_pm25_ug_m3"].iloc[0])
+            if abs(peak_2023 - 2.4472) > 0.001:
+                fail(f"smoke-pm25-annual.csv 2023 expected ~2.4472, got {peak_2023}")
+                errors += 1
+            else:
+                ok(f"smoke-pm25-annual.csv n={len(sm)} 2006-2023 live ECHO v2 beta; 2023={peak_2023}")
+
+    # ECHO v2 beta annual (research duplicate / rebuild target)
+    v2_path = ROOT / "smoke-pm25-v2-beta-annual.csv"
+    if v2_path.exists():
+        v2 = pd.read_csv(v2_path)
+        years = sorted(v2["year"].astype(int).tolist())
+        if years[:1] != [2006] or years[-1:] != [2023] or len(years) != 18:
+            fail(f"smoke-pm25-v2-beta-annual.csv expected 2006-2023 (18 years), got {years[0]}-{years[-1]} n={len(years)}")
+            errors += 1
+        else:
+            ok(f"smoke-pm25-v2-beta-annual.csv n={len(v2)} 2006-2023")
+
+    # Childs v1 archive
+    v1_path = ROOT / "smoke-pm25-v1-annual.csv"
+    if v1_path.exists():
+        v1 = pd.read_csv(v1_path)
+        years = sorted(v1["year"].astype(int).tolist())
+        if years[:1] != [2006] or years[-1:] != [2020] or len(years) != 15:
+            fail(f"smoke-pm25-v1-annual.csv expected 2006-2020 (15 years), got {years[0]}-{years[-1]} n={len(years)}")
+            errors += 1
+        else:
+            ok(f"smoke-pm25-v1-annual.csv n={len(v1)} 2006-2020 archive")
 
     print(f"\nAudit complete: {errors} error(s)")
     return 1 if errors else 0
