@@ -437,7 +437,7 @@
     if (plain) {
       plain.innerHTML = fires
         ? 'Each point is the <strong>number of wildfires</strong> NIFC reported for that calendar year (not acres). A year can have many small fires or fewer large ones, so this line will not match the acres view. Counts for 1983–1984 (~18k–20k) jump to ~83k in 1985 in the official table: early ICS reporting was still ramping up (parallel Smokey Bear / USFS counts were higher those years), so do not read that jump as starts suddenly quadrupling.'
-        : 'Each point is total U.S. <strong>acres burned</strong> in a calendar year (NIFC), not the number of fires. The shaded band is the min-to-max range of the prior ten <em>complete</em> years; it starts in 1993 once ten comparable years exist. The orange 2026 point is year-to-date only (through August 3).';
+        : 'Each point is total U.S. <strong>acres burned</strong> in a calendar year (NIFC), not the number of fires. The shaded band is the min-to-max range of the prior ten <em>complete</em> years; it starts in 1993 once ten comparable years exist. The orange 2026 point is year-to-date only (through August 27).';
     }
     if (caption) {
       caption.textContent = fires

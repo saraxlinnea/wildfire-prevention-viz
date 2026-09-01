@@ -25,4 +25,4 @@ year,west_dsci,east_dsci,south_dsci,alaska_dsci,west_partial,east_partial,south_
 2023,100.2,36.8,142.9,1.8,False,False,False,False,USDM NWSRegionStatistics GetDSCI WR/ER/SR/AR
 2024,93.9,63.2,105.9,2.6,False,False,False,False,USDM NWSRegionStatistics GetDSCI WR/ER/SR/AR
 2025,168.8,86.7,118.9,7.0,False,False,False,False,USDM NWSRegionStatistics GetDSCI WR/ER/SR/AR
-2026,158.7,158.4,223.1,10.5,True,True,True,True,USDM NWSRegionStatistics GetDSCI WR/ER/SR/AR
+2026,164.2,150.6,215.9,10.5,True,True,True,True,USDM NWSRegionStatistics GetDSCI WR/ER/SR/AR

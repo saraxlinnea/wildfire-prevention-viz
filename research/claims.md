@@ -31,13 +31,13 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 
 | Field | Value |
 |---|---|
-| **Normalized statement** | U.S. national acres burned from Jan 1 through August 3, 2026 equals 5,154,596 acres |
-| **Display text** | Callout **5.2M** · Home: “**5.2M** acres already burned this year through August 3.” · Overview: “U.S. acres burned so far in 2026 through August 3 (year-to-date only)” |
+| **Normalized statement** | U.S. national acres burned from Jan 1 through August 27, 2026 equals 7,971,399 acres |
+| **Display text** | Callout **8.0M** · Home: “**8.0M** acres already burned this year through August 27.” · Overview: “U.S. acres burned so far in 2026 through August 27 (year-to-date only)” |
 | **Page location** | Home stats; Overview callouts; Methods tab |
 | **Status** | Supported |
 | **Confidence** | High |
 | **Evidence strength** | Strong (agency operational reporting) |
-| **Sources** | [NIFC National Fire News, August 3 2026](https://www.nifc.gov/fire-information/nfn); `data/wildfire-data.csv` row 2026 |
+| **Sources** | [NIFC National Fire News, August 27 2026](https://www.nifc.gov/fire-information/nfn); `data/wildfire-data.csv` row 2026 |
 | **Limitations** | Partial calendar year only; not comparable to full-year bars |
 
 ---
@@ -46,13 +46,13 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 
 | Field | Value |
 |---|---|
-| **Normalized statement** | 2026 YTD acres burned through August 3 is approximately 37% above the 10-year YTD average for the same date (10-yr avg = 3,759,429 acres from NIFC 2016-2025 same-date cell) |
-| **Display text** | Callout **+37%** · Home: “**+37%** more than NIFC’s same-date 10-year average.” · Overview: “About 37% more acres than a typical early August over the last 10 years (NIFC same-date average, not a full-year comparison)” |
+| **Normalized statement** | 2026 YTD acres burned through August 27 is approximately 64% above the 10-year YTD average for the same date (NIFC reports 164% of that average for acres burned YTD) |
+| **Display text** | Callout **+64%** · Home: “**+64%** more than NIFC’s same-date 10-year average.” · Overview: “About 64% more acres than NIFC’s same-date 10-year average (164% of that average; not a full-year comparison)” |
 | **Page location** | Home stats; Overview callouts |
 | **Status** | Supported |
 | **Confidence** | High |
 | **Evidence strength** | Strong (NIFC published same-date table and 10-year average cell) |
-| **Sources** | NIFC National Fire News, August 3 2026 |
+| **Sources** | NIFC National Fire News, August 27 2026 |
 | **Limitations** | Comparison is YTD-to-YTD, not full-year |
 
 ---
@@ -61,13 +61,13 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 
 | Field | Value |
 |---|---|
-| **Normalized statement** | 2026 YTD acres burned is about 137% of the 10-year average YTD acres burned (same date, August 3) |
+| **Normalized statement** | 2026 YTD acres burned is about 164% of the 10-year average YTD acres burned (same date, August 27) |
 | **Display text** | (not on callouts; equivalent to C-F02) |
 | **Page location** | Claim registry / derived from C-F02 |
 | **Status** | Supported |
 | **Confidence** | High |
 | **Evidence strength** | Strong |
-| **Sources** | NIFC National Fire News, August 3 2026 |
+| **Sources** | NIFC National Fire News, August 27 2026 |
 | **Notes** | 137% of average ≡ 37% above average (C-F02); both from same NIFC table |
 
 ---
@@ -76,13 +76,13 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 
 | Field | Value |
 |---|---|
-| **Normalized statement** | 2026 YTD acres burned through August 3 ranks third in NIFC's same-date comparison table; 2022 same-date YTD was about 5.8 million acres (highest) and 2017 about 5.7 million (second) |
-| **Display text** | Callout **3rd** · “3rd-highest early-August acres in NIFC’s same-date table (behind 2022 ~5.8M and 2017 ~5.7M). Not a full-year ranking.” |
+| **Normalized statement** | 2026 YTD acres burned through August 27 ranks first in NIFC's same-date comparison table at about 8.0 million acres; 2017 same-date YTD was about 6.8 million (second) and 2018 about 6.5 million (third) |
+| **Display text** | Callout **1st** · “Highest same-date acres in NIFC’s Aug 27 table (~8.0M YTD). Next on that list: 2017 ~6.8M and 2018 ~6.5M. Not a full-year ranking.” |
 | **Page location** | Overview callouts; How to read policy context |
 | **Status** | Supported |
 | **Confidence** | High |
 | **Evidence strength** | Strong |
-| **Sources** | NIFC National Fire News YTD table, August 3 2026 |
+| **Sources** | NIFC National Fire News YTD table, August 27 2026 |
 
 ---
 
@@ -164,7 +164,7 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 
 | Field | Value |
 |---|---|
-| **Normalized statement** | NIFC Total Wildfires and Acres lists national wildland fire counts by calendar year from 1983 through 2025 (e.g. 2025 = 77,850 fires; 2020 = 58,950; 1983 = 18,229). Overview fire chart toggle “Number of fires” plots these counts; 2026 YTD fire count is blank on the page (not locked to the Aug 3 acres snapshot; NFN lists 44,722 fires YTD for reference only). |
+| **Normalized statement** | NIFC Total Wildfires and Acres lists national wildland fire counts by calendar year from 1983 through 2025 (e.g. 2025 = 77,850 fires; 2020 = 58,950; 1983 = 18,229). Overview fire chart toggle “Number of fires” plots these counts; 2026 YTD fire count is blank on the page (not locked to the Aug 27 acres snapshot; NFN lists 51,434 fires YTD for reference only). |
 | **Display text** | Overview “Number of fires” toggle; plain-read that counts ≠ acres |
 | **Page location** | Overview `#chart-fire`; `data/wildfire-data.csv` column `fires_count` |
 | **Status** | Supported |
@@ -367,12 +367,12 @@ Follows [AI-OS Claim Tracking Layer](https://github.com/saraxlinnea/AI-OS/blob/m
 
 | Field | Value |
 |---|---|
-| **Normalized statement** | 2026 DSCI values are 30-week averages through July 28, 2026 (national 168.8; western 158.7); annual DSCI on this page is a year-to-date (or full-year) average of weekly USDM readings |
-| **Display text** | Drivers glossary / dryness plain-read: “year-to-date average of weekly… readings”; methodology: 30-week averages through July 28 |
+| **Normalized statement** | 2026 DSCI values are 34-week averages through August 25, 2026 (national 168.7; western 164.2); annual DSCI on this page is a year-to-date (or full-year) average of weekly USDM readings |
+| **Display text** | Drivers glossary / dryness plain-read: “year-to-date average of weekly… readings”; methodology: 34-week averages through August 25 |
 | **Page location** | Drivers tab terms + dryness chart; How to read glossary/methodology |
 | **Status** | Supported |
 | **Confidence** | High |
-| **Sources** | `data/dsci-annual-averages.csv`, `data/dsci-western-annual.csv`; USDM API pulls 2026-08-03 |
+| **Sources** | `data/dsci-annual-averages.csv`, `data/dsci-western-annual.csv`; USDM API pulls 2026-08-27 |
 
 ---
 
@@ -1320,7 +1320,7 @@ Before updating the live page:
 | 2026-08-04 | Drivers flow polish: merge section 0; chip-aware handoff; nest reliability; Westerling retitled; ignition/lag → Methods gaps; claim locations updated |
 | 2026-08-04 | Ignition research-checks copy: C-R14 (~84–85% starts), C-R15 (starts vs acres), C-E03 (dryness framing); later moved to Methods gaps |
 | 2026-08-03 | Rename to Wildfire Season Briefing; home (`index.html`) + explore (`explore.html`) |
-| 2026-08-03 | Refresh 2026 YTD to NIFC Aug 3 (C-F01–C-F04: 5.2M, +37%, still 3rd); DSCI partial through Jul 28, 30 weeks (C-D02); WFIGS snapshot n=962 |
+| 2026-08-27 | Full data refresh: NIFC Aug 27 YTD (C-F01–C-F04: 8.0M, +64%, 1st same-date); DSCI 34 weeks through Aug 25 (C-D02); WFIGS n=1158; correlation CSVs regenerated |
 | 2026-07-17 | Smoke impacts: C-IMP01-04; Why smoke matters + CONUS smoke PM2.5 chart (Childs 2006-2020) on Impacts |
 | 2026-07-17 | Closed 2008-2009 GACC gap (hand OCR); C-R06/C-R07/C-M07 updated; median western share ≈ 60% (n=23, 2003-2025) |
 | 2026-07-16 | Phase 2 scaffold: C-P2-01/02/03; GACC hand-extract template + export script; PAPER_REVIEW Jul 16 pass; byline July 2026 |

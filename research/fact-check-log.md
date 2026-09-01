@@ -1,5 +1,10 @@
 # Fact-check log
 
+**Run date:** 2026-08-27 (full data refresh)  
+**Summary:** PASS (data + UI). NIFC YTD refreshed to Aug 27, 2026: 7,971,399 acres (8.0M callout); +64% vs same-date 10-yr avg (164% of avg per NIFC); same-date rank **1st** (was 3rd at Aug 3). DSCI partial: 34 weeks through Aug 25 (national 168.7; western 164.2). Regional DSCI re-fetched; correlation CSVs regenerated. WFIGS snapshot n=1158 (fetched 2026-08-27). Smoke still ECHO v2 2006-2023; suppression still FY2023; structures 2014-2025. Claims C-F01–C-F04, C-D02, C-F12 updated. `audit_data.py` exit 0.
+
+---
+
 **Run date:** 2026-08-25 (live smoke → ECHO v2)  
 **Summary:** PASS (data + UI). Wired `#chart-smoke-pm25` to ECHO Lab v2.0 beta annual 2006-2023 (`smoke-pm25-annual.csv`); Childs v1 archived. C-IMP03 → Speculative. Smoke×structures overlap 2014-2023 (C-IMP05; n=10). Spot-check 2023 smoke ≈ 2.447 µg/m³. No EPA PM2.5 stitch. Audit expects live + v1 archive + v2 rebuild CSV.
 
@@ -697,13 +702,13 @@ Run when `python scripts/audit_data.py` unavailable:
 
 ## Warnings (no action required)
 
-1. **Live NIFC drift** - Page snapshot is NIFC NFN August 3, 2026 (5,154,596 YTD acres). Later daily NFN updates will diverge; re-freeze when refreshing the page.
+1. **Live NIFC drift** - Page snapshot is NIFC NFN August 27, 2026 (7,971,399 YTD acres). Later daily NFN updates will diverge; re-freeze when refreshing the page.
 
 2. **C-F11 / C-D03** - Qualitative panel/dek statements; not quantitatively verified.
 
 3. **C-R10 window** - Ignition cause chart n=7 in Coupling supplementary; 2007-2009 not machine-extractable from NICC PDFs in repo (documented in `ignition-cause-notes.md`).
 
-4. **C-F02 average** - Aug 3 NFN publishes a 10-year average YTD cell (3,759,429 acres); page uses that cell for +37%.
+4. **C-F02 average** - Aug 27 NFN reports 164% of 10-year average YTD acres; page uses +64% (equivalent) on callouts.
 
 ---
 

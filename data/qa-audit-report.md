@@ -63,8 +63,8 @@ Loaded by `js/app.js` on Explore load:
 
 - **2008-2009** regional GACC acres: filled 2026-07-17 via hand OCR; continuous in `regional-acres-annual.csv`.
 - **2007-2009** ignition cause share series: not on main path; n=7 in notes.
-- **2026 YTD:** Aug 3 NIFC snapshot (5,154,596 acres); may drift from later NFN updates.
-- **2026 DSCI:** 30-week averages through Jul 28 (national 168.8; western 158.7).
+- **2026 YTD:** Aug 27 NIFC snapshot (7,971,399 acres); may drift from later NFN updates.
+- **2026 DSCI:** 34-week averages through Aug 25 (national 168.7; western 164.2).
 
 ## Re-run before share
 

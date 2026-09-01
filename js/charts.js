@@ -136,7 +136,7 @@ WF.buildFireSpec = function (data, mode) {
           y: { field: 'acres', type: 'quantitative', scale: yScale },
           tooltip: [
             { field: 'year', title: 'Year' },
-            { field: 'acres', title: 'Acres burned YTD Aug 3 (M)', format: '.1f' }
+            { field: 'acres', title: 'Acres burned YTD Aug 27 (M)', format: '.1f' }
           ]
         }
       },

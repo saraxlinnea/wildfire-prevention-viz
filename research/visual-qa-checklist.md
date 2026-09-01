@@ -10,7 +10,7 @@ Run after substantive HTML/JS/chart changes. Requires local server (`python3 -m 
 
 ## Overview
 
-- [x] Callouts: 5.2M + +37%; secondary 3rd only (no AccuWeather peer callout)
+- [x] Callouts: 8.0M + +64%; secondary 1st same-date (no AccuWeather peer callout)
 - [x] Fire chart renders (acres + fires toggle)
 - [x] Default: Map by year
 - [x] West vs nation and Four regions work

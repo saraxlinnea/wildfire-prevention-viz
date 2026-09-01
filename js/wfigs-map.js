@@ -146,10 +146,44 @@
   var CONUS_BOUNDS_TIGHT = [[25.5, -123.8], [48.8, -68.2]];
   // Home hero: tighter CONUS crop for the shorter side-by-side map.
   var CONUS_BOUNDS_HOME = [[28.0, -121.0], [46.8, -74.5]];
-  var BASEMAP_URL = 'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png';
-  var BASEMAP_ATTR =
+  // CARTO raster tiles now require a free API key (carto.com/basemaps/apikey).
+  // Leave empty to use Esri World Light Gray (no key, similar light basemap).
+  var CARTO_BASEMAP_KEY = '';
+  var BASEMAP_URL_CARTO =
+    'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png';
+  var BASEMAP_URL_ESRI =
+    'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}';
+  var BASEMAP_ATTR_CARTO =
     '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> ' +
     '&copy; <a href="https://carto.com/attributions">CARTO</a> (no labels)';
+  var BASEMAP_ATTR_ESRI =
+    'Tiles &copy; <a href="https://www.esri.com/">Esri</a>';
+
+  function getBasemapConfig() {
+    if (CARTO_BASEMAP_KEY) {
+      var sep = BASEMAP_URL_CARTO.indexOf('?') >= 0 ? '&' : '?';
+      return {
+        url: BASEMAP_URL_CARTO + sep + 'key=' + encodeURIComponent(CARTO_BASEMAP_KEY),
+        attribution: BASEMAP_ATTR_CARTO,
+        subdomains: 'abcd'
+      };
+    }
+    return {
+      url: BASEMAP_URL_ESRI,
+      attribution: BASEMAP_ATTR_ESRI,
+      subdomains: null
+    };
+  }
+
+  function createBasemapLayer(attributionExtra, mapId) {
+    var cfg = getBasemapConfig();
+    var opts = {
+      attribution: cfg.attribution + (attributionExtra || ''),
+      maxZoom: mapId === 'gacc' ? 8 : 12
+    };
+    if (cfg.subdomains) opts.subdomains = cfg.subdomains;
+    return L.tileLayer(cfg.url, opts);
+  }
 
   function regionColor(region) {
     return REGION_COLORS[region] || '#d8d2ca';
@@ -263,11 +297,7 @@
       maxBounds: [[5, -170], [75, -40]],
       maxBoundsViscosity: 0.8
     });
-    L.tileLayer(BASEMAP_URL, {
-      attribution: BASEMAP_ATTR,
-      maxZoom: 8,
-      subdomains: 'abcd'
-    }).addTo(gaccMapInstance);
+    createBasemapLayer('', 'gacc').addTo(gaccMapInstance);
 
     gaccLayerGroup = L.geoJSON({ type: 'FeatureCollection', features: features }, {
       style: function (feature) {
@@ -388,11 +418,7 @@
     }
 
     if (!home) {
-      L.tileLayer(BASEMAP_URL, {
-        attribution: BASEMAP_ATTR + ' · Perimeters: NIFC WFIGS',
-        maxZoom: 12,
-        subdomains: 'abcd'
-      }).addTo(mapInstance);
+      createBasemapLayer(' · Perimeters: NIFC WFIGS', 'wfigs').addTo(mapInstance);
       addFireLayer();
       finishFit(null);
       return;

@@ -5,10 +5,10 @@
 | Field | Value |
 |---|---|
 | Source | NIFC WFIGS Interagency Perimeters YearToDate |
-| Fetched (UTC) | 2026-08-03T19:36:22Z |
+| Fetched (UTC) | 2026-08-27T18:15:50Z |
 | Filter | GIS acres ≥ 100 |
-| Features | 962 |
-| Perimeter acres sum | 6,106,543 (not equal to NIFC national YTD) |
+| Features | 1158 |
+| Perimeter acres sum | 7,679,618 (not equal to NIFC national YTD) |
 
 ## Limits
 
