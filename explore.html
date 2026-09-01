@@ -1734,30 +1734,30 @@
   </nav>
 
   <section id="tab-overview" class="tab-panel tab-panel--overview active" role="tabpanel" aria-labelledby="tab-btn-overview">
-    <p class="tab-dek">How many U.S. acres have burned so far in 2026, and which regions carried those acres? Through August 3 is year-to-date, not a full year.</p>
+    <p class="tab-dek">How many U.S. acres have burned so far in 2026, and which regions carried those acres? Through August 27 is year-to-date, not a full year.</p>
     <div class="callouts outcomes-callouts">
       <div class="callout callout--fire">
-        <div class="callout-num fire">5.2M</div>
-        <div class="callout-label">U.S. acres burned so far in 2026 through August 3 (year-to-date only)</div>
+        <div class="callout-num fire">8.0M</div>
+        <div class="callout-label">U.S. acres burned so far in 2026 through August 27 (year-to-date only)</div>
       </div>
       <div class="callout callout--fire">
-        <div class="callout-num fire">+37%</div>
-        <div class="callout-label">About 37% more acres than a typical early August over the last 10 years (NIFC same-date average, not a full-year comparison)</div>
+        <div class="callout-num fire">+64%</div>
+        <div class="callout-label">About 64% more acres than NIFC’s same-date 10-year average (164% of that average; not a full-year comparison)</div>
       </div>
     </div>
 
     <div class="callouts callouts--secondary">
       <div class="callout callout--fire">
-        <div class="callout-num fire">3rd</div>
-        <div class="callout-label">3rd-highest early-August acres in NIFC’s same-date table (behind 2022 ~5.8M and 2017 ~5.7M). Not a full-year ranking.</div>
+        <div class="callout-num fire">1st</div>
+        <div class="callout-label">Highest same-date acres in NIFC’s Aug 27 table (~8.0M YTD). Next on that list: 2017 ~6.8M and 2018 ~6.5M. Not a full-year ranking.</div>
       </div>
     </div>
 
     <div class="chart-container chart-container--fire">
-      <div class="chart-date-badge">Data through August 3, 2026 · NIFC National Fire News</div>
+      <div class="chart-date-badge">Data through August 27, 2026 · NIFC National Fire News</div>
       <div class="signal-tier signal-tier-1">Observed · national acres</div>
       <p class="chart-question">How many U.S. acres burned each year?</p>
-      <p class="plain-read" id="fire-plain-read">Each point is total U.S. <strong>acres burned</strong> in a calendar year (NIFC), not the number of fires. The shaded band is the min-to-max range of the prior ten <em>complete</em> years; it starts in 1993 once ten comparable years exist. The orange 2026 point is year-to-date only (through August 3).</p>
+      <p class="plain-read" id="fire-plain-read">Each point is total U.S. <strong>acres burned</strong> in a calendar year (NIFC), not the number of fires. The shaded band is the min-to-max range of the prior ten <em>complete</em> years; it starts in 1993 once ten comparable years exist. The orange 2026 point is year-to-date only (through August 27).</p>
       <figure class="chart-figure">
       <div class="chart-toggle" role="group" aria-label="Fire chart measure">
         <button type="button" class="toggle-btn active" data-fire-mode="acres">Million acres</button>
@@ -1774,7 +1774,7 @@
         </div>
         <div class="legend-item" id="fire-legend-ytd-item">
           <div class="ls-line" style="background:#e87c2a; width:8px; height:8px; border-radius:50%;"></div>
-          <span>2026 YTD (Aug 3)</span>
+          <span>2026 YTD (Aug 27)</span>
         </div>
         <div class="legend-item" id="fire-legend-forecast-item">
           <div class="ls-range"></div>
@@ -2435,7 +2435,7 @@
       <div class="prose-block">
         In 2025 the Forest Service treated 2.6 million acres for wildfire risk, down from 4.1 million in 2024.
         In March 2026 USDA announced plans to close 57 of 77 Forest Service research stations. Stateline reports that affected stations include work on fire behavior and smoke forecasting.
-        Same date in 2022 saw about 5.8 million acres burned YTD, the highest in NIFC's August 3 table; 2017 was next (~5.7M). 2026 ranks third on that same-date list.
+        Same date in 2017 saw about 6.8 million acres burned YTD; 2018 was next (~6.5M). 2026 ranks first on NIFC’s Aug 27 same-date list at about 8.0M YTD.
       </div>
     </div>
 
@@ -2498,11 +2498,11 @@
       <div class="methodology-body">
         <ul>
           <li>Acres burned: total U.S. figures, all land types, calendar year, NIFC annual statistics. Standardized reporting from 1983; pre-1983 figures are not comparable.</li>
-          <li>2026 point: partial year through August 3 only (5,154,596 acres). Not a full-year figure.</li>
+          <li>2026 point: partial year through August 27 only (7,971,399 acres). Not a full-year figure.</li>
           <li>10-year baseline band: min-to-max of the ten prior calendar years of NIFC acres burned. Computed from chart data, not the CRS flat 7.2M reference.</li>
           <li>Forest Service treatment: NPR analysis of USFS FACTS database, cross-checked by Center for Western Priorities. Consistent figures from 2023 onward only.</li>
           <li>Interior Department treatment: BLM, NPS, BIA, and FWS lands, fiscal year starting October 1, doi.gov, 2018-2024.</li>
-          <li>DSCI: annual average of weekly readings, U.S. Drought Monitor API. National (conus) and NWS Western Region (aoi=WR). Available from 2000. 2026 values are 30-week averages through July 28.</li>
+          <li>DSCI: annual average of weekly readings, U.S. Drought Monitor API. National (conus) and NWS Western Region (aoi=WR). Available from 2000. 2026 values are 34-week averages through August 25.</li>
           <li>VPD: western U.S. fire-season mean from gridMET via OPeNDAP (<a href="https://doi.org/10.1002/joc.3413">Abatzoglou 2013</a>). May through September, west of 100°W, 1979-2025.</li>
           <li>ERC: western fire-season mean Energy Release Component from gridMET (NFDRS fuel model G). Same geography and season as VPD. <code>scripts/extend_erc.py</code>; <a href="data/erc-annual.csv">annual averages</a>.</li>
           <li>KBDI (South): Jan-May mean Keetch-Byram Drought Index for the SE research bbox, computed from gridMET tmmx and precip (<code>scripts/extend_kbdi.py</code>; <a href="data/south-kbdi-annual.csv">south-kbdi-annual.csv</a>). Classic Southern Area drought index; exploratory r vs SA acres ≈ 0.20 (n=13), weaker than south VPD.</li>
@@ -2523,7 +2523,7 @@
 <footer>
     <div class="sources">
       Acres burned: <a href="https://www.nifc.gov/fire-information/statistics">NIFC Total Wildfires and Acres</a> ·
-      2026 YTD: <a href="https://www.nifc.gov/fire-information/nfn">NIFC National Fire News, August 3 2026</a> ·<br>
+      2026 YTD: <a href="https://www.nifc.gov/fire-information/nfn">NIFC National Fire News, August 27 2026</a> ·<br>
       Forest Service treatment: <a href="https://www.npr.org/2026/05/04/nx-s1-5801475/">NPR analysis of USFS FACTS database, May 4 2026</a>, cross-checked by <a href="https://westernpriorities.org/2026/05/u-s-forest-service-treated-35-fewer-acres-for-wildfire-risk-in-2025/">Center for Western Priorities, May 27 2026</a> ·<br>
       Interior treatment: <a href="https://www.doi.gov/wildlandfire/fuels">U.S. Dept of the Interior fuels management program</a> ·
       Ten-year average (CRS 7.2M, 2013-2022, reference only; chart band is rolling 10-yr min-max from NIFC data): <a href="https://crsreports.congress.gov/product/pdf/IF/IF10244">CRS Report IF10244 (PDF)</a>, <a href="https://www.congress.gov/crs-product/IF10244">Congress.gov</a> ·<br>
@@ -2544,10 +2544,10 @@
 
 </div>
 
-<script src="js/datasets.js?v=20260808review"></script>
-<script src="js/charts.js?v=20260808review"></script>
-<script src="js/wfigs-map.js?v=20260808review"></script>
-<script src="js/app.js?v=20260808review"></script>
-<script src="js/guide.js?v=20260808review"></script>
+<script src="js/datasets.js?v=20260827refresh"></script>
+<script src="js/charts.js?v=20260827refresh"></script>
+<script src="js/wfigs-map.js?v=20260827refresh"></script>
+<script src="js/app.js?v=20260827refresh"></script>
+<script src="js/guide.js?v=20260827refresh"></script>
 </body>
 </html>
