@@ -10,9 +10,9 @@ Wildfire Season in Numbers
 
 I put together a sourced look at U.S. wildfire data (1983-2026). Home page with this season’s highlights and a mapped-fires snapshot; then a briefing with tabs for Overview, Drivers, Context, and Impacts.
 
-As of August 3, 2026:
-- 5.2 million acres burned nationally, about 37% above the 10-year average to date
-- Third on NIFC’s same-date table (behind 2022 ~5.8M and 2017 ~5.7M)
+As of August 27, 2026:
+- 8.0 million acres burned nationally, about 64% above the 10-year average to date (164% of that average per NIFC)
+- Highest on NIFC’s same-date Aug 27 table (ahead of 2017 ~6.8M and 2018 ~6.5M on that list)
 - Peak western fire season (July–September) is underway
 - AccuWeather projects 5.5–8M acres for the full year (speculative forecast)
 
@@ -39,7 +39,7 @@ Hi [name],
 I published a sourced briefing on U.S. wildfire outcomes, federal hazardous fuels treatment, western fire-season dryness (ERC, VPD, DSCI), and smoke context.
 
 - **Home:** YTD callouts + WFIGS perimeter snapshot; enter the full briefing from there
-- **Overview:** NIFC national acres 1983-2026; rolling 10-yr band; western vs national GACC acres; 2026 YTD through August 3
+- **Overview:** NIFC national acres 1983-2026; rolling 10-yr band; western vs national GACC acres; 2026 YTD through August 27
 - **Drivers:** western fire-season dryness (ERC, VPD, DSCI) and exploratory pairings with acres
 - **Context:** HFR joint FS+DOI treatment FY 2003-2021; WUI designation share; dual-axis treatment vs burn acres
 - **Impacts / Methods:** smoke PM2.5 literature context; scientific limits; claim registry
